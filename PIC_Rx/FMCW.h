@@ -25,7 +25,7 @@ int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [Å
 #define FMTX_CLK        PORTEbits.RE1
 #define FMTX_DAT        PORTEbits.RE0
 #define FMTX_STB        PORTAbits.RA5
-#define FMTX_PTT        PORTDbits.RD3
+#define FMTX_PTT        PORTCbits.RC2
 /* CWTXÇÃÉsÉìîzíuÇíËã` */
 #define CWRX_CLK        PORTDbits.RD2//RXÅ®TX?
 #define CWTX_DAT        PORTDbits.RD1
