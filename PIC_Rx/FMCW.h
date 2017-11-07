@@ -18,19 +18,19 @@ int FMRX_Nref        =   2560;          // Nref = 2560 (const)
 int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [→145.835MHz]
 
 /* FMRXのピン配置を定義 */
-#define FMRX_CLK        PORTCbits.RC0
-#define FMRX_DAT        PORTCbits.RC1
-#define FMRX_STB        PORTCbits.RC2
+#define FMRX_CLK        PORTAbits.RA2
+#define FMRX_DAT        PORTAbits.RA3
+#define FMRX_STB        PORTAbits.RA4
 /* FMTXのピン配置を定義 */
-#define FMTX_CLK        PORTDbits.RD0
-#define FMTX_DAT        PORTDbits.RD1
-#define FMTX_STB        PORTDbits.RD2
+#define FMTX_CLK        PORTEbits.RE1
+#define FMTX_DAT        PORTEbits.RE0
+#define FMTX_STB        PORTAbits.RA5
 #define FMTX_PTT        PORTDbits.RD3
 /* CWTXのピン配置を定義 */
-#define CWRX_CLK        PORTDbits.RD4
-#define CWTX_DAT        PORTDbits.RD5
-#define CWTX_STB        PORTDbits.RD6
-#define CWTX_KEY        PORTDbits.RD7
+#define CWRX_CLK        PORTDbits.RD2//RX→TX?
+#define CWTX_DAT        PORTDbits.RD1
+#define CWTX_STB        PORTDbits.RD0
+#define CWTX_KEY        PORTDbits.RD3
 
 void Init_FMCW(void);
 

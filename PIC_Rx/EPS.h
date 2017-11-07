@@ -9,8 +9,8 @@
 #define	EPS_H
 
 /* EPSキルスイッチのピン配置を定義 */
-#define SEP_SW        RE0
-#define RBF_SW        RE1
+#define SEP_SW        RB4
+#define RBF_SW        RA1
 
 //#define EPS_kill_1    "EA"
 //#define EPS_kill_2    0x0D
