@@ -21,8 +21,8 @@ void Init_MPU(void)
 	//Port I/O Setting 
     //       0b76543210
 	TRISA  = 0b10000000;
-	TRISB  = 0b00100001;
-    TRISC  = 0b01011000;
+	TRISB  = 0b00000001;
+    TRISC  = 0b01011100;
     //TRISD  = 0b00000000;
     TRISE  = 0b00000000;	
 

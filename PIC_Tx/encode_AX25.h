@@ -20,7 +20,7 @@
 #define mycall "JQ1YCZ"
 #define ucall  "JQ1ZHX"
 #define txd RC5
-#define UHFstart RB5
+#define UHFstart RC2
 
 void SendPacket(UBYTE *);
 void test_Packetmaker(UBYTE *);

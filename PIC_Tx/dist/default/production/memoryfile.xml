@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <executable name="dist/default/production\0530_system_integrationTX_RX_16F886_9.production.hex">
+  <executable name="dist/default/production\PIC_Tx.production.hex">
     <memory name="program">
       <units>words</units>
       <length>8192</length>
-      <used>1207</used>
-      <free>6985</free>
+      <used>1205</used>
+      <free>6987</free>
     </memory>
     <memory name="data">
       <units>bytes</units>
