@@ -1,0 +1,589 @@
+[p LITE_MODE AUTOSTATIC PIC14 PICREGULAR PICMID ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F887 ]
+[d frameptr 6 ]
+"6 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+"492 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c
+[v _sprintf sprintf `(i  1 e 2 0 ]
+"62 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"6 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
+"33 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
+[v _strcmp strcmp `(i  1 e 2 0 ]
+"6 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\pic\eeprom.c
+[v _eecpymem eecpymem `(v  1 e 1 0 ]
+"39
+[v _memcpyee memcpyee `(v  1 e 1 0 ]
+"39 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\decode_AX25.c
+[v _getbit getbit `(ui  1 e 2 0 ]
+"52
+[v _waitFlag waitFlag `(v  1 e 1 0 ]
+"276
+[v _getdata getdata `(v  1 e 1 0 ]
+"311
+[v _fcscheck fcscheck `(ui  1 e 2 0 ]
+"357
+[v _ReceivePacket_data ReceivePacket_data `(*.5uc  1 e 1 0 ]
+"422
+[v _reverse_bit8 reverse_bit8 `(uc  1 e 1 0 ]
+"39 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\encode_AX25.c
+[v _Packetmaker Packetmaker `(ui  1 e 2 0 ]
+"94
+[v _SendByte SendByte `(v  1 e 1 0 ]
+"118
+[v _flipout flipout `(v  1 e 1 0 ]
+"131
+[v _fcsbit fcsbit `(v  1 e 1 0 ]
+"19 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\EPS.c
+[v _Reset_EPS Reset_EPS `(v  1 e 1 0 ]
+"40 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\FMCW.c
+[v _L_OUT L_OUT `(v  1 e 1 0 ]
+"74
+[v _H_OUT H_OUT `(v  1 e 1 0 ]
+"107
+[v _STBOUT STBOUT `(v  1 e 1 0 ]
+"136
+[v _OUTFQ OUTFQ `(v  1 e 1 0 ]
+"200
+[v _RFDOUT RFDOUT `(v  1 e 1 0 ]
+"241
+[v _OPINIT OPINIT `(v  1 e 1 0 ]
+"270
+[v _FMTX FMTX `(v  1 e 1 0 ]
+"284
+[v _CWTX CWTX `(v  1 e 1 0 ]
+"298
+[v _FMRX FMRX `(v  1 e 1 0 ]
+"349
+[v __NOP _NOP `(v  1 e 1 0 ]
+"8 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\I2C.c
+[v _Init_I2C_M Init_I2C_M `(v  1 e 1 0 ]
+"15
+[v _I2C_Master_Wait I2C_Master_Wait `(v  1 e 1 0 ]
+"19
+[v _I2C_Master_Start I2C_Master_Start `(v  1 e 1 0 ]
+"24
+[v _I2C_Master_RepeatedStart I2C_Master_RepeatedStart `(v  1 e 1 0 ]
+"29
+[v _I2C_Master_Stop I2C_Master_Stop `(v  1 e 1 0 ]
+"34
+[v _I2C_Master_Write I2C_Master_Write `(v  1 e 1 0 ]
+"39
+[v _I2C_Master_Read I2C_Master_Read `(uc  1 e 1 0 ]
+"51
+[v _EEPROM_Write EEPROM_Write `(v  1 e 1 0 ]
+"8 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\Init_MPU.c
+[v _Init_MPU Init_MPU `(v  1 e 1 0 ]
+"39 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\main.c
+[v _main main `(v  1 e 1 0 ]
+"5 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\UART.c
+[v _Init_SERIAL Init_SERIAL `(v  1 e 1 0 ]
+"35
+[v _putch putch `(v  1 e 1 0 ]
+"68
+[v _NM_waddress NM_waddress `(v  1 e 1 0 ]
+"71 C:\Program Files (x86)\Microchip\xc8\v1.44\include\pic16f887.h
+[v _STATUS STATUS `VEuc  1 e 1 @3 ]
+"164
+[v _PORTA PORTA `VEuc  1 e 1 @5 ]
+[s S340 . 1 `uc 1 RA0 1 0 :1:0 
+`uc 1 RA1 1 0 :1:1 
+`uc 1 RA2 1 0 :1:2 
+`uc 1 RA3 1 0 :1:3 
+`uc 1 RA4 1 0 :1:4 
+`uc 1 RA5 1 0 :1:5 
+`uc 1 RA6 1 0 :1:6 
+`uc 1 RA7 1 0 :1:7 
+]
+"181
+[u S349 . 1 `S340 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES349  1 e 1 @5 ]
+"226
+[v _PORTB PORTB `VEuc  1 e 1 @6 ]
+"288
+[v _PORTC PORTC `VEuc  1 e 1 @7 ]
+[s S374 . 1 `uc 1 RC0 1 0 :1:0 
+`uc 1 RC1 1 0 :1:1 
+`uc 1 RC2 1 0 :1:2 
+`uc 1 RC3 1 0 :1:3 
+`uc 1 RC4 1 0 :1:4 
+`uc 1 RC5 1 0 :1:5 
+`uc 1 RC6 1 0 :1:6 
+`uc 1 RC7 1 0 :1:7 
+]
+"305
+[u S383 . 1 `S374 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES383  1 e 1 @7 ]
+"350
+[v _PORTD PORTD `VEuc  1 e 1 @8 ]
+[s S395 . 1 `uc 1 RD0 1 0 :1:0 
+`uc 1 RD1 1 0 :1:1 
+`uc 1 RD2 1 0 :1:2 
+`uc 1 RD3 1 0 :1:3 
+`uc 1 RD4 1 0 :1:4 
+`uc 1 RD5 1 0 :1:5 
+`uc 1 RD6 1 0 :1:6 
+`uc 1 RD7 1 0 :1:7 
+]
+"367
+[u S404 . 1 `S395 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES404  1 e 1 @8 ]
+"412
+[v _PORTE PORTE `VEuc  1 e 1 @9 ]
+[s S361 . 1 `uc 1 RE0 1 0 :1:0 
+`uc 1 RE1 1 0 :1:1 
+`uc 1 RE2 1 0 :1:2 
+`uc 1 RE3 1 0 :1:3 
+]
+"425
+[u S366 . 1 `S361 1 . 1 0 ]
+[v _PORTEbits PORTEbits `VES366  1 e 1 @9 ]
+"841
+[v _SSPBUF SSPBUF `VEuc  1 e 1 @19 ]
+"848
+[v _SSPCON SSPCON `VEuc  1 e 1 @20 ]
+"1131
+[v _TXREG TXREG `VEuc  1 e 1 @25 ]
+"1138
+[v _RCREG RCREG `VEuc  1 e 1 @26 ]
+"1414
+[v _TRISA TRISA `VEuc  1 e 1 @133 ]
+"1476
+[v _TRISB TRISB `VEuc  1 e 1 @134 ]
+"1538
+[v _TRISC TRISC `VEuc  1 e 1 @135 ]
+"1600
+[v _TRISD TRISD `VEuc  1 e 1 @136 ]
+"1662
+[v _TRISE TRISE `VEuc  1 e 1 @137 ]
+"1977
+[v _SSPCON2 SSPCON2 `VEuc  1 e 1 @145 ]
+"2046
+[v _SSPADD SSPADD `VEuc  1 e 1 @147 ]
+"2175
+[v _SSPSTAT SSPSTAT `VEuc  1 e 1 @148 ]
+"2640
+[v _SPBRG SPBRG `VEuc  1 e 1 @153 ]
+"3385
+[v _ANSEL ANSEL `VEuc  1 e 1 @392 ]
+"3447
+[v _ANSELH ANSELH `VEuc  1 e 1 @393 ]
+"3558
+[v _ACKDT ACKDT `VEb  1 e 0 @1165 ]
+"3560
+[v _ACKEN ACKEN `VEb  1 e 0 @1164 ]
+"3646
+[v _BRGH BRGH `VEb  1 e 0 @1218 ]
+"3740
+[v _CREN CREN `VEb  1 e 0 @196 ]
+"3878
+[v _PEN PEN `VEb  1 e 0 @1162 ]
+"3904
+[v _RA1 RA1 `VEb  1 e 0 @41 ]
+"3922
+[v _RB2 RB2 `VEb  1 e 0 @50 ]
+"3926
+[v _RB4 RB4 `VEb  1 e 0 @52 ]
+"3928
+[v _RB5 RB5 `VEb  1 e 0 @53 ]
+"3960
+[v _RCEN RCEN `VEb  1 e 0 @1163 ]
+"3964
+[v _RCIE RCIE `VEb  1 e 0 @1125 ]
+"3966
+[v _RCIF RCIF `VEb  1 e 0 @101 ]
+"4000
+[v _RSEN RSEN `VEb  1 e 0 @1161 ]
+"4002
+[v _RX9 RX9 `VEb  1 e 0 @198 ]
+"4016
+[v _SEN SEN `VEb  1 e 0 @1160 ]
+"4022
+[v _SPEN SPEN `VEb  1 e 0 @199 ]
+"4028
+[v _SREN SREN `VEb  1 e 0 @197 ]
+"4058
+[v _SYNC SYNC `VEb  1 e 0 @1220 ]
+"4202
+[v _TX9 TX9 `VEb  1 e 0 @1222 ]
+"4208
+[v _TXEN TXEN `VEb  1 e 0 @1221 ]
+"4210
+[v _TXIE TXIE `VEb  1 e 0 @1124 ]
+"4212
+[v _TXIF TXIF `VEb  1 e 0 @100 ]
+"24 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\decode_AX25.c
+[v _rcv_state rcv_state `ui  1 s 2 rcv_state ]
+"25
+[v _dPacket dPacket `[50]uc  1 e 50 0 ]
+"26
+[v _dData dData `[32]uc  1 e 32 0 ]
+"27
+[v _dPacketnum dPacketnum `ui  1 e 2 0 ]
+"28
+[v _dfcshi dfcshi `uc  1 e 1 0 ]
+[v _dfcslo dfcslo `uc  1 e 1 0 ]
+"23 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\encode_AX25.c
+[v _eflag eflag `ui  1 e 2 0 ]
+"24
+[v _efcsflag efcsflag `ui  1 e 2 0 ]
+"25
+[v _estuff estuff `ui  1 e 2 0 ]
+"26
+[v _efcslo efcslo `uc  1 e 1 0 ]
+[v _efcshi efcshi `uc  1 e 1 0 ]
+"27
+[v _eDataField eDataField `[25]uc  1 e 25 0 ]
+"28
+[v _ePacket ePacket `[5]uc  1 e 5 0 ]
+"29
+[v _ebitstatus ebitstatus `ui  1 e 2 0 ]
+"13 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\fmcw.h
+[v _FMTX_Nref FMTX_Nref `i  1 e 2 0 ]
+"14
+[v _FMTX_Nprg FMTX_Nprg `[5]i  1 e 10 0 ]
+"15
+[v _CWTX_Nref CWTX_Nref `i  1 e 2 0 ]
+"16
+[v _CWTX_Nprg CWTX_Nprg `[5]i  1 e 10 0 ]
+"17
+[v _FMRX_Nref FMRX_Nref `i  1 e 2 0 ]
+"18
+[v _FMRX_Nprg FMRX_Nprg `[5]i  1 e 10 0 ]
+"6 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\I2C.c
+[v _EEPROMData EEPROMData `[32]uc  1 e 32 0 ]
+"39 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"124
+[v main@FMRX_Nprg FMRX_Nprg `[5]i  1 a 10 23 ]
+"123
+[v main@CWTX_Nprg CWTX_Nprg `[5]i  1 a 10 13 ]
+"122
+[v main@FMTX_Nprg FMTX_Nprg `[5]i  1 a 10 3 ]
+"106
+[v main@EPS_kill_1 EPS_kill_1 `[3]uc  1 a 3 0 ]
+"74
+[v main@dData dData `*.5uc  1 a 1 35 ]
+"107
+[v main@EPS_kill_2 EPS_kill_2 `uc  1 a 1 34 ]
+"93
+[v main@NM_wad_header NM_wad_header `uc  1 a 1 33 ]
+"105
+[v main@EPS_kill EPS_kill `[0]uc  1 a 0 0 ]
+[v main@F2005 F2005 `[3]uc  1 s 3 F2005 ]
+"119
+[v main@F2009 F2009 `[5]i  1 s 10 F2009 ]
+"122
+[v main@F2011 F2011 `[5]i  1 s 10 F2011 ]
+"123
+[v main@F2013 F2013 `[5]i  1 s 10 F2013 ]
+"139
+} 0
+"33 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\strcmp.c
+[v _strcmp strcmp `(i  1 e 2 0 ]
+{
+[v strcmp@s1 s1 `*.5DCuc  1 a 1 wreg ]
+"35
+[v strcmp@r r `c  1 a 1 4 ]
+"33
+[v strcmp@s1 s1 `*.5DCuc  1 a 1 wreg ]
+[v strcmp@s2 s2 `*.39DCuc  1 p 2 0 ]
+[v strcmp@s1 s1 `*.5DCuc  1 a 1 5 ]
+"42
+} 0
+"492 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\doprnt.c
+[v _sprintf sprintf `(i  1 e 2 0 ]
+{
+"530
+[v sprintf@cp cp `*.26DCuc  1 a 2 9 ]
+"499
+[v sprintf@c c `c  1 a 1 11 ]
+"494
+[v sprintf@ap ap `[1]*.1v  1 a 1 8 ]
+"508
+[v sprintf@flag flag `uc  1 a 1 7 ]
+"492
+[v sprintf@sp sp `*.39uc  1 p 2 0 ]
+[v sprintf@f f `*.24DCuc  1 p 1 2 ]
+"1541
+} 0
+"19 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\EPS.c
+[v _Reset_EPS Reset_EPS `(v  1 e 1 0 ]
+{
+"26
+} 0
+"357 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\decode_AX25.c
+[v _ReceivePacket_data ReceivePacket_data `(*.5uc  1 e 1 0 ]
+{
+"366
+[v ReceivePacket_data@i i `ui  1 a 2 31 ]
+"358
+[v ReceivePacket_data@fcschecker fcschecker `ui  1 a 2 29 ]
+"377
+} 0
+"52
+[v _waitFlag waitFlag `(v  1 e 1 0 ]
+{
+"234
+[v waitFlag@j_122 j `ui  1 a 2 24 ]
+"131
+[v waitFlag@j_109 j `ui  1 a 2 10 ]
+"222
+[v waitFlag@j_120 j `ui  1 a 2 22 ]
+"119
+[v waitFlag@j_107 j `ui  1 a 2 8 ]
+"210
+[v waitFlag@j_118 j `ui  1 a 2 20 ]
+"107
+[v waitFlag@j_105 j `ui  1 a 2 6 ]
+"198
+[v waitFlag@j_116 j `ui  1 a 2 18 ]
+"95
+[v waitFlag@j_103 j `ui  1 a 2 4 ]
+"186
+[v waitFlag@j_114 j `ui  1 a 2 16 ]
+"83
+[v waitFlag@j j `ui  1 a 2 2 ]
+"70
+[v waitFlag@i i `ui  1 a 2 0 ]
+"174
+[v waitFlag@j_112 j `ui  1 a 2 14 ]
+"163
+[v waitFlag@j_111 j `ui  1 a 2 12 ]
+"53
+[v waitFlag@flag_judge flag_judge `ui  1 a 2 26 ]
+"54
+[v waitFlag@buf buf `uc  1 a 1 28 ]
+"272
+} 0
+"276
+[v _getdata getdata `(v  1 e 1 0 ]
+{
+"281
+[v getdata@dbitstatus dbitstatus `ui  1 a 2 4 ]
+"278
+[v getdata@dstuff dstuff `ui  1 a 2 2 ]
+"280
+[v getdata@bufstore_counter bufstore_counter `ui  1 a 2 0 ]
+"277
+[v getdata@buf buf `uc  1 a 1 6 ]
+"309
+} 0
+"39
+[v _getbit getbit `(ui  1 e 2 0 ]
+{
+"42
+[v getbit@i i `ui  1 a 2 4 ]
+"40
+[v getbit@oldbit oldbit `ui  1 s 2 oldbit ]
+"49
+} 0
+"311
+[v _fcscheck fcscheck `(ui  1 e 2 0 ]
+{
+"317
+[v fcscheck@i_134 i `ui  1 a 2 7 ]
+"315
+[v fcscheck@i i `ui  1 a 2 5 ]
+"312
+[v fcscheck@byte byte `uc  1 a 1 9 ]
+[v fcscheck@bt bt `uc  1 a 1 4 ]
+"349
+} 0
+"68 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\UART.c
+[v _NM_waddress NM_waddress `(v  1 e 1 0 ]
+{
+[v NM_waddress@NM_wad_header NM_wad_header `uc  1 a 1 wreg ]
+[v NM_waddress@NM_wad_header NM_wad_header `uc  1 a 1 wreg ]
+[v NM_waddress@whigh_address whigh_address `uc  1 p 1 1 ]
+[v NM_waddress@wlow_address wlow_address `uc  1 p 1 2 ]
+[v NM_waddress@NM_wad_header NM_wad_header `uc  1 a 1 3 ]
+"72
+} 0
+"35
+[v _putch putch `(v  1 e 1 0 ]
+{
+[v putch@byte byte `uc  1 a 1 wreg ]
+[v putch@byte byte `uc  1 a 1 wreg ]
+[v putch@byte byte `uc  1 a 1 0 ]
+"38
+} 0
+"5
+[v _Init_SERIAL Init_SERIAL `(v  1 e 1 0 ]
+{
+"19
+} 0
+"8 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\Init_MPU.c
+[v _Init_MPU Init_MPU `(v  1 e 1 0 ]
+{
+"35
+} 0
+"8 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\I2C.c
+[v _Init_I2C_M Init_I2C_M `(v  1 e 1 0 ]
+{
+[v Init_I2C_M@c c `DCul  1 p 4 0 ]
+"13
+} 0
+"6 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
+{
+"11
+[v ___lldiv@quotient quotient `ul  1 a 4 9 ]
+"12
+[v ___lldiv@counter counter `uc  1 a 1 13 ]
+"6
+[v ___lldiv@divisor divisor `ul  1 p 4 0 ]
+[v ___lldiv@dividend dividend `ul  1 p 4 4 ]
+"31
+} 0
+"270 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\FMCW.c
+[v _FMTX FMTX `(v  1 e 1 0 ]
+{
+"271
+[v FMTX@fmtx fmtx `i  1 a 2 64 ]
+"270
+[v FMTX@Nref Nref `i  1 p 2 60 ]
+[v FMTX@Nprg Nprg `*.39i  1 p 2 62 ]
+"275
+} 0
+"298
+[v _FMRX FMRX `(v  1 e 1 0 ]
+{
+"299
+[v FMRX@fmrx fmrx `i  1 a 2 64 ]
+"298
+[v FMRX@Nref Nref `i  1 p 2 60 ]
+[v FMRX@Nprg Nprg `*.39i  1 p 2 62 ]
+"303
+} 0
+"51 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\I2C.c
+[v _EEPROM_Write EEPROM_Write `(v  1 e 1 0 ]
+{
+[v EEPROM_Write@EEPROM_address EEPROM_address `uc  1 a 1 wreg ]
+"52
+[v EEPROM_Write@Address Address `uc  1 a 1 9 ]
+"51
+[v EEPROM_Write@EEPROM_address EEPROM_address `uc  1 a 1 wreg ]
+[v EEPROM_Write@high_address high_address `uc  1 p 1 2 ]
+[v EEPROM_Write@low_address low_address `uc  1 p 1 3 ]
+[v EEPROM_Write@data data `*.5uc  1 p 1 4 ]
+[v EEPROM_Write@EEPROM_address EEPROM_address `uc  1 a 1 8 ]
+"65
+} 0
+"34
+[v _I2C_Master_Write I2C_Master_Write `(v  1 e 1 0 ]
+{
+[v I2C_Master_Write@d d `ui  1 p 2 0 ]
+"37
+} 0
+"29
+[v _I2C_Master_Stop I2C_Master_Stop `(v  1 e 1 0 ]
+{
+"32
+} 0
+"19
+[v _I2C_Master_Start I2C_Master_Start `(v  1 e 1 0 ]
+{
+"22
+} 0
+"15
+[v _I2C_Master_Wait I2C_Master_Wait `(v  1 e 1 0 ]
+{
+"17
+} 0
+"284 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\FMCW.c
+[v _CWTX CWTX `(v  1 e 1 0 ]
+{
+"285
+[v CWTX@cwtx cwtx `i  1 a 2 64 ]
+"284
+[v CWTX@Nref Nref `i  1 p 2 60 ]
+[v CWTX@Nprg Nprg `*.39i  1 p 2 62 ]
+"289
+} 0
+"200
+[v _RFDOUT RFDOUT `(v  1 e 1 0 ]
+{
+"214
+[v RFDOUT@i_485 i `i  1 a 2 31 ]
+"208
+[v RFDOUT@i_484 i `i  1 a 2 27 ]
+"203
+[v RFDOUT@i i `i  1 a 2 29 ]
+"201
+[v RFDOUT@Nref_b Nref_b `[12]i  1 a 24 3 ]
+"200
+[v RFDOUT@fmcwtxrx fmcwtxrx `i  1 p 2 9 ]
+[v RFDOUT@Nref Nref `i  1 p 2 11 ]
+"232
+} 0
+"136
+[v _OUTFQ OUTFQ `(v  1 e 1 0 ]
+{
+"146
+[v OUTFQ@j j `i  1 a 2 58 ]
+"172
+[v OUTFQ@i_475 i `i  1 a 2 56 ]
+"145
+[v OUTFQ@i_473 i `i  1 a 2 50 ]
+"140
+[v OUTFQ@i i `i  1 a 2 54 ]
+"138
+[v OUTFQ@Nprg_b Nprg_b `[17]i  1 a 34 16 ]
+"137
+[v OUTFQ@count count `i  1 a 2 52 ]
+"136
+[v OUTFQ@fmcwtxrx fmcwtxrx `i  1 p 2 9 ]
+[v OUTFQ@Nprg Nprg `*.39i  1 p 2 11 ]
+"190
+} 0
+"6 C:\Program Files (x86)\Microchip\xc8\v1.44\sources\common\awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+{
+"11
+[v ___awdiv@quotient quotient `i  1 a 2 7 ]
+"12
+[v ___awdiv@sign sign `uc  1 a 1 6 ]
+[v ___awdiv@counter counter `uc  1 a 1 5 ]
+"6
+[v ___awdiv@divisor divisor `i  1 p 2 0 ]
+[v ___awdiv@dividend dividend `i  1 p 2 2 ]
+"42
+} 0
+"241 C:\Users\RYO\Dropbox\Origami\PIC RX\PIC_Rx\FMCW.c
+[v _OPINIT OPINIT `(v  1 e 1 0 ]
+{
+[v OPINIT@fmcwtxrx fmcwtxrx `i  1 p 2 4 ]
+"261
+} 0
+"107
+[v _STBOUT STBOUT `(v  1 e 1 0 ]
+{
+[v STBOUT@fmcwtxrx fmcwtxrx `i  1 p 2 2 ]
+"126
+} 0
+"40
+[v _L_OUT L_OUT `(v  1 e 1 0 ]
+{
+[v L_OUT@fmcwtxrx fmcwtxrx `i  1 p 2 2 ]
+"65
+} 0
+"74
+[v _H_OUT H_OUT `(v  1 e 1 0 ]
+{
+[v H_OUT@fmcwtxrx fmcwtxrx `i  1 p 2 2 ]
+"99
+} 0
+"349
+[v __NOP _NOP `(v  1 e 1 0 ]
+{
+"350
+[v __NOP@i i `i  1 a 2 0 ]
+"353
+} 0

@@ -1,0 +1,1247 @@
+%CMF
+# %PSECTS Section
+# For each object file, details of its psects are enumerated here.
+# The begining of the section is indicated by %PSECTS.  The first
+# line indicates the name of the first object file, e.g.
+#    $foo.obj
+# Each line that follows describes a psect in that object file, until
+# the next object file.  The lines that describe a psect have the
+# format:
+#    <psect name> <class name> <space> <link address> <load addresses> <length> <delta>
+# All addresses and the length are given in unqualified hexadecimal
+# in delta units.  Any other numeric values are decimal.
+%PSECTS
+$C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+end_init CODE 0 0 0 3 2
+config CONFIG 0 2007 2007 2 2
+$dist/default/production\0418_system_integration_4.production.obj
+cinit CODE 0 7B3 7B3 4D 2
+text1 CODE 0 8E7 8E7 2B 2
+text2 CODE 0 20 20 8C 2
+text3 CODE 0 89C 89C 23 2
+text4 CODE 0 ACD ACD 4A 2
+text5 CODE 0 327 327 48C 2
+text6 CODE 0 C2B C2B 61 2
+text7 CODE 0 A84 A84 49 2
+text8 CODE 0 D09 D09 82 2
+text9 CODE 0 17EE 17EE 12 2
+text10 CODE 0 17CD 17CD 8 2
+text11 CODE 0 84D 84D 19 2
+text12 CODE 0 87F 87F 1D 2
+text13 CODE 0 9C4 9C4 34 2
+text14 CODE 0 BCD BCD 5E 2
+text15 CODE 0 96A 96A 2C 2
+text16 CODE 0 93E 93E 2C 2
+text17 CODE 0 B70 B70 5D 2
+text18 CODE 0 17C5 17C5 8 2
+text19 CODE 0 17BE 17BE 7 2
+text20 CODE 0 17B7 17B7 7 2
+text21 CODE 0 82F 82F 9 2
+text22 CODE 0 912 912 2C 2
+text23 CODE 0 D8B D8B E1 2
+text24 CODE 0 AC AC 27B 2
+text25 CODE 0 B17 B17 59 2
+text26 CODE 0 C8C C8C 7D 2
+text27 CODE 0 996 996 2E 2
+text28 CODE 0 A3E A3E 46 2
+text29 CODE 0 9F8 9F8 46 2
+text30 CODE 0 838 838 15 2
+maintext CODE 0 E6C E6C 194 2
+cstackCOMMON COMMON 1 70 70 E 1
+cstackBANK0 BANK0 1 20 20 46 1
+cstackBANK1 BANK1 1 A0 A0 24 1
+inittext CODE 0 17DD 17DD 11 2
+bssBANK0 BANK0 1 66 66 A 1
+bssBANK1 BANK1 1 E1 E1 D 1
+bssBANK2 BANK2 1 110 110 40 1
+bssBANK3 BANK3 1 190 190 32 1
+idataBANK1 CODE 0 3 3 1D 2
+idataBANK2 CODE 0 866 866 19 2
+idataBANK3 CODE 0 8BF 8BF 28 2
+strings STRING 0 800 800 2A 2
+dataBANK1 BANK1 1 C4 C4 1D 1
+dataBANK2 BANK2 1 150 150 19 1
+dataBANK3 BANK3 1 1C2 1C2 28 1
+clrtext CODE 0 17D5 17D5 8 2
+# %UNUSED Section
+# This section enumerates the unused ranges of each CLASS. Each entry
+# is described on a single line as follows:
+#    <class name> <range> <delta>
+# Addresses given in the range are in hexadecimal and units of delta.
+%UNUSED
+RAM EE-EF 1
+RAM 169-16F 1
+RAM 1EA-1EF 1
+BANK1 EE-EF 1
+BANK2 169-16F 1
+BANK3 1EA-1EF 1
+CONST 82A-82E 2
+CONST 1000-17B6 2
+CONST 1800-1FFF 2
+ENTRY 82A-82E 2
+ENTRY 1000-17B6 2
+ENTRY 1800-1FFF 2
+IDLOC 2000-2003 2
+STACK 169-16F 1
+CODE 82A-82E 2
+CODE 1000-17B6 2
+CODE 1800-1FFF 2
+SFR0 0-1F 1
+SFR1 80-9F 1
+SFR2 100-10F 1
+SFR3 180-18F 1
+EEDATA 2100-21FF 2
+STRCODE 82A-82E 2
+STRCODE 1000-17B6 2
+STRCODE 1800-1FFF 2
+STRING 82A-82E 2
+STRING 1000-17B6 2
+STRING 1800-1FFF 2
+# %LINETAB Section
+# This section enumerates the file/line to address mappings.
+# The beginning of the section is indicated by %LINETAB.
+# The first line indicates the name of the first object file, e.g.
+#   $foo.obj
+# Each line that follows describes a single mapping until the next
+# object file.  Mappings have the following format:
+#    <address> <psect name> <class name> ><line number>:<file name>
+# The address is absolute and given given in unqualified hex 
+# in delta units of the psect. All mappings within an object file
+# are in ascending order of addresses.
+# All other numeric values are in decimal.
+%LINETAB
+$dist/default/production\0418_system_integration_4.production.obj
+7B3 cinit CODE >1895:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B3 cinit CODE >1898:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B3 cinit CODE >2060:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B4 cinit CODE >2061:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B5 cinit CODE >2062:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B6 cinit CODE >2063:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B7 cinit CODE >2064:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B8 cinit CODE >2065:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7B9 cinit CODE >2066:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7BA cinit CODE >2067:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7BB cinit CODE >2068:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7BC cinit CODE >2069:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C1 cinit CODE >2073:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C2 cinit CODE >2074:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C3 cinit CODE >2075:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C4 cinit CODE >2076:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C5 cinit CODE >2077:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C6 cinit CODE >2078:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C7 cinit CODE >2079:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C8 cinit CODE >2080:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7C9 cinit CODE >2081:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7CE cinit CODE >2085:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7CF cinit CODE >2086:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D0 cinit CODE >2087:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D1 cinit CODE >2088:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D2 cinit CODE >2089:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D3 cinit CODE >2090:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D4 cinit CODE >2091:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D5 cinit CODE >2092:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D6 cinit CODE >2093:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7D7 cinit CODE >2094:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7DC cinit CODE >2113:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7DD cinit CODE >2114:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7DE cinit CODE >2115:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7DF cinit CODE >2116:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7E0 cinit CODE >2117:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7E5 cinit CODE >2120:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7E6 cinit CODE >2121:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7E7 cinit CODE >2122:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7E8 cinit CODE >2123:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7ED cinit CODE >2126:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7EE cinit CODE >2127:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7EF cinit CODE >2128:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7F0 cinit CODE >2129:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7F1 cinit CODE >2130:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7F6 cinit CODE >2133:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7F7 cinit CODE >2134:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7F8 cinit CODE >2135:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7F9 cinit CODE >2136:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7FC cinit CODE >2142:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7FC cinit CODE >2144:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+7FD cinit CODE >2145:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+838 text30 CODE >349:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+838 text30 CODE >350:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+845 text30 CODE >351:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+846 text30 CODE >350:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9F8 text29 CODE >74:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9F8 text29 CODE >75:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9FC text29 CODE >77:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9FF text29 CODE >78:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A04 text29 CODE >79:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A07 text29 CODE >80:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A0C text29 CODE >81:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A0F text29 CODE >83:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A14 text29 CODE >85:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A17 text29 CODE >86:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A1C text29 CODE >87:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A1F text29 CODE >88:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A24 text29 CODE >89:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A27 text29 CODE >91:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A2C text29 CODE >93:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A2F text29 CODE >94:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A34 text29 CODE >95:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A37 text29 CODE >96:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A3A text29 CODE >97:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A3E text28 CODE >40:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A3E text28 CODE >41:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A42 text28 CODE >43:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A45 text28 CODE >44:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A4A text28 CODE >45:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A4D text28 CODE >46:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A52 text28 CODE >47:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A55 text28 CODE >49:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A5A text28 CODE >51:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A5D text28 CODE >52:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A62 text28 CODE >53:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A65 text28 CODE >54:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A6A text28 CODE >55:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A6D text28 CODE >57:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A72 text28 CODE >59:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A75 text28 CODE >60:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A7A text28 CODE >61:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A7D text28 CODE >62:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+A80 text28 CODE >63:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+996 text27 CODE >107:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+996 text27 CODE >108:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+99A text27 CODE >110:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+99D text27 CODE >111:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9A2 text27 CODE >112:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9A5 text27 CODE >114:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9AA text27 CODE >116:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9AD text27 CODE >117:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9B2 text27 CODE >118:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9B5 text27 CODE >120:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9BA text27 CODE >122:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9BD text27 CODE >123:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+9C0 text27 CODE >124:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+C8C text26 CODE >241:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+C8C text26 CODE >243:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+C95 text26 CODE >244:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+C9E text26 CODE >245:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CA7 text26 CODE >246:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CB0 text26 CODE >247:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CB9 text26 CODE >248:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CC2 text26 CODE >249:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CCB text26 CODE >250:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CD4 text26 CODE >251:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CDD text26 CODE >252:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CE6 text26 CODE >253:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CEF text26 CODE >256:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+CF8 text26 CODE >257:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+D01 text26 CODE >260:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+D08 text26 CODE >261:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+B17 text25 CODE >6:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B17 text25 CODE >14:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B18 text25 CODE >15:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B1A text25 CODE >16:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B1F text25 CODE >17:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B21 text25 CODE >19:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B23 text25 CODE >20:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B28 text25 CODE >21:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B2C text25 CODE >23:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B2E text25 CODE >24:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B32 text25 CODE >25:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B34 text25 CODE >26:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B36 text25 CODE >27:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B3D text25 CODE >28:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B41 text25 CODE >26:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B42 text25 CODE >31:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B49 text25 CODE >32:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B51 text25 CODE >33:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B57 text25 CODE >34:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B58 text25 CODE >36:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B5F text25 CODE >37:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B63 text25 CODE >39:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B66 text25 CODE >40:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+B6B text25 CODE >41:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
+AC text24 CODE >136:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+AC text24 CODE >137:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+B0 text24 CODE >140:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+BD text24 CODE >141:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+C8 text24 CODE >140:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+D9 text24 CODE >145:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E8 text24 CODE >146:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+F7 text24 CODE >147:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+114 text24 CODE >148:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+119 text24 CODE >149:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+156 text24 CODE >150:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+160 text24 CODE >154:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+19D text24 CODE >157:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+1B8 text24 CODE >158:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+1BD text24 CODE >159:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+1FA text24 CODE >160:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+205 text24 CODE >161:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+20B text24 CODE >162:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+20C text24 CODE >164:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+249 text24 CODE >165:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+293 text24 CODE >146:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2A4 text24 CODE >145:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2B7 text24 CODE >172:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2C6 text24 CODE >174:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2D7 text24 CODE >176:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2E0 text24 CODE >178:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2F1 text24 CODE >180:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+2FA text24 CODE >172:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+30D text24 CODE >185:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+316 text24 CODE >186:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+31F text24 CODE >189:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+326 text24 CODE >190:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+D8B text23 CODE >200:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+D8B text23 CODE >203:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+D9A text23 CODE >204:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+DA5 text23 CODE >203:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+DB6 text23 CODE >208:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+DC5 text23 CODE >209:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+DD8 text23 CODE >210:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+DE9 text23 CODE >208:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+DFC text23 CODE >214:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E0B text23 CODE >216:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E1C text23 CODE >218:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E25 text23 CODE >220:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E36 text23 CODE >222:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E3F text23 CODE >214:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E52 text23 CODE >227:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E5B text23 CODE >228:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E64 text23 CODE >231:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+E6B text23 CODE >232:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+912 text22 CODE >284:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+912 text22 CODE >285:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+918 text22 CODE >286:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+921 text22 CODE >287:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+930 text22 CODE >288:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+93D text22 CODE >289:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+82F text21 CODE >15:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+82F text21 CODE >16:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17B7 text20 CODE >19:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17B7 text20 CODE >20:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17BA text20 CODE >21:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17BD text20 CODE >22:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17BE text19 CODE >29:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17BE text19 CODE >30:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17C1 text19 CODE >31:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17C4 text19 CODE >32:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17C5 text18 CODE >34:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17C5 text18 CODE >35:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17C8 text18 CODE >36:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+17CC text18 CODE >37:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+B70 text17 CODE >51:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+B71 text17 CODE >52:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+B77 text17 CODE >55:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+B7C text17 CODE >56:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+B88 text17 CODE >57:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+B94 text17 CODE >58:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BA0 text17 CODE >59:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BA6 text17 CODE >60:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BB5 text17 CODE >61:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BB9 text17 CODE >59:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BBA text17 CODE >63:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BBF text17 CODE >64:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+BCC text17 CODE >65:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+93E text16 CODE >298:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+93E text16 CODE >299:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+944 text16 CODE >300:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+94D text16 CODE >301:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+95C text16 CODE >302:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+969 text16 CODE >303:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+96A text15 CODE >270:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+96A text15 CODE >271:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+970 text15 CODE >272:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+979 text15 CODE >273:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+988 text15 CODE >274:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+995 text15 CODE >275:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\FMCW.c
+BCD text14 CODE >6:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BCD text14 CODE >14:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BD5 text14 CODE >15:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BDB text14 CODE >16:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BDD text14 CODE >17:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BDF text14 CODE >18:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BE8 text14 CODE >19:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BEC text14 CODE >17:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BED text14 CODE >22:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+BF6 text14 CODE >23:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+C06 text14 CODE >24:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+C14 text14 CODE >25:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+C15 text14 CODE >27:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+C1E text14 CODE >28:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+C22 text14 CODE >30:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
+9C4 text13 CODE >8:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+9C4 text13 CODE >9:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+9C8 text13 CODE >10:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+9CB text13 CODE >11:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+9F6 text13 CODE >12:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+9F7 text13 CODE >13:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\I2C.c
+87F text12 CODE >8:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+87F text12 CODE >11:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+882 text12 CODE >12:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+883 text12 CODE >13:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+884 text12 CODE >14:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+885 text12 CODE >15:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+886 text12 CODE >18:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+889 text12 CODE >19:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+88A text12 CODE >23:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+88E text12 CODE >24:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+890 text12 CODE >25:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+892 text12 CODE >26:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+893 text12 CODE >27:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+894 text12 CODE >30:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+897 text12 CODE >31:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+898 text12 CODE >32:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+899 text12 CODE >33:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+89A text12 CODE >34:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+89B text12 CODE >35:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\Init_MPU.c
+84D text11 CODE >5:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+84D text11 CODE >6:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+851 text11 CODE >7:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+852 text11 CODE >8:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+853 text11 CODE >9:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+856 text11 CODE >10:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+857 text11 CODE >11:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+858 text11 CODE >12:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+859 text11 CODE >13:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+85C text11 CODE >14:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+85D text11 CODE >15:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+85E text11 CODE >16:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+861 text11 CODE >17:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+864 text11 CODE >18:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+865 text11 CODE >19:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17CD text10 CODE >35:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17CE text10 CODE >36:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17D2 text10 CODE >37:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17D4 text10 CODE >38:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17EE text9 CODE >68:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17EF text9 CODE >69:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17F5 text9 CODE >70:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17FB text9 CODE >71:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+17FF text9 CODE >72:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\UART.c
+D09 text8 CODE >311:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D09 text8 CODE >313:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D10 text8 CODE >314:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D15 text8 CODE >315:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D27 text8 CODE >316:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D2F text8 CODE >317:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D38 text8 CODE >318:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D3D text8 CODE >320:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D3E text8 CODE >321:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D3F text8 CODE >322:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D40 text8 CODE >324:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D4B text8 CODE >325:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D50 text8 CODE >326:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D55 text8 CODE >328:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D5C text8 CODE >317:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D69 text8 CODE >315:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D70 text8 CODE >331:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D71 text8 CODE >332:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D72 text8 CODE >335:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D83 text8 CODE >340:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+D88 text8 CODE >346:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+A84 text7 CODE >39:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+A84 text7 CODE >41:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+A94 text7 CODE >42:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+A9D text7 CODE >43:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AB1 text7 CODE >44:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AB8 text7 CODE >45:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+ABB text7 CODE >42:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AC8 text7 CODE >48:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C2B text6 CODE >276:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C2B text6 CODE >277:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C2E text6 CODE >278:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C30 text6 CODE >280:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C32 text6 CODE >281:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C34 text6 CODE >283:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C39 text6 CODE >284:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C44 text6 CODE >285:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C49 text6 CODE >286:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C4D text6 CODE >287:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C53 text6 CODE >288:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C54 text6 CODE >290:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C56 text6 CODE >292:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C57 text6 CODE >293:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C5E text6 CODE >294:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C62 text6 CODE >296:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C64 text6 CODE >297:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C65 text6 CODE >298:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C6A text6 CODE >299:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C70 text6 CODE >301:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C76 text6 CODE >302:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C7B text6 CODE >303:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C7D text6 CODE >304:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C85 text6 CODE >305:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+C8B text6 CODE >283:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+327 text5 CODE >52:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+327 text5 CODE >54:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+32D text5 CODE >268:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+32D text5 CODE >269:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+32F text5 CODE >56:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+336 text5 CODE >57:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+33A text5 CODE >58:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+345 text5 CODE >59:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+34B text5 CODE >60:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+34F text5 CODE >63:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+354 text5 CODE >57:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+355 text5 CODE >70:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+35E text5 CODE >71:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+369 text5 CODE >72:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+370 text5 CODE >73:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+374 text5 CODE >76:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+379 text5 CODE >70:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+386 text5 CODE >69:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+38A text5 CODE >80:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3A1 text5 CODE >81:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3A9 text5 CODE >82:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3AF text5 CODE >83:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3B8 text5 CODE >84:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3C3 text5 CODE >85:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3CA text5 CODE >86:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3CE text5 CODE >89:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3D3 text5 CODE >83:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3E0 text5 CODE >92:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3F7 text5 CODE >93:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+3FF text5 CODE >94:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+405 text5 CODE >95:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+40E text5 CODE >96:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+419 text5 CODE >97:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+420 text5 CODE >98:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+424 text5 CODE >101:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+429 text5 CODE >95:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+436 text5 CODE >104:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+44D text5 CODE >105:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+455 text5 CODE >106:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+45B text5 CODE >107:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+464 text5 CODE >108:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+46F text5 CODE >109:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+476 text5 CODE >110:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+47A text5 CODE >113:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+47F text5 CODE >107:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+48C text5 CODE >116:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4A3 text5 CODE >117:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4AB text5 CODE >118:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4B1 text5 CODE >119:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4BA text5 CODE >120:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4C5 text5 CODE >121:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4CC text5 CODE >122:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4D0 text5 CODE >125:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4D5 text5 CODE >119:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4E2 text5 CODE >128:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+4F9 text5 CODE >129:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+501 text5 CODE >130:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+507 text5 CODE >131:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+510 text5 CODE >132:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+51B text5 CODE >133:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+522 text5 CODE >134:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+526 text5 CODE >137:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+52B text5 CODE >131:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+538 text5 CODE >140:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+54F text5 CODE >141:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+557 text5 CODE >142:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+55D text5 CODE >143:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+563 text5 CODE >144:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+564 text5 CODE >160:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+566 text5 CODE >161:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+566 text5 CODE >163:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+56F text5 CODE >164:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+57A text5 CODE >165:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+581 text5 CODE >166:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+585 text5 CODE >169:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+58A text5 CODE >163:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+597 text5 CODE >172:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+59F text5 CODE >173:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5A5 text5 CODE >174:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5AE text5 CODE >175:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5B9 text5 CODE >176:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5C0 text5 CODE >177:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5C4 text5 CODE >180:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5C9 text5 CODE >174:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5D6 text5 CODE >183:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5ED text5 CODE >184:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5F5 text5 CODE >185:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+5FB text5 CODE >186:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+604 text5 CODE >187:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+60F text5 CODE >188:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+616 text5 CODE >189:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+61A text5 CODE >192:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+61F text5 CODE >186:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+62C text5 CODE >195:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+643 text5 CODE >196:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+64B text5 CODE >197:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+651 text5 CODE >198:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+65A text5 CODE >199:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+665 text5 CODE >200:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+66C text5 CODE >201:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+670 text5 CODE >204:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+675 text5 CODE >198:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+682 text5 CODE >207:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+699 text5 CODE >208:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6A1 text5 CODE >209:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6A7 text5 CODE >210:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6B0 text5 CODE >211:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6BB text5 CODE >212:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6C2 text5 CODE >213:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6C6 text5 CODE >216:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6CB text5 CODE >210:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6D8 text5 CODE >219:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6EF text5 CODE >220:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6F7 text5 CODE >221:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+6FD text5 CODE >222:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+706 text5 CODE >223:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+711 text5 CODE >224:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+718 text5 CODE >225:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+71C text5 CODE >228:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+721 text5 CODE >222:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+72E text5 CODE >231:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+745 text5 CODE >232:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+74D text5 CODE >233:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+753 text5 CODE >234:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+75C text5 CODE >235:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+767 text5 CODE >236:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+76E text5 CODE >237:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+772 text5 CODE >240:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+777 text5 CODE >234:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+784 text5 CODE >243:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+79B text5 CODE >244:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+7A3 text5 CODE >245:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+7A9 text5 CODE >246:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+7AF text5 CODE >247:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+7B0 text5 CODE >268:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+7B2 text5 CODE >56:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+ACD text4 CODE >357:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+ACD text4 CODE >361:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AD2 text4 CODE >362:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AD7 text4 CODE >363:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AE2 text4 CODE >365:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AE6 text4 CODE >366:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+AF8 text4 CODE >367:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B04 text4 CODE >366:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B0B text4 CODE >369:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B0D text4 CODE >370:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B0F text4 CODE >371:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B10 text4 CODE >372:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B11 text4 CODE >373:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B13 text4 CODE >374:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+B15 text4 CODE >375:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\decode_AX25.c
+89C text3 CODE >19:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+89C text3 CODE >20:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+89F text3 CODE >21:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+8A0 text3 CODE >22:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+8AD text3 CODE >23:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+8B0 text3 CODE >24:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+8B1 text3 CODE >25:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+8BE text3 CODE >26:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\EPS.c
+20 text2 CODE >492:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+20 text2 CODE >533:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+24 text2 CODE >635:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+25 text2 CODE >734:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+2F text2 CODE >740:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+33 text2 CODE >741:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+37 text2 CODE >777:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+45 text2 CODE >778:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+62 text2 CODE >777:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+63 text2 CODE >799:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+6D text2 CODE >809:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+7A text2 CODE >536:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+8A text2 CODE >538:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+8E text2 CODE >548:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+8F text2 CODE >635:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+A4 text2 CODE >536:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+A5 text2 CODE >1538:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+8E7 text1 CODE >33:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
+8E8 text1 CODE >37:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
+8E9 text1 CODE >38:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
+8ED text1 CODE >39:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
+8F3 text1 CODE >37:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
+90C text1 CODE >41:C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
+E6C maintext CODE >39:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+E6C maintext CODE >44:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+E7B maintext CODE >46:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+E80 maintext CODE >47:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+E85 maintext CODE >48:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+E94 maintext CODE >54:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+EA3 maintext CODE >56:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+EB8 maintext CODE >57:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+ECD maintext CODE >58:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+EE2 maintext CODE >75:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+EEE maintext CODE >90:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+EFC maintext CODE >93:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F04 maintext CODE >94:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F0C maintext CODE >106:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F14 maintext CODE >107:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F1C maintext CODE >108:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F3A maintext CODE >117:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F4A maintext CODE >118:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F4F maintext CODE >119:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F5E maintext CODE >122:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F76 maintext CODE >123:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+F8C maintext CODE >124:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+FA2 maintext CODE >126:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+FB7 maintext CODE >127:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+FCC maintext CODE >128:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+FE1 maintext CODE >129:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+FF0 maintext CODE >136:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+FFF maintext CODE >60:E:\Laboratory\ORIGAMI_Project\OrigamiSat-1\Communication\PIC\success\TXRX\0630\0418_system_integration_4\main.c
+17D5 clrtext CODE >2100:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17D5 clrtext CODE >2101:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17D6 clrtext CODE >2102:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17D6 clrtext CODE >2103:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17D7 clrtext CODE >2104:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17D8 clrtext CODE >2105:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17D9 clrtext CODE >2106:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DA clrtext CODE >2107:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DB clrtext CODE >2108:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DC clrtext CODE >2109:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DD inittext CODE >2034:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DD inittext CODE >2035:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DE inittext CODE >2036:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17DF inittext CODE >2037:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E0 inittext CODE >2038:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E1 inittext CODE >2045:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E1 inittext CODE >2046:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E4 inittext CODE >2047:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E5 inittext CODE >2048:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E6 inittext CODE >2049:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E7 inittext CODE >2050:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E8 inittext CODE >2051:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17E9 inittext CODE >2052:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17EA inittext CODE >2053:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17EB inittext CODE >2054:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17EC inittext CODE >2055:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+17ED inittext CODE >2056:C:\Users\Kosuke\AppData\Local\Temp\s7f4.
+# %SYMTAB Section
+# An enumeration of all symbols in the program.
+# The beginning of the section is indicated by %SYMTAB.
+# Each line describes a single symbol as follows:
+#    <label> <value> [-]<load-adj> <class> <space> <psect> <file-name>
+# The value and load-adj are both in unqualified hexadecimal.
+# All other numeric values are in decimal.  The load-adj is the
+# quantity one needs to add to the symbol value in order to obtain the load
+# address of the symbol.  This value may be signed. If the symbol
+# was defined in a psect then <psect> will be "-". File-name
+# is the name of the object file in which the symbol was defined.
+%SYMTAB
+___latbits 2 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+___awdiv@counter 75 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+putch@byte 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__LdataBANK1 0 0 ABS 0 dataBANK1 -
+__LdataBANK2 0 0 ABS 0 dataBANK2 -
+__LdataBANK3 0 0 ABS 0 dataBANK3 -
+NM_waddress@wlow_address 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__Hspace_0 2009 0 ABS 0 - -
+__Hspace_1 1EA 0 ABS 0 - -
+__Hspace_2 0 0 ABS 0 - -
+__Hspace_3 0 0 ABS 0 - -
+__CFG_IESO$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+EEPROM_Write@data 74 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__HidataBANK1 0 0 ABS 0 idataBANK1 -
+__HidataBANK2 0 0 ABS 0 idataBANK2 -
+__HidataBANK3 0 0 ABS 0 idataBANK3 -
+__size_of_fcscheck 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_waitFlag 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__Heeprom_data 0 0 EEDATA 3 eeprom_data -
+__CFG_MCLRE$ON 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ltemp0 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ltemp1 82 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ltemp2 86 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ltemp3 80 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__Hstrings 0 0 ABS 0 strings -
+_BRGH 4C2 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_CREN C4 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_CWTX 1224 0 CODE 0 text22 dist/default/production\0418_system_integration_4.production.obj
+_FMRX 127C 0 CODE 0 text16 dist/default/production\0418_system_integration_4.production.obj
+_FMTX 12D4 0 CODE 0 text15 dist/default/production\0418_system_integration_4.production.obj
+_RCEN 48B 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RCIE 465 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RCIF 65 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RSEN 489 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SPEN C7 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SREN C5 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SYNC 4C4 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TXEN 4C5 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TXIE 464 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TXIF 64 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__NOP 1070 0 CODE 0 text30 dist/default/production\0418_system_integration_4.production.obj
+___sp 0 0 STACK 2 stack C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+_main 1CD8 0 CODE 0 maintext dist/default/production\0418_system_integration_4.production.obj
+btemp 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+waitFlag@buf 3C 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+ltemp 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+start 0 0 CODE 0 init C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+ttemp 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of___awdiv 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__CFG_BOREN$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_CWTX 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_FMRX 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_FMTX 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of__NOP 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_main 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_OPINIT 1A12 0 CODE 0 text26 dist/default/production\0418_system_integration_4.production.obj
+__size_of___lldiv 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_getdata 1856 0 CODE 0 text6 dist/default/production\0418_system_integration_4.production.obj
+EEPROM_Write@low_address 73 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+RFDOUT@Nref_b 23 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__end_of_RFDOUT 1CD8 0 CODE 0 text23 dist/default/production\0418_system_integration_4.production.obj
+EEPROM_Write@high_address 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__LidataBANK1 0 0 ABS 0 idataBANK1 -
+__LidataBANK2 0 0 ABS 0 idataBANK2 -
+__LidataBANK3 0 0 ABS 0 idataBANK3 -
+__Hpowerup 0 0 CODE 0 powerup -
+__end_of_STBOUT 1388 0 CODE 0 text27 dist/default/production\0418_system_integration_4.production.obj
+_FMRX_Nprg 1E0 0 BANK3 1 dataBANK3 dist/default/production\0418_system_integration_4.production.obj
+_FMRX_Nref C9 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+EEPROM_Write@EEPROM_address 78 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+STBOUT@fmcwtxrx 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__size_of_Init_SERIAL 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ttemp0 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ttemp1 81 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ttemp2 84 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ttemp3 87 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+ttemp4 7F 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_EEPROMData 110 0 BANK2 1 bssBANK2 dist/default/production\0418_system_integration_4.production.obj
+intlevel0 0 0 CODE 0 functab C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+intlevel1 0 0 CODE 0 functab C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+intlevel2 0 0 CODE 0 functab C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+intlevel3 0 0 CODE 0 functab C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+intlevel4 0 0 CODE 0 functab C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+intlevel5 0 0 CODE 0 functab C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+main@FMRX_Nprg B7 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+wtemp0 7E 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp1 80 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp2 82 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp3 84 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp4 86 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp5 88 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+wtemp6 7F 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+Init_I2C_M@c 20 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_fcscheck 1A12 0 CODE 0 text8 dist/default/production\0418_system_integration_4.production.obj
+__Hfunctab 0 0 CODE 0 functab -
+_waitFlag 64E 0 CODE 0 text5 dist/default/production\0418_system_integration_4.production.obj
+?_getbit 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+main@EPS_kill_1 A0 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+main@EPS_kill_2 C2 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+___awdiv@sign 76 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__Hclrtext 0 0 ABS 0 clrtext -
+__end_of_fcscheck 1B16 0 CODE 0 text8 dist/default/production\0418_system_integration_4.production.obj
+__end_of_waitFlag F66 0 CODE 0 text5 dist/default/production\0418_system_integration_4.production.obj
+__size_of_ReceivePacket_data 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_NM_waddress 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_ANSELH 189 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+___awdiv@dividend 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@count 54 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@i_419 52 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@i_421 58 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__Lmaintext 0 0 ABS 0 maintext -
+__size_of_sprintf 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+___awdiv@divisor 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+_eDataField 150 0 BANK2 1 dataBANK2 dist/default/production\0418_system_integration_4.production.obj
+__end_of___awdiv 16E0 0 CODE 0 text25 dist/default/production\0418_system_integration_4.production.obj
+__end_of___lldiv 1856 0 CODE 0 text14 dist/default/production\0418_system_integration_4.production.obj
+?_strcmp 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+waitFlag@flag_judge 3A 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_ePacket E1 0 BANK1 1 bssBANK1 dist/default/production\0418_system_integration_4.production.obj
+_Init_I2C_M 1388 0 CODE 0 text13 dist/default/production\0418_system_integration_4.production.obj
+__size_of_H_OUT 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_L_OUT 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_OUTFQ 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_getbit 159A 0 CODE 0 text7 dist/default/production\0418_system_integration_4.production.obj
+__size_of_putch 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+___lldiv@counter 7D 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__CFG_FCMEN$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+start_initialization F66 0 CODE 0 cinit dist/default/production\0418_system_integration_4.production.obj
+_OPINIT 1918 0 CODE 0 text26 dist/default/production\0418_system_integration_4.production.obj
+_rcv_state 6A 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+___lldiv@dividend 74 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+FMRX@Nprg 5E 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+FMRX@Nref 5C 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+FMRX@fmrx 60 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_RFDOUT 1B16 0 CODE 0 text23 dist/default/production\0418_system_integration_4.production.obj
+clear_ram0 2FAA 0 CODE 0 clrtext dist/default/production\0418_system_integration_4.production.obj
+__pcstackBANK0 20 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__pcstackBANK1 A0 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+_SSPADD 93 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SSPBUF 13 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SSPCON 14 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_STATUS 3 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_STBOUT 132C 0 CODE 0 text27 dist/default/production\0418_system_integration_4.production.obj
+OPINIT@fmcwtxrx 74 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+NM_waddress@whigh_address 71 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+___int_sp 0 0 STACK 2 stack C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+__Hbank0 0 0 ABS 0 bank0 -
+__Hbank1 0 0 ABS 0 bank1 -
+__Hbank2 0 0 ABS 0 bank2 -
+__Hbank3 0 0 ABS 0 bank3 -
+__Hcinit 1000 0 CODE 0 cinit -
+__end_of_strcmp 1224 0 CODE 0 text1 dist/default/production\0418_system_integration_4.production.obj
+__Hidloc 0 0 IDLOC 0 idloc -
+?_fcscheck 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__Hstack 0 0 STACK 2 stack -
+__stringbase 101E 0 STRING 0 strings dist/default/production\0418_system_integration_4.production.obj
+I2C_Master_Write@d 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__end_of_Init_I2C_M 13F0 0 CODE 0 text13 dist/default/production\0418_system_integration_4.production.obj
+__Hmaintext 0 0 ABS 0 maintext -
+__end_of_sprintf 158 0 CODE 0 text2 dist/default/production\0418_system_integration_4.production.obj
+__size_of_OPINIT 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+NM_waddress@NM_wad_header 73 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__Hcommon 0 0 ABS 0 common -
+__Hconfig 4012 0 CONFIG 0 config -
+getdata@bufstore_counter 20 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__Lbank0 0 0 ABS 0 bank0 -
+__Lbank1 0 0 ABS 0 bank1 -
+__Lbank2 0 0 ABS 0 bank2 -
+__Lbank3 0 0 ABS 0 bank3 -
+__Lcinit F66 0 CODE 0 cinit -
+__Lidloc 0 0 IDLOC 0 idloc -
+__Lstack 0 0 STACK 2 stack -
+_Init_SERIAL 109A 0 CODE 0 text11 dist/default/production\0418_system_integration_4.production.obj
+__size_of_RFDOUT 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+EEPROM_Write@Address 79 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__Linittext 0 0 ABS 0 inittext -
+_ebitstatus E6 0 BANK1 1 bssBANK1 dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@fmcwtxrx 79 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+_PORTCbits 7 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_PORTDbits 8 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@Nprg 7B 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__size_of_STBOUT 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__Habs1 0 0 ABS 0 abs1 -
+__Hcode 0 0 ABS 0 code -
+__Hinit 0 0 CODE 0 init -
+__Hsfr0 0 0 ABS 0 sfr0 -
+__Hsfr1 0 0 ABS 0 sfr1 -
+__Hsfr2 0 0 ABS 0 sfr2 -
+__Hsfr3 0 0 ABS 0 sfr3 -
+__Htext 0 0 ABS 0 text -
+__Labs1 0 0 ABS 0 abs1 -
+__Lcode 0 0 ABS 0 code -
+__Linit 0 0 CODE 0 init -
+__Lsfr0 0 0 ABS 0 sfr0 -
+__Lsfr1 0 0 ABS 0 sfr1 -
+__Lsfr2 0 0 ABS 0 sfr2 -
+__Lsfr3 0 0 ABS 0 sfr3 -
+__Ltext 0 0 ABS 0 text -
+__NOP@i 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__LcstackBANK0 0 0 ABS 0 cstackBANK0 -
+__LcstackBANK1 0 0 ABS 0 cstackBANK1 -
+__HcstackCOMMON 0 0 ABS 0 cstackCOMMON -
+__size_of_Init_MPU 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_PEN 48A 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RB0 30 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RB1 31 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RB2 32 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RE0 48 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RE1 49 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RX9 C6 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SEN 488 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TX9 4C6 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__S0 2009 0 ABS 0 - -
+__S1 1EA 0 ABS 0 - -
+__S2 0 0 ABS 0 - -
+__S3 0 0 ABS 0 - -
+__CFG_BOR4V$BOR40V 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+getdata@buf 26 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+getdata@dstuff 22 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_NM_waddress 2FDC 0 CODE 0 text9 dist/default/production\0418_system_integration_4.production.obj
+_dfcshi 6C 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+_dfcslo 6D 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_103 24 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_105 26 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_107 28 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_109 2A 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_111 2C 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_112 2E 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_114 30 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_116 32 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_118 34 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_120 36 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j_122 38 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_I2C_Master_Start 2F6E 0 CODE 0 text20 dist/default/production\0418_system_integration_4.production.obj
+_I2C_Master_Write 2F8A 0 CODE 0 text18 dist/default/production\0418_system_integration_4.production.obj
+_efcshi 6E 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+_efcslo 6F 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+__size_of_getdata 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+fcscheck@bt 74 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+_estuff EA 0 BANK1 1 bssBANK1 dist/default/production\0418_system_integration_4.production.obj
+strcmp@s1 75 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+strcmp@s2 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+_EEPROM_Write 16E0 0 CODE 0 text17 dist/default/production\0418_system_integration_4.production.obj
+_getbit 1508 0 CODE 0 text7 dist/default/production\0418_system_integration_4.production.obj
+__Lintentry 0 0 CODE 0 intentry -
+___lldiv@divisor 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__stringtab 1000 0 STRING 0 strings dist/default/production\0418_system_integration_4.production.obj
+strcmp@r 74 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+reset_vec 0 0 CODE 0 reset_vec C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+OUTFQ@i 56 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@j 5A 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_CWTX_Nprg CD 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+_CWTX_Nref C7 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+__pdataBANK1 C4 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+__pdataBANK2 150 0 BANK2 1 dataBANK2 dist/default/production\0418_system_integration_4.production.obj
+__pdataBANK3 1C2 0 BANK3 1 dataBANK3 dist/default/production\0418_system_integration_4.production.obj
+__LbssBANK0 0 0 ABS 0 bssBANK0 -
+__LbssBANK1 0 0 ABS 0 bssBANK1 -
+__LbssBANK2 0 0 ABS 0 bssBANK2 -
+__LbssBANK3 0 0 ABS 0 bssBANK3 -
+ReceivePacket_data@i 3F 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+sprintf@flag 77 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+main@CWTX_Nprg AD 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+main@NM_wad_header C1 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+_Init_MPU 10FE 0 CODE 0 text12 dist/default/production\0418_system_integration_4.production.obj
+__ptext10 2F9A 0 CODE 0 text10 dist/default/production\0418_system_integration_4.production.obj
+__ptext11 109A 0 CODE 0 text11 dist/default/production\0418_system_integration_4.production.obj
+__ptext12 10FE 0 CODE 0 text12 dist/default/production\0418_system_integration_4.production.obj
+__ptext13 1388 0 CODE 0 text13 dist/default/production\0418_system_integration_4.production.obj
+__ptext14 179A 0 CODE 0 text14 dist/default/production\0418_system_integration_4.production.obj
+__ptext15 12D4 0 CODE 0 text15 dist/default/production\0418_system_integration_4.production.obj
+__ptext16 127C 0 CODE 0 text16 dist/default/production\0418_system_integration_4.production.obj
+__ptext17 16E0 0 CODE 0 text17 dist/default/production\0418_system_integration_4.production.obj
+__ptext18 2F8A 0 CODE 0 text18 dist/default/production\0418_system_integration_4.production.obj
+__ptext19 2F7C 0 CODE 0 text19 dist/default/production\0418_system_integration_4.production.obj
+__ptext20 2F6E 0 CODE 0 text20 dist/default/production\0418_system_integration_4.production.obj
+__ptext21 105E 0 CODE 0 text21 dist/default/production\0418_system_integration_4.production.obj
+__ptext22 1224 0 CODE 0 text22 dist/default/production\0418_system_integration_4.production.obj
+__ptext23 1B16 0 CODE 0 text23 dist/default/production\0418_system_integration_4.production.obj
+__ptext24 158 0 CODE 0 text24 dist/default/production\0418_system_integration_4.production.obj
+__ptext25 162E 0 CODE 0 text25 dist/default/production\0418_system_integration_4.production.obj
+__ptext26 1918 0 CODE 0 text26 dist/default/production\0418_system_integration_4.production.obj
+__ptext27 132C 0 CODE 0 text27 dist/default/production\0418_system_integration_4.production.obj
+__ptext28 147C 0 CODE 0 text28 dist/default/production\0418_system_integration_4.production.obj
+__ptext29 13F0 0 CODE 0 text29 dist/default/production\0418_system_integration_4.production.obj
+__ptext30 1070 0 CODE 0 text30 dist/default/production\0418_system_integration_4.production.obj
+___awdiv 162E 0 CODE 0 text25 dist/default/production\0418_system_integration_4.production.obj
+___lldiv 179A 0 CODE 0 text14 dist/default/production\0418_system_integration_4.production.obj
+__pmaintext 1CD8 0 CODE 0 maintext dist/default/production\0418_system_integration_4.production.obj
+__Lcommon 0 0 ABS 0 common -
+__Lconfig 400E 0 CONFIG 0 config -
+__CFG_CP$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_Init_MPU 1138 0 CODE 0 text12 dist/default/production\0418_system_integration_4.production.obj
+__CFG_WDTE$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__Hinittext 0 0 ABS 0 inittext -
+__size_of_EEPROM_Write 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+main@F2004 C4 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+main@F2008 1C2 0 BANK3 1 dataBANK3 dist/default/production\0418_system_integration_4.production.obj
+main@F2010 1CC 0 BANK3 1 dataBANK3 dist/default/production\0418_system_integration_4.production.obj
+main@F2012 1D6 0 BANK3 1 dataBANK3 dist/default/production\0418_system_integration_4.production.obj
+OUTFQ@Nprg_b 30 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__size_of_getbit 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+main@dData C3 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+_strcmp 11CE 0 CODE 0 text1 dist/default/production\0418_system_integration_4.production.obj
+fcscheck@i_134 77 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+waitFlag@i 20 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+waitFlag@j 22 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+stackhi 0 0 ABS 0 - C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+stacklo 0 0 ABS 0 - C:\Users\Kosuke\AppData\Local\Temp\s7f4.obj
+_dPacketnum 66 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+__end_of_I2C_Master_Stop 2F8A 0 CODE 0 text19 dist/default/production\0418_system_integration_4.production.obj
+__end_of_I2C_Master_Wait 1070 0 CODE 0 text21 dist/default/production\0418_system_integration_4.production.obj
+__end_of__stringtab 1020 0 STRING 0 strings dist/default/production\0418_system_integration_4.production.obj
+__CFG_LVP$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_I2C_Master_Start 2F7C 0 CODE 0 text20 dist/default/production\0418_system_integration_4.production.obj
+__Lspace_0 0 0 ABS 0 - -
+__Lspace_1 0 0 ABS 0 - -
+__Lspace_2 0 0 ABS 0 - -
+__Lspace_3 0 0 ABS 0 - -
+__end_of_I2C_Master_Write 2F9A 0 CODE 0 text18 dist/default/production\0418_system_integration_4.production.obj
+__end_of_EEPROM_Write 179A 0 CODE 0 text17 dist/default/production\0418_system_integration_4.production.obj
+__end_of_Reset_EPS 117E 0 CODE 0 text3 dist/default/production\0418_system_integration_4.production.obj
+_FMTX_Nprg D7 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+_FMTX_Nref CB 0 BANK1 1 dataBANK1 dist/default/production\0418_system_integration_4.production.obj
+init_fetch0 2FBA 0 CODE 0 inittext dist/default/production\0418_system_integration_4.production.obj
+__HcstackBANK0 0 0 ABS 0 cstackBANK0 -
+__HcstackBANK1 0 0 ABS 0 cstackBANK1 -
+__Lend_init 0 0 CODE 0 end_init -
+__size_of_Reset_EPS 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_getdata 1918 0 CODE 0 text6 dist/default/production\0418_system_integration_4.production.obj
+__LcstackCOMMON 0 0 ABS 0 cstackCOMMON -
+__size_of_I2C_Master_Start 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_I2C_Master_Write 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_Init_I2C_M 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+end_of_initialization FF8 0 CODE 0 cinit dist/default/production\0418_system_integration_4.production.obj
+__Hintentry 0 0 CODE 0 intentry -
+__end_of_ReceivePacket_data 162E 0 CODE 0 text4 dist/default/production\0418_system_integration_4.production.obj
+main@FMTX_Nprg A3 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+fcscheck@i 75 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__Lstrings 0 0 ABS 0 strings -
+___awdiv@quotient 77 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+?___awdiv 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+fcscheck@byte 79 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+?___lldiv 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+getdata@dbitstatus 24 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__Hreset_vec 0 0 CODE 0 reset_vec -
+__HbssBANK0 0 0 ABS 0 bssBANK0 -
+__HbssBANK1 0 0 ABS 0 bssBANK1 -
+__HbssBANK2 0 0 ABS 0 bssBANK2 -
+__HbssBANK3 0 0 ABS 0 bssBANK3 -
+_Reset_EPS 1138 0 CODE 0 text3 dist/default/production\0418_system_integration_4.production.obj
+__size_of_strcmp 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+getbit@oldbit EC 0 BANK1 1 bssBANK1 dist/default/production\0418_system_integration_4.production.obj
+L_OUT@fmcwtxrx 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__ptext1 11CE 0 CODE 0 text1 dist/default/production\0418_system_integration_4.production.obj
+__ptext2 40 0 CODE 0 text2 dist/default/production\0418_system_integration_4.production.obj
+__ptext3 1138 0 CODE 0 text3 dist/default/production\0418_system_integration_4.production.obj
+__ptext4 159A 0 CODE 0 text4 dist/default/production\0418_system_integration_4.production.obj
+__ptext5 64E 0 CODE 0 text5 dist/default/production\0418_system_integration_4.production.obj
+__ptext6 1856 0 CODE 0 text6 dist/default/production\0418_system_integration_4.production.obj
+__ptext7 1508 0 CODE 0 text7 dist/default/production\0418_system_integration_4.production.obj
+__ptext8 1A12 0 CODE 0 text8 dist/default/production\0418_system_integration_4.production.obj
+__ptext9 2FDC 0 CODE 0 text9 dist/default/production\0418_system_integration_4.production.obj
+_sprintf 40 0 CODE 0 text2 dist/default/production\0418_system_integration_4.production.obj
+__Lpowerup 0 0 CODE 0 powerup -
+__Leeprom_data 0 0 EEDATA 3 eeprom_data -
+CWTX@Nprg 5E 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+CWTX@Nref 5C 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+CWTX@cwtx 60 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+_I2C_Master_Stop 2F7C 0 CODE 0 text19 dist/default/production\0418_system_integration_4.production.obj
+_I2C_Master_Wait 105E 0 CODE 0 text21 dist/default/production\0418_system_integration_4.production.obj
+sprintf@ap 78 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+sprintf@cp 79 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+sprintf@sp 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+ReceivePacket_data@fcschecker 3D 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__Lreset_vec 0 0 CODE 0 reset_vec -
+__CFG_FOSC$HS 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_ReceivePacket_data 159A 0 CODE 0 text4 dist/default/production\0418_system_integration_4.production.obj
+RFDOUT@i_430 3B 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+RFDOUT@i_431 3F 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__end_of__initialization FF8 0 CODE 0 cinit dist/default/production\0418_system_integration_4.production.obj
+main@EPS_kill A0 0 BANK1 1 cstackBANK1 dist/default/production\0418_system_integration_4.production.obj
+__Lfunctab 0 0 CODE 0 functab -
+H_OUT@fmcwtxrx 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__end_of_Init_SERIAL 10CC 0 CODE 0 text11 dist/default/production\0418_system_integration_4.production.obj
+RFDOUT@i 3D 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__pidataBANK1 6 0 CODE 0 idataBANK1 dist/default/production\0418_system_integration_4.production.obj
+__pidataBANK2 10CC 0 CODE 0 idataBANK2 dist/default/production\0418_system_integration_4.production.obj
+__pidataBANK3 117E 0 CODE 0 idataBANK3 dist/default/production\0418_system_integration_4.production.obj
+__Lclrtext 0 0 ABS 0 clrtext -
+RFDOUT@fmcwtxrx 79 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__CFG_PWRTE$ON 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+___lldiv@quotient 79 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__pcstackCOMMON 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+_SSPCON2 91 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SSPSTAT 94 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__Hend_init 6 0 CODE 0 end_init -
+init_ram0 2FC2 0 CODE 0 inittext dist/default/production\0418_system_integration_4.production.obj
+sprintf@c 7B 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+sprintf@f 72 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+__end_of_CWTX 127C 0 CODE 0 text22 dist/default/production\0418_system_integration_4.production.obj
+__end_of_FMRX 12D4 0 CODE 0 text16 dist/default/production\0418_system_integration_4.production.obj
+__end_of_FMTX 132C 0 CODE 0 text15 dist/default/production\0418_system_integration_4.production.obj
+__end_of__NOP 109A 0 CODE 0 text30 dist/default/production\0418_system_integration_4.production.obj
+__end_of_main 2000 0 CODE 0 maintext dist/default/production\0418_system_integration_4.production.obj
+__end_of_H_OUT 147C 0 CODE 0 text29 dist/default/production\0418_system_integration_4.production.obj
+__end_of_L_OUT 1508 0 CODE 0 text28 dist/default/production\0418_system_integration_4.production.obj
+__end_of_OUTFQ 64E 0 CODE 0 text24 dist/default/production\0418_system_integration_4.production.obj
+_ACKDT 48D 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_ACKEN 48C 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_ANSEL 188 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_NM_waddress 3000 0 CODE 0 text9 dist/default/production\0418_system_integration_4.production.obj
+_H_OUT 13F0 0 CODE 0 text29 dist/default/production\0418_system_integration_4.production.obj
+_L_OUT 147C 0 CODE 0 text28 dist/default/production\0418_system_integration_4.production.obj
+?_sprintf 70 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+_OUTFQ 158 0 CODE 0 text24 dist/default/production\0418_system_integration_4.production.obj
+_PORTA 5 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_PORTB 6 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_PORTC 7 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_PORTD 8 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_PORTE 9 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_RCREG 1A 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_SPBRG 99 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TRISA 85 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TRISB 86 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TRISC 87 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TRISD 88 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TRISE 89 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+_TXREG 19 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__end_of_putch 2FAA 0 CODE 0 text10 dist/default/production\0418_system_integration_4.production.obj
+__Hram 0 0 ABS 0 ram -
+__Lram 0 0 ABS 0 ram -
+_dData 130 0 BANK2 1 bssBANK2 dist/default/production\0418_system_integration_4.production.obj
+_eflag 68 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+_putch 2F9A 0 CODE 0 text10 dist/default/production\0418_system_integration_4.production.obj
+__CFG_CPD$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+RFDOUT@Nref 7B 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+FMTX@Nprg 5E 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+FMTX@Nref 5C 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+FMTX@fmtx 60 0 BANK0 1 cstackBANK0 dist/default/production\0418_system_integration_4.production.obj
+__HdataBANK1 0 0 ABS 0 dataBANK1 -
+__HdataBANK2 0 0 ABS 0 dataBANK2 -
+__HdataBANK3 0 0 ABS 0 dataBANK3 -
+__initialization F66 0 CODE 0 cinit dist/default/production\0418_system_integration_4.production.obj
+__pbssBANK0 66 0 BANK0 1 bssBANK0 dist/default/production\0418_system_integration_4.production.obj
+__pbssBANK1 E1 0 BANK1 1 bssBANK1 dist/default/production\0418_system_integration_4.production.obj
+__pbssBANK2 110 0 BANK2 1 bssBANK2 dist/default/production\0418_system_integration_4.production.obj
+__pbssBANK3 190 0 BANK3 1 bssBANK3 dist/default/production\0418_system_integration_4.production.obj
+__CFG_WRT$OFF 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__pstrings 1000 0 STRING 0 strings dist/default/production\0418_system_integration_4.production.obj
+_dPacket 190 0 BANK3 1 bssBANK3 dist/default/production\0418_system_integration_4.production.obj
+_efcsflag E8 0 BANK1 1 bssBANK1 dist/default/production\0418_system_integration_4.production.obj
+__size_of_I2C_Master_Stop 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+__size_of_I2C_Master_Wait 0 0 ABS 0 - dist/default/production\0418_system_integration_4.production.obj
+getbit@i 74 0 COMMON 1 cstackCOMMON dist/default/production\0418_system_integration_4.production.obj
+# %SPLITSTAB Section
+# This section enumerates all the psect splits performed by the assembler.
+# The beginning of the section is indicated by %SPLITSTAB.
+# Each line is a record a particular split, where the parent psect is on
+# the left and the child on the right.  Note that a child psect is always
+# split form the top of the parent psect. All splits from a given parent
+# are listed in the order in which they occurred.
+%SPLITSTAB
+# %DABS Section
+# This section contains a table of all usuage of the assember
+# directive DABS in the program. Each line has the following format:
+#   <name> <space> <address> <size>
+# If the DABS was originally labelled then that shall be <name>,
+# otherwise name will be "-".  The <space> number is in decimal.
+# <address> and <size> are in byte units as unqaulified hexadecimal
+%DABS
+- 1 7E 2
+# %SEGMENTS Section
+# This sections enumerates the segments of the program.  Each segment
+# is described on a single line as follows:
+#    <name> <space> <link address> <file address> <size> <delta>
+# Addresses and size are in unqualified hexadecimal.  The link address
+# and size are in units of delta. The file address is in units of bytes.
+# All other numeric quantities are in decimal.
+%SEGMENTS
+cinit 0 7B3 F66 4D 2
+text1 0 8E7 11CE 2B 2
+text2 0 20 40 8C 2
+text3 0 89C 1138 23 2
+text4 0 ACD 159A 4A 2
+text5 0 327 64E 48C 2
+text6 0 C2B 1856 61 2
+text7 0 A84 1508 49 2
+text8 0 D09 1A12 82 2
+text9 0 17EE 2FDC 12 2
+text10 0 17CD 2F9A 8 2
+text11 0 84D 109A 19 2
+text12 0 87F 10FE 1D 2
+text13 0 9C4 1388 34 2
+text14 0 BCD 179A 5E 2
+text15 0 96A 12D4 2C 2
+text16 0 93E 127C 2C 2
+text17 0 B70 16E0 5D 2
+text18 0 17C5 2F8A 8 2
+text19 0 17BE 2F7C 7 2
+text20 0 17B7 2F6E 7 2
+text21 0 82F 105E 9 2
+text22 0 912 1224 2C 2
+text23 0 D8B 1B16 E1 2
+text24 0 AC 158 27B 2
+text25 0 B17 162E 59 2
+text26 0 C8C 1918 7D 2
+text27 0 996 132C 2E 2
+text28 0 A3E 147C 46 2
+text29 0 9F8 13F0 46 2
+text30 0 838 1070 15 2
+maintext 0 E6C 1CD8 194 2
+cstackCOMMON 1 70 70 E 1
+cstackBANK0 1 20 20 50 1
+cstackBANK1 1 A0 A0 4E 1
+inittext 0 17DD 2FBA 11 2
+reset_vec 0 0 0 20 2
+bssBANK2 1 110 110 59 1
+bssBANK3 1 190 190 5A 1
+idataBANK2 0 866 10CC 19 2
+idataBANK3 0 8BF 117E 28 2
+strings 0 800 1000 2A 2
+clrtext 0 17D5 2FAA 8 2
+config 0 2007 400E 2 2
