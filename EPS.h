@@ -8,7 +8,7 @@
 #ifndef EPS_H
 #define	EPS_H
 
-/* EPSキルスイッチのピン配置を定義 */
+/* EPS繧ｭ繝ｫ繧ｹ繧､繝�繝√�ｮ繝斐Φ驟咲ｽｮ繧貞ｮ夂ｾｩ */
 #define SEP_SW        RB4
 #define RBF_SW        RA1
 

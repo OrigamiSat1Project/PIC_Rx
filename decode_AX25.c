@@ -34,8 +34,8 @@ UINT fcscheck(void);
 void putAX25(void);
 void conv_DI_UARTRX(void);
 
-//  bitƒTƒ“ƒvƒŠƒ“ƒO‚Ìƒ^ƒCƒ~ƒ“ƒO‚ª‚¸‚ê‚È‚¢‚æ‚¤bit”½“]‚²‚Æ‚É“¯Šú‚·‚éƒvƒƒOƒ‰ƒ€
-//  getbitloop‚ªŠ„‚ÆƒVƒrƒA‚ÉŒø‚¢‚Ä‚­‚é‚©‚ç’ˆÓ(hspan‚à‚Ü‚ ‚Ü‚ —˜‚¢‚Ä‚­‚é)  
+//  bitã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ãŒãšã‚Œãªã„ã‚ˆã†bitåè»¢ã”ã¨ã«åŒæœŸã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+//  getbitloopãŒå‰²ã¨ã‚·ãƒ“ã‚¢ã«åŠ¹ã„ã¦ãã‚‹ã‹ã‚‰æ³¨æ„(hspanã‚‚ã¾ã‚ã¾ã‚åˆ©ã„ã¦ãã‚‹)  
 UINT getbit(void){
     static UINT oldbit;
     oldbit = FX614_RXD;
@@ -48,15 +48,15 @@ UINT getbit(void){
     return 1;
 }
 
-//  Flag‚Åƒ\ƒtƒgƒXƒPƒ‹ƒ`&“¯Šú‚·‚éƒvƒƒOƒ‰ƒ€
+//  Flagã§ã‚½ãƒ•ãƒˆã‚¹ã‚±ãƒ«ãƒ&åŒæœŸã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 void waitFlag(void){
     UINT flag_judge;
     UBYTE buf = 0xff;
     rcv_state = 0;
     while(rcv_state < 2){
-        while(buf != Flag_AX25){    //ƒtƒ‰ƒO‚ª—ˆ‚é‚Ü‚Å‘Ò‚Â
+        while(buf != Flag_AX25){    //wait for flag
             flag_judge = getbit();
-            buf = buf << 1;         //LSB, MSB‚É‰‚¶‚ÄƒrƒbƒgƒVƒtƒg‚Ì•ûŒüCbit_H, bit_L‚ğ•ÏXD
+            buf = buf << 1;         //LSB, MSBã«å¿œã˜ã¦ãƒ“ãƒƒãƒˆã‚·ãƒ•ãƒˆã®æ–¹å‘ï¼Œbit_H, bit_Lã‚’å¤‰æ›´ï¼
             if(flag_judge == 0){
                 buf = buf | bit_L;
             }else{
@@ -64,8 +64,8 @@ void waitFlag(void){
             }
         }
         
-        //while”²‚¯‚½Œã‚Ìbuf‚Íƒtƒ‰ƒO‚Å‚Í‚È‚­ucall‚Ìæ“ª1ƒoƒCƒg•ªD‚â‚è•û‚Íˆá‚¤‚Ù‚¤‚ª—Ç‚¢‹C‚ª‚·‚éD
-        //ƒrƒbƒg‹l‚ß‚³‚ê‚½‚ç‚»‚Ì•ªŠÔˆá‚¦‚Äƒoƒbƒtƒ@‚ÉŠi”[‚µ‚Ä‚µ‚Ü‚¤
+        //whileæŠœã‘ãŸå¾Œã®bufã¯ãƒ•ãƒ©ã‚°ã§ã¯ãªãucallã®å…ˆé ­1ãƒã‚¤ãƒˆåˆ†ï¼ã‚„ã‚Šæ–¹ã¯é•ã†ã»ã†ãŒè‰¯ã„æ°—ãŒã™ã‚‹ï¼
+        //ãƒ“ãƒƒãƒˆè©°ã‚ã•ã‚ŒãŸã‚‰ãã®åˆ†é–“é•ãˆã¦ãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´ã—ã¦ã—ã¾ã†
         while(buf == Flag_AX25){
             for(UINT i=0;i<8;i++){
                 flag_judge = getbit();
@@ -271,7 +271,7 @@ void waitFlag(void){
     }
 }
 
-//  11111‚ÌŸƒ_ƒ~[ƒf[ƒ^”»’è‚Å‚«‚éƒvƒƒOƒ‰ƒ€
+//  11111ã®æ¬¡ãƒ€ãƒŸãƒ¼ãƒ‡ãƒ¼ã‚¿åˆ¤å®šã§ãã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 /**/
 void getdata(void){
     UBYTE buf = 0x00;
@@ -299,7 +299,7 @@ void getdata(void){
                 dstuff ++;
             }
             bufstore_counter ++;
-            if(bufstore_counter == 8){  //ƒfƒoƒbƒN—pD–{—ˆ‚Íƒoƒbƒtƒ@‚É‚½‚ß‚Ä‚¢‚­D
+            if(bufstore_counter == 8){  //ãƒ‡ãƒãƒƒã‚¯ç”¨ï¼æœ¬æ¥ã¯ãƒãƒƒãƒ•ã‚¡ã«ãŸã‚ã¦ã„ãï¼
                 bufstore_counter = 0;
                 dPacket[dPacketnum] = buf;
                 dPacketnum ++;
@@ -312,7 +312,7 @@ UINT fcscheck(void){
     UBYTE bt,byte;//, dfcslo, dfcshi;
     dfcslo = dfcshi = 0xff;
     while(rcv_state == 3){
-        for(UINT i=0;i<dPacketnum-2;i++){      //dPacketnum‚Ímycall,SSID,ucall,Control,PID,Data,FCS‚Ìbyte”D-2‚ÅFCS•ª‚ğœ‚­D
+        for(UINT i=0;i<dPacketnum-2;i++){      //dPacketnumã¯mycall,SSID,ucall,Control,PID,Data,FCSã®byteæ•°ï¼-2ã§FCSåˆ†ã‚’é™¤ãï¼
             byte = dPacket[i];
             for(UINT i=0;i<8;i++){
                 bt = byte & bit_H;
@@ -331,8 +331,8 @@ UINT fcscheck(void){
         dfcslo = dfcslo ^ 0xff;
         dfcshi = dfcshi ^ 0xff;
         
-        //  ƒfƒoƒbƒN’†‚Í‚±‚±‚ÍƒRƒƒ“ƒgƒAƒEƒg‚·‚é‚Ù‚¤‚ª—Ç‚¢‚©‚àH
-        if((dPacket[dPacketnum-2] == dfcslo) && (dPacket[dPacketnum-1] == dfcshi)){     //dPacketnum”Ô–Ú‚Ìƒoƒbƒtƒ@‚Íƒtƒ‰ƒO‚ªŠi”[‚³‚ê‚Ä‚µ‚Ü‚Á‚Ä‚¢‚é‚Í‚¸
+        //  ãƒ‡ãƒãƒƒã‚¯ä¸­ã¯ã“ã“ã¯ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ã»ã†ãŒè‰¯ã„ã‹ã‚‚ï¼Ÿ
+        if((dPacket[dPacketnum-2] == dfcslo) && (dPacket[dPacketnum-1] == dfcshi)){     //dPacketnumç•ªç›®ã®ãƒãƒƒãƒ•ã‚¡ã¯ãƒ•ãƒ©ã‚°ãŒæ ¼ç´ã•ã‚Œã¦ã—ã¾ã£ã¦ã„ã‚‹ã¯ãš
             //putAX25();
             //putcrlf();
             //dPacketnum = 0;
@@ -396,13 +396,13 @@ void putAX25(void){
     return;
 }
 
-//  ƒfƒWƒ^ƒ‹ƒCƒ“ƒvƒbƒg‚ğUARTRX‚Æ‚µ‚Äg‚¦‚éƒvƒƒOƒ‰ƒ€
+//  ãƒ‡ã‚¸ã‚¿ãƒ«ã‚¤ãƒ³ãƒ—ãƒƒãƒˆã‚’UARTRXã¨ã—ã¦ä½¿ãˆã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 void conv_DI_UARTRX(void){
     UBYTE buf_dammy = 0x00;
     UBYTE buf = 0x00;
     
     getbit();
-    while(FX614_RXD == 0){  //ŒãX‚ÍŠ„‚è‚İˆ—DSTARTbit‘Ò‹@
+    while(FX614_RXD == 0){  //å¾Œã€…ã¯å‰²ã‚Šè¾¼ã¿å‡¦ç†ï¼STARTbitå¾…æ©Ÿ
         for(UINT i=0;i<8;i++){
             getbit();
             buf_dammy = buf_dammy << 1;
@@ -412,13 +412,13 @@ void conv_DI_UARTRX(void){
                 buf_dammy = buf_dammy | bit_H;
             }
         }
-        getbit();   //STOPbit—p
+        getbit();   //STOPbitï¿½p
         buf = reverse_bit8(buf_dammy);
         putch(buf);
     }
 }
 
-//  MNB,LNB‚Ì‹t“]ˆ—‚·‚éƒvƒƒOƒ‰ƒ€
+//  MNB,LNBã®é€†è»¢å‡¦ç†ã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 UBYTE reverse_bit8(UBYTE x){
 	x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
 	x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);

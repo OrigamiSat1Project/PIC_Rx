@@ -4,14 +4,14 @@
 #include "time.h"
 
 /*
- * yEPSƒŠƒZƒbƒg‹@”\‚Ì‰Šú‰»z
- *  1. EPSƒŠƒZƒbƒgƒXƒCƒbƒ`‚Ì’[Žq‚ð'o—Í'‚ÉÝ’è
- *  2. EPSƒŠƒZƒbƒgƒXƒCƒbƒ`‚Ìƒ|[ƒg‚ð'LOW'‚É‚·‚é
+ * ã€EPSãƒªã‚»ãƒƒãƒˆæ©Ÿèƒ½ã®åˆæœŸåŒ–ã€‘
+ *  1. EPSãƒªã‚»ãƒƒãƒˆã‚¹ã‚¤ãƒƒãƒã®ç«¯å­ã‚’'å‡ºåŠ›'ã«è¨­å®š
+ *  2. EPSãƒªã‚»ãƒƒãƒˆã‚¹ã‚¤ãƒƒãƒã®ãƒãƒ¼ãƒˆã‚’'LOW'ã«ã™ã‚‹
  */
 
 /*
- * yEPSƒŠƒZƒbƒgƒXƒCƒbƒ`ˆ—z
- *  1. EPSƒŠƒZƒbƒgƒXƒCƒbƒ`‚Ì’[Žq‚ð0¨1¨0‚Æ•Ï‰»‚³‚¹‚é
+ * ã€EPSãƒªã‚»ãƒƒãƒˆã‚¹ã‚¤ãƒƒãƒå‡¦ç†ã€‘
+ *   1. EPSãƒªã‚»ãƒƒãƒˆã‚¹ã‚¤ãƒƒãƒã®ç«¯å­ã‚’0â†’1â†’0ã¨å¤‰åŒ–ã•ã›ã‚‹
  */
 //UBYTE EPS_kill[];
 

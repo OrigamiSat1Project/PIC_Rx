@@ -1,10 +1,10 @@
-/*** 時間制御 ***/
+/*** Timer controll ***/
 
 #include <htc.h>
 #include "Type_define.h"
 #include "time.h"
 /**/
-//msウェイト関数
+//wait [ms] function
 void delay_ms(UWORD msec)
 {
 	while(msec)
@@ -14,7 +14,7 @@ void delay_ms(UWORD msec)
 	}	
 }
 
-//usウェイト関数
+//wait [us] function
 void delay_us(UWORD usec)
 {
 	while(usec)

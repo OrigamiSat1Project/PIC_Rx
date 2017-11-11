@@ -17,19 +17,19 @@
 #ifndef DECODE_AX25_H
 #define	DECODE_AX25_H
 
-//  AX25—p‚Ìƒtƒ‰ƒOãˆÊ4bit(Mnib)‚Æ‰ºˆÊ4bit(Lnib)
+//  AX25ç”¨ã®ãƒ•ãƒ©ã‚°ä¸Šä½4bit(Mnib)ã¨ä¸‹ä½4bit(Lnib)
 #define Flag_Mnib 7
 #define Flag_Lnib 14
 #define Flag_AX25[] "01111110"
-#define getbitloop 60//20MHz:130  10MHz:66  ¼–³üü”g”İ’èŠÜ‚ß‚é‚Æ60‚ª“K³’lH
+#define getbitloop 60//20MHz:130  10MHz:66  è¥¿ç„¡ç·šå‘¨æ³¢æ•°è¨­å®šå«ã‚ã‚‹ã¨60ãŒé©æ­£å€¤ï¼Ÿ
 #define Flag_AX25 0x7e
 #define flagcounter_max 9
 // 1/25 
-// 0x7E‚ğ”»’è‚Å‚«‚égetbitloop
-// waitflag()        ‚¾‚Æ   91 -113
-// conv_DI_UARTRX()  ‚¾‚Æ   111-132
+// 0x7Eã‚’åˆ¤å®šã§ãã‚‹getbitloop
+// waitflag()        :   91 -113
+// conv_DI_UARTRX()  :   111-132
 // 1/28
-// 833us¨111C720us¨100
+// 833us:111, 720us:100
 
 
 UINT getbit(void);

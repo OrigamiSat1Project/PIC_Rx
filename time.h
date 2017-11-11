@@ -19,7 +19,7 @@
 #define hspan 400   //20MHz:360(300?),415
 #define lspan 1250
 
-//ïsê≥ämÇ»delayä÷êî
+//functions to wait [ms] or [us]
 void delay_ms(UWORD);
 void delay_us(UWORD);
 

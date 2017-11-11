@@ -37,7 +37,7 @@
 #pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
 void main(void) {
-    /*èâä˙âª*/
+    /*Initialize*/
     //OSCCON = 0x40;
     //Init_FMCW();
     
@@ -46,7 +46,7 @@ void main(void) {
     Init_SERIAL();
     Init_MPU();
     Init_I2C_M(I2Cbps);
-    //PLLê›íË
+    //PLL setting
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
     //Set PLL DATA 
     /**/
@@ -70,14 +70,14 @@ void main(void) {
         //ReceivePacket();
         
         /**/
-        //éÛêM
+        //Receive
         UBYTE *dData;
         UBYTE *dData4EEPROM;
         dData = ReceivePacket_data();
         
         
         if(dData[4]=='n'){
-            // NanoMindÇÃèàóù(EEPROMèëÇ´çûÇ›)
+            // Command for NanoMind(PIC write command data in EEPROM)
             int i = 7;
             for(i; i<36; i++){
                 dData4EEPROM[i-7] = dData[i];
@@ -85,25 +85,25 @@ void main(void) {
             EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData4EEPROM);
             
         }else if(dData[4]=='p'){
-            // PIC_RXÇÃèàóù
+            // Command for PIC_RX
         }
         
         
-        //EEPROMèëÇ´çûÇ›
+        //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
         
-        //NanoMindÇ…ÉAÉhÉåÉXëóÇÈ
+        //Send address to NanoMind
         UBYTE NM_wad_header = 0x72;
         NM_waddress(NM_wad_header, whigh_address, wlow_address);
         /*
-        //EEPROMì«Ç›çûÇ›
+        //Read data in EEPROM
         UBYTE *EEPROMData;
         EEPROMData = EEPROM_Read(EEPROM_address,rhigh_address,rlow_address,4);*/
         
         //Reset_EPS();
           //  __delay_ms(500);
         
-        //EPSÉLÉã
+        //EPS kill
         /**/
         UBYTE EPS_kill[];
         UBYTE EPS_kill_1[] = "EA";
@@ -120,11 +120,11 @@ void main(void) {
         if (strcmp(dData,EPS_kill) == 0){
             Reset_EPS();
             __delay_ms(5000);
-            //à»â∫ÇÃêîéöÇÕèâä˙ê›íËéûÇ∆ïœâªÇµÇƒÇ¢ÇÈÇΩÇﬂÇ‡Ç§àÍìxíËã`
-            //ñ{óàÇ»ÇÁïœâªÇ∑ÇÈï∂éöóÒÇëºÇ…ópà”ÇµÇΩÇŸÇ§Ç™ó«Ç¢Ç©Ç‡ÇµÇÍÇ»Ç¢
-            int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [Å®436.500MHz]
-            int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [Å®436.750MHz]
-            int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [Å®145.835MHz]
+            //‰ª•‰∏ã„ÅÆÊï∞Â≠ó„ÅØÂàùÊúüË®≠ÂÆöÊôÇ„Å®Â§âÂåñ„Åó„Å¶„ÅÑ„Çã„Åü„ÇÅ„ÇÇ„ÅÜ‰∏ÄÂ∫¶ÂÆöÁæ©
+            //Êú¨Êù•„Å™„ÇâÂ§âÂåñ„Åô„ÇãÊñáÂ≠óÂàó„Çí‰ªñ„Å´Áî®ÊÑè„Åó„Åü„Åª„ÅÜ„ÅåËâØ„ÅÑ„Åã„ÇÇ„Åó„Çå„Å™„ÅÑ
+            int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+            int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+            int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
             
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);

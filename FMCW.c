@@ -10,13 +10,13 @@
 #include "time.h"
 
 /*
- * yFMCWÝ’è‚Ì‰Šú‰»z
- *  FMŽóMCFM‘—MCCW‘—M‚»‚ê‚¼‚ê‚ðÝ’è
- *  1. CLK’[ŽqiƒNƒƒbƒNjCDAT’[Žqiƒf[ƒ^jCSTB’[ŽqiƒXƒgƒ[ƒuj‚ðo—Í‚Æ‚µ‚ÄŽg—p
- *  2. ‘S‚Ä‚Ìƒ|[ƒg‚ðLow‚É‚·‚é
+ * ã€FMCWè¨­å®šã®åˆæœŸåŒ–ã€‘
+ *  FMå—ä¿¡ï¼ŒFMé€ä¿¡ï¼ŒCWé€ä¿¡ãã‚Œãžã‚Œã‚’è¨­å®š
+ *  1. CLKç«¯å­ï¼ˆã‚¯ãƒ­ãƒƒã‚¯ï¼‰ï¼ŒDATç«¯å­ï¼ˆãƒ‡ãƒ¼ã‚¿ï¼‰ï¼ŒSTBç«¯å­ï¼ˆã‚¹ãƒˆãƒ­ãƒ¼ãƒ–ï¼‰ã‚’å‡ºåŠ›ã¨ã—ã¦ä½¿ç”¨
+ *  2. å…¨ã¦ã®ãƒãƒ¼ãƒˆã‚’Lowã«ã™ã‚‹
  */
 void Init_FMCW(void){
-    /* ƒ|[ƒg‚ðLow‚É‚·‚éi‰Šú‰»j */
+    /* Initialize (turn ports Low) */
     FMRX_CLK = 0;
     FMRX_DAT = 0;
     FMRX_STB = 0;
@@ -32,10 +32,10 @@ void Init_FMCW(void){
 
 
 /*
- * y–³ü‹@‚É'Low'‚ð‘—‚éz
- *  1. ‚Ç‚Ì–³ü‹@‚É‘—‚é‚©‘I‘ðiFMTX or FMRX or CWTXj
- *  2. DAT’[Žq‚ðLow‚É‚·‚é
- *  3. CLK’[Žq‚ð0¨1¨0‚Æ•Ï‰»‚³‚¹‚é 
+ * ã€ç„¡ç·šæ©Ÿã«'Low'ã‚’é€ã‚‹ã€‘
+ *  1. ã©ã®ç„¡ç·šæ©Ÿã«é€ã‚‹ã‹é¸æŠžï¼ˆFMTX or FMRX or CWTXï¼‰
+ *  2. DATç«¯å­ã‚’Lowã«ã™ã‚‹
+ *  3. CLKç«¯å­ã‚’0â†’1â†’0ã¨å¤‰åŒ–ã•ã›ã‚‹
  */
 void L_OUT(int fmcwtxrx){
     if(fmcwtxrx == FMTX_)
@@ -66,10 +66,10 @@ void L_OUT(int fmcwtxrx){
 
 
 /*
- * y–³ü‹@‚É'High'‚ð‘—‚éz
- *  1. ‚Ç‚Ì–³ü‹@‚É‘—‚é‚©‘I‘ðiFMTX or FMRX or CWTXj
- *  2. DAT’[Žq‚ðHigh‚É‚·‚é
- *  3. CLK’[Žq‚ð0¨1¨0‚Æ•Ï‰»‚³‚¹‚é 
+ * ã€ç„¡ç·šæ©Ÿã«'High'ã‚’é€ã‚‹ã€‘
+ *  1. ã©ã®ç„¡ç·šæ©Ÿã«é€ã‚‹ã‹é¸æŠžï¼ˆFMTX or FMRX or CWTXï¼‰
+ *  2. DATç«¯å­ã‚’Highã«ã™ã‚‹
+ *  3. CLKç«¯å­ã‚’0â†’1â†’0ã¨å¤‰åŒ–ã•ã›ã‚‹ 
  */
 void H_OUT(int fmcwtxrx){
     if(fmcwtxrx == FMTX_)
@@ -100,9 +100,9 @@ void H_OUT(int fmcwtxrx){
 
 
 /*
- * y–³ü‹@‚ÉSTBM†‚ð‘—‚éz
- *  1. ‚Ç‚Ì–³ü‹@‚É‘—‚é‚©‘I‘ðiFMTX or FMRX or CWTXj
- *  2. STB’[Žq‚ð0¨1¨0‚Æ•Ï‰»‚³‚¹‚é
+ * ã€ç„¡ç·šæ©Ÿã«STBä¿¡å·ã‚’é€ã‚‹ã€‘
+ *  1. ã©ã®ç„¡ç·šæ©Ÿã«é€ã‚‹ã‹é¸æŠžï¼ˆFMTX or FMRX or CWTXï¼‰
+ *  2. STBç«¯å­ã‚’0â†’1â†’0ã¨å¤‰åŒ–ã•ã›ã‚‹
  */
 void STBOUT(int fmcwtxrx){
     if(fmcwtxrx == FMTX_)
@@ -127,11 +127,11 @@ void STBOUT(int fmcwtxrx){
 
 
 /*
- * y–³ü‹@‚ÌƒvƒƒOƒ‰ƒ}ƒuƒ‹ƒJƒEƒ“ƒ^‚ðÝ’è‚·‚éz
- *  1. ˆø”‚©‚ç“Ç‚Ýž‚ñ‚¾ƒvƒƒOƒ‰ƒ}ƒuƒ‹ƒJƒEƒ“ƒ^‚ð2i”‚É•ÏŠ·i”z—ñ‚Æ‚µ‚ÄŠi”[j
- *  2. Ši”[‚µ‚½2i”‚É‡‚í‚¹‚ÄHigh‚©Low‚ð–³ü‹@‚É‘—‚éiÝ’è‚ÌŠÌj
- *  3. ƒOƒ‹[ƒvƒR[ƒh‚ð‘—‚é'10'
- *  4. STBM†‚ð‘—‚é
+ * ã€ç„¡ç·šæ©Ÿã®ãƒ—ãƒ­ã‚°ãƒ©ãƒžãƒ–ãƒ«ã‚«ã‚¦ãƒ³ã‚¿ã‚’è¨­å®šã™ã‚‹ã€‘
+ *  1. å¼•æ•°ã‹ã‚‰èª­ã¿è¾¼ã‚“ã ãƒ—ãƒ­ã‚°ãƒ©ãƒžãƒ–ãƒ«ã‚«ã‚¦ãƒ³ã‚¿ã‚’2é€²æ•°ã«å¤‰æ›ï¼ˆé…åˆ—ã¨ã—ã¦æ ¼ç´ï¼‰
+ *  2. æ ¼ç´ã—ãŸ2é€²æ•°ã«åˆã‚ã›ã¦Highã‹Lowã‚’ç„¡ç·šæ©Ÿã«é€ã‚‹ï¼ˆè¨­å®šã®è‚ï¼‰
+ *  3. ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒ¼ãƒ‰ã‚’é€ã‚‹'10'
+ *  4. STBä¿¡å·ã‚’é€ã‚‹
  */
 void OUTFQ(int fmcwtxrx, int *Nprg){
     int count = 0;
@@ -191,11 +191,11 @@ void OUTFQ(int fmcwtxrx, int *Nprg){
 
 
 /*
- * y–³ü‹@‚ÌƒŠƒtƒ@ƒŒƒ“ƒXƒJƒEƒ“ƒ^‚ðÝ’è‚·‚éz
- *  1. ˆø”‚©‚ç“Ç‚Ýž‚ñ‚¾ƒŠƒtƒ@ƒŒƒ“ƒXƒJƒEƒ“ƒ^‚ð2i”‚É•ÏŠ·i”z—ñ‚Æ‚µ‚ÄŠi”[j
- *  2. Ši”[‚µ‚½2i”‚É‡‚í‚¹‚ÄHigh‚©Low‚ð–³ü‹@‚É‘—‚éiÝ’è‚ÌŠÌj
- *  3. ƒOƒ‹[ƒvƒR[ƒh‚ð‘—‚é'11'
- *  4. STBM†‚ð‘—‚é
+ * ã€ç„¡ç·šæ©Ÿã®ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿ã‚’è¨­å®šã™ã‚‹ã€‘
+ *  1. å¼•æ•°ã‹ã‚‰èª­ã¿è¾¼ã‚“ã ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿ã‚’2é€²æ•°ã«å¤‰æ›ï¼ˆé…åˆ—ã¨ã—ã¦æ ¼ç´ï¼‰
+ *  2. æ ¼ç´ã—ãŸ2é€²æ•°ã«åˆã‚ã›ã¦Highã‹Lowã‚’ç„¡ç·šæ©Ÿã«é€ã‚‹ï¼ˆè¨­å®šã®è‚ï¼‰
+ *  3. ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒ¼ãƒ‰ã‚’é€ã‚‹'11'
+ *  4. STBä¿¡å·ã‚’é€ã‚‹
  */
 void RFDOUT(int fmcwtxrx, int Nref){
     int Nref_b[12];
@@ -233,10 +233,10 @@ void RFDOUT(int fmcwtxrx, int Nref){
 
 
 /*
- * y–³ü‹@‚ÌƒIƒvƒVƒ‡ƒ“ƒŒƒWƒXƒ^‚ðÝ’è‚·‚éi‹¤’ÊPLLÝ’èjz
- *  1. (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1)‚ð‘—‚é
- *  2. ƒOƒ‹[ƒvƒR[ƒh‚ð‘—‚é'00'
- *  3. STBM†‚ð‘—‚é
+ * ã€ç„¡ç·šæ©Ÿã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¬ã‚¸ã‚¹ã‚¿ã‚’è¨­å®šã™ã‚‹ï¼ˆå…±é€šPLLè¨­å®šï¼‰ã€‘
+ *  1. (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1)ã‚’é€ã‚‹
+ *  2. ã‚°ãƒ«ãƒ¼ãƒ—ã‚³ãƒ¼ãƒ‰ã‚’é€ã‚‹'00'
+ *  3. STBä¿¡å·ã‚’é€ã‚‹
  */
 void OPINIT(int fmcwtxrx){
     //Send PLL Common DataSet to communiction module
@@ -262,10 +262,10 @@ void OPINIT(int fmcwtxrx){
 
 
 /*
- * yFMTX‚ÌPLLÝ’è‚ðs‚¤z
- *  1. ƒIƒvƒVƒ‡ƒ“ƒŒƒWƒXƒ^‚ÌÝ’è
- *  2. ƒŠƒtƒ@ƒŒƒ“ƒXƒJƒEƒ“ƒ^‚ÌÝ’è
- *  3. ƒvƒƒOƒ‰ƒ}ƒuƒ‹ƒJƒEƒ“ƒ^‚ÌÝ’è
+ * ã€FMTXã®PLLè¨­å®šã‚’è¡Œã†ã€‘
+ *  1. ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¬ã‚¸ã‚¹ã‚¿ã®è¨­å®š
+ *  2. ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿ã®è¨­å®š
+ *  3. ãƒ—ãƒ­ã‚°ãƒ©ãƒžãƒ–ãƒ«ã‚«ã‚¦ãƒ³ã‚¿ã®è¨­å®š
  */
 void FMTX(int Nref, int *Nprg){
     int fmtx = FMTX_;
@@ -276,10 +276,10 @@ void FMTX(int Nref, int *Nprg){
 
 
 /*
- * yCWTX‚ÌPLLÝ’è‚ðs‚¤z
- *  1. ƒIƒvƒVƒ‡ƒ“ƒŒƒWƒXƒ^‚ÌÝ’è
- *  2. ƒŠƒtƒ@ƒŒƒ“ƒXƒJƒEƒ“ƒ^‚ÌÝ’è
- *  3. ƒvƒƒOƒ‰ƒ}ƒuƒ‹ƒJƒEƒ“ƒ^‚ÌÝ’è
+ * ã€CWTXã®PLLè¨­å®šã‚’è¡Œã†ã€‘
+ *  1. ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¬ã‚¸ã‚¹ã‚¿ã®è¨­å®š
+ *  2. ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿ã®è¨­å®š
+ *  3. ãƒ—ãƒ­ã‚°ãƒ©ãƒžãƒ–ãƒ«ã‚«ã‚¦ãƒ³ã‚¿ã®è¨­å®š
  */
 void CWTX(int Nref, int *Nprg){
     int cwtx = CWTX_;
@@ -290,10 +290,10 @@ void CWTX(int Nref, int *Nprg){
 
 
 /*
- * yFMRX‚ÌPLLÝ’è‚ðs‚¤z
- *  1. ƒIƒvƒVƒ‡ƒ“ƒŒƒWƒXƒ^‚ÌÝ’è
- *  2. ƒŠƒtƒ@ƒŒƒ“ƒXƒJƒEƒ“ƒ^‚ÌÝ’è
- *  3. ƒvƒƒOƒ‰ƒ}ƒuƒ‹ƒJƒEƒ“ƒ^‚ÌÝ’è
+ * ã€FMRXã®PLLè¨­å®šã‚’è¡Œã†ã€‘
+ *  1. ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ¬ã‚¸ã‚¹ã‚¿ã®è¨­å®š
+ *  2. ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿ã®è¨­å®š
+ *  3. ãƒ—ãƒ­ã‚°ãƒ©ãƒžãƒ–ãƒ«ã‚«ã‚¦ãƒ³ã‚¿ã®è¨­å®š
  */
 void FMRX(int Nref, int *Nprg){
     int fmrx = FMRX_;
@@ -304,7 +304,7 @@ void FMRX(int Nref, int *Nprg){
 
 
 /*
- * yPLLÝ’è‚ðs‚¤z
+ * ã€PLLè¨­å®šã‚’è¡Œã†ã€‘
  */
 void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
     FMTX(FMTX_Nref, FMTX_Nprg);
@@ -315,9 +315,9 @@ void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX
 
 
 /*
- * yƒ‚[ƒ‹ƒXM†‚Ì'V'‚ð‘—‚éz
- *  1. CWKEY’[Žq‚ð0¨1¨0‚Æ•Ï‰»‚³‚¹‚é
- *  2. ¦1.‚ðŒv‚R‰ñs‚¤
+ * ã€ãƒ¢ãƒ¼ãƒ«ã‚¹ä¿¡å·ã®'V'ã‚’é€ã‚‹ã€‘
+ *  1. CWKEYç«¯å­ã‚’0â†’1â†’0ã¨å¤‰åŒ–ã•ã›ã‚‹
+ *  2. â€»1.ã‚’è¨ˆï¼“å›žè¡Œã†
  */
 void Morse_V(void){
     CWTX_KEY = 1;
@@ -343,8 +343,8 @@ void Morse_V(void){
 
 
 /*
- * y‰½‚àˆ—‚ðs‚í‚È‚¢i‘Ò‹@jz
- *  5ˆ—•ª‘Ò‹@‚·‚é
+ * ã€ä½•ã‚‚å‡¦ç†ã‚’è¡Œã‚ãªã„ï¼ˆå¾…æ©Ÿï¼‰ã€‘
+ *  5å‡¦ç†åˆ†å¾…æ©Ÿã™ã‚‹
  */
 void _NOP(void) {
     for(int i=0; i<5; i++){

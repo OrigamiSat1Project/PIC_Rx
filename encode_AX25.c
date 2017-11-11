@@ -10,7 +10,7 @@
 #define bit_H 0x01
 #define bit_L 0x00
 
-//reverse_bit8()‚ªMSB,LSB”½“]ƒvƒƒOƒ‰ƒ€
+//reverse_bit8(),MSB,LSB
 
 
 void SendPacket(void);
@@ -95,11 +95,11 @@ void SendByte(UBYTE byte){
     UBYTE bt;
     for(UINT i=0;i<8;i++){
         bt = byte & bit_H;
-        //  eDataField ¨ FCSCalculate
+        //  eDataField ï¿½ï¿½ FCSCalculate
         if(efcsflag == 0 && eflag == 0){
             fcsbit(bt);
         }
-        //  eDataField, FCSField ¨ bitestuffing
+        //  eDataField, FCSField ï¿½ï¿½ bitestuffing
         if(bt == bit_L){
             flipout();
         }else{
