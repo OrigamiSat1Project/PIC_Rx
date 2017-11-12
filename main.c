@@ -90,6 +90,17 @@ void main(void) {
                 case 'E':
                     // EPS kill
                     Reset_EPS();
+                    __delay_ms(5000);
+                    //以下の数字は初期設定時と変化しているためもう一度定義
+                    //本来なら変化する文字列を他に用意したほうが良いかもしれない
+                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+                    
+                    FMTX(FMTX_Nref, FMTX_Nprg);
+                    CWTX(CWTX_Nref, CWTX_Nprg);
+                    FMRX(FMRX_Nref, FMRX_Nprg);
+                    __delay_ms(500);
                     break;
                 case 'I':
                     // I2C mode
@@ -124,10 +135,10 @@ void main(void) {
         
         //EPS kill
         /**/
-        UBYTE EPS_kill[];
-        UBYTE EPS_kill_1[] = "EA";
-        UBYTE EPS_kill_2 = 0x0D;
-        sprintf(EPS_kill,"%s%c",EPS_kill_1,EPS_kill_2);
+        // UBYTE EPS_kill[];
+        // UBYTE EPS_kill_1[] = "EA";
+        // UBYTE EPS_kill_2 = 0x0D;
+        // sprintf(EPS_kill,"%s%c",EPS_kill_1,EPS_kill_2);
         //strcat(EPS_kill_1,EPS_kill_2);
         //putstr(dData);
         //putstr(EPS_kill);
@@ -136,21 +147,21 @@ void main(void) {
         sprintf(EPS_kill,"%s%c",EPS_kill_1,EPS_kill_2);
         putstr(dData);
         putstr(EPS_kill);*/
-        if (strcmp(dData,EPS_kill) == 0){
-            Reset_EPS();
-            __delay_ms(5000);
-            //以下の数字は初期設定時と変化しているためもう一度定義
-            //本来なら変化する文字列を他に用意したほうが良いかもしれない
-            int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-            int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-            int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+        // if (strcmp(dData,EPS_kill) == 0){
+        //     Reset_EPS();
+        //     __delay_ms(5000);
+        //     //以下の数字は初期設定時と変化しているためもう一度定義
+        //     //本来なら変化する文字列を他に用意したほうが良いかもしれない
+        //     int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+        //     int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+        //     int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
             
-            FMTX(FMTX_Nref, FMTX_Nprg);
-            CWTX(CWTX_Nref, CWTX_Nprg);
-            FMRX(FMRX_Nref, FMRX_Nprg);
-            __delay_ms(500);
+        //     FMTX(FMTX_Nref, FMTX_Nprg);
+        //     CWTX(CWTX_Nref, CWTX_Nprg);
+        //     FMRX(FMRX_Nref, FMRX_Nprg);
+        //     __delay_ms(500);
             
-        }
+        // }
         
         
         //  encoder
