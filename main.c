@@ -70,31 +70,50 @@ void main(void) {
         //ReceivePacket();
         
         /**/
-        //Receive
+        //Receive command data
         UBYTE *dData;
-        UBYTE *dData4EEPROM;
         dData = ReceivePacket_data();
-        
-        
-        if(dData[4]=='n'){
-            // Command for NanoMind(PIC write command data in EEPROM)
-            int i = 7;
-            for(i; i<36; i++){
-                dData4EEPROM[i-7] = dData[i];
-            }
-            EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData4EEPROM);
-            
-        }else if(dData[4]=='p'){
-            // Command for PIC_RX
-        }
-        
-        
         //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
         
-        //Send address to NanoMind
-        UBYTE NM_wad_header = 0x72;
-        NM_waddress(NM_wad_header, whigh_address, wlow_address);
+        // Command target
+        if(dData[0]=='n'){      //NanoMind
+            //Send address to NanoMind
+            UBYTE NM_wad_header = 0x72;
+            NM_waddress(NM_wad_header, whigh_address, wlow_address);
+            
+        }else if(dData[0]=='p'){        //PIC_RX
+            //Task target
+            if(dData[2] == 'r'){        // PIC_RX
+                // Command type
+                switch(dData[3]){
+                case 'E':
+                    // EPS kill
+                    Reset_EPS();
+                    break;
+                case 'I':
+                    // I2C mode
+                    break;
+                case '3':
+                    // TX周波数設定
+                    break;
+                case 'N':
+                    // NanoMind
+                    break;
+                case 'T':
+                    // send TXPIC by I2C
+                    break;
+                default:
+                    // error
+                    break;
+                }
+                
+            }else if(dData[2] == 't'){      // PIC_TX
+
+            }
+        }
+        
+        
         /*
         //Read data in EEPROM
         UBYTE *EEPROMData;
