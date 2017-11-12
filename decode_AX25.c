@@ -363,7 +363,7 @@ UBYTE *ReceivePacket_data(void){
     fcschecker = fcscheck();
     
     if(fcschecker == 1){
-        for(UINT i=0; i<dPacketnum-18; i++){
+        for(UINT i=4; i<dPacketnum-18; i++){    // i=0 -> i=4 ("ori1"の次から)
             dData[i] = dPacket[i+16];
         }
         dPacketnum = 0;
