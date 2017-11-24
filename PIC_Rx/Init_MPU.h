@@ -10,7 +10,8 @@
 
 #include "Type_define.h"
 
-#define led_yellow RB2
+#define led_yellow RC2
+#define led_white RB2
 #define FX614_RXD RB5
 #define high 1
 #define low  0

@@ -21,7 +21,7 @@
 #define Flag_Mnib 7
 #define Flag_Lnib 14
 #define Flag_AX25[] "01111110"
-#define getbitloop 60//20MHz:130  10MHz:66  西無線周波数設定含めると60が適正値？
+#define getbitloop 62//20MHz:130  10MHz:66  西無線周波数設定含めると60が適正値？
 #define Flag_AX25 0x7e
 #define flagcounter_max 9
 // 1/25 

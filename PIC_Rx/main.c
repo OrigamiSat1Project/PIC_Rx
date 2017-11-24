@@ -51,18 +51,20 @@ void main(void) {
     //Set PLL DATA 
     /**/
     
-    __delay_ms(5000);
+    led_white = 1;
+    __delay_ms(500);
     
     FMTX(FMTX_Nref, FMTX_Nprg);
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);
+    led_white = 0;
     
     while(1){
         /*
         while(1){
-            //getbit();
-            //debug_ledy();   //6us
-            //
+            getbit();
+            debug_ledy();   //6us
+            
         }*/
         //
         //  decoder
@@ -73,7 +75,9 @@ void main(void) {
         //受信
         UBYTE *dData;
         dData = ReceivePacket_data();
-        
+        led_white = 1;
+        __delay_ms(500);
+        led_white = 0;
         
         //dData =('A');
         //デバッグ用データUART送信
@@ -115,6 +119,9 @@ void main(void) {
         putstr(dData);
         putstr(EPS_kill);*/
         if (strcmp(dData,EPS_kill) == 0){
+            led_white = 1;
+            __delay_ms(500);
+            led_white = 0;
             Reset_EPS();
             __delay_ms(5000);
             //以下の数字は初期設定時と変化しているためもう一度定義

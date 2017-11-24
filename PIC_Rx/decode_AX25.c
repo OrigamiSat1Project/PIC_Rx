@@ -42,6 +42,7 @@ UINT getbit(void){
     for(UINT i=0;i<getbitloop;i++){
         if(FX614_RXD != oldbit){
             __delay_us(hspan);
+            led_yellow= 1- led_yellow;
             return 0;
         }
     }
@@ -359,7 +360,9 @@ UBYTE *ReceivePacket_data(void){
     //UBYTE dData[];
     
     waitFlag();
+    led_white = 1;
     getdata();
+    led_white = 0;
     fcschecker = fcscheck();
     
     if(fcschecker == 1){
