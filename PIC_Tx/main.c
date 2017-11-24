@@ -106,7 +106,8 @@ void main(void) {
             //
             //  encoder
             //UBYTE ePacket[50];
-            SendPacket(EEPROMData);
+            //SendPacket("Hello"EEPROMData);
+            SendPacket(EEPROMData);    
             //test_Packetmaker(EEPROMData);
             //SendPacket();
             __delay_ms(200);
