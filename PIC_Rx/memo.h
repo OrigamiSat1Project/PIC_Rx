@@ -1,43 +1,43 @@
 /*
- ƒvƒƒOƒ‰ƒ€ŠÇ——p
+ ãƒ—ãƒ­ã‚°ãƒ©ãƒ ç®¡ç†ç”¨
  */
 
 /*
  * Author: Reo
  * 2017/01/23, 05:58
- * EƒfƒWƒ^ƒ‹ƒCƒ“ƒvƒbƒg‚ðUART_RX‚Æ‚µ‚ÄŽg‚¦‚é‚æ‚¤‚É‚µ‚½D
- * @@ ƒXƒ^[ƒgEƒXƒgƒbƒvbit‚Ì”»’è
- * @@ LSB-MSB‚Ì”½“]Cƒoƒbƒtƒ@‚ÉŠi”[
- * @@ 2i”•¶Žš—ñ‚ÆASCII•ÏŠ·ŠÖ”
- * @@ Flag‚Åƒ\ƒtƒgƒXƒPƒ‹ƒ`
- * @@ ƒNƒƒbƒN‚ªƒKƒoƒKƒo‚¾‚©‚çŒ©’¼‚·•K—v‚ ‚è
- *      FlagŽóMŠ„‚èž‚Ý
+ * ãƒ‡ã‚¸ã‚¿ãƒ«ã‚¤ãƒ³ãƒ—ãƒƒãƒˆã‚’UART_RXã¨ã—ã¦ä½¿ãˆã‚‹ã‚ˆã†ã«ã—ãŸï¼Ž
+ * ã‚¹ã‚¿ãƒ¼ãƒˆãƒ»ã‚¹ãƒˆãƒƒãƒ—bitã®åˆ¤å®š
+ * LSB-MSBã®åè»¢ï¼Œãƒãƒƒãƒ•ã‚¡ã«æ ¼ç´
+ * 2é€²æ•°æ–‡å­—åˆ—ã¨ASCIIå¤‰æ›é–¢æ•°
+ * Flagã§ã‚½ãƒ•ãƒˆã‚¹ã‚±ãƒ«ãƒ
+ * ã‚¯ãƒ­ãƒƒã‚¯ãŒã‚¬ãƒã‚¬ãƒã ã‹ã‚‰è¦‹ç›´ã™å¿…è¦ã‚ã‚Š
+ *  Flagå—ä¿¡å‰²ã‚Šè¾¼ã¿
  */
 /*
  * Author: Reo
  * 2017/01/25, 17:08
- * Eƒtƒ‰ƒOƒLƒƒƒbƒ`ŠÖ”wait_Flag()‚ð»ì
- * Egetbitloop“K³’lŽÀŒ±D“ú‚É‚æ‚Á‚Äi‰·“x‚É‚æ‚Á‚Ä•Ï‚í‚éjHƒNƒŠƒXƒ^ƒ‹‚ªˆ«‚¢‚©‚à
+ * ãƒ•ãƒ©ã‚°ã‚­ãƒ£ãƒƒãƒé–¢æ•°wait_Flag()ã‚’è£½ä½œ
+ * getbitloopé©æ­£å€¤å®Ÿé¨“ï¼Žæ—¥ã«ã‚ˆã£ã¦ï¼ˆæ¸©åº¦ã«ã‚ˆã£ã¦å¤‰ã‚ã‚‹ï¼‰ï¼Ÿã‚¯ãƒªã‚¹ã‚¿ãƒ«ãŒæ‚ªã„ã‹ã‚‚
  */
 /*
  * Author: Reo
  * 2017/01/26, 15:40
- * Eƒtƒ‰ƒOƒLƒƒƒbƒ`Œãƒf[ƒ^ŽóM—pƒvƒƒOƒ‰ƒ€getdata()‚ð»ì
- * EƒrƒbƒgƒVƒtƒg‚ ‚½‚è‚Ìˆ—‚ª‘½‚¢‚Ì‚ª‹C‚É‚È‚é
- * @getbitloop‚Í111or112‚ª“K³’l‚Û‚¢
+ * ãƒ•ãƒ©ã‚°ã‚­ãƒ£ãƒƒãƒå¾Œãƒ‡ãƒ¼ã‚¿å—ä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ getdata()ã‚’è£½ä½œ
+ * ãƒ“ãƒƒãƒˆã‚·ãƒ•ãƒˆã‚ãŸã‚Šã®å‡¦ç†ãŒå¤šã„ã®ãŒæ°—ã«ãªã‚‹
+ * getbitloopã¯111or112ãŒé©æ­£å€¤ã½ã„
  *
- * E‚ ‚Æ‚Í11111—ˆ‚½‚ç0—ˆ‚é‚©‚ç‚»‚ê‚ð–³Ž‹‚·‚éƒvƒƒOƒ‰ƒ€
- * EFCSƒ`ƒFƒbƒN‚ÌƒvƒƒOƒ‰ƒ€
- * @‚ÅŠ®¬
+ * ã‚ã¨ã¯11111æ¥ãŸã‚‰0æ¥ã‚‹ã‹ã‚‰ãã‚Œã‚’ç„¡è¦–ã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+ * FCSãƒã‚§ãƒƒã‚¯ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+ * ã§å®Œæˆ
  */
 /*
  * Author: Reo
  * 2017/01/28, 15:08
- * Eƒtƒ‰ƒOƒLƒƒƒbƒ`Œã11111”»’è‚·‚éƒf[ƒ^ŽóMƒvƒƒOƒ‰ƒ€getdata()‚ð»ì
- * EƒvƒƒOƒ‰ƒ€‚ðbitƒVƒtƒg‚Ì‚à‚Ì‚É”ƒ‚¦‚Äˆ—‚ªŒy‚­‚È‚Á‚½
+ * ãƒ•ãƒ©ã‚°ã‚­ãƒ£ãƒƒãƒå¾Œ11111åˆ¤å®šã™ã‚‹ãƒ‡ãƒ¼ã‚¿å—ä¿¡ãƒ—ãƒ­ã‚°ãƒ©ãƒ getdata()ã‚’è£½ä½œ
+ * ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’bitã‚·ãƒ•ãƒˆã®ã‚‚ã®ã«è²·ãˆã¦å‡¦ç†ãŒè»½ããªã£ãŸ
  * 
- * EFCSƒ`ƒFƒbƒN‚ÌƒvƒƒOƒ‰ƒ€
- * @‚ÅŠ®¬
+ * FCSãƒã‚§ãƒƒã‚¯ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+ * ã§å®Œæˆ
  */
 
 
