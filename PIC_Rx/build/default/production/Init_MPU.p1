@@ -1523,9 +1523,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;Init_MPU.h: 23: void Init_MPU(void);
-[; ;Init_MPU.h: 24: void led_onoff(void);
-[; ;Init_MPU.h: 25: void debug_ledy(void);
+[; ;Init_MPU.h: 24: void Init_MPU(void);
+[; ;Init_MPU.h: 25: void led_onoff(void);
+[; ;Init_MPU.h: 26: void debug_ledy(void);
 [; ;time.h: 23: void delay_ms(UWORD);
 [; ;time.h: 24: void delay_us(UWORD);
 [; ;__size_t.h: 4: typedef unsigned size_t;
@@ -1616,9 +1616,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 21: void put_error(void);
 [; ;UART.h: 22: void put_ok(void);
 [; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;decode_AX25.h: 35: UINT getbit(void);
-[; ;decode_AX25.h: 43: void ReceivePacket(void);
-[; ;decode_AX25.h: 44: UBYTE *ReceivePacket_data(void);
+[; ;decode_AX25.h: 36: UINT getbit(void);
+[; ;decode_AX25.h: 44: void ReceivePacket(void);
+[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
 [; ;encode_AX25.h: 24: void SendPacket(void);
 "8 Init_MPU.c
 [v _Init_MPU `(v ~T0 @X0 1 ef ]

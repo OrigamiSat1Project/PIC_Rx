@@ -5,31 +5,29 @@
 [d frameptr 6 ]
 "6 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
-"492 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
-[v _sprintf sprintf `(i  1 e 2 0 ]
+"464 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
 "62 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\float.c
 [v ___ftpack __ftpack `(f  1 e 3 0 ]
 "86 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\ftadd.c
 [v ___ftadd __ftadd `(f  1 e 3 0 ]
 "6 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\lldiv.c
 [v ___lldiv __lldiv `(ul  1 e 4 0 ]
-"33 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
-[v _strcmp strcmp `(i  1 e 2 0 ]
 "6 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\pic\eeprom.c
 [v _eecpymem eecpymem `(v  1 e 1 0 ]
 "39
 [v _memcpyee memcpyee `(v  1 e 1 0 ]
-"39 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
+"40 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
 [v _getbit getbit `(ui  1 e 2 0 ]
-"53
+"54
 [v _waitFlag waitFlag `(v  1 e 1 0 ]
-"277
+"278
 [v _getdata getdata `(v  1 e 1 0 ]
-"312
+"313
 [v _fcscheck fcscheck `(ui  1 e 2 0 ]
-"358
+"359
 [v _ReceivePacket_data ReceivePacket_data `(*.5uc  1 e 1 0 ]
-"425
+"426
 [v _reverse_bit8 reverse_bit8 `(uc  1 e 1 0 ]
 "39 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\encode_AX25.c
 [v _Packetmaker Packetmaker `(ui  1 e 2 0 ]
@@ -79,7 +77,7 @@
 [v _EEPROM_Write EEPROM_Write `(v  1 e 1 0 ]
 "8 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\Init_MPU.c
 [v _Init_MPU Init_MPU `(v  1 e 1 0 ]
-"39 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
+"38 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
 [v _main main `(v  1 e 1 0 ]
 "5 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\UART.c
 [v _Init_SERIAL Init_SERIAL `(v  1 e 1 0 ]
@@ -91,7 +89,7 @@
 [v _STATUS STATUS `VEuc  1 e 1 @3 ]
 "160
 [v _PORTA PORTA `VEuc  1 e 1 @5 ]
-[s S335 . 1 `uc 1 RA0 1 0 :1:0 
+[s S326 . 1 `uc 1 RA0 1 0 :1:0 
 `uc 1 RA1 1 0 :1:1 
 `uc 1 RA2 1 0 :1:2 
 `uc 1 RA3 1 0 :1:3 
@@ -101,13 +99,13 @@
 `uc 1 RA7 1 0 :1:7 
 ]
 "177
-[u S344 . 1 `S335 1 . 1 0 ]
-[v _PORTAbits PORTAbits `VES344  1 e 1 @5 ]
+[u S335 . 1 `S326 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES335  1 e 1 @5 ]
 "221
 [v _PORTB PORTB `VEuc  1 e 1 @6 ]
 "282
 [v _PORTC PORTC `VEuc  1 e 1 @7 ]
-[s S369 . 1 `uc 1 RC0 1 0 :1:0 
+[s S360 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 RC3 1 0 :1:3 
@@ -117,11 +115,11 @@
 `uc 1 RC7 1 0 :1:7 
 ]
 "299
-[u S378 . 1 `S369 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES378  1 e 1 @7 ]
+[u S369 . 1 `S360 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES369  1 e 1 @7 ]
 "343
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
-[s S390 . 1 `uc 1 RD0 1 0 :1:0 
+[s S381 . 1 `uc 1 RD0 1 0 :1:0 
 `uc 1 RD1 1 0 :1:1 
 `uc 1 RD2 1 0 :1:2 
 `uc 1 RD3 1 0 :1:3 
@@ -131,18 +129,18 @@
 `uc 1 RD7 1 0 :1:7 
 ]
 "360
-[u S399 . 1 `S390 1 . 1 0 ]
-[v _PORTDbits PORTDbits `VES399  1 e 1 @8 ]
+[u S390 . 1 `S381 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES390  1 e 1 @8 ]
 "404
 [v _PORTE PORTE `VEuc  1 e 1 @9 ]
-[s S356 . 1 `uc 1 RE0 1 0 :1:0 
+[s S347 . 1 `uc 1 RE0 1 0 :1:0 
 `uc 1 RE1 1 0 :1:1 
 `uc 1 RE2 1 0 :1:2 
 `uc 1 RE3 1 0 :1:3 
 ]
 "417
-[u S361 . 1 `S356 1 . 1 0 ]
-[v _PORTEbits PORTEbits `VES361  1 e 1 @9 ]
+[u S352 . 1 `S347 1 . 1 0 ]
+[v _PORTEbits PORTEbits `VES352  1 e 1 @9 ]
 "822
 [v _SSPBUF SSPBUF `VEuc  1 e 1 @19 ]
 "828
@@ -219,15 +217,17 @@
 [v _TXIE TXIE `VEb  1 e 0 @1124 ]
 "4138
 [v _TXIF TXIF `VEb  1 e 0 @100 ]
-"24 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
-[v _rcv_state rcv_state `ui  1 s 2 rcv_state ]
+"17 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
+[v _commandSize commandSize `DCCui  1 e 2 0 ]
 "25
-[v _dPacket dPacket `[50]uc  1 e 50 0 ]
+[v _rcv_state rcv_state `ui  1 s 2 rcv_state ]
 "26
-[v _dData dData `[32]uc  1 e 32 0 ]
+[v _dPacket dPacket `[50]uc  1 e 50 0 ]
 "27
-[v _dPacketnum dPacketnum `ui  1 e 2 0 ]
+[v _dData dData `[32]uc  1 e 32 0 ]
 "28
+[v _dPacketnum dPacketnum `ui  1 e 2 0 ]
+"29
 [v _dfcshi dfcshi `uc  1 e 1 0 ]
 [v _dfcslo dfcslo `uc  1 e 1 0 ]
 "23 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\encode_AX25.c
@@ -259,60 +259,43 @@
 [v _FMRX_Nprg FMRX_Nprg `[5]i  1 e 10 0 ]
 "6 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\I2C.c
 [v _EEPROMData EEPROMData `[32]uc  1 e 32 0 ]
-"39 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
+"38 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"131
-[v main@FMRX_Nprg FMRX_Nprg `[5]i  1 a 10 23 ]
-"130
-[v main@CWTX_Nprg CWTX_Nprg `[5]i  1 a 10 13 ]
-"129
-[v main@FMTX_Nprg FMTX_Nprg `[5]i  1 a 10 3 ]
-"110
-[v main@EPS_kill_1 EPS_kill_1 `[3]uc  1 a 3 0 ]
-"76
-[v main@dData dData `*.5uc  1 a 1 35 ]
-"111
-[v main@EPS_kill_2 EPS_kill_2 `uc  1 a 1 34 ]
-"97
-[v main@NM_wad_header NM_wad_header `uc  1 a 1 33 ]
-"109
-[v main@EPS_kill EPS_kill `[0]uc  1 a 0 0 ]
-[v main@F2005 F2005 `[3]uc  1 s 3 F2005 ]
-"126
+"119
+[v main@FMRX_Nprg FMRX_Nprg `[5]i  1 a 10 20 ]
+"118
+[v main@CWTX_Nprg CWTX_Nprg `[5]i  1 a 10 10 ]
+"117
+[v main@FMTX_Nprg FMTX_Nprg `[5]i  1 a 10 0 ]
+"94
+[v main@NM_wad_header NM_wad_header `uc  1 a 1 30 ]
+"83
+[v main@i i `ui  1 a 2 31 ]
+"74
+[v main@dData dData `*.5uc  1 a 1 33 ]
+"114
+[v main@F2006 F2006 `[5]i  1 s 10 F2006 ]
+"117
+[v main@F2008 F2008 `[5]i  1 s 10 F2008 ]
+"118
 [v main@F2010 F2010 `[5]i  1 s 10 F2010 ]
-"129
-[v main@F2012 F2012 `[5]i  1 s 10 F2012 ]
-"130
-[v main@F2014 F2014 `[5]i  1 s 10 F2014 ]
-"146
+"193
 } 0
-"33 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\strcmp.c
-[v _strcmp strcmp `(i  1 e 2 0 ]
+"464 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
+[v _printf printf `(i  1 e 2 0 ]
 {
-[v strcmp@s1 s1 `*.5DCCuc  1 a 1 wreg ]
-"35
-[v strcmp@r r `c  1 a 1 4 ]
-"33
-[v strcmp@s1 s1 `*.5DCCuc  1 a 1 wreg ]
-[v strcmp@s2 s2 `*.39DCCuc  1 p 2 0 ]
-[v strcmp@s1 s1 `*.5DCCuc  1 a 1 5 ]
-"42
-} 0
-"492 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
-[v _sprintf sprintf `(i  1 e 2 0 ]
-{
-"530
-[v sprintf@cp cp `*.26DCCuc  1 a 2 9 ]
+[v printf@f f `*.24DCCuc  1 a 1 wreg ]
 "499
-[v sprintf@c c `c  1 a 1 11 ]
-"494
-[v sprintf@ap ap `[1]*.1v  1 a 1 8 ]
+[v printf@c c `c  1 a 1 7 ]
+"466
+[v printf@ap ap `[1]*.1v  1 a 1 5 ]
 "508
-[v sprintf@flag flag `uc  1 a 1 7 ]
-"492
-[v sprintf@sp sp `*.39uc  1 p 2 0 ]
-[v sprintf@f f `*.24DCCuc  1 p 1 2 ]
+[v printf@flag flag `uc  1 a 1 4 ]
+"464
+[v printf@f f `*.24DCCuc  1 a 1 wreg ]
+"533
+[v printf@f f `*.24DCCuc  1 a 1 6 ]
 "1541
 } 0
 "19 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\EPS.c
@@ -320,83 +303,83 @@
 {
 "26
 } 0
-"358 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
+"359 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
 [v _ReceivePacket_data ReceivePacket_data `(*.5uc  1 e 1 0 ]
 {
-"369
+"370
 [v ReceivePacket_data@i i `ui  1 a 2 31 ]
-"359
+"360
 [v ReceivePacket_data@fcschecker fcschecker `ui  1 a 2 29 ]
-"380
+"381
 } 0
-"53
+"54
 [v _waitFlag waitFlag `(v  1 e 1 0 ]
 {
-"235
+"236
 [v waitFlag@j_124 j `ui  1 a 2 24 ]
-"132
+"133
 [v waitFlag@j_111 j `ui  1 a 2 10 ]
-"223
+"224
 [v waitFlag@j_122 j `ui  1 a 2 22 ]
-"120
+"121
 [v waitFlag@j_109 j `ui  1 a 2 8 ]
-"211
+"212
 [v waitFlag@j_120 j `ui  1 a 2 20 ]
-"108
+"109
 [v waitFlag@j_107 j `ui  1 a 2 6 ]
-"199
+"200
 [v waitFlag@j_118 j `ui  1 a 2 18 ]
-"96
+"97
 [v waitFlag@j_105 j `ui  1 a 2 4 ]
-"187
+"188
 [v waitFlag@j_116 j `ui  1 a 2 16 ]
-"84
+"85
 [v waitFlag@j j `ui  1 a 2 2 ]
-"71
+"72
 [v waitFlag@i i `ui  1 a 2 0 ]
-"175
+"176
 [v waitFlag@j_114 j `ui  1 a 2 14 ]
-"164
+"165
 [v waitFlag@j_113 j `ui  1 a 2 12 ]
-"54
-[v waitFlag@flag_judge flag_judge `ui  1 a 2 26 ]
 "55
+[v waitFlag@flag_judge flag_judge `ui  1 a 2 26 ]
+"56
 [v waitFlag@buf buf `uc  1 a 1 28 ]
-"273
+"274
 } 0
-"277
+"278
 [v _getdata getdata `(v  1 e 1 0 ]
 {
-"282
+"283
 [v getdata@dbitstatus dbitstatus `ui  1 a 2 4 ]
-"279
+"280
 [v getdata@dstuff dstuff `ui  1 a 2 2 ]
-"281
+"282
 [v getdata@bufstore_counter bufstore_counter `ui  1 a 2 0 ]
-"278
+"279
 [v getdata@buf buf `uc  1 a 1 6 ]
-"310
+"311
 } 0
-"39
+"40
 [v _getbit getbit `(ui  1 e 2 0 ]
 {
-"42
+"43
 [v getbit@i i `ui  1 a 2 4 ]
-"40
+"41
 [v getbit@oldbit oldbit `ui  1 s 2 oldbit ]
-"50
+"51
 } 0
-"312
+"313
 [v _fcscheck fcscheck `(ui  1 e 2 0 ]
 {
-"318
+"319
 [v fcscheck@i_136 i `ui  1 a 2 7 ]
-"316
+"317
 [v fcscheck@i i `ui  1 a 2 5 ]
-"313
+"314
 [v fcscheck@byte byte `uc  1 a 1 9 ]
 [v fcscheck@bt bt `uc  1 a 1 4 ]
-"350
+"351
 } 0
 "68 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\UART.c
 [v _NM_waddress NM_waddress `(v  1 e 1 0 ]
@@ -513,9 +496,9 @@
 [v _RFDOUT RFDOUT `(v  1 e 1 0 ]
 {
 "214
-[v RFDOUT@i_480 i `i  1 a 2 31 ]
+[v RFDOUT@i_471 i `i  1 a 2 31 ]
 "208
-[v RFDOUT@i_479 i `i  1 a 2 27 ]
+[v RFDOUT@i_470 i `i  1 a 2 27 ]
 "203
 [v RFDOUT@i i `i  1 a 2 29 ]
 "201
@@ -531,9 +514,9 @@
 "146
 [v OUTFQ@j j `i  1 a 2 58 ]
 "172
-[v OUTFQ@i_470 i `i  1 a 2 56 ]
+[v OUTFQ@i_461 i `i  1 a 2 56 ]
 "145
-[v OUTFQ@i_468 i `i  1 a 2 50 ]
+[v OUTFQ@i_459 i `i  1 a 2 50 ]
 "140
 [v OUTFQ@i i `i  1 a 2 54 ]
 "138

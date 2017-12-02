@@ -2145,7 +2145,7 @@ void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 
-# 23 "Init_MPU.h"
+# 24 "Init_MPU.h"
 void Init_MPU(void);
 void led_onoff(void);
 void debug_ledy(void);
@@ -2283,10 +2283,10 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 35 "decode_AX25.h"
+# 36 "decode_AX25.h"
 UINT getbit(void);
 
-# 43
+# 44
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 
@@ -2326,7 +2326,7 @@ void _NOP(void);
 void Reset_EPS(void);
 
 
-# 25 "main.c"
+# 24 "main.c"
 #pragma config FOSC = HS
 #pragma config WDTE = OFF
 #pragma config PWRTE = ON
@@ -2334,11 +2334,11 @@ void Reset_EPS(void);
 #pragma config MCLRE = ON
 #pragma config CP = OFF
 #pragma config CPD = OFF
-#pragma config BOREN = OFF
+#pragma config BOREN = ON
 #pragma config IESO = OFF
 #pragma config FCMEN = OFF
 #pragma config LVP = OFF
-#pragma config BOR4V = BOR40V
+#pragma config BOR4V = BOR21V
 #pragma config WRT = OFF
 
 void main(void) {
@@ -2352,7 +2352,9 @@ Init_SERIAL();
 Init_MPU();
 Init_I2C_M(400000);
 
-# 54
+
+
+
 RB2 = 1;
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
@@ -2360,34 +2362,43 @@ FMTX(FMTX_Nref, FMTX_Nprg);
 CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 RB2 = 0;
-
+printf("start\r\n");
 while(1){
 
-# 76
+# 74
 UBYTE *dData;
 dData = ReceivePacket_data();
-RB2 = 1;
-_delay((unsigned long)((500)*(10000000/4000.0)));
-RB2 = 0;
 
-# 94
+# 81
 EEPROM_Write(0x50,0x00,0x00,dData);
 
+for (UINT i = 0;i < 32;i++){
+printf("%c", dData[i]);
+dData[i] = 0x00;
+}
+
+# 92
+if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
 NM_waddress(NM_wad_header, 0x00, 0x00);
 
-# 109
-UBYTE EPS_kill[];
-UBYTE EPS_kill_1[] = "EA";
-UBYTE EPS_kill_2 = 0x0D;
-sprintf(EPS_kill,"%s%c",EPS_kill_1,EPS_kill_2);
+}else if(dData[0]=='p'){
 
-# 121
-if (strcmp(dData,EPS_kill) == 0){
 RB2 = 1;
 _delay((unsigned long)((500)*(10000000/4000.0)));
 RB2 = 0;
+if(dData[2] == 'r'){
+
+
+
+
+switch(dData[3]){
+case 'E':
+
+
+
+
 Reset_EPS();
 _delay((unsigned long)((5000)*(10000000/4000.0)));
 
@@ -2400,12 +2411,30 @@ FMTX(FMTX_Nref, FMTX_Nprg);
 CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 _delay((unsigned long)((500)*(10000000/4000.0)));
+break;
+case 'I':
 
+break;
+case '3':
+
+break;
+case 'N':
+
+break;
+case 'T':
+
+break;
+default:
+
+break;
 }
 
+}else if(dData[2] == 't'){
 
+}
+}
 
-
+# 190
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;

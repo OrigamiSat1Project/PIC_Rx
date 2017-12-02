@@ -2110,7 +2110,7 @@ void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 
-# 23 "Init_MPU.h"
+# 24 "Init_MPU.h"
 void Init_MPU(void);
 void led_onoff(void);
 void debug_ledy(void);
@@ -2251,10 +2251,10 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 35 "decode_AX25.h"
+# 36 "decode_AX25.h"
 UINT getbit(void);
 
-# 43
+# 44
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 
@@ -2269,8 +2269,9 @@ void waitFlag(void);
 void getdata(void);
 void conv_DI_UARTRX(void);
 UBYTE reverse_bit8(UBYTE x);
+const UINT commandSize = 32;
 
-# 24
+# 25
 static UINT rcv_state = 0;
 UBYTE dPacket[50];
 UBYTE dData[32];
@@ -2568,7 +2569,7 @@ byte = dPacket[i];
 for(UINT i=0;i<8;i++){
 bt = byte & 0x01;
 
-# 320
+# 321
 #asm
                     BCF 03,0
                     RRF _dfcshi,F
@@ -2612,14 +2613,14 @@ UINT fcschecker;
 
 
 waitFlag();
-RB2 = 1;
+
 getdata();
-RB2 = 0;
+
 fcschecker = fcscheck();
 
 if(fcschecker == 1){
-for(UINT i=0; i<dPacketnum-18; i++){
-dData[i] = dPacket[i+16];
+for(UINT i=0; i<commandSize; i++){
+dData[i] = dPacket[i+20];
 }
 dPacketnum = 0;
 rcv_state = 0;

@@ -2099,7 +2099,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 23 "Init_MPU.h"
+# 24 "Init_MPU.h"
 void Init_MPU(void);
 void led_onoff(void);
 void debug_ledy(void);
@@ -2251,10 +2251,10 @@ void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 
-# 35 "decode_AX25.h"
+# 36 "decode_AX25.h"
 UINT getbit(void);
 
-# 43
+# 44
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 

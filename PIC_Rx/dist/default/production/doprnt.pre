@@ -259,14 +259,12 @@ extern double round(double);
 # 455
 int
 
-# 492
-sprintf(char * sp, const char * f, ...)
+# 464
+printf(const char * f, ...)
 {
 va_list ap;
 
-
-
-
+# 499
 signed char c;
 
 # 506
@@ -293,7 +291,7 @@ while(c = *f++) {
 if(c != '%')
 
 {
-((*sp++ = (c)));
+(putch(c) );
 continue;
 }
 
@@ -306,24 +304,7 @@ switch(c = *f++) {
 case 0:
 goto alldone;
 
-# 728
-case 's':
-
-# 734
-cp = (*(const char * *)__va_arg((*(const char * **)ap), (const char *)0));
-
-# 740
-if(!cp)
-cp = "(null)";
-
-# 777
-while(*cp)
-((*sp++ = (*cp++)));
-continue;
-
-
-
-
+# 784
 case 'c':
 
 # 799
@@ -333,7 +314,7 @@ c = (*(int *)__va_arg((*(int **)ap), (int)0));
 default:
 
 # 809
-((*sp++ = (c)));
+(putch(c) );
 continue;
 
 # 822
@@ -350,9 +331,7 @@ continue;
 
 alldone:
 
-
-*sp = 0;
-
+# 1540
 return 0;
 }
 
