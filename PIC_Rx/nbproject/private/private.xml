@@ -3,19 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/encode_AX25.h</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/Init_MPU.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/EPS.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/Init_MPU.h</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/encode_AX25.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/EPS.h</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/decode_AX25.h</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/decode_AX25.c</file>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/main.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/I2C.h</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/FMCW.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/FMCW.h</file>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/I2C.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/decode_AX25.c</file>
         </group>
     </open-files>
 </project-private>

@@ -2129,7 +2129,14 @@ TXEN = 1;
 
 UBYTE getch(void){
 
-# 31
+if(FERR || OERR)
+{
+
+# 30
+CREN = 0;
+__nop();
+CREN = 1;
+}
 while(!RCIF);
 return RCREG;
 }

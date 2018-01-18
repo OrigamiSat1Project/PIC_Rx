@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.38\dat\en_msgs.txt -cs \
   -h+dist/default/production\PIC_Rx.production.sym \
   --cmf=dist/default/production\PIC_Rx.production.cmf -z -Q16F887 \
-  -oC:\Users\Kosuke\AppData\Local\Temp\sdho.2 \
+  -oC:\Users\Kosuke\AppData\Local\Temp\sd8g.2 \
   -Mdist/default/production/PIC_Rx.production.map -E1 -ver=XC8 \
   -ASTACK=0E9h-0efh -pstack=STACK -ACODE=00h-07FFhx4 -ASTRCODE=00h-01FFFh \
   -ASTRING=00h-0FFhx32 -ACONST=00h-0FFhx32 -AENTRY=00h-0FFhx32 \
@@ -18,7 +18,7 @@ Linker command line:
   -pfunctab=CODE -ACONFIG=02007h-02008h -pconfig=CONFIG -DCONFIG=2 \
   -AIDLOC=02000h-02003h -pidloc=IDLOC -DIDLOC=2 -AEEDATA=00h-0FFh/02100h \
   -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 -DSTRCODE=2 -DSTRING=2 -DCONST=2 \
-  -DENTRY=2 -k C:\Users\Kosuke\AppData\Local\Temp\sdho.obj \
+  -DENTRY=2 -k C:\Users\Kosuke\AppData\Local\Temp\sd8g.obj \
   dist/default/production\PIC_Rx.production.obj 
 
 Object code version is 3.11
@@ -28,7 +28,7 @@ Machine type is 16F887
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\Kosuke\AppData\Local\Temp\sdho.obj
+C:\Users\Kosuke\AppData\Local\Temp\sd8g.obj
                 end_init                              0        0        3        0       0
                 config                             2007     2007        2     400E       0
 dist/default/production\PIC_Rx.production.obj
@@ -287,15 +287,15 @@ OUTFQ@Nprg_b                  cstackBANK0  0030
 OUTFQ@count                   cstackBANK0  0054
 OUTFQ@fmcwtxrx                cstackCOMMON 0079
 OUTFQ@i                       cstackBANK0  0056
-OUTFQ@i_459                   cstackBANK0  0052
-OUTFQ@i_461                   cstackBANK0  0058
+OUTFQ@i_462                   cstackBANK0  0052
+OUTFQ@i_464                   cstackBANK0  0058
 OUTFQ@j                       cstackBANK0  005A
 RFDOUT@Nref                   cstackCOMMON 007B
 RFDOUT@Nref_b                 cstackBANK0  0023
 RFDOUT@fmcwtxrx               cstackCOMMON 0079
 RFDOUT@i                      cstackBANK0  003D
-RFDOUT@i_470                  cstackBANK0  003B
-RFDOUT@i_471                  cstackBANK0  003F
+RFDOUT@i_473                  cstackBANK0  003B
+RFDOUT@i_474                  cstackBANK0  003F
 ReceivePacket_data@fcschecker cstackBANK0  003D
 ReceivePacket_data@i          cstackBANK0  003F
 STBOUT@fmcwtxrx               cstackCOMMON 0072
@@ -310,6 +310,7 @@ _CWTX_Nprg                    dataBANK1    00C8
 _CWTX_Nref                    dataBANK1    00C2
 _EEPROMData                   bssBANK2     0110
 _EEPROM_Write                 text16       0B40
+_FERR                         (abs)        00C2
 _FMRX                         text15       090E
 _FMRX_Nprg                    dataBANK3    01E0
 _FMRX_Nref                    dataBANK1    00C4
@@ -326,6 +327,7 @@ _Init_MPU                     text11       089D
 _Init_SERIAL                  text10       0851
 _L_OUT                        text27       0A0E
 _NM_waddress                  text8        082A
+_OERR                         (abs)        00C1
 _OPINIT                       text25       0CC1
 _OUTFQ                        text23       00AC
 _PEN                          (abs)        048A
@@ -634,7 +636,7 @@ end_of_initialization         cinit        07FC
 fcscheck@bt                   cstackCOMMON 0074
 fcscheck@byte                 cstackCOMMON 0079
 fcscheck@i                    cstackCOMMON 0075
-fcscheck@i_136                cstackCOMMON 0077
+fcscheck@i_142                cstackCOMMON 0077
 getbit@i                      cstackCOMMON 0074
 getbit@oldbit                 bssBANK1     00E7
 getdata@buf                   cstackBANK0  0026
@@ -683,17 +685,17 @@ waitFlag@buf                  cstackBANK0  003C
 waitFlag@flag_judge           cstackBANK0  003A
 waitFlag@i                    cstackBANK0  0020
 waitFlag@j                    cstackBANK0  0022
-waitFlag@j_105                cstackBANK0  0024
-waitFlag@j_107                cstackBANK0  0026
-waitFlag@j_109                cstackBANK0  0028
-waitFlag@j_111                cstackBANK0  002A
-waitFlag@j_113                cstackBANK0  002C
-waitFlag@j_114                cstackBANK0  002E
-waitFlag@j_116                cstackBANK0  0030
-waitFlag@j_118                cstackBANK0  0032
-waitFlag@j_120                cstackBANK0  0034
-waitFlag@j_122                cstackBANK0  0036
-waitFlag@j_124                cstackBANK0  0038
+waitFlag@j_111                cstackBANK0  0024
+waitFlag@j_113                cstackBANK0  0026
+waitFlag@j_115                cstackBANK0  0028
+waitFlag@j_117                cstackBANK0  002A
+waitFlag@j_119                cstackBANK0  002C
+waitFlag@j_120                cstackBANK0  002E
+waitFlag@j_122                cstackBANK0  0030
+waitFlag@j_124                cstackBANK0  0032
+waitFlag@j_126                cstackBANK0  0034
+waitFlag@j_128                cstackBANK0  0036
+waitFlag@j_130                cstackBANK0  0038
 wtemp                         (abs)        007E
 wtemp0                        (abs)        007E
 wtemp1                        (abs)        0080
@@ -1000,7 +1002,7 @@ Total ram usage:       10 bytes
 
  *************** function _NM_waddress *****************
  Defined at:
-		line 68 in file "UART.c"
+		line 71 in file "UART.c"
  Parameters:    Size  Location     Type
   NM_wad_heade    1    wreg     unsigned char 
   whigh_addres    1    1[COMMON] unsigned char 
@@ -1032,7 +1034,7 @@ Total ram usage:        3 bytes
 
  *************** function _putch *****************
  Defined at:
-		line 35 in file "UART.c"
+		line 38 in file "UART.c"
  Parameters:    Size  Location     Type
   byte            1    wreg     unsigned char 
  Auto vars:     Size  Location     Type

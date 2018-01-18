@@ -23,7 +23,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _RX9 `Vb ~T0 @X0 0 e@198 ]
 "4134
 [v _TXEN `Vb ~T0 @X0 0 e@1221 ]
-"1111
+"3700
+[v _FERR `Vb ~T0 @X0 0 e@194 ]
+"3776
+[v _OERR `Vb ~T0 @X0 0 e@193 ]
+"28 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic.h
+[v ___nop `(v ~T0 @X0 0 ef ]
+[p i ___nop ]
+"1111 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f887.h
 [v _RCREG `Vuc ~T0 @X0 0 e@26 ]
 "4138
 [v _TXIF `Vb ~T0 @X0 0 e@100 ]
@@ -1586,157 +1593,176 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.c: 21: UBYTE getch(void){
 [e :U _getch ]
 [f ]
-[; ;UART.c: 31: while(!RCIF);
+[; ;UART.c: 23: if(FERR || OERR)
+"23
+[e $ ! || _FERR _OERR 141  ]
+[; ;UART.c: 24: {
+"24
+{
+[; ;UART.c: 30: CREN = 0;
+"30
+[e = _CREN -> -> 0 `i `b ]
+[; ;UART.c: 31: __nop();
 "31
-[e $U 141  ]
-[e :U 142 ]
-[e :U 141 ]
-[e $ ! _RCIF 142  ]
-[e :U 143 ]
-[; ;UART.c: 32: return RCREG;
+[e ( ___nop ..  ]
+[; ;UART.c: 32: CREN = 1;
 "32
+[e = _CREN -> -> 1 `i `b ]
+"33
+}
+[e :U 141 ]
+[; ;UART.c: 33: }
+[; ;UART.c: 34: while(!RCIF);
+"34
+[e $U 142  ]
+[e :U 143 ]
+[e :U 142 ]
+[e $ ! _RCIF 143  ]
+[e :U 144 ]
+[; ;UART.c: 35: return RCREG;
+"35
 [e ) _RCREG ]
 [e $UE 140  ]
-[; ;UART.c: 33: }
-"33
+[; ;UART.c: 36: }
+"36
 [e :UE 140 ]
 }
-"35
+"38
 [v _putch `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;UART.c: 35: void putch(UBYTE byte){
+[; ;UART.c: 38: void putch(UBYTE byte){
 [e :U _putch ]
 [v _byte `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;UART.c: 36: while(!TXIF);
-"36
-[e $U 145  ]
-[e :U 146 ]
-[e :U 145 ]
-[e $ ! _TXIF 146  ]
+[; ;UART.c: 39: while(!TXIF);
+"39
+[e $U 146  ]
 [e :U 147 ]
-[; ;UART.c: 37: TXREG = byte;
-"37
+[e :U 146 ]
+[e $ ! _TXIF 147  ]
+[e :U 148 ]
+[; ;UART.c: 40: TXREG = byte;
+"40
 [e = _TXREG _byte ]
-[; ;UART.c: 38: }
-"38
-[e :UE 144 ]
+[; ;UART.c: 41: }
+"41
+[e :UE 145 ]
 }
-"40
-[v _putstr `(v ~T0 @X0 1 ef1`*uc ]
-"41
-{
-[; ;UART.c: 40: void putstr(UBYTE *x)
-[; ;UART.c: 41: {
-[e :U _putstr ]
-"40
-[v _x `*uc ~T0 @X0 1 r1 ]
-"41
-[f ]
-[; ;UART.c: 42: while(*x != '\0'){
-"42
-[e $U 149  ]
-[e :U 150 ]
-{
-[; ;UART.c: 43: putch(*x);
 "43
-[e ( _putch (1 *U _x ]
-[; ;UART.c: 44: x++;
+[v _putstr `(v ~T0 @X0 1 ef1`*uc ]
 "44
-[e ++ _x * -> -> 1 `i `x -> -> # *U _x `i `x ]
+{
+[; ;UART.c: 43: void putstr(UBYTE *x)
+[; ;UART.c: 44: {
+[e :U _putstr ]
+"43
+[v _x `*uc ~T0 @X0 1 r1 ]
+"44
+[f ]
+[; ;UART.c: 45: while(*x != '\0'){
 "45
-}
-[e :U 149 ]
-"42
-[e $ != -> *U _x `ui -> 0 `ui 150  ]
+[e $U 150  ]
 [e :U 151 ]
-[; ;UART.c: 45: }
-[; ;UART.c: 46: }
+{
+[; ;UART.c: 46: putch(*x);
 "46
-[e :UE 148 ]
-}
+[e ( _putch (1 *U _x ]
+[; ;UART.c: 47: x++;
+"47
+[e ++ _x * -> -> 1 `i `x -> -> # *U _x `i `x ]
 "48
+}
+[e :U 150 ]
+"45
+[e $ != -> *U _x `ui -> 0 `ui 151  ]
+[e :U 152 ]
+[; ;UART.c: 48: }
+[; ;UART.c: 49: }
+"49
+[e :UE 149 ]
+}
+"51
 [v _putcrlf `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 48: void putcrlf(void){
+[; ;UART.c: 51: void putcrlf(void){
 [e :U _putcrlf ]
 [f ]
-[; ;UART.c: 49: putch('\r');
-"49
+[; ;UART.c: 52: putch('\r');
+"52
 [e ( _putch (1 -> -> 13 `ui `uc ]
-[; ;UART.c: 50: putch('\n');
-"50
-[e ( _putch (1 -> -> 10 `ui `uc ]
-[; ;UART.c: 51: }
-"51
-[e :UE 152 ]
-}
+[; ;UART.c: 53: putch('\n');
 "53
+[e ( _putch (1 -> -> 10 `ui `uc ]
+[; ;UART.c: 54: }
+"54
+[e :UE 153 ]
+}
+"56
 [v _put_error `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 53: void put_error(void){
+[; ;UART.c: 56: void put_error(void){
 [e :U _put_error ]
 [f ]
-[; ;UART.c: 54: putch('E');
-"54
-[e ( _putch (1 -> -> 69 `ui `uc ]
-[; ;UART.c: 55: putch('R');
-"55
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 56: putch('R');
-"56
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 57: putch('O');
+[; ;UART.c: 57: putch('E');
 "57
-[e ( _putch (1 -> -> 79 `ui `uc ]
+[e ( _putch (1 -> -> 69 `ui `uc ]
 [; ;UART.c: 58: putch('R');
 "58
 [e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 59: putch('!');
+[; ;UART.c: 59: putch('R');
 "59
-[e ( _putch (1 -> -> 33 `ui `uc ]
-[; ;UART.c: 60: }
+[e ( _putch (1 -> -> 82 `ui `uc ]
+[; ;UART.c: 60: putch('O');
 "60
-[e :UE 153 ]
-}
-"62
-[v _put_ok `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 62: void put_ok(void){
-[e :U _put_ok ]
-[f ]
-[; ;UART.c: 63: putch('O');
-"63
 [e ( _putch (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 64: putch('K');
-"64
-[e ( _putch (1 -> -> 75 `ui `uc ]
-[; ;UART.c: 65: putch('!');
-"65
+[; ;UART.c: 61: putch('R');
+"61
+[e ( _putch (1 -> -> 82 `ui `uc ]
+[; ;UART.c: 62: putch('!');
+"62
 [e ( _putch (1 -> -> 33 `ui `uc ]
-[; ;UART.c: 66: }
-"66
+[; ;UART.c: 63: }
+"63
 [e :UE 154 ]
 }
+"65
+[v _put_ok `(v ~T0 @X0 1 ef ]
+{
+[; ;UART.c: 65: void put_ok(void){
+[e :U _put_ok ]
+[f ]
+[; ;UART.c: 66: putch('O');
+"66
+[e ( _putch (1 -> -> 79 `ui `uc ]
+[; ;UART.c: 67: putch('K');
+"67
+[e ( _putch (1 -> -> 75 `ui `uc ]
+[; ;UART.c: 68: putch('!');
 "68
+[e ( _putch (1 -> -> 33 `ui `uc ]
+[; ;UART.c: 69: }
+"69
+[e :UE 155 ]
+}
+"71
 [v _NM_waddress `(v ~T0 @X0 1 ef3`uc`uc`uc ]
 {
-[; ;UART.c: 68: void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
+[; ;UART.c: 71: void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
 [e :U _NM_waddress ]
 [v _NM_wad_header `uc ~T0 @X0 1 r1 ]
 [v _whigh_address `uc ~T0 @X0 1 r2 ]
 [v _wlow_address `uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;UART.c: 69: putch(NM_wad_header);
-"69
-[e ( _putch (1 _NM_wad_header ]
-[; ;UART.c: 70: putch(whigh_address);
-"70
-[e ( _putch (1 _whigh_address ]
-[; ;UART.c: 71: putch(wlow_address);
-"71
-[e ( _putch (1 _wlow_address ]
-[; ;UART.c: 72: }
+[; ;UART.c: 72: putch(NM_wad_header);
 "72
-[e :UE 155 ]
+[e ( _putch (1 _NM_wad_header ]
+[; ;UART.c: 73: putch(whigh_address);
+"73
+[e ( _putch (1 _whigh_address ]
+[; ;UART.c: 74: putch(wlow_address);
+"74
+[e ( _putch (1 _wlow_address ]
+[; ;UART.c: 75: }
+"75
+[e :UE 156 ]
 }
