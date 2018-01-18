@@ -19,15 +19,18 @@ void Init_SERIAL(void){
 }
 
 UBYTE getch(void){
-    /*
-	if(OERR) // If over run error, then reset the receiver
+    /**/
+	if(FERR || OERR) // If over run error, then reset the receiver
 	{
-        if(CREN = 0){
-            do{
-                CREN = 1; 
-            }while(CREN = 1);
-        }
-    }*/
+//        if(CREN = 0){
+//            do{
+//                CREN = 1; 
+//            }while(CREN = 1);
+//        }
+        CREN = 0;
+        NOP();
+        CREN = 1;
+    }
 	while(!RCIF);  
 	return RCREG;
 }
