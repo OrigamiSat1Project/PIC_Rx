@@ -45,6 +45,7 @@ void main(void) {
     Init_SERIAL();
     Init_MPU();
     Init_I2C_M(I2Cbps);
+    Init_WDT();
     //PLL setting
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
     //Set PLL DATA 

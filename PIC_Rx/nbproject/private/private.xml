@@ -4,8 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/main.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/time.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/Init_MPU.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/FMCW.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/EPS.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/WDT.c</file>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/I2C.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/decode_AX25.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/UART.c</file>
         </group>
     </open-files>
 </project-private>
