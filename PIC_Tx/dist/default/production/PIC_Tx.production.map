@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.38\dat\en_msgs.txt -cs \
   -h+dist/default/production\PIC_Tx.production.sym \
   --cmf=dist/default/production\PIC_Tx.production.cmf -z -Q16F886 \
-  -oC:\Users\Kosuke\AppData\Local\Temp\s4t4.2 \
+  -oC:\Users\Kosuke\AppData\Local\Temp\sen8.2 \
   -Mdist/default/production/PIC_Tx.production.map -E1 -ver=XC8 \
   -ASTACK=0130h-016fh -pstack=STACK -ACODE=00h-07FFhx4 -ASTRCODE=00h-01FFFh \
   -ASTRING=00h-0FFhx32 -ACONST=00h-0FFhx32 -AENTRY=00h-0FFhx32 \
@@ -18,7 +18,7 @@ Linker command line:
   -pfunctab=CODE -ACONFIG=02007h-02008h -pconfig=CONFIG -DCONFIG=2 \
   -AIDLOC=02000h-02003h -pidloc=IDLOC -DIDLOC=2 -AEEDATA=00h-0FFh/02100h \
   -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 -DSTRCODE=2 -DSTRING=2 -DCONST=2 \
-  -DENTRY=2 -k C:\Users\Kosuke\AppData\Local\Temp\s4t4.obj \
+  -DENTRY=2 -k C:\Users\Kosuke\AppData\Local\Temp\sen8.obj \
   dist/default/production\PIC_Tx.production.obj 
 
 Object code version is 3.11
@@ -28,7 +28,7 @@ Machine type is 16F886
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\Kosuke\AppData\Local\Temp\s4t4.obj
+C:\Users\Kosuke\AppData\Local\Temp\sen8.obj
                 end_init                              0        0        3        0       0
                 config                             2007     2007        2     400E       0
 dist/default/production\PIC_Tx.production.obj
@@ -221,16 +221,16 @@ Init_I2C_M@c                       cstackBANK0  0020
 Packetmaker@Datanum                cstackCOMMON 0077
 Packetmaker@eDataField             cstackCOMMON 0074
 Packetmaker@i                      cstackCOMMON 0079
-Packetmaker@i_193                  cstackCOMMON 007B
-Packetmaker@i_196                  cstackCOMMON 0075
+Packetmaker@i_199                  cstackCOMMON 007B
+Packetmaker@i_202                  cstackCOMMON 0075
 SendByte@bt                        cstackCOMMON 0078
 SendByte@byte                      cstackCOMMON 0077
 SendByte@i                         cstackCOMMON 0075
 SendPacket@Packetnum               cstackBANK0  0020
 SendPacket@eDataField              cstackBANK0  0022
 SendPacket@i                       cstackBANK0  0023
-SendPacket@i_201                   cstackBANK0  0025
-SendPacket@i_202                   cstackBANK0  0027
+SendPacket@i_207                   cstackBANK0  0025
+SendPacket@i_208                   cstackBANK0  0027
 _ACKDT                             (abs)        048D
 _ACKEN                             (abs)        048C
 _ANSEL                             (abs)        0188
@@ -238,16 +238,21 @@ _ANSELH                            (abs)        0189
 _BRGH                              (abs)        04C2
 _CREN                              (abs)        00C4
 _EEPROM_Read                       text10       0711
+_FERR                              (abs)        00C2
 _I2C_Master_Read                   text15       041F
 _I2C_Master_RepeatedStart          text14       0363
 _I2C_Master_Start                  text13       036A
 _I2C_Master_Stop                   text12       0371
 _I2C_Master_Wait                   text16       0388
 _I2C_Master_Write                  text11       0378
+_INTCONbits                        (abs)        000B
 _Init_I2C_M                        text8        0445
 _Init_MPU                          text7        03CD
 _Init_SERIAL                       text6        03B4
+_OERR                              (abs)        00C1
 _PEN                               (abs)        048A
+_PIE1bits                          (abs)        008C
+_PIR1bits                          (abs)        000C
 _PORTA                             (abs)        0005
 _PORTB                             (abs)        0006
 _PORTC                             (abs)        0007
@@ -276,6 +281,8 @@ _STATUS                            (abs)        0003
 _SYNC                              (abs)        04C4
 _SendByte                          text2        0479
 _SendPacket                        text1        052F
+_T1CONbits                         (abs)        0010
+_TMR1                              (abs)        000E
 _TRISA                             (abs)        0085
 _TRISB                             (abs)        0086
 _TRISC                             (abs)        0087
@@ -494,7 +501,7 @@ ltemp1                             (abs)        0082
 ltemp2                             (abs)        0086
 ltemp3                             (abs)        0080
 main@EEPROMDataLength              cstackBANK0  004F
-main@EEPROMData_243                cstackBANK0  002D
+main@EEPROMData_249                cstackBANK0  002D
 main@dData                         cstackBANK0  002D
 main@write_data_length             cstackBANK0  004D
 reset_vec                          reset_vec    0000
@@ -562,10 +569,10 @@ Total ram usage:       40 bytes
 		line 60 in file "encode_AX25.c"
  Parameters:    Size  Location     Type
   eDataField      1    wreg     PTR unsigned char 
-		 -> main@EEPROMData_243(32), 
+		 -> main@EEPROMData_249(32), 
  Auto vars:     Size  Location     Type
   eDataField      1    2[BANK0 ] PTR unsigned char 
-		 -> main@EEPROMData_243(32), 
+		 -> main@EEPROMData_249(32), 
   i               2    7[BANK0 ] unsigned int 
   i               2    5[BANK0 ] unsigned int 
   i               2    3[BANK0 ] unsigned int 
@@ -690,10 +697,10 @@ Total ram usage:        3 bytes
 		line 41 in file "encode_AX25.c"
  Parameters:    Size  Location     Type
   eDataField      1    wreg     PTR unsigned char 
-		 -> main@EEPROMData_243(32), 
+		 -> main@EEPROMData_249(32), 
  Auto vars:     Size  Location     Type
   eDataField      1    4[COMMON] PTR unsigned char 
-		 -> main@EEPROMData_243(32), 
+		 -> main@EEPROMData_249(32), 
   i               2    5[COMMON] unsigned int 
   i               2   11[COMMON] unsigned int 
   i               2    9[COMMON] unsigned int 
@@ -848,7 +855,7 @@ Total ram usage:       14 bytes
   high_address    1    3[COMMON] unsigned char 
   low_address     1    4[COMMON] unsigned char 
   ReadData        1    5[COMMON] PTR unsigned char 
-		 -> main@EEPROMData_243(32), 
+		 -> main@EEPROMData_249(32), 
   EEPROMDataLe    1    6[COMMON] PTR unsigned int 
 		 -> main@EEPROMDataLength(2), 
  Auto vars:     Size  Location     Type

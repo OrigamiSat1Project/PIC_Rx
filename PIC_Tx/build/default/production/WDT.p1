@@ -1,41 +1,47 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"2430 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
-[v _SPBRG `Vuc ~T0 @X0 0 e@153 ]
-"3392
-[v _BRGH `Vb ~T0 @X0 0 e@1218 ]
-"3782
-[v _SYNC `Vb ~T0 @X0 0 e@1220 ]
-"3746
-[v _SPEN `Vb ~T0 @X0 0 e@199 ]
-"3486
-[v _CREN `Vb ~T0 @X0 0 e@196 ]
-"3752
-[v _SREN `Vb ~T0 @X0 0 e@197 ]
-"3712
-[v _RCIF `Vb ~T0 @X0 0 e@101 ]
-"3912
-[v _TXIE `Vb ~T0 @X0 0 e@1124 ]
-"3710
-[v _RCIE `Vb ~T0 @X0 0 e@1125 ]
-"3904
-[v _TX9 `Vb ~T0 @X0 0 e@1222 ]
-"3726
-[v _RX9 `Vb ~T0 @X0 0 e@198 ]
-"3910
-[v _TXEN `Vb ~T0 @X0 0 e@1221 ]
-"3520
-[v _FERR `Vb ~T0 @X0 0 e@194 ]
-"3596
-[v _OERR `Vb ~T0 @X0 0 e@193 ]
-"28 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic.h
-[v ___nop `(v ~T0 @X0 0 ef ]
-[p i ___nop ]
-"1033 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
-[v _RCREG `Vuc ~T0 @X0 0 e@26 ]
-"3914
-[v _TXIF `Vb ~T0 @X0 0 e@100 ]
-"1027
-[v _TXREG `Vuc ~T0 @X0 0 e@25 ]
+"375 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
+[s S15 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S15 . RBIF INTF T0IF RBIE INTE T0IE PEIE GIE ]
+"385
+[s S16 :2 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 ]
+[n S16 . . TMR0IF . TMR0IE ]
+"374
+[u S14 `S15 1 `S16 1 ]
+[n S14 . . . ]
+"392
+[v _INTCONbits `VS14 ~T0 @X0 0 e@11 ]
+"452
+[s S18 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S18 . TMR1IF TMR2IF CCP1IF SSPIF TXIF RCIF ADIF ]
+"451
+[u S17 `S18 1 ]
+[n S17 . . ]
+"462
+[v _PIR1bits `VS17 ~T0 @X0 0 e@12 ]
+"1510
+[s S60 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S60 . TMR1IE TMR2IE CCP1IE SSPIE TXIE RCIE ADIE ]
+"1509
+[u S59 `S60 1 ]
+[n S59 . . ]
+"1520
+[v _PIE1bits `VS59 ~T0 @X0 0 e@140 ]
+"581
+[s S22 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S22 . TMR1ON TMR1CS nT1SYNC T1OSCEN T1CKPS TMR1GE T1GINV ]
+"590
+[s S23 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S23 . . T1INSYNC . T1CKPS0 T1CKPS1 . T1GIV ]
+"599
+[s S24 :2 `uc 1 :1 `uc 1 ]
+[n S24 . . T1SYNC ]
+"580
+[u S21 `S22 1 `S23 1 `S24 1 ]
+[n S21 . . . . ]
+"604
+[v _T1CONbits `VS21 ~T0 @X0 0 e@16 ]
+"557
+[v _TMR1 `Vus ~T0 @X0 0 e@14 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1464,239 +1470,36 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;UART.h: 15: void Init_SERIAL(void);
-[; ;UART.h: 16: void putch(UBYTE c);
-[; ;UART.h: 17: void putstr(UBYTE *);
-[; ;UART.h: 18: UBYTE getch(void);
-[; ;UART.h: 19: void putcrlf(void);
-[; ;UART.h: 21: void put_error(void);
-[; ;UART.h: 22: void put_ok(void);
-[; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
-"5 UART.c
-[v _Init_SERIAL `(v ~T0 @X0 1 ef ]
+[; ;WDT.h: 17: void Init_WDT(void);
+[; ;WDT.h: 18: void interrupt intr(void);
+"5 WDT.c
+[v _Init_WDT `(v ~T0 @X0 1 ef ]
 {
-[; ;UART.c: 5: void Init_SERIAL(void){
-[e :U _Init_SERIAL ]
+[; ;WDT.c: 5: void Init_WDT(void){
+[e :U _Init_WDT ]
 [f ]
-[; ;UART.c: 6: SPBRG = 129;
+[; ;WDT.c: 6: INTCONbits.GIE = 1;
 "6
-[e = _SPBRG -> -> 129 `i `uc ]
-[; ;UART.c: 7: BRGH = 0;
+[e = . . _INTCONbits 0 7 -> -> 1 `i `uc ]
+[; ;WDT.c: 7: INTCONbits.PEIE = 1;
 "7
-[e = _BRGH -> -> 0 `i `b ]
-[; ;UART.c: 8: SYNC = 0;
-"8
-[e = _SYNC -> -> 0 `i `b ]
-[; ;UART.c: 9: SPEN = 1;
+[e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
+[; ;WDT.c: 9: PIR1bits.TMR1IF = 0;
 "9
-[e = _SPEN -> -> 1 `i `b ]
-[; ;UART.c: 10: CREN = 1;
+[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
+[; ;WDT.c: 10: PIE1bits.TMR1IE = 1;
 "10
-[e = _CREN -> -> 1 `i `b ]
-[; ;UART.c: 11: SREN = 0;
-"11
-[e = _SREN -> -> 0 `i `b ]
-[; ;UART.c: 12: RCIF = 0;
-"12
-[e = _RCIF -> -> 0 `i `b ]
-[; ;UART.c: 13: TXIE = 0;
+[e = . . _PIE1bits 0 0 -> -> 1 `i `uc ]
+[; ;WDT.c: 13: T1CONbits.T1CKPS = 2;
 "13
-[e = _TXIE -> -> 0 `i `b ]
-[; ;UART.c: 14: RCIE = 1;
+[e = . . _T1CONbits 0 4 -> -> 2 `i `uc ]
+[; ;WDT.c: 14: TMR1 = (0xffff - 62500);
 "14
-[e = _RCIE -> -> 1 `i `b ]
-[; ;UART.c: 15: TX9 = 0;
-"15
-[e = _TX9 -> -> 0 `i `b ]
-[; ;UART.c: 16: RX9 = 0;
+[e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
+[; ;WDT.c: 16: T1CONbits.TMR1ON = 1;
 "16
-[e = _RX9 -> -> 0 `i `b ]
-[; ;UART.c: 17: TXEN = 0;
+[e = . . _T1CONbits 0 0 -> -> 1 `i `uc ]
+[; ;WDT.c: 17: }
 "17
-[e = _TXEN -> -> 0 `i `b ]
-[; ;UART.c: 18: TXEN = 1;
-"18
-[e = _TXEN -> -> 1 `i `b ]
-[; ;UART.c: 19: }
-"19
 [e :UE 135 ]
-}
-"21
-[v _getch `(uc ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 21: UBYTE getch(void){
-[e :U _getch ]
-[f ]
-[; ;UART.c: 23: if(FERR || OERR)
-"23
-[e $ ! || _FERR _OERR 137  ]
-[; ;UART.c: 24: {
-"24
-{
-[; ;UART.c: 30: CREN = 0;
-"30
-[e = _CREN -> -> 0 `i `b ]
-[; ;UART.c: 31: __nop();
-"31
-[e ( ___nop ..  ]
-[; ;UART.c: 32: CREN = 1;
-"32
-[e = _CREN -> -> 1 `i `b ]
-"33
-}
-[e :U 137 ]
-[; ;UART.c: 33: }
-[; ;UART.c: 34: while(!RCIF);
-"34
-[e $U 138  ]
-[e :U 139 ]
-[e :U 138 ]
-[e $ ! _RCIF 139  ]
-[e :U 140 ]
-[; ;UART.c: 35: return RCREG;
-"35
-[e ) _RCREG ]
-[e $UE 136  ]
-[; ;UART.c: 36: }
-"36
-[e :UE 136 ]
-}
-"38
-[v _putch `(v ~T0 @X0 1 ef1`uc ]
-{
-[; ;UART.c: 38: void putch(UBYTE byte){
-[e :U _putch ]
-[v _byte `uc ~T0 @X0 1 r1 ]
-[f ]
-[; ;UART.c: 39: while(!TXIF);
-"39
-[e $U 142  ]
-[e :U 143 ]
-[e :U 142 ]
-[e $ ! _TXIF 143  ]
-[e :U 144 ]
-[; ;UART.c: 40: TXREG = byte;
-"40
-[e = _TXREG _byte ]
-[; ;UART.c: 41: }
-"41
-[e :UE 141 ]
-}
-"46
-[v _putstr `(v ~T0 @X0 1 ef1`*uc ]
-"47
-{
-[; ;UART.c: 46: void putstr(UBYTE *x)
-[; ;UART.c: 47: {
-[e :U _putstr ]
-"46
-[v _x `*uc ~T0 @X0 1 r1 ]
-"47
-[f ]
-[; ;UART.c: 48: while(*x != '\0'){
-"48
-[e $U 146  ]
-[e :U 147 ]
-{
-[; ;UART.c: 49: putch(*x);
-"49
-[e ( _putch (1 *U _x ]
-[; ;UART.c: 50: x++;
-"50
-[e ++ _x * -> -> 1 `i `x -> -> # *U _x `i `x ]
-"51
-}
-[e :U 146 ]
-"48
-[e $ != -> *U _x `ui -> 0 `ui 147  ]
-[e :U 148 ]
-[; ;UART.c: 51: }
-[; ;UART.c: 52: }
-"52
-[e :UE 145 ]
-}
-"54
-[v _putcrlf `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 54: void putcrlf(void){
-[e :U _putcrlf ]
-[f ]
-[; ;UART.c: 55: putch('\r');
-"55
-[e ( _putch (1 -> -> 13 `ui `uc ]
-[; ;UART.c: 56: putch('\n');
-"56
-[e ( _putch (1 -> -> 10 `ui `uc ]
-[; ;UART.c: 57: }
-"57
-[e :UE 149 ]
-}
-"59
-[v _put_error `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 59: void put_error(void){
-[e :U _put_error ]
-[f ]
-[; ;UART.c: 60: putch('E');
-"60
-[e ( _putch (1 -> -> 69 `ui `uc ]
-[; ;UART.c: 61: putch('R');
-"61
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 62: putch('R');
-"62
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 63: putch('O');
-"63
-[e ( _putch (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 64: putch('R');
-"64
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 65: putch('!');
-"65
-[e ( _putch (1 -> -> 33 `ui `uc ]
-[; ;UART.c: 66: }
-"66
-[e :UE 150 ]
-}
-"68
-[v _put_ok `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 68: void put_ok(void){
-[e :U _put_ok ]
-[f ]
-[; ;UART.c: 69: putch('O');
-"69
-[e ( _putch (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 70: putch('K');
-"70
-[e ( _putch (1 -> -> 75 `ui `uc ]
-[; ;UART.c: 71: putch('!');
-"71
-[e ( _putch (1 -> -> 33 `ui `uc ]
-[; ;UART.c: 72: }
-"72
-[e :UE 151 ]
-}
-"74
-[v _NM_waddress `(v ~T0 @X0 1 ef3`uc`uc`uc ]
-{
-[; ;UART.c: 74: void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-[e :U _NM_waddress ]
-[v _NM_wad_header `uc ~T0 @X0 1 r1 ]
-[v _whigh_address `uc ~T0 @X0 1 r2 ]
-[v _wlow_address `uc ~T0 @X0 1 r3 ]
-[f ]
-[; ;UART.c: 75: putch(NM_wad_header);
-"75
-[e ( _putch (1 _NM_wad_header ]
-[; ;UART.c: 76: putch(whigh_address);
-"76
-[e ( _putch (1 _whigh_address ]
-[; ;UART.c: 77: putch(wlow_address);
-"77
-[e ( _putch (1 _wlow_address ]
-[; ;UART.c: 78: }
-"78
-[e :UE 152 ]
 }

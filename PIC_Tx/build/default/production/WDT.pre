@@ -1,5 +1,5 @@
 
-# 1 "UART.c"
+# 1 "WDT.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.38\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -2002,86 +2002,22 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 15 "UART.h"
-void Init_SERIAL(void);
-void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
+# 17 "WDT.h"
+void Init_WDT(void);
+void interrupt intr(void);
 
-void put_error(void);
-void put_ok(void);
-void NM_waddress(UBYTE, UBYTE, UBYTE);
+# 5 "WDT.c"
+void Init_WDT(void){
+INTCONbits.GIE = 1;
+INTCONbits.PEIE = 1;
 
-# 5 "UART.c"
-void Init_SERIAL(void){
-SPBRG = 129;
-BRGH = 0;
-SYNC = 0;
-SPEN = 1;
-CREN = 1;
-SREN = 0;
-RCIF = 0;
-TXIE = 0;
-RCIE = 1;
-TX9 = 0;
-RX9 = 0;
-TXEN = 0;
-TXEN = 1;
+PIR1bits.TMR1IF = 0;
+PIE1bits.TMR1IE = 1;
+
+
+T1CONbits.T1CKPS = 2;
+TMR1 = (0xffff - 62500);
+
+T1CONbits.TMR1ON = 1;
 }
 
-UBYTE getch(void){
-
-if(FERR || OERR)
-{
-
-# 30
-CREN = 0;
-__nop();
-CREN = 1;
-}
-while(!RCIF);
-return RCREG;
-}
-
-void putch(UBYTE byte){
-while(!TXIF);
-TXREG = byte;
-}
-
-
-
-
-void putstr(UBYTE *x)
-{
-while(*x != '\0'){
-putch(*x);
-x++;
-}
-}
-
-void putcrlf(void){
-putch('\r');
-putch('\n');
-}
-
-void put_error(void){
-putch('E');
-putch('R');
-putch('R');
-putch('O');
-putch('R');
-putch('!');
-}
-
-void put_ok(void){
-putch('O');
-putch('K');
-putch('!');
-}
-
-void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-putch(NM_wad_header);
-putch(whigh_address);
-putch(wlow_address);
-}
