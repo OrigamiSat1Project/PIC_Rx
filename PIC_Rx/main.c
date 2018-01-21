@@ -58,6 +58,7 @@ void main(void) {
     FMRX(FMRX_Nref, FMRX_Nprg);
     led_white = 0;
     printf("start\r\n");
+    RA1 = 0;
     while(1){
         /*
         while(1){
@@ -72,11 +73,12 @@ void main(void) {
         
         /**/
         //Receive command data
+//        RA1 = 0;
         UBYTE *dData;
         dData = ReceivePacket_data();
-//        led_white = 1;
-//        __delay_ms(500);
-//        led_white = 0;
+        led_white = 1;
+        __delay_ms(500);
+        led_white = 0;
         
         //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);

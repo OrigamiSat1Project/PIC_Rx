@@ -2364,13 +2364,17 @@ CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 RB2 = 0;
 printf("start\r\n");
+RA1 = 0;
 while(1){
 
-# 75
+# 77
 UBYTE *dData;
 dData = ReceivePacket_data();
+RB2 = 1;
+_delay((unsigned long)((500)*(10000000/4000.0)));
+RB2 = 0;
 
-# 82
+
 EEPROM_Write(0x50,0x00,0x00,dData);
 
 for (UINT i = 0;i < 32;i++){
@@ -2378,7 +2382,7 @@ printf("%c", dData[i]);
 dData[i] = 0x00;
 }
 
-# 93
+# 95
 if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
@@ -2435,7 +2439,7 @@ break;
 }
 }
 
-# 191
+# 193
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;
