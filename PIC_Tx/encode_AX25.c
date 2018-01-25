@@ -59,6 +59,8 @@ UINT Packetmaker(UBYTE *eDataField){
 
 void SendPacket(UBYTE *eDataField){
 //void SendPacket(void)
+//    FMPTT = 1;
+    __delay_ms(200);
     UINT Packetnum;
     Packetnum = 0;
     Packetnum = Packetmaker(eDataField);
@@ -91,6 +93,9 @@ void SendPacket(UBYTE *eDataField){
     for(UINT i=0;i<6;i++){
         SendByte(0x7e);
     }
+    
+    __delay_ms(200);
+//    FMPTT = 0;
 }
 
 

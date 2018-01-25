@@ -37,9 +37,13 @@ void main(void) {
     /*初期化*/
     //OSCCON = 0x40;
     //Init_FMCW();
+    
     Init_SERIAL();
     Init_MPU();
+//    led_yellow = 1;
+//    __delay_ms(200);
     Init_I2C_M(I2Cbps);
+//    led_yellow = 0;
     //PLL設定
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
     //Set PLL DATA 
@@ -47,6 +51,8 @@ void main(void) {
     FMTX(FMTX_Nref, FMTX_Nprg);
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);*/
+//    FMPTT = 1;
+    __delay_ms(6000);
     
     while(1){
         /*
@@ -69,14 +75,16 @@ void main(void) {
         
         //UBYTE dData[];
         //UBYTE dData[]="ABXYCDEZF";
-        UINT write_data_length;
-        for (write_data_length = 0; dData[write_data_length]!= '\0'; ++write_data_length);
+//        UINT write_data_length;
+//        for (write_data_length = 0; dData[write_data_length]!= '\0'; ++write_data_length);
         //EEPROM書き込み
         //for(UINT i=0;i<=4;i++){
+        led_yellow = 1;
         __delay_ms(200);
         //EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData,write_data_length);
         //EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData,6);
-        __delay_ms(200);
+//        __delay_ms(200);
+        led_yellow = 0;
         //}
         /*
         //デバッグ用データUART送信
@@ -96,18 +104,27 @@ void main(void) {
         //RB5がHighならEEPROM読み込み
         UBYTE *EEPROMData;
         if (UHFstart==1){
+            FMPTT = 1;
+            CWKEY = 0;
             UBYTE EEPROMData[32];
             UINT EEPROMDataLength;
             //putch('B');
             __delay_ms(200);
-            EEPROM_Read(EEPROM_address,rhigh_address,rlow_address, EEPROMData,&EEPROMDataLength);
+//            EEPROM_Read(EEPROM_address,rhigh_address,rlow_address, EEPROMData,&EEPROMDataLength);
             __delay_ms(200);
             //putch('G');
             //
             //  encoder
             //UBYTE ePacket[50];
-            //SendPacket("Hello"EEPROMData);
-            SendPacket(EEPROMData);    
+//            FMPTT = 1;
+            UBYTE EEPROMTestData[5];
+            EEPROMTestData[0] = 'u';
+            EEPROMTestData[1] = 'n';
+            EEPROMTestData[2] = 'k';
+            EEPROMTestData[3] = 'o';
+            EEPROMTestData[4] = 0x0d;
+            SendPacket(EEPROMTestData);
+//            SendPacket(EEPROMData);    
             //test_Packetmaker(EEPROMData);
             //SendPacket();
             __delay_ms(200);
@@ -143,7 +160,7 @@ void main(void) {
         
         //EPSキル
         //Reset_EPS();
-        __delay_ms(200);
+//        __delay_ms(200);
         
         
     }

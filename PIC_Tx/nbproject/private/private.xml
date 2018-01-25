@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/WDT.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/UART.c</file>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/main.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/EEPROM.h</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/Init_MPU.h</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/encode_AX25.h</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/Init_MPU.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/encode_AX25.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Tx/PIC_Tx/time.c</file>
         </group>
     </open-files>
 </project-private>

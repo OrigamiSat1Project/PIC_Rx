@@ -3021,8 +3021,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.h: 35: UINT getbit(void);
 [; ;decode_AX25.h: 43: void ReceivePacket(void);
 [; ;decode_AX25.h: 44: void ReceivePacket_data(UBYTE *);
-[; ;encode_AX25.h: 27: void SendPacket(UBYTE *);
-[; ;encode_AX25.h: 28: void test_Packetmaker(UBYTE *);
+[; ;encode_AX25.h: 26: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 27: void test_Packetmaker(UBYTE *);
 "8 Init_MPU.c
 [v _Init_MPU `(v ~T0 @X0 1 ef ]
 "9
@@ -3052,9 +3052,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Init_MPU.c: 23: TRISA = 0b10000000;
 "23
 [e = _TRISA -> -> 128 `i `uc ]
-[; ;Init_MPU.c: 24: TRISB = 0b00000000;
+[; ;Init_MPU.c: 24: TRISB = 0b00000001;
 "24
-[e = _TRISB -> -> 0 `i `uc ]
+[e = _TRISB -> -> 1 `i `uc ]
 [; ;Init_MPU.c: 25: TRISC = 0b01011100;
 "25
 [e = _TRISC -> -> 92 `i `uc ]
@@ -3064,9 +3064,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Init_MPU.c: 30: PORTA = 0x00;
 "30
 [e = _PORTA -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 31: PORTB = 0x00;
+[; ;Init_MPU.c: 31: PORTB = 0x02;
 "31
-[e = _PORTB -> -> 0 `i `uc ]
+[e = _PORTB -> -> 2 `i `uc ]
 [; ;Init_MPU.c: 32: PORTC = 0x00;
 "32
 [e = _PORTC -> -> 0 `i `uc ]

@@ -1,30 +1,16 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"160 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
-[v _PORTA `Vuc ~T0 @X0 0 e@5 ]
-"221
-[v _PORTB `Vuc ~T0 @X0 0 e@6 ]
-"282
-[v _PORTC `Vuc ~T0 @X0 0 e@7 ]
-"343
-[v _PORTE `Vuc ~T0 @X0 0 e@9 ]
-"3158
-[v _ANSEL `Vuc ~T0 @X0 0 e@392 ]
-"3201
-[v _ANSELH `Vuc ~T0 @X0 0 e@393 ]
-"1301
-[v _TRISA `Vuc ~T0 @X0 0 e@133 ]
-"1362
-[v _TRISB `Vuc ~T0 @X0 0 e@134 ]
-"1423
-[v _TRISC `Vuc ~T0 @X0 0 e@135 ]
-"1484
-[v _TRISE `Vuc ~T0 @X0 0 e@137 ]
-"3666
-[v _RB1 `Vb ~T0 @X0 0 e@49 ]
+"3664 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
+[v _RB0 `Vb ~T0 @X0 0 e@48 ]
 [v F1554 `(v ~T0 @X0 1 tf1`ul ]
 "152 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic.h
 [v __delay `JF1554 ~T0 @X0 0 e ]
 [p i __delay ]
+"67 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
+[v _STATUS `Vuc ~T0 @X0 0 e@3 ]
+"16 UART.h
+[v _putch `(v ~T0 @X0 0 ef1`uc ]
+"16 decode_AX25.c
+[v _reverse_bit8 `(uc ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1453,6 +1439,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
+[; ;UART.h: 15: void Init_SERIAL(void);
+[; ;UART.h: 16: void putch(UBYTE c);
+[; ;UART.h: 17: void putstr(UBYTE *);
+[; ;UART.h: 18: UBYTE getch(void);
+[; ;UART.h: 19: void putcrlf(void);
+[; ;UART.h: 21: void put_error(void);
+[; ;UART.h: 22: void put_ok(void);
+[; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 22: void Init_MPU(void);
 [; ;Init_MPU.h: 23: void led_onoff(void);
 [; ;Init_MPU.h: 24: void debug_ledy(void);
@@ -3010,122 +3004,1622 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC16F887.h: 4226: extern volatile __bit nTX8 @ (((unsigned) &TXSTA)*8) + 6;
 [; ;PIC16F887.h: 4228: extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;PIC16F887.h: 4230: extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
-[; ;UART.h: 15: void Init_SERIAL(void);
-[; ;UART.h: 16: void putch(UBYTE c);
-[; ;UART.h: 17: void putstr(UBYTE *);
-[; ;UART.h: 18: UBYTE getch(void);
-[; ;UART.h: 19: void putcrlf(void);
-[; ;UART.h: 21: void put_error(void);
-[; ;UART.h: 22: void put_ok(void);
-[; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;decode_AX25.h: 35: UINT getbit(void);
 [; ;decode_AX25.h: 43: void ReceivePacket(void);
 [; ;decode_AX25.h: 44: void ReceivePacket_data(UBYTE *);
-[; ;encode_AX25.h: 27: void SendPacket(UBYTE *);
-[; ;encode_AX25.h: 28: void test_Packetmaker(UBYTE *);
-"8 Init_MPU.c
-[v _Init_MPU `(v ~T0 @X0 1 ef ]
-"9
-{
-[; ;Init_MPU.c: 8: void Init_MPU(void)
-[; ;Init_MPU.c: 9: {
-[e :U _Init_MPU ]
-[f ]
-[; ;Init_MPU.c: 11: PORTA = 0x00;
-"11
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 12: PORTB = 0x00;
-"12
-[e = _PORTB -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 13: PORTC = 0x00;
-"13
-[e = _PORTC -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 15: PORTE = 0x00;
-"15
-[e = _PORTE -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 18: ANSEL = 0x00;
-"18
-[e = _ANSEL -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 19: ANSELH = 0x00;
-"19
-[e = _ANSELH -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 23: TRISA = 0b10000000;
-"23
-[e = _TRISA -> -> 128 `i `uc ]
-[; ;Init_MPU.c: 24: TRISB = 0b00000000;
-"24
-[e = _TRISB -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 25: TRISC = 0b01011100;
+[; ;encode_AX25.h: 26: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 27: void test_Packetmaker(UBYTE *);
+[; ;decode_AX25.c: 10: void UART_TX(UINT,UINT);
+[; ;decode_AX25.c: 11: void waitByte(UINT,UINT);
+[; ;decode_AX25.c: 12: UINT getbit(void);
+[; ;decode_AX25.c: 13: void waitFlag(void);
+[; ;decode_AX25.c: 14: void getdata(void);
+[; ;decode_AX25.c: 15: void conv_DI_UARTRX(void);
+[; ;decode_AX25.c: 16: UBYTE reverse_bit8(UBYTE x);
+"24 decode_AX25.c
+[v _rcv_state `ui ~T0 @X0 1 s ]
+[i _rcv_state
+-> -> 0 `i `ui
+]
+[; ;decode_AX25.c: 24: static UINT rcv_state = 0;
 "25
-[e = _TRISC -> -> 92 `i `uc ]
-[; ;Init_MPU.c: 27: TRISE = 0b00000000;
+[v _dPacket `uc ~T0 @X0 -> 50 `i e ]
+[; ;decode_AX25.c: 25: UBYTE dPacket[50];
+"26
+[v _dData `uc ~T0 @X0 -> 32 `i e ]
+[; ;decode_AX25.c: 26: UBYTE dData[32];
 "27
-[e = _TRISE -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 30: PORTA = 0x00;
-"30
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 31: PORTB = 0x00;
-"31
-[e = _PORTB -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 32: PORTC = 0x00;
-"32
-[e = _PORTC -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 34: PORTE = 0x00;
-"34
-[e = _PORTE -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 35: }
-"35
-[e :UE 278 ]
-}
-"36
-[v _led_onoff `(v ~T0 @X0 1 ef ]
-{
-[; ;Init_MPU.c: 36: void led_onoff(void){
-[e :U _led_onoff ]
-[f ]
-[; ;Init_MPU.c: 37: RB1 = 1;;
-"37
-[e = _RB1 -> -> 1 `i `b ]
-[; ;Init_MPU.c: 38: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"38
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;Init_MPU.c: 39: RB1 = 0;;
+[v _dPacketnum `ui ~T0 @X0 1 e ]
+[i _dPacketnum
+-> -> 0 `i `ui
+]
+[; ;decode_AX25.c: 27: UINT dPacketnum = 0;
+"28
+[v _dfcshi `uc ~T0 @X0 1 e ]
+[v _dfcslo `uc ~T0 @X0 1 e ]
+[; ;decode_AX25.c: 28: UBYTE dfcshi, dfcslo;
+[; ;decode_AX25.c: 30: UINT getbit(void);
+[; ;decode_AX25.c: 31: void waitFlag(void);
+[; ;decode_AX25.c: 32: void getdata(void);
+[; ;decode_AX25.c: 33: UINT fcscheck(void);
+[; ;decode_AX25.c: 34: void putAX25(void);
+[; ;decode_AX25.c: 35: void conv_DI_UARTRX(void);
 "39
-[e = _RB1 -> -> 0 `i `b ]
-[; ;Init_MPU.c: 40: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"40
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;Init_MPU.c: 41: }
-"41
-[e :UE 279 ]
-}
-"42
-[v _debug_ledy `(v ~T0 @X0 1 ef ]
+[v _getbit `(ui ~T0 @X0 1 ef ]
 {
-[; ;Init_MPU.c: 42: void debug_ledy(void){
-[e :U _debug_ledy ]
+[; ;decode_AX25.c: 39: UINT getbit(void){
+[e :U _getbit ]
 [f ]
-[; ;Init_MPU.c: 43: if(RB1 == 1){
+"40
+[v F2905 `ui ~T0 @X0 1 s oldbit ]
+[; ;decode_AX25.c: 40: static UINT oldbit;
+[; ;decode_AX25.c: 41: oldbit = RB0;
+"41
+[e = F2905 -> -> _RB0 `i `ui ]
+[; ;decode_AX25.c: 42: for(UINT i=0;i<60;i++){
+"42
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 60 `i `ui 279  ]
+[e $U 280  ]
+[e :U 279 ]
+{
+[; ;decode_AX25.c: 43: if(RB0 != oldbit){
 "43
-[e $ ! == -> _RB1 `i -> 1 `i 281  ]
+[e $ ! != -> -> _RB0 `i `ui F2905 282  ]
 {
-[; ;Init_MPU.c: 44: RB1 = 0;;
+[; ;decode_AX25.c: 44: _delay((unsigned long)((400)*(10000000/4000000.0)));
 "44
-[e = _RB1 -> -> 0 `i `b ]
+[e ( __delay (1 -> * -> -> 400 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
+[; ;decode_AX25.c: 45: return 0;
 "45
-}
-[; ;Init_MPU.c: 45: }else{
-[e $U 282  ]
-[e :U 281 ]
-{
-[; ;Init_MPU.c: 46: RB1 = 1;;
+[e ) -> -> 0 `i `ui ]
+[e $UE 278  ]
 "46
-[e = _RB1 -> -> 1 `i `b ]
-"47
 }
 [e :U 282 ]
-[; ;Init_MPU.c: 47: }
-[; ;Init_MPU.c: 48: }
-"48
-[e :UE 280 ]
+"47
 }
+"42
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 60 `i `ui 279  ]
+[e :U 280 ]
+"47
+}
+[; ;decode_AX25.c: 46: }
+[; ;decode_AX25.c: 47: }
+[; ;decode_AX25.c: 48: return 1;
+"48
+[e ) -> -> 1 `i `ui ]
+[e $UE 278  ]
+[; ;decode_AX25.c: 49: }
+"49
+[e :UE 278 ]
+}
+"52
+[v _waitFlag `(v ~T0 @X0 1 ef ]
+{
+[; ;decode_AX25.c: 52: void waitFlag(void){
+[e :U _waitFlag ]
+[f ]
+"53
+[v _flag_judge `ui ~T0 @X0 1 a ]
+"54
+[v _buf `uc ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 53: UINT flag_judge;
+[; ;decode_AX25.c: 54: UBYTE buf = 0xff;
+[e = _buf -> -> 255 `i `uc ]
+[; ;decode_AX25.c: 55: rcv_state = 0;
+"55
+[e = _rcv_state -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 56: while(rcv_state < 2){
+"56
+[e $U 284  ]
+[e :U 285 ]
+{
+[; ;decode_AX25.c: 57: while(buf != 0x7e){
+"57
+[e $U 287  ]
+[e :U 288 ]
+{
+[; ;decode_AX25.c: 58: flag_judge = getbit();
+"58
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 59: buf = buf << 1;
+"59
+[e = _buf -> << -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 60: if(flag_judge == 0){
+"60
+[e $ ! == _flag_judge -> -> 0 `i `ui 290  ]
+{
+[; ;decode_AX25.c: 61: buf = buf | 0x00;
+"61
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"62
+}
+[; ;decode_AX25.c: 62: }else{
+[e $U 291  ]
+[e :U 290 ]
+{
+[; ;decode_AX25.c: 63: buf = buf | 0x01;
+"63
+[e = _buf -> | -> _buf `i -> 1 `i `uc ]
+"64
+}
+[e :U 291 ]
+"65
+}
+[e :U 287 ]
+"57
+[e $ != -> _buf `i -> 126 `i 288  ]
+[e :U 289 ]
+[; ;decode_AX25.c: 64: }
+[; ;decode_AX25.c: 65: }
+[; ;decode_AX25.c: 69: while(buf == 0x7e){
+"69
+[e $U 292  ]
+[e :U 293 ]
+{
+[; ;decode_AX25.c: 70: for(UINT i=0;i<8;i++){
+"70
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 8 `i `ui 295  ]
+[e $U 296  ]
+[e :U 295 ]
+{
+[; ;decode_AX25.c: 71: flag_judge = getbit();
+"71
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 72: buf = buf >> 1;
+"72
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 73: if(flag_judge == 0){
+"73
+[e $ ! == _flag_judge -> -> 0 `i `ui 298  ]
+{
+[; ;decode_AX25.c: 74: buf = buf | 0x00;
+"74
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"75
+}
+[; ;decode_AX25.c: 75: }else{
+[e $U 299  ]
+[e :U 298 ]
+{
+[; ;decode_AX25.c: 76: buf = buf | 0x80;
+"76
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"77
+}
+[e :U 299 ]
+"78
+}
+"70
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 8 `i `ui 295  ]
+[e :U 296 ]
+"78
+}
+"79
+}
+[e :U 292 ]
+"69
+[e $ == -> _buf `i -> 126 `i 293  ]
+[e :U 294 ]
+[; ;decode_AX25.c: 77: }
+[; ;decode_AX25.c: 78: }
+[; ;decode_AX25.c: 79: }
+[; ;decode_AX25.c: 80: if(buf == ("JQ1YCZ"[0] << 1)){
+"80
+[e $ ! == -> _buf `i << -> *U + :s 1C * -> -> 0 `i `x -> -> # *U :s 1C `i `x `i -> 1 `i 300  ]
+{
+[; ;decode_AX25.c: 81: dPacket[dPacketnum] = buf;
+"81
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 82: dPacketnum ++;
+"82
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 83: for(UINT j=0;j<8;j++){
+"83
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 301  ]
+[e $U 302  ]
+[e :U 301 ]
+{
+[; ;decode_AX25.c: 84: flag_judge = getbit();
+"84
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 85: buf = buf >> 1;
+"85
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 86: if(flag_judge == 0){
+"86
+[e $ ! == _flag_judge -> -> 0 `i `ui 304  ]
+{
+[; ;decode_AX25.c: 87: buf = buf | 0x00;
+"87
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"88
+}
+[; ;decode_AX25.c: 88: }else{
+[e $U 305  ]
+[e :U 304 ]
+{
+[; ;decode_AX25.c: 89: buf = buf | 0x80;
+"89
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"90
+}
+[e :U 305 ]
+"91
+}
+"83
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 301  ]
+[e :U 302 ]
+"91
+}
+[; ;decode_AX25.c: 90: }
+[; ;decode_AX25.c: 91: }
+[; ;decode_AX25.c: 92: if(buf == ("JQ1YCZ"[1] << 1)){
+"92
+[e $ ! == -> _buf `i << -> *U + :s 2C * -> -> 1 `i `x -> -> # *U :s 2C `i `x `i -> 1 `i 306  ]
+{
+[; ;decode_AX25.c: 93: dPacket[dPacketnum] = buf;
+"93
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 94: dPacketnum ++;
+"94
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 95: for(UINT j=0;j<8;j++){
+"95
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 307  ]
+[e $U 308  ]
+[e :U 307 ]
+{
+[; ;decode_AX25.c: 96: flag_judge = getbit();
+"96
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 97: buf = buf >> 1;
+"97
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 98: if(flag_judge == 0){
+"98
+[e $ ! == _flag_judge -> -> 0 `i `ui 310  ]
+{
+[; ;decode_AX25.c: 99: buf = buf | 0x00;
+"99
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"100
+}
+[; ;decode_AX25.c: 100: }else{
+[e $U 311  ]
+[e :U 310 ]
+{
+[; ;decode_AX25.c: 101: buf = buf | 0x80;
+"101
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"102
+}
+[e :U 311 ]
+"103
+}
+"95
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 307  ]
+[e :U 308 ]
+"103
+}
+[; ;decode_AX25.c: 102: }
+[; ;decode_AX25.c: 103: }
+[; ;decode_AX25.c: 104: if(buf == ("JQ1YCZ"[2] << 1)){
+"104
+[e $ ! == -> _buf `i << -> *U + :s 3C * -> -> 2 `i `x -> -> # *U :s 3C `i `x `i -> 1 `i 312  ]
+{
+[; ;decode_AX25.c: 105: dPacket[dPacketnum] = buf;
+"105
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 106: dPacketnum ++;
+"106
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 107: for(UINT j=0;j<8;j++){
+"107
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 313  ]
+[e $U 314  ]
+[e :U 313 ]
+{
+[; ;decode_AX25.c: 108: flag_judge = getbit();
+"108
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 109: buf = buf >> 1;
+"109
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 110: if(flag_judge == 0){
+"110
+[e $ ! == _flag_judge -> -> 0 `i `ui 316  ]
+{
+[; ;decode_AX25.c: 111: buf = buf | 0x00;
+"111
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"112
+}
+[; ;decode_AX25.c: 112: }else{
+[e $U 317  ]
+[e :U 316 ]
+{
+[; ;decode_AX25.c: 113: buf = buf | 0x80;
+"113
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"114
+}
+[e :U 317 ]
+"115
+}
+"107
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 313  ]
+[e :U 314 ]
+"115
+}
+[; ;decode_AX25.c: 114: }
+[; ;decode_AX25.c: 115: }
+[; ;decode_AX25.c: 116: if(buf == ("JQ1YCZ"[3] << 1)){
+"116
+[e $ ! == -> _buf `i << -> *U + :s 4C * -> -> 3 `i `x -> -> # *U :s 4C `i `x `i -> 1 `i 318  ]
+{
+[; ;decode_AX25.c: 117: dPacket[dPacketnum] = buf;
+"117
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 118: dPacketnum ++;
+"118
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 119: for(UINT j=0;j<8;j++){
+"119
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 319  ]
+[e $U 320  ]
+[e :U 319 ]
+{
+[; ;decode_AX25.c: 120: flag_judge = getbit();
+"120
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 121: buf = buf >> 1;
+"121
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 122: if(flag_judge == 0){
+"122
+[e $ ! == _flag_judge -> -> 0 `i `ui 322  ]
+{
+[; ;decode_AX25.c: 123: buf = buf | 0x00;
+"123
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"124
+}
+[; ;decode_AX25.c: 124: }else{
+[e $U 323  ]
+[e :U 322 ]
+{
+[; ;decode_AX25.c: 125: buf = buf | 0x80;
+"125
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"126
+}
+[e :U 323 ]
+"127
+}
+"119
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 319  ]
+[e :U 320 ]
+"127
+}
+[; ;decode_AX25.c: 126: }
+[; ;decode_AX25.c: 127: }
+[; ;decode_AX25.c: 128: if(buf == ("JQ1YCZ"[4] << 1)){
+"128
+[e $ ! == -> _buf `i << -> *U + :s 5C * -> -> 4 `i `x -> -> # *U :s 5C `i `x `i -> 1 `i 324  ]
+{
+[; ;decode_AX25.c: 129: dPacket[dPacketnum] = buf;
+"129
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 130: dPacketnum ++;
+"130
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 131: for(UINT j=0;j<8;j++){
+"131
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 325  ]
+[e $U 326  ]
+[e :U 325 ]
+{
+[; ;decode_AX25.c: 132: flag_judge = getbit();
+"132
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 133: buf = buf >> 1;
+"133
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 134: if(flag_judge == 0){
+"134
+[e $ ! == _flag_judge -> -> 0 `i `ui 328  ]
+{
+[; ;decode_AX25.c: 135: buf = buf | 0x00;
+"135
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"136
+}
+[; ;decode_AX25.c: 136: }else{
+[e $U 329  ]
+[e :U 328 ]
+{
+[; ;decode_AX25.c: 137: buf = buf | 0x80;
+"137
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"138
+}
+[e :U 329 ]
+"139
+}
+"131
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 325  ]
+[e :U 326 ]
+"139
+}
+[; ;decode_AX25.c: 138: }
+[; ;decode_AX25.c: 139: }
+[; ;decode_AX25.c: 140: if(buf == ("JQ1YCZ"[5] << 1)){
+"140
+[e $ ! == -> _buf `i << -> *U + :s 6C * -> -> 5 `i `x -> -> # *U :s 6C `i `x `i -> 1 `i 330  ]
+{
+[; ;decode_AX25.c: 141: dPacket[dPacketnum] = buf;
+"141
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 142: dPacketnum ++;
+"142
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 143: rcv_state ++;
+"143
+[e ++ _rcv_state -> -> 1 `i `ui ]
+"144
+}
+[; ;decode_AX25.c: 144: }else{
+[e $U 331  ]
+[e :U 330 ]
+{
+[; ;decode_AX25.c: 145: dPacketnum = 0;
+"145
+[e = _dPacketnum -> -> 0 `i `ui ]
+"146
+}
+[e :U 331 ]
+"147
+}
+[; ;decode_AX25.c: 146: }
+[; ;decode_AX25.c: 147: }else{
+[e $U 332  ]
+[e :U 324 ]
+{
+[; ;decode_AX25.c: 148: dPacketnum = 0;
+"148
+[e = _dPacketnum -> -> 0 `i `ui ]
+"149
+}
+[e :U 332 ]
+"150
+}
+[; ;decode_AX25.c: 149: }
+[; ;decode_AX25.c: 150: }else{
+[e $U 333  ]
+[e :U 318 ]
+{
+[; ;decode_AX25.c: 151: dPacketnum = 0;
+"151
+[e = _dPacketnum -> -> 0 `i `ui ]
+"152
+}
+[e :U 333 ]
+"153
+}
+[; ;decode_AX25.c: 152: }
+[; ;decode_AX25.c: 153: }else{
+[e $U 334  ]
+[e :U 312 ]
+{
+[; ;decode_AX25.c: 154: dPacketnum = 0;
+"154
+[e = _dPacketnum -> -> 0 `i `ui ]
+"155
+}
+[e :U 334 ]
+"156
+}
+[; ;decode_AX25.c: 155: }
+[; ;decode_AX25.c: 156: }else{
+[e $U 335  ]
+[e :U 306 ]
+{
+[; ;decode_AX25.c: 157: dPacketnum = 0;
+"157
+[e = _dPacketnum -> -> 0 `i `ui ]
+"158
+}
+[e :U 335 ]
+"159
+}
+[; ;decode_AX25.c: 158: }
+[; ;decode_AX25.c: 159: }else{
+[e $U 336  ]
+[e :U 300 ]
+{
+[; ;decode_AX25.c: 160: dPacketnum = 0;
+"160
+[e = _dPacketnum -> -> 0 `i `ui ]
+"161
+}
+[e :U 336 ]
+[; ;decode_AX25.c: 161: }
+[; ;decode_AX25.c: 163: for(UINT j=0;j<8;j++){
+"163
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 337  ]
+[e $U 338  ]
+[e :U 337 ]
+{
+[; ;decode_AX25.c: 164: flag_judge = getbit();
+"164
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 165: buf = buf >> 1;
+"165
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 166: if(flag_judge == 0){
+"166
+[e $ ! == _flag_judge -> -> 0 `i `ui 340  ]
+{
+[; ;decode_AX25.c: 167: buf = buf | 0x00;
+"167
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"168
+}
+[; ;decode_AX25.c: 168: }else{
+[e $U 341  ]
+[e :U 340 ]
+{
+[; ;decode_AX25.c: 169: buf = buf | 0x80;
+"169
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"170
+}
+[e :U 341 ]
+"171
+}
+"163
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 337  ]
+[e :U 338 ]
+"171
+}
+[; ;decode_AX25.c: 170: }
+[; ;decode_AX25.c: 171: }
+[; ;decode_AX25.c: 172: dPacket[dPacketnum] = buf;
+"172
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 173: dPacketnum ++;
+"173
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 174: for(UINT j=0;j<8;j++){
+"174
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 342  ]
+[e $U 343  ]
+[e :U 342 ]
+{
+[; ;decode_AX25.c: 175: flag_judge = getbit();
+"175
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 176: buf = buf >> 1;
+"176
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 177: if(flag_judge == 0){
+"177
+[e $ ! == _flag_judge -> -> 0 `i `ui 345  ]
+{
+[; ;decode_AX25.c: 178: buf = buf | 0x00;
+"178
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"179
+}
+[; ;decode_AX25.c: 179: }else{
+[e $U 346  ]
+[e :U 345 ]
+{
+[; ;decode_AX25.c: 180: buf = buf | 0x80;
+"180
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"181
+}
+[e :U 346 ]
+"182
+}
+"174
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 342  ]
+[e :U 343 ]
+"182
+}
+[; ;decode_AX25.c: 181: }
+[; ;decode_AX25.c: 182: }
+[; ;decode_AX25.c: 183: if(buf == ("JQ1ZHX"[0] << 1)){
+"183
+[e $ ! == -> _buf `i << -> *U + :s 7C * -> -> 0 `i `x -> -> # *U :s 7C `i `x `i -> 1 `i 347  ]
+{
+[; ;decode_AX25.c: 184: dPacket[dPacketnum] = buf;
+"184
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 185: dPacketnum ++;
+"185
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 186: for(UINT j=0;j<8;j++){
+"186
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 348  ]
+[e $U 349  ]
+[e :U 348 ]
+{
+[; ;decode_AX25.c: 187: flag_judge = getbit();
+"187
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 188: buf = buf >> 1;
+"188
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 189: if(flag_judge == 0){
+"189
+[e $ ! == _flag_judge -> -> 0 `i `ui 351  ]
+{
+[; ;decode_AX25.c: 190: buf = buf | 0x00;
+"190
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"191
+}
+[; ;decode_AX25.c: 191: }else{
+[e $U 352  ]
+[e :U 351 ]
+{
+[; ;decode_AX25.c: 192: buf = buf | 0x80;
+"192
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"193
+}
+[e :U 352 ]
+"194
+}
+"186
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 348  ]
+[e :U 349 ]
+"194
+}
+[; ;decode_AX25.c: 193: }
+[; ;decode_AX25.c: 194: }
+[; ;decode_AX25.c: 195: if(buf == ("JQ1ZHX"[1] << 1)){
+"195
+[e $ ! == -> _buf `i << -> *U + :s 8C * -> -> 1 `i `x -> -> # *U :s 8C `i `x `i -> 1 `i 353  ]
+{
+[; ;decode_AX25.c: 196: dPacket[dPacketnum] = buf;
+"196
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 197: dPacketnum ++;
+"197
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 198: for(UINT j=0;j<8;j++){
+"198
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 354  ]
+[e $U 355  ]
+[e :U 354 ]
+{
+[; ;decode_AX25.c: 199: flag_judge = getbit();
+"199
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 200: buf = buf >> 1;
+"200
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 201: if(flag_judge == 0){
+"201
+[e $ ! == _flag_judge -> -> 0 `i `ui 357  ]
+{
+[; ;decode_AX25.c: 202: buf = buf | 0x00;
+"202
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"203
+}
+[; ;decode_AX25.c: 203: }else{
+[e $U 358  ]
+[e :U 357 ]
+{
+[; ;decode_AX25.c: 204: buf = buf | 0x80;
+"204
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"205
+}
+[e :U 358 ]
+"206
+}
+"198
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 354  ]
+[e :U 355 ]
+"206
+}
+[; ;decode_AX25.c: 205: }
+[; ;decode_AX25.c: 206: }
+[; ;decode_AX25.c: 207: if(buf == ("JQ1ZHX"[2] << 1)){
+"207
+[e $ ! == -> _buf `i << -> *U + :s 9C * -> -> 2 `i `x -> -> # *U :s 9C `i `x `i -> 1 `i 359  ]
+{
+[; ;decode_AX25.c: 208: dPacket[dPacketnum] = buf;
+"208
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 209: dPacketnum ++;
+"209
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 210: for(UINT j=0;j<8;j++){
+"210
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 360  ]
+[e $U 361  ]
+[e :U 360 ]
+{
+[; ;decode_AX25.c: 211: flag_judge = getbit();
+"211
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 212: buf = buf >> 1;
+"212
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 213: if(flag_judge == 0){
+"213
+[e $ ! == _flag_judge -> -> 0 `i `ui 363  ]
+{
+[; ;decode_AX25.c: 214: buf = buf | 0x00;
+"214
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"215
+}
+[; ;decode_AX25.c: 215: }else{
+[e $U 364  ]
+[e :U 363 ]
+{
+[; ;decode_AX25.c: 216: buf = buf | 0x80;
+"216
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"217
+}
+[e :U 364 ]
+"218
+}
+"210
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 360  ]
+[e :U 361 ]
+"218
+}
+[; ;decode_AX25.c: 217: }
+[; ;decode_AX25.c: 218: }
+[; ;decode_AX25.c: 219: if(buf == ("JQ1ZHX"[3] << 1)){
+"219
+[e $ ! == -> _buf `i << -> *U + :s 10C * -> -> 3 `i `x -> -> # *U :s 10C `i `x `i -> 1 `i 365  ]
+{
+[; ;decode_AX25.c: 220: dPacket[dPacketnum] = buf;
+"220
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 221: dPacketnum ++;
+"221
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 222: for(UINT j=0;j<8;j++){
+"222
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 366  ]
+[e $U 367  ]
+[e :U 366 ]
+{
+[; ;decode_AX25.c: 223: flag_judge = getbit();
+"223
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 224: buf = buf >> 1;
+"224
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 225: if(flag_judge == 0){
+"225
+[e $ ! == _flag_judge -> -> 0 `i `ui 369  ]
+{
+[; ;decode_AX25.c: 226: buf = buf | 0x00;
+"226
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"227
+}
+[; ;decode_AX25.c: 227: }else{
+[e $U 370  ]
+[e :U 369 ]
+{
+[; ;decode_AX25.c: 228: buf = buf | 0x80;
+"228
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"229
+}
+[e :U 370 ]
+"230
+}
+"222
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 366  ]
+[e :U 367 ]
+"230
+}
+[; ;decode_AX25.c: 229: }
+[; ;decode_AX25.c: 230: }
+[; ;decode_AX25.c: 231: if(buf == ("JQ1ZHX"[4] << 1)){
+"231
+[e $ ! == -> _buf `i << -> *U + :s 11C * -> -> 4 `i `x -> -> # *U :s 11C `i `x `i -> 1 `i 371  ]
+{
+[; ;decode_AX25.c: 232: dPacket[dPacketnum] = buf;
+"232
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 233: dPacketnum ++;
+"233
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 234: for(UINT j=0;j<8;j++){
+"234
+{
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 372  ]
+[e $U 373  ]
+[e :U 372 ]
+{
+[; ;decode_AX25.c: 235: flag_judge = getbit();
+"235
+[e = _flag_judge ( _getbit ..  ]
+[; ;decode_AX25.c: 236: buf = buf >> 1;
+"236
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 237: if(flag_judge == 0){
+"237
+[e $ ! == _flag_judge -> -> 0 `i `ui 375  ]
+{
+[; ;decode_AX25.c: 238: buf = buf | 0x00;
+"238
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+"239
+}
+[; ;decode_AX25.c: 239: }else{
+[e $U 376  ]
+[e :U 375 ]
+{
+[; ;decode_AX25.c: 240: buf = buf | 0x80;
+"240
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+"241
+}
+[e :U 376 ]
+"242
+}
+"234
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 372  ]
+[e :U 373 ]
+"242
+}
+[; ;decode_AX25.c: 241: }
+[; ;decode_AX25.c: 242: }
+[; ;decode_AX25.c: 243: if(buf == ("JQ1ZHX"[5] << 1)){
+"243
+[e $ ! == -> _buf `i << -> *U + :s 12C * -> -> 5 `i `x -> -> # *U :s 12C `i `x `i -> 1 `i 377  ]
+{
+[; ;decode_AX25.c: 244: dPacket[dPacketnum] = buf;
+"244
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 245: dPacketnum ++;
+"245
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 246: rcv_state ++;
+"246
+[e ++ _rcv_state -> -> 1 `i `ui ]
+"247
+}
+[; ;decode_AX25.c: 247: }else{
+[e $U 378  ]
+[e :U 377 ]
+{
+[; ;decode_AX25.c: 248: dPacketnum = 0;
+"248
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 249: rcv_state = 0;
+"249
+[e = _rcv_state -> -> 0 `i `ui ]
+"250
+}
+[e :U 378 ]
+"251
+}
+[; ;decode_AX25.c: 250: }
+[; ;decode_AX25.c: 251: }else{
+[e $U 379  ]
+[e :U 371 ]
+{
+[; ;decode_AX25.c: 252: dPacketnum = 0;
+"252
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 253: rcv_state = 0;
+"253
+[e = _rcv_state -> -> 0 `i `ui ]
+"254
+}
+[e :U 379 ]
+"255
+}
+[; ;decode_AX25.c: 254: }
+[; ;decode_AX25.c: 255: }else{
+[e $U 380  ]
+[e :U 365 ]
+{
+[; ;decode_AX25.c: 256: dPacketnum = 0;
+"256
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 257: rcv_state = 0;
+"257
+[e = _rcv_state -> -> 0 `i `ui ]
+"258
+}
+[e :U 380 ]
+"259
+}
+[; ;decode_AX25.c: 258: }
+[; ;decode_AX25.c: 259: }else{
+[e $U 381  ]
+[e :U 359 ]
+{
+[; ;decode_AX25.c: 260: dPacketnum = 0;
+"260
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 261: rcv_state = 0;
+"261
+[e = _rcv_state -> -> 0 `i `ui ]
+"262
+}
+[e :U 381 ]
+"263
+}
+[; ;decode_AX25.c: 262: }
+[; ;decode_AX25.c: 263: }else{
+[e $U 382  ]
+[e :U 353 ]
+{
+[; ;decode_AX25.c: 264: dPacketnum = 0;
+"264
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 265: rcv_state = 0;
+"265
+[e = _rcv_state -> -> 0 `i `ui ]
+"266
+}
+[e :U 382 ]
+"267
+}
+[; ;decode_AX25.c: 266: }
+[; ;decode_AX25.c: 267: }else{
+[e $U 383  ]
+[e :U 347 ]
+{
+[; ;decode_AX25.c: 268: dPacketnum = 0;
+"268
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 269: rcv_state = 0;
+"269
+[e = _rcv_state -> -> 0 `i `ui ]
+"270
+}
+[e :U 383 ]
+"271
+}
+[e :U 284 ]
+"56
+[e $ < _rcv_state -> -> 2 `i `ui 285  ]
+[e :U 286 ]
+[; ;decode_AX25.c: 270: }
+[; ;decode_AX25.c: 271: }
+[; ;decode_AX25.c: 272: }
+"272
+[e :UE 283 ]
+}
+"276
+[v _getdata `(v ~T0 @X0 1 ef ]
+{
+[; ;decode_AX25.c: 276: void getdata(void){
+[e :U _getdata ]
+[f ]
+"277
+[v _buf `uc ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 277: UBYTE buf = 0x00;
+[e = _buf -> -> 0 `i `uc ]
+"278
+[v _dstuff `ui ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 278: UINT dstuff = 0;
+[e = _dstuff -> -> 0 `i `ui ]
+"279
+[v _dammy_data `uc ~T0 @X0 1 a ]
+"280
+[v _bufstore_counter `ui ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 279: UBYTE dammy_data;
+[; ;decode_AX25.c: 280: UINT bufstore_counter = 0;
+[e = _bufstore_counter -> -> 0 `i `ui ]
+"281
+[v _dbitstatus `ui ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 281: UINT dbitstatus = 0;
+[e = _dbitstatus -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 283: while(rcv_state == 2){
+"283
+[e $U 385  ]
+[e :U 386 ]
+{
+[; ;decode_AX25.c: 284: dbitstatus = getbit();
+"284
+[e = _dbitstatus ( _getbit ..  ]
+[; ;decode_AX25.c: 285: if(dstuff == 5){
+"285
+[e $ ! == _dstuff -> -> 5 `i `ui 388  ]
+{
+[; ;decode_AX25.c: 286: if(dbitstatus == 1){
+"286
+[e $ ! == _dbitstatus -> -> 1 `i `ui 389  ]
+{
+[; ;decode_AX25.c: 287: rcv_state ++;
+"287
+[e ++ _rcv_state -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 288: break;
+"288
+[e $U 387  ]
+"289
+}
+[; ;decode_AX25.c: 289: }else{
+[e $U 390  ]
+[e :U 389 ]
+{
+[; ;decode_AX25.c: 290: dstuff = 0;
+"290
+[e = _dstuff -> -> 0 `i `ui ]
+"291
+}
+[e :U 390 ]
+"292
+}
+[; ;decode_AX25.c: 291: }
+[; ;decode_AX25.c: 292: }else{
+[e $U 391  ]
+[e :U 388 ]
+{
+[; ;decode_AX25.c: 293: buf = buf >> 1;
+"293
+[e = _buf -> >> -> _buf `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 294: if(dbitstatus == 0){
+"294
+[e $ ! == _dbitstatus -> -> 0 `i `ui 392  ]
+{
+[; ;decode_AX25.c: 295: buf = buf | 0x00;
+"295
+[e = _buf -> | -> _buf `i -> 0 `i `uc ]
+[; ;decode_AX25.c: 296: dstuff = 0;
+"296
+[e = _dstuff -> -> 0 `i `ui ]
+"297
+}
+[; ;decode_AX25.c: 297: }else{
+[e $U 393  ]
+[e :U 392 ]
+{
+[; ;decode_AX25.c: 298: buf = buf | 0x80;
+"298
+[e = _buf -> | -> _buf `i -> 128 `i `uc ]
+[; ;decode_AX25.c: 299: dstuff ++;
+"299
+[e ++ _dstuff -> -> 1 `i `ui ]
+"300
+}
+[e :U 393 ]
+[; ;decode_AX25.c: 300: }
+[; ;decode_AX25.c: 301: bufstore_counter ++;
+"301
+[e ++ _bufstore_counter -> -> 1 `i `ui ]
+[; ;decode_AX25.c: 302: if(bufstore_counter == 8){
+"302
+[e $ ! == _bufstore_counter -> -> 8 `i `ui 394  ]
+{
+[; ;decode_AX25.c: 303: bufstore_counter = 0;
+"303
+[e = _bufstore_counter -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 304: dPacket[dPacketnum] = buf;
+"304
+[e = *U + &U _dPacket * -> _dPacketnum `ux -> -> # *U &U _dPacket `ui `ux _buf ]
+[; ;decode_AX25.c: 305: dPacketnum ++;
+"305
+[e ++ _dPacketnum -> -> 1 `i `ui ]
+"306
+}
+[e :U 394 ]
+"307
+}
+[e :U 391 ]
+"308
+}
+[e :U 385 ]
+"283
+[e $ == _rcv_state -> -> 2 `i `ui 386  ]
+[e :U 387 ]
+[; ;decode_AX25.c: 306: }
+[; ;decode_AX25.c: 307: }
+[; ;decode_AX25.c: 308: }
+[; ;decode_AX25.c: 309: }
+"309
+[e :UE 384 ]
+}
+"311
+[v _fcscheck `(ui ~T0 @X0 1 ef ]
+{
+[; ;decode_AX25.c: 311: UINT fcscheck(void){
+[e :U _fcscheck ]
+[f ]
+"312
+[v _bt `uc ~T0 @X0 1 a ]
+[v _byte `uc ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 312: UBYTE bt,byte;
+[; ;decode_AX25.c: 313: dfcslo = dfcshi = 0xff;
+"313
+[e = _dfcslo = _dfcshi -> -> 255 `i `uc ]
+[; ;decode_AX25.c: 314: while(rcv_state == 3){
+"314
+[e $U 396  ]
+[e :U 397 ]
+{
+[; ;decode_AX25.c: 315: for(UINT i=0;i<dPacketnum-2;i++){
+"315
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $U 402  ]
+[e :U 399 ]
+{
+[; ;decode_AX25.c: 316: byte = dPacket[i];
+"316
+[e = _byte *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux ]
+[; ;decode_AX25.c: 317: for(UINT i=0;i<8;i++){
+"317
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 8 `i `ui 403  ]
+[e $U 404  ]
+[e :U 403 ]
+{
+[; ;decode_AX25.c: 318: bt = byte & 0x01;
+"318
+[e = _bt -> & -> _byte `i -> 1 `i `uc ]
+"320
+[; <"                     BCF 03,0 ;# ">
+"321
+[; <"                     RRF _dfcshi,F ;# ">
+"322
+[; <"                     RRF _dfcslo,F ;# ">
+[; ;decode_AX25.c: 324: if(((STATUS & 0x01)^bt) == 0x01){
+"324
+[e $ ! == ^ & -> _STATUS `i -> 1 `i -> _bt `i -> 1 `i 406  ]
+{
+[; ;decode_AX25.c: 325: dfcshi = dfcshi ^ 0x84;
+"325
+[e = _dfcshi -> ^ -> _dfcshi `i -> 132 `i `uc ]
+[; ;decode_AX25.c: 326: dfcslo = dfcslo ^ 0x08;
+"326
+[e = _dfcslo -> ^ -> _dfcslo `i -> 8 `i `uc ]
+"327
+}
+[e :U 406 ]
+[; ;decode_AX25.c: 327: }
+[; ;decode_AX25.c: 328: byte = byte >> 1;
+"328
+[e = _byte -> >> -> _byte `i -> 1 `i `uc ]
+"329
+}
+"317
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 8 `i `ui 403  ]
+[e :U 404 ]
+"329
+}
+"330
+}
+"315
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 402 ]
+[e $ < _i - _dPacketnum -> -> 2 `i `ui 399  ]
+[e :U 400 ]
+"330
+}
+[; ;decode_AX25.c: 329: }
+[; ;decode_AX25.c: 330: }
+[; ;decode_AX25.c: 331: dfcslo = dfcslo ^ 0xff;
+"331
+[e = _dfcslo -> ^ -> _dfcslo `i -> 255 `i `uc ]
+[; ;decode_AX25.c: 332: dfcshi = dfcshi ^ 0xff;
+"332
+[e = _dfcshi -> ^ -> _dfcshi `i -> 255 `i `uc ]
+[; ;decode_AX25.c: 335: if((dPacket[dPacketnum-2] == dfcslo) && (dPacket[dPacketnum-1] == dfcshi)){
+"335
+[e $ ! && == -> *U + &U _dPacket * -> - _dPacketnum -> -> 2 `i `ui `ux -> -> # *U &U _dPacket `ui `ux `i -> _dfcslo `i == -> *U + &U _dPacket * -> - _dPacketnum -> -> 1 `i `ui `ux -> -> # *U &U _dPacket `ui `ux `i -> _dfcshi `i 407  ]
+{
+[; ;decode_AX25.c: 340: return 1;
+"340
+[e ) -> -> 1 `i `ui ]
+[e $UE 395  ]
+"341
+}
+[; ;decode_AX25.c: 341: }else{
+[e $U 408  ]
+[e :U 407 ]
+{
+[; ;decode_AX25.c: 346: return 0;
+"346
+[e ) -> -> 0 `i `ui ]
+[e $UE 395  ]
+"347
+}
+[e :U 408 ]
+"348
+}
+[e :U 396 ]
+"314
+[e $ == _rcv_state -> -> 3 `i `ui 397  ]
+[e :U 398 ]
+[; ;decode_AX25.c: 347: }
+[; ;decode_AX25.c: 348: }
+[; ;decode_AX25.c: 349: }
+"349
+[e :UE 395 ]
+}
+"351
+[v _ReceivePacket `(v ~T0 @X0 1 ef ]
+{
+[; ;decode_AX25.c: 351: void ReceivePacket(void){
+[e :U _ReceivePacket ]
+[f ]
+[; ;decode_AX25.c: 352: waitFlag();
+"352
+[e ( _waitFlag ..  ]
+[; ;decode_AX25.c: 353: getdata();
+"353
+[e ( _getdata ..  ]
+[; ;decode_AX25.c: 354: fcscheck();
+"354
+[e ( _fcscheck ..  ]
+[; ;decode_AX25.c: 355: }
+"355
+[e :UE 409 ]
+}
+"357
+[v _ReceivePacket_data `(v ~T0 @X0 1 ef1`*uc ]
+{
+[; ;decode_AX25.c: 357: void ReceivePacket_data(UBYTE *dData){
+[e :U _ReceivePacket_data ]
+[v _dData `*uc ~T0 @X0 1 r1 ]
+[f ]
+"358
+[v _fcschecker `ui ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 358: UINT fcschecker;
+[; ;decode_AX25.c: 361: waitFlag();
+"361
+[e ( _waitFlag ..  ]
+[; ;decode_AX25.c: 362: getdata();
+"362
+[e ( _getdata ..  ]
+[; ;decode_AX25.c: 363: fcschecker = fcscheck();
+"363
+[e = _fcschecker ( _fcscheck ..  ]
+[; ;decode_AX25.c: 365: if(fcschecker == 1){
+"365
+[e $ ! == _fcschecker -> -> 1 `i `ui 411  ]
+{
+[; ;decode_AX25.c: 366: for(UINT i=0; i<dPacketnum-18; i++){
+"366
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $U 415  ]
+[e :U 412 ]
+{
+[; ;decode_AX25.c: 367: dData[i] = dPacket[i+16];
+"367
+[e = *U + _dData * -> _i `ux -> -> # *U _dData `ui `ux *U + &U _dPacket * -> + _i -> -> 16 `i `ui `ux -> -> # *U &U _dPacket `ui `ux ]
+"368
+}
+"366
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 415 ]
+[e $ < _i - _dPacketnum -> -> 18 `i `ui 412  ]
+[e :U 413 ]
+"368
+}
+[; ;decode_AX25.c: 368: }
+[; ;decode_AX25.c: 369: dPacketnum = 0;
+"369
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 370: rcv_state = 0;
+"370
+[e = _rcv_state -> -> 0 `i `ui ]
+"371
+}
+[; ;decode_AX25.c: 371: }else{
+[e $U 416  ]
+[e :U 411 ]
+{
+[; ;decode_AX25.c: 372: dPacketnum = 0;
+"372
+[e = _dPacketnum -> -> 0 `i `ui ]
+[; ;decode_AX25.c: 373: rcv_state = 0;
+"373
+[e = _rcv_state -> -> 0 `i `ui ]
+"374
+}
+[e :U 416 ]
+[; ;decode_AX25.c: 374: }
+[; ;decode_AX25.c: 375: }
+"375
+[e :UE 410 ]
+}
+"378
+[v _putAX25 `(v ~T0 @X0 1 ef ]
+{
+[; ;decode_AX25.c: 378: void putAX25(void){
+[e :U _putAX25 ]
+[f ]
+[; ;decode_AX25.c: 379: for(UINT i=0;i<6;i++){
+"379
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 418  ]
+[e $U 419  ]
+[e :U 418 ]
+{
+[; ;decode_AX25.c: 380: dPacket[i] = dPacket[i] >> 1;
+"380
+[e = *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux -> >> -> *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 381: dPacket[i+7] = dPacket[i+7] >> 1;
+"381
+[e = *U + &U _dPacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _dPacket `ui `ux -> >> -> *U + &U _dPacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _dPacket `ui `ux `i -> 1 `i `uc ]
+"382
+}
+"379
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 418  ]
+[e :U 419 ]
+"382
+}
+[; ;decode_AX25.c: 382: }
+[; ;decode_AX25.c: 383: for(UINT i=0;i<6;i++){
+"383
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 421  ]
+[e $U 422  ]
+[e :U 421 ]
+{
+[; ;decode_AX25.c: 384: putch(dPacket[i]);
+"384
+[e ( _putch (1 *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux ]
+"385
+}
+"383
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 421  ]
+[e :U 422 ]
+"385
+}
+[; ;decode_AX25.c: 385: }
+[; ;decode_AX25.c: 386: putch('>');
+"386
+[e ( _putch (1 -> -> 62 `ui `uc ]
+[; ;decode_AX25.c: 387: for(UINT i=0;i<6;i++){
+"387
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 424  ]
+[e $U 425  ]
+[e :U 424 ]
+{
+[; ;decode_AX25.c: 388: putch(dPacket[i+7]);
+"388
+[e ( _putch (1 *U + &U _dPacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _dPacket `ui `ux ]
+"389
+}
+"387
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 6 `i `ui 424  ]
+[e :U 425 ]
+"389
+}
+[; ;decode_AX25.c: 389: }
+[; ;decode_AX25.c: 390: putch(':');
+"390
+[e ( _putch (1 -> -> 58 `ui `uc ]
+[; ;decode_AX25.c: 391: for(UINT i=0;i<dPacketnum-18;i++){
+"391
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $U 430  ]
+[e :U 427 ]
+{
+[; ;decode_AX25.c: 392: putch(dPacket[i+16]);
+"392
+[e ( _putch (1 *U + &U _dPacket * -> + _i -> -> 16 `i `ui `ux -> -> # *U &U _dPacket `ui `ux ]
+"393
+}
+"391
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 430 ]
+[e $ < _i - _dPacketnum -> -> 18 `i `ui 427  ]
+[e :U 428 ]
+"393
+}
+[; ;decode_AX25.c: 393: }
+[; ;decode_AX25.c: 394: return;
+"394
+[e $UE 417  ]
+[; ;decode_AX25.c: 395: }
+"395
+[e :UE 417 ]
+}
+"398
+[v _conv_DI_UARTRX `(v ~T0 @X0 1 ef ]
+{
+[; ;decode_AX25.c: 398: void conv_DI_UARTRX(void){
+[e :U _conv_DI_UARTRX ]
+[f ]
+"399
+[v _buf_dammy `uc ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 399: UBYTE buf_dammy = 0x00;
+[e = _buf_dammy -> -> 0 `i `uc ]
+"400
+[v _buf `uc ~T0 @X0 1 a ]
+[; ;decode_AX25.c: 400: UBYTE buf = 0x00;
+[e = _buf -> -> 0 `i `uc ]
+[; ;decode_AX25.c: 402: getbit();
+"402
+[e ( _getbit ..  ]
+[; ;decode_AX25.c: 403: while(RB0 == 0){
+"403
+[e $U 432  ]
+[e :U 433 ]
+{
+[; ;decode_AX25.c: 404: for(UINT i=0;i<8;i++){
+"404
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 8 `i `ui 435  ]
+[e $U 436  ]
+[e :U 435 ]
+{
+[; ;decode_AX25.c: 405: getbit();
+"405
+[e ( _getbit ..  ]
+[; ;decode_AX25.c: 406: buf_dammy = buf_dammy << 1;
+"406
+[e = _buf_dammy -> << -> _buf_dammy `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 407: if(RB0 == 0){
+"407
+[e $ ! == -> _RB0 `i -> 0 `i 438  ]
+{
+[; ;decode_AX25.c: 408: buf_dammy = buf_dammy | 0x00;
+"408
+[e = _buf_dammy -> | -> _buf_dammy `i -> 0 `i `uc ]
+"409
+}
+[; ;decode_AX25.c: 409: }else{
+[e $U 439  ]
+[e :U 438 ]
+{
+[; ;decode_AX25.c: 410: buf_dammy = buf_dammy | 0x01;
+"410
+[e = _buf_dammy -> | -> _buf_dammy `i -> 1 `i `uc ]
+"411
+}
+[e :U 439 ]
+"412
+}
+"404
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 8 `i `ui 435  ]
+[e :U 436 ]
+"412
+}
+[; ;decode_AX25.c: 411: }
+[; ;decode_AX25.c: 412: }
+[; ;decode_AX25.c: 413: getbit();
+"413
+[e ( _getbit ..  ]
+[; ;decode_AX25.c: 414: buf = reverse_bit8(buf_dammy);
+"414
+[e = _buf ( _reverse_bit8 (1 _buf_dammy ]
+[; ;decode_AX25.c: 415: putch(buf);
+"415
+[e ( _putch (1 _buf ]
+"416
+}
+[e :U 432 ]
+"403
+[e $ == -> _RB0 `i -> 0 `i 433  ]
+[e :U 434 ]
+[; ;decode_AX25.c: 416: }
+[; ;decode_AX25.c: 417: }
+"417
+[e :UE 431 ]
+}
+"420
+[v _reverse_bit8 `(uc ~T0 @X0 1 ef1`uc ]
+{
+[; ;decode_AX25.c: 420: UBYTE reverse_bit8(UBYTE x){
+[e :U _reverse_bit8 ]
+[v _x `uc ~T0 @X0 1 r1 ]
+[f ]
+[; ;decode_AX25.c: 421: x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
+"421
+[e = _x -> | << & -> _x `i -> 85 `i -> 1 `i >> & -> _x `i -> 170 `i -> 1 `i `uc ]
+[; ;decode_AX25.c: 422: x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
+"422
+[e = _x -> | << & -> _x `i -> 51 `i -> 2 `i >> & -> _x `i -> 204 `i -> 2 `i `uc ]
+[; ;decode_AX25.c: 423: return (x << 4) | (x >> 4);
+"423
+[e ) -> | << -> _x `i -> 4 `i >> -> _x `i -> 4 `i `uc ]
+[e $UE 440  ]
+[; ;decode_AX25.c: 424: }
+"424
+[e :UE 440 ]
+}
+[a 1C 74 81 49 89 67 90 0 ]
+[a 2C 74 81 49 89 67 90 0 ]
+[a 3C 74 81 49 89 67 90 0 ]
+[a 4C 74 81 49 89 67 90 0 ]
+[a 5C 74 81 49 89 67 90 0 ]
+[a 6C 74 81 49 89 67 90 0 ]
+[a 7C 74 81 49 90 72 88 0 ]
+[a 8C 74 81 49 90 72 88 0 ]
+[a 9C 74 81 49 90 72 88 0 ]
+[a 10C 74 81 49 90 72 88 0 ]
+[a 11C 74 81 49 90 72 88 0 ]
+[a 12C 74 81 49 90 72 88 0 ]

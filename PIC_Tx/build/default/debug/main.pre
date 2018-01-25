@@ -1,5 +1,5 @@
 
-# 1 "encode_AX25.c"
+# 1 "main.c"
 
 # 26 "C:\Program Files (x86)\Microchip\xc8\v1.38\include\htc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -4214,143 +4214,112 @@ UINT getbit(void);
 void ReceivePacket(void);
 void ReceivePacket_data(UBYTE *);
 
-# 27 "encode_AX25.h"
+# 26 "encode_AX25.h"
 void SendPacket(UBYTE *);
 void test_Packetmaker(UBYTE *);
 
-# 17 "encode_AX25.c"
-void SendByte(UBYTE);
-void flipout(void);
-void fcsbit(UBYTE);
-UINT Packetmaker(UBYTE *);
+# 17 "I2C.h"
+void Init_I2C_M(const UDWORD c);
+void I2C_Master_Wait(void);
+void I2C_Master_Start(void);
+void I2C_Master_RepeatedStart(void);
+void I2C_Master_Stop(void);
+void I2C_Master_Write(unsigned d);
+UBYTE I2C_Master_Read(UBYTE a);
+void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
+void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+
+# 13 "FMCW.h"
+int FMTX_Nref = 2560;
+int FMTX_Nprg[5] = {8,7,3,0,0};
+int CWTX_Nref = 160;
+int CWTX_Nprg[5] = {0,1,7,4,7};
+int FMRX_Nref = 2560;
+int FMRX_Nprg[5] = {2,4,8,8,7};
+
+# 35
+void Init_FMCW(void);
+
+void FMTX(int Nref, int *Nprg);
+void CWTX(int Nref, int *Nprg);
+void FMRX(int Nref, int *Nprg);
+
+# 47
+void _NOP(void);
 
 
-UINT eflag = 0;
-UINT efcsflag = 0;
-UINT estuff = 0;
-UBYTE efcslo, efcshi;
+# 22 "main.c"
+#pragma config FOSC = HS
+#pragma config WDTE = OFF
+#pragma config PWRTE = ON
+
+#pragma config MCLRE = ON
+#pragma config CP = OFF
+#pragma config CPD = OFF
+#pragma config BOREN = OFF
+#pragma config IESO = OFF
+#pragma config FCMEN = OFF
+#pragma config LVP = OFF
+#pragma config BOR4V = BOR40V
+#pragma config WRT = OFF
+
+void main(void) {
 
 
-UBYTE ePacket[50];
-UINT ebitstatus = 0;
 
 
-void test_Packetmaker(UBYTE *eDataField){
-UINT num_ = Packetmaker(eDataField);
-for(UINT i=0;i<num_;i++){
-putch(ePacket[i]);
-}
-putcrlf();
-}
+Init_SERIAL();
+Init_MPU();
+RB1 = 1;
+_delay((unsigned long)((200)*(10000000/4000.0)));
+Init_I2C_M(400000);
+RB1 = 0;
 
-UINT Packetmaker(UBYTE *eDataField){
-for(UINT i=0;i<6;i++){
-ePacket[i] = "JQ1ZHX"[i] << 1;
-}
-ePacket[6] = 0x60;
-for(UINT i=0;i<6;i++){
-ePacket[i+7] = "JQ1YCZ"[i] << 1;
-}
-ePacket[13] = 0xe1;
-ePacket[14] = 0x03;
-ePacket[15] = 0xf0;
-UINT Datanum = 0;
-for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
-for(UINT i=0;i<Datanum;i++){
-ePacket[16+i] = eDataField[i];
-}
-return 16+Datanum;
-}
+# 55
+while(1){
 
-void SendPacket(UBYTE *eDataField){
+# 71
+UBYTE dData[];
+
+# 80
+RB1 = 1;
+_delay((unsigned long)((200)*(10000000/4000.0)));
 
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-UINT Packetnum;
-Packetnum = 0;
-Packetnum = Packetmaker(eDataField);
-ebitstatus = 1;
-efcslo = efcshi = 0xff;
-estuff = 0;
+RB1 = 0;
 
-eflag = 1;
-efcsflag = 0;
-for(UINT i=0;i<27;i++){
-SendByte(0x7e);
-}
-eflag = 0;
-
-for(UINT i=0;i<Packetnum;i++){
-SendByte(ePacket[i]);
-}
-
-
-
-efcsflag = 1;
-efcslo = efcslo ^ 0xff;
-efcshi = efcshi ^ 0xff;
-SendByte(efcslo);
-SendByte(efcshi);
-efcsflag = 0;
-
-
-eflag = 1;
-for(UINT i=0;i<6;i++){
-SendByte(0x7e);
-}
+# 103
+UBYTE *EEPROMData;
+if (RC2==1){
+UBYTE EEPROMData[32];
+UINT EEPROMDataLength;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-}
+_delay((unsigned long)((200)*(10000000/4000.0)));
 
 
-void SendByte(UBYTE byte){
-UBYTE bt;
-for(UINT i=0;i<8;i++){
-bt = byte & 0x01;
 
-if(efcsflag == 0 && eflag == 0){
-fcsbit(bt);
-}
 
-if(bt == 0x00){
-flipout();
+SendPacket("Hello");
+
+
+
+_delay((unsigned long)((200)*(10000000/4000.0)));
+
+# 144
 }else{
-estuff ++;
+put_error;
 
-if(eflag == 0 && estuff == 5){
-_delay((unsigned long)((795)*(10000000/4000000.0)));
-flipout();
-}
-}
-_delay((unsigned long)((795)*(10000000/4000000.0)));
-byte = byte >> 1;
-}
-}
-
-void flipout(void){
-estuff = 0;
-if(ebitstatus == 0){
-RC5 = 1;
-ebitstatus = 1;
-}else{
-RC5 = 0;
-ebitstatus = 0;
-}
 }
 
 
 
-void fcsbit(UBYTE tbyte){
 
-# 140
-#asm
-        BCF 03,0
-        RRF _efcshi,F
-        RRF _efcslo,F
-#endasm 
-    if(((STATUS & 0x01)^(tbyte)) == 0x01){
-efcshi = efcshi ^ 0x84;
-efcslo = efcslo ^ 0x08;
+_delay((unsigned long)((200)*(10000000/4000.0)));
+
+
 }
+
 }

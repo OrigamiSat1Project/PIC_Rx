@@ -4214,7 +4214,7 @@ UINT getbit(void);
 void ReceivePacket(void);
 void ReceivePacket_data(UBYTE *);
 
-# 27 "encode_AX25.h"
+# 26 "encode_AX25.h"
 void SendPacket(UBYTE *);
 void test_Packetmaker(UBYTE *);
 
@@ -4245,11 +4245,11 @@ putcrlf();
 
 UINT Packetmaker(UBYTE *eDataField){
 for(UINT i=0;i<6;i++){
-ePacket[i] = "JQ1ZHX"[i] << 1;
+ePacket[i] = "JQ1YCZ"[i] << 1;
 }
 ePacket[6] = 0x60;
 for(UINT i=0;i<6;i++){
-ePacket[i+7] = "JQ1YCZ"[i] << 1;
+ePacket[i+7] = "JQ1ZHX"[i] << 1;
 }
 ePacket[13] = 0xe1;
 ePacket[14] = 0x03;
@@ -4264,8 +4264,7 @@ return 16+Datanum;
 
 void SendPacket(UBYTE *eDataField){
 
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
+RC0 = 1;
 UINT Packetnum;
 Packetnum = 0;
 Packetnum = Packetmaker(eDataField);
@@ -4298,9 +4297,6 @@ eflag = 1;
 for(UINT i=0;i<6;i++){
 SendByte(0x7e);
 }
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
 }
 
 
@@ -4343,7 +4339,7 @@ ebitstatus = 0;
 
 void fcsbit(UBYTE tbyte){
 
-# 140
+# 136
 #asm
         BCF 03,0
         RRF _efcshi,F

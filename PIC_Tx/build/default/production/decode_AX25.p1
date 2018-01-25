@@ -3007,8 +3007,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.h: 35: UINT getbit(void);
 [; ;decode_AX25.h: 43: void ReceivePacket(void);
 [; ;decode_AX25.h: 44: void ReceivePacket_data(UBYTE *);
-[; ;encode_AX25.h: 25: void SendPacket(UBYTE *);
-[; ;encode_AX25.h: 26: void test_Packetmaker(UBYTE *);
+[; ;encode_AX25.h: 27: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 28: void test_Packetmaker(UBYTE *);
 [; ;decode_AX25.c: 10: void UART_TX(UINT,UINT);
 [; ;decode_AX25.c: 11: void waitByte(UINT,UINT);
 [; ;decode_AX25.c: 12: UINT getbit(void);
@@ -3212,7 +3212,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 77: }
 [; ;decode_AX25.c: 78: }
 [; ;decode_AX25.c: 79: }
-[; ;decode_AX25.c: 80: if(buf == ("JQ1YCZ"[0] << 1)){
+[; ;decode_AX25.c: 80: if(buf == ("JQ1ZHX"[0] << 1)){
 "80
 [e $ ! == -> _buf `i << -> *U + :s 1C * -> -> 0 `i `x -> -> # *U :s 1C `i `x `i -> 1 `i 300  ]
 {
@@ -3266,7 +3266,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 90: }
 [; ;decode_AX25.c: 91: }
-[; ;decode_AX25.c: 92: if(buf == ("JQ1YCZ"[1] << 1)){
+[; ;decode_AX25.c: 92: if(buf == ("JQ1ZHX"[1] << 1)){
 "92
 [e $ ! == -> _buf `i << -> *U + :s 2C * -> -> 1 `i `x -> -> # *U :s 2C `i `x `i -> 1 `i 306  ]
 {
@@ -3320,7 +3320,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 102: }
 [; ;decode_AX25.c: 103: }
-[; ;decode_AX25.c: 104: if(buf == ("JQ1YCZ"[2] << 1)){
+[; ;decode_AX25.c: 104: if(buf == ("JQ1ZHX"[2] << 1)){
 "104
 [e $ ! == -> _buf `i << -> *U + :s 3C * -> -> 2 `i `x -> -> # *U :s 3C `i `x `i -> 1 `i 312  ]
 {
@@ -3374,7 +3374,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 114: }
 [; ;decode_AX25.c: 115: }
-[; ;decode_AX25.c: 116: if(buf == ("JQ1YCZ"[3] << 1)){
+[; ;decode_AX25.c: 116: if(buf == ("JQ1ZHX"[3] << 1)){
 "116
 [e $ ! == -> _buf `i << -> *U + :s 4C * -> -> 3 `i `x -> -> # *U :s 4C `i `x `i -> 1 `i 318  ]
 {
@@ -3428,7 +3428,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 126: }
 [; ;decode_AX25.c: 127: }
-[; ;decode_AX25.c: 128: if(buf == ("JQ1YCZ"[4] << 1)){
+[; ;decode_AX25.c: 128: if(buf == ("JQ1ZHX"[4] << 1)){
 "128
 [e $ ! == -> _buf `i << -> *U + :s 5C * -> -> 4 `i `x -> -> # *U :s 5C `i `x `i -> 1 `i 324  ]
 {
@@ -3482,7 +3482,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 138: }
 [; ;decode_AX25.c: 139: }
-[; ;decode_AX25.c: 140: if(buf == ("JQ1YCZ"[5] << 1)){
+[; ;decode_AX25.c: 140: if(buf == ("JQ1ZHX"[5] << 1)){
 "140
 [e $ ! == -> _buf `i << -> *U + :s 6C * -> -> 5 `i `x -> -> # *U :s 6C `i `x `i -> 1 `i 330  ]
 {
@@ -3667,7 +3667,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 181: }
 [; ;decode_AX25.c: 182: }
-[; ;decode_AX25.c: 183: if(buf == ("JQ1ZHX"[0] << 1)){
+[; ;decode_AX25.c: 183: if(buf == ("JQ1YCZ"[0] << 1)){
 "183
 [e $ ! == -> _buf `i << -> *U + :s 7C * -> -> 0 `i `x -> -> # *U :s 7C `i `x `i -> 1 `i 347  ]
 {
@@ -3721,7 +3721,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 193: }
 [; ;decode_AX25.c: 194: }
-[; ;decode_AX25.c: 195: if(buf == ("JQ1ZHX"[1] << 1)){
+[; ;decode_AX25.c: 195: if(buf == ("JQ1YCZ"[1] << 1)){
 "195
 [e $ ! == -> _buf `i << -> *U + :s 8C * -> -> 1 `i `x -> -> # *U :s 8C `i `x `i -> 1 `i 353  ]
 {
@@ -3775,7 +3775,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 205: }
 [; ;decode_AX25.c: 206: }
-[; ;decode_AX25.c: 207: if(buf == ("JQ1ZHX"[2] << 1)){
+[; ;decode_AX25.c: 207: if(buf == ("JQ1YCZ"[2] << 1)){
 "207
 [e $ ! == -> _buf `i << -> *U + :s 9C * -> -> 2 `i `x -> -> # *U :s 9C `i `x `i -> 1 `i 359  ]
 {
@@ -3829,7 +3829,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 217: }
 [; ;decode_AX25.c: 218: }
-[; ;decode_AX25.c: 219: if(buf == ("JQ1ZHX"[3] << 1)){
+[; ;decode_AX25.c: 219: if(buf == ("JQ1YCZ"[3] << 1)){
 "219
 [e $ ! == -> _buf `i << -> *U + :s 10C * -> -> 3 `i `x -> -> # *U :s 10C `i `x `i -> 1 `i 365  ]
 {
@@ -3883,7 +3883,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 229: }
 [; ;decode_AX25.c: 230: }
-[; ;decode_AX25.c: 231: if(buf == ("JQ1ZHX"[4] << 1)){
+[; ;decode_AX25.c: 231: if(buf == ("JQ1YCZ"[4] << 1)){
 "231
 [e $ ! == -> _buf `i << -> *U + :s 11C * -> -> 4 `i `x -> -> # *U :s 11C `i `x `i -> 1 `i 371  ]
 {
@@ -3937,7 +3937,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 241: }
 [; ;decode_AX25.c: 242: }
-[; ;decode_AX25.c: 243: if(buf == ("JQ1ZHX"[5] << 1)){
+[; ;decode_AX25.c: 243: if(buf == ("JQ1YCZ"[5] << 1)){
 "243
 [e $ ! == -> _buf `i << -> *U + :s 12C * -> -> 5 `i `x -> -> # *U :s 12C `i `x `i -> 1 `i 377  ]
 {
@@ -4611,15 +4611,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 "424
 [e :UE 440 ]
 }
-[a 1C 74 81 49 89 67 90 0 ]
-[a 2C 74 81 49 89 67 90 0 ]
-[a 3C 74 81 49 89 67 90 0 ]
-[a 4C 74 81 49 89 67 90 0 ]
-[a 5C 74 81 49 89 67 90 0 ]
-[a 6C 74 81 49 89 67 90 0 ]
-[a 7C 74 81 49 90 72 88 0 ]
-[a 8C 74 81 49 90 72 88 0 ]
-[a 9C 74 81 49 90 72 88 0 ]
-[a 10C 74 81 49 90 72 88 0 ]
-[a 11C 74 81 49 90 72 88 0 ]
-[a 12C 74 81 49 90 72 88 0 ]
+[a 7C 74 81 49 89 67 90 0 ]
+[a 8C 74 81 49 89 67 90 0 ]
+[a 9C 74 81 49 89 67 90 0 ]
+[a 10C 74 81 49 89 67 90 0 ]
+[a 11C 74 81 49 89 67 90 0 ]
+[a 12C 74 81 49 89 67 90 0 ]
+[a 1C 74 81 49 90 72 88 0 ]
+[a 2C 74 81 49 90 72 88 0 ]
+[a 3C 74 81 49 90 72 88 0 ]
+[a 4C 74 81 49 90 72 88 0 ]
+[a 5C 74 81 49 90 72 88 0 ]
+[a 6C 74 81 49 90 72 88 0 ]

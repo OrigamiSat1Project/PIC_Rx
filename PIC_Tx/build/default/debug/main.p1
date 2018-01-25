@@ -1,30 +1,23 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"160 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
-[v _PORTA `Vuc ~T0 @X0 0 e@5 ]
-"221
-[v _PORTB `Vuc ~T0 @X0 0 e@6 ]
-"282
-[v _PORTC `Vuc ~T0 @X0 0 e@7 ]
-"343
-[v _PORTE `Vuc ~T0 @X0 0 e@9 ]
-"3158
-[v _ANSEL `Vuc ~T0 @X0 0 e@392 ]
-"3201
-[v _ANSELH `Vuc ~T0 @X0 0 e@393 ]
-"1301
-[v _TRISA `Vuc ~T0 @X0 0 e@133 ]
-"1362
-[v _TRISB `Vuc ~T0 @X0 0 e@134 ]
-"1423
-[v _TRISC `Vuc ~T0 @X0 0 e@135 ]
-"1484
-[v _TRISE `Vuc ~T0 @X0 0 e@137 ]
-"3666
+[p mainexit ]
+"15 UART.h
+[v _Init_SERIAL `(v ~T0 @X0 0 ef ]
+"22 Init_MPU.h
+[v _Init_MPU `(v ~T0 @X0 0 ef ]
+"3666 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
 [v _RB1 `Vb ~T0 @X0 0 e@49 ]
 [v F1554 `(v ~T0 @X0 1 tf1`ul ]
 "152 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic.h
 [v __delay `JF1554 ~T0 @X0 0 e ]
 [p i __delay ]
+"17 I2C.h
+[v _Init_I2C_M `(v ~T0 @X0 0 ef1`Cul ]
+"3688 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
+[v _RC2 `Vb ~T0 @X0 0 e@58 ]
+"26 encode_AX25.h
+[v _SendPacket `(v ~T0 @X0 0 ef1`*uc ]
+"21 UART.h
+[v _put_error `(v ~T0 @X0 0 ef ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1453,6 +1446,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
+[; ;UART.h: 15: void Init_SERIAL(void);
+[; ;UART.h: 16: void putch(UBYTE c);
+[; ;UART.h: 17: void putstr(UBYTE *);
+[; ;UART.h: 18: UBYTE getch(void);
+[; ;UART.h: 19: void putcrlf(void);
+[; ;UART.h: 21: void put_error(void);
+[; ;UART.h: 22: void put_ok(void);
+[; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 22: void Init_MPU(void);
 [; ;Init_MPU.h: 23: void led_onoff(void);
 [; ;Init_MPU.h: 24: void debug_ledy(void);
@@ -3010,122 +3011,196 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;PIC16F887.h: 4226: extern volatile __bit nTX8 @ (((unsigned) &TXSTA)*8) + 6;
 [; ;PIC16F887.h: 4228: extern volatile __bit nW @ (((unsigned) &SSPSTAT)*8) + 2;
 [; ;PIC16F887.h: 4230: extern volatile __bit nWRITE @ (((unsigned) &SSPSTAT)*8) + 2;
-[; ;UART.h: 15: void Init_SERIAL(void);
-[; ;UART.h: 16: void putch(UBYTE c);
-[; ;UART.h: 17: void putstr(UBYTE *);
-[; ;UART.h: 18: UBYTE getch(void);
-[; ;UART.h: 19: void putcrlf(void);
-[; ;UART.h: 21: void put_error(void);
-[; ;UART.h: 22: void put_ok(void);
-[; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;decode_AX25.h: 35: UINT getbit(void);
 [; ;decode_AX25.h: 43: void ReceivePacket(void);
 [; ;decode_AX25.h: 44: void ReceivePacket_data(UBYTE *);
-[; ;encode_AX25.h: 27: void SendPacket(UBYTE *);
-[; ;encode_AX25.h: 28: void test_Packetmaker(UBYTE *);
-"8 Init_MPU.c
-[v _Init_MPU `(v ~T0 @X0 1 ef ]
-"9
-{
-[; ;Init_MPU.c: 8: void Init_MPU(void)
-[; ;Init_MPU.c: 9: {
-[e :U _Init_MPU ]
-[f ]
-[; ;Init_MPU.c: 11: PORTA = 0x00;
-"11
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 12: PORTB = 0x00;
-"12
-[e = _PORTB -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 13: PORTC = 0x00;
-"13
-[e = _PORTC -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 15: PORTE = 0x00;
+[; ;encode_AX25.h: 26: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 27: void test_Packetmaker(UBYTE *);
+[; ;I2C.h: 17: void Init_I2C_M(const UDWORD c);
+[; ;I2C.h: 18: void I2C_Master_Wait(void);
+[; ;I2C.h: 19: void I2C_Master_Start(void);
+[; ;I2C.h: 20: void I2C_Master_RepeatedStart(void);
+[; ;I2C.h: 21: void I2C_Master_Stop(void);
+[; ;I2C.h: 22: void I2C_Master_Write(unsigned d);
+[; ;I2C.h: 23: UBYTE I2C_Master_Read(UBYTE a);
+[; ;I2C.h: 24: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
+[; ;I2C.h: 25: void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+"13 FMCW.h
+[v _FMTX_Nref `i ~T0 @X0 1 e ]
+[i _FMTX_Nref
+-> 2560 `i
+]
+[; ;FMCW.h: 13: int FMTX_Nref = 2560;
+"14
+[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMTX_Nprg
+:U ..
+-> 8 `i
+-> 7 `i
+-> 3 `i
+-> 0 `i
+-> 0 `i
+..
+]
+[; ;FMCW.h: 14: int FMTX_Nprg[5] = {8,7,3,0,0};
 "15
-[e = _PORTE -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 18: ANSEL = 0x00;
+[v _CWTX_Nref `i ~T0 @X0 1 e ]
+[i _CWTX_Nref
+-> 160 `i
+]
+[; ;FMCW.h: 15: int CWTX_Nref = 160;
+"16
+[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _CWTX_Nprg
+:U ..
+-> 0 `i
+-> 1 `i
+-> 7 `i
+-> 4 `i
+-> 7 `i
+..
+]
+[; ;FMCW.h: 16: int CWTX_Nprg[5] = {0,1,7,4,7};
+"17
+[v _FMRX_Nref `i ~T0 @X0 1 e ]
+[i _FMRX_Nref
+-> 2560 `i
+]
+[; ;FMCW.h: 17: int FMRX_Nref = 2560;
 "18
-[e = _ANSEL -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 19: ANSELH = 0x00;
-"19
-[e = _ANSELH -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 23: TRISA = 0b10000000;
+[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMRX_Nprg
+:U ..
+-> 2 `i
+-> 4 `i
+-> 8 `i
+-> 8 `i
+-> 7 `i
+..
+]
+[; ;FMCW.h: 18: int FMRX_Nprg[5] = {2,4,8,8,7};
+[; ;FMCW.h: 35: void Init_FMCW(void);
+[; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
+[; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
+[; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
+[; ;FMCW.h: 47: void _NOP(void);
+"22 main.c
+[p x FOSC=HS ]
 "23
-[e = _TRISA -> -> 128 `i `uc ]
-[; ;Init_MPU.c: 24: TRISB = 0b00000000;
+[p x WDTE=OFF ]
 "24
-[e = _TRISB -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 25: TRISC = 0b01011100;
-"25
-[e = _TRISC -> -> 92 `i `uc ]
-[; ;Init_MPU.c: 27: TRISE = 0b00000000;
+[p x PWRTE=ON ]
+"26
+[p x MCLRE=ON ]
 "27
-[e = _TRISE -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 30: PORTA = 0x00;
+[p x CP=OFF ]
+"28
+[p x CPD=OFF ]
+"29
+[p x BOREN=OFF ]
 "30
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 31: PORTB = 0x00;
+[p x IESO=OFF ]
 "31
-[e = _PORTB -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 32: PORTC = 0x00;
+[p x FCMEN=OFF ]
 "32
-[e = _PORTC -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 34: PORTE = 0x00;
+[p x LVP=OFF ]
+"33
+[p x BOR4V=BOR40V ]
 "34
-[e = _PORTE -> -> 0 `i `uc ]
-[; ;Init_MPU.c: 35: }
-"35
+[p x WRT=OFF ]
+"36
+[v _main `(v ~T0 @X0 1 ef ]
+{
+[; ;main.c: 36: void main(void) {
+[e :U _main ]
+[f ]
+[; ;main.c: 41: Init_SERIAL();
+"41
+[e ( _Init_SERIAL ..  ]
+[; ;main.c: 42: Init_MPU();
+"42
+[e ( _Init_MPU ..  ]
+[; ;main.c: 43: RB1 = 1;
+"43
+[e = _RB1 -> -> 1 `i `b ]
+[; ;main.c: 44: _delay((unsigned long)((200)*(10000000/4000.0)));
+"44
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 45: Init_I2C_M(400000);
+"45
+[e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
+[; ;main.c: 46: RB1 = 0;
+"46
+[e = _RB1 -> -> 0 `i `b ]
+[; ;main.c: 55: while(1){
+"55
+[e :U 280 ]
+{
+"71
+[v _dData `uc ~T0 @X0 -> 0 `x a ]
+[; ;main.c: 71: UBYTE dData[];
+[; ;main.c: 80: RB1 = 1;
+"80
+[e = _RB1 -> -> 1 `i `b ]
+[; ;main.c: 81: _delay((unsigned long)((200)*(10000000/4000.0)));
+"81
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 84: _delay((unsigned long)((200)*(10000000/4000.0)));
+"84
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 85: RB1 = 0;
+"85
+[e = _RB1 -> -> 0 `i `b ]
+"103
+[v _EEPROMData `*uc ~T0 @X0 1 a ]
+[; ;main.c: 103: UBYTE *EEPROMData;
+[; ;main.c: 104: if (RC2==1){
+"104
+[e $ ! == -> _RC2 `i -> 1 `i 282  ]
+{
+[v _EEPROMData `uc ~T0 @X0 -> 32 `i a ]
+"106
+[v _EEPROMDataLength `ui ~T0 @X0 1 a ]
+[; ;main.c: 105: UBYTE EEPROMData[32];
+[; ;main.c: 106: UINT EEPROMDataLength;
+[; ;main.c: 108: _delay((unsigned long)((200)*(10000000/4000.0)));
+"108
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 110: _delay((unsigned long)((200)*(10000000/4000.0)));
+"110
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 115: SendPacket("Hello");
+"115
+[e ( _SendPacket (1 -> :s 1C `*uc ]
+[; ;main.c: 119: _delay((unsigned long)((200)*(10000000/4000.0)));
+"119
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"144
+}
+[; ;main.c: 144: }else{
+[e $U 283  ]
+[e :U 282 ]
+{
+[; ;main.c: 145: put_error;
+"145
+[e &U _put_error ]
+"147
+}
+[e :U 283 ]
+[; ;main.c: 147: }
+[; ;main.c: 152: _delay((unsigned long)((200)*(10000000/4000.0)));
+"152
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"155
+}
+[e :U 279 ]
+"55
+[e $U 280  ]
+[e :U 281 ]
+[; ;main.c: 155: }
+[; ;main.c: 157: }
+"157
 [e :UE 278 ]
 }
-"36
-[v _led_onoff `(v ~T0 @X0 1 ef ]
-{
-[; ;Init_MPU.c: 36: void led_onoff(void){
-[e :U _led_onoff ]
-[f ]
-[; ;Init_MPU.c: 37: RB1 = 1;;
-"37
-[e = _RB1 -> -> 1 `i `b ]
-[; ;Init_MPU.c: 38: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"38
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;Init_MPU.c: 39: RB1 = 0;;
-"39
-[e = _RB1 -> -> 0 `i `b ]
-[; ;Init_MPU.c: 40: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"40
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;Init_MPU.c: 41: }
-"41
-[e :UE 279 ]
-}
-"42
-[v _debug_ledy `(v ~T0 @X0 1 ef ]
-{
-[; ;Init_MPU.c: 42: void debug_ledy(void){
-[e :U _debug_ledy ]
-[f ]
-[; ;Init_MPU.c: 43: if(RB1 == 1){
-"43
-[e $ ! == -> _RB1 `i -> 1 `i 281  ]
-{
-[; ;Init_MPU.c: 44: RB1 = 0;;
-"44
-[e = _RB1 -> -> 0 `i `b ]
-"45
-}
-[; ;Init_MPU.c: 45: }else{
-[e $U 282  ]
-[e :U 281 ]
-{
-[; ;Init_MPU.c: 46: RB1 = 1;;
-"46
-[e = _RB1 -> -> 1 `i `b ]
-"47
-}
-[e :U 282 ]
-[; ;Init_MPU.c: 47: }
-[; ;Init_MPU.c: 48: }
-"48
-[e :UE 280 ]
-}
+[a 1C 72 101 108 108 111 0 ]
+

@@ -4214,7 +4214,7 @@ UINT getbit(void);
 void ReceivePacket(void);
 void ReceivePacket_data(UBYTE *);
 
-# 25 "encode_AX25.h"
+# 27 "encode_AX25.h"
 void SendPacket(UBYTE *);
 void test_Packetmaker(UBYTE *);
 
@@ -4267,56 +4267,61 @@ void main(void) {
 
 
 
+
 Init_SERIAL();
 Init_MPU();
+
+
 Init_I2C_M(400000);
 
-# 51
+# 55
+_delay((unsigned long)((6000)*(10000000/4000.0)));
+
 while(1){
 
-# 67
+# 73
 UBYTE dData[];
 
-
-
-
-UINT write_data_length;
-for (write_data_length = 0; dData[write_data_length]!= '\0'; ++write_data_length);
-
-
+# 82
+RB1 = 1;
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
 
-_delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 97
+RB1 = 0;
+
+# 105
 UBYTE *EEPROMData;
 if (RC2==1){
+RC0 = 1;
+RB3 = 0;
 UBYTE EEPROMData[32];
 UINT EEPROMDataLength;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-EEPROM_Read(0x50,0x00,0xE0, EEPROMData,&EEPROMDataLength);
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-# 110
-SendPacket(EEPROMData);
-
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 138
+# 120
+UBYTE EEPROMTestData[5];
+EEPROMTestData[0] = 'u';
+EEPROMTestData[1] = 'n';
+EEPROMTestData[2] = 'k';
+EEPROMTestData[3] = 'o';
+EEPROMTestData[4] = 0x0d;
+SendPacket(EEPROMTestData);
+
+
+
+_delay((unsigned long)((200)*(10000000/4000.0)));
+
+# 155
 }else{
 put_error;
 
 }
 
-
-
-
-_delay((unsigned long)((200)*(10000000/4000.0)));
-
-
+# 166
 }
 
 }

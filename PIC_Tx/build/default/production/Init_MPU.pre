@@ -4214,7 +4214,7 @@ UINT getbit(void);
 void ReceivePacket(void);
 void ReceivePacket_data(UBYTE *);
 
-# 25 "encode_AX25.h"
+# 27 "encode_AX25.h"
 void SendPacket(UBYTE *);
 void test_Packetmaker(UBYTE *);
 
@@ -4235,7 +4235,7 @@ ANSELH = 0x00;
 
 
 TRISA = 0b10000000;
-TRISB = 0b00000001;
+TRISB = 0b00000000;
 TRISC = 0b01011100;
 
 TRISE = 0b00000000;

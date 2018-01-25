@@ -10,11 +10,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 "152 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic.h
 [v __delay `JF1554 ~T0 @X0 0 e ]
 [p i __delay ]
-"3688 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
+"3666 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f886.h
+[v _RB1 `Vb ~T0 @X0 0 e@49 ]
+"3688
 [v _RC2 `Vb ~T0 @X0 0 e@58 ]
-"25 I2C.h
-[v _EEPROM_Read `(v ~T0 @X0 0 ef5`uc`uc`uc`*uc`*ui ]
-"25 encode_AX25.h
+"3684
+[v _RC0 `Vb ~T0 @X0 0 e@56 ]
+"3670
+[v _RB3 `Vb ~T0 @X0 0 e@51 ]
+"27 encode_AX25.h
 [v _SendPacket `(v ~T0 @X0 0 ef1`*uc ]
 "21 UART.h
 [v _put_error `(v ~T0 @X0 0 ef ]
@@ -3014,8 +3018,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.h: 35: UINT getbit(void);
 [; ;decode_AX25.h: 43: void ReceivePacket(void);
 [; ;decode_AX25.h: 44: void ReceivePacket_data(UBYTE *);
-[; ;encode_AX25.h: 25: void SendPacket(UBYTE *);
-[; ;encode_AX25.h: 26: void test_Packetmaker(UBYTE *);
+[; ;encode_AX25.h: 27: void SendPacket(UBYTE *);
+[; ;encode_AX25.h: 28: void test_Packetmaker(UBYTE *);
 [; ;I2C.h: 17: void Init_I2C_M(const UDWORD c);
 [; ;I2C.h: 18: void I2C_Master_Wait(void);
 [; ;I2C.h: 19: void I2C_Master_Start(void);
@@ -3114,93 +3118,103 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 36: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 40: Init_SERIAL();
-"40
-[e ( _Init_SERIAL ..  ]
-[; ;main.c: 41: Init_MPU();
+[; ;main.c: 41: Init_SERIAL();
 "41
-[e ( _Init_MPU ..  ]
-[; ;main.c: 42: Init_I2C_M(400000);
+[e ( _Init_SERIAL ..  ]
+[; ;main.c: 42: Init_MPU();
 "42
+[e ( _Init_MPU ..  ]
+[; ;main.c: 45: Init_I2C_M(400000);
+"45
 [e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
-[; ;main.c: 51: while(1){
-"51
+[; ;main.c: 55: _delay((unsigned long)((6000)*(10000000/4000.0)));
+"55
+[e ( __delay (1 -> * -> -> 6000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 57: while(1){
+"57
 [e :U 280 ]
 {
-"67
-[v _dData `uc ~T0 @X0 -> 0 `x a ]
-"72
-[v _write_data_length `ui ~T0 @X0 1 a ]
-[; ;main.c: 67: UBYTE dData[];
-[; ;main.c: 72: UINT write_data_length;
-[; ;main.c: 73: for (write_data_length = 0; dData[write_data_length]!= '\0'; ++write_data_length);
 "73
-{
-[e = _write_data_length -> -> 0 `i `ui ]
-[e $U 285  ]
-[e :U 282 ]
-[e =+ _write_data_length -> -> 1 `i `ui ]
-[e :U 285 ]
-[e $ != -> *U + &U _dData * -> _write_data_length `ux -> -> # *U &U _dData `ui `ux `ui -> 0 `ui 282  ]
-[e :U 283 ]
-}
-[; ;main.c: 76: _delay((unsigned long)((200)*(10000000/4000.0)));
-"76
+[v _dData `uc ~T0 @X0 -> 0 `x a ]
+[; ;main.c: 73: UBYTE dData[];
+[; ;main.c: 82: RB1 = 1;
+"82
+[e = _RB1 -> -> 1 `i `b ]
+[; ;main.c: 83: _delay((unsigned long)((200)*(10000000/4000.0)));
+"83
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 79: _delay((unsigned long)((200)*(10000000/4000.0)));
-"79
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"97
+[; ;main.c: 87: RB1 = 0;
+"87
+[e = _RB1 -> -> 0 `i `b ]
+"105
 [v _EEPROMData `*uc ~T0 @X0 1 a ]
-[; ;main.c: 97: UBYTE *EEPROMData;
-[; ;main.c: 98: if (RC2==1){
-"98
-[e $ ! == -> _RC2 `i -> 1 `i 286  ]
+[; ;main.c: 105: UBYTE *EEPROMData;
+[; ;main.c: 106: if (RC2==1){
+"106
+[e $ ! == -> _RC2 `i -> 1 `i 282  ]
 {
+[; ;main.c: 107: RC0 = 1;
+"107
+[e = _RC0 -> -> 1 `i `b ]
+[; ;main.c: 108: RB3 = 0;
+"108
+[e = _RB3 -> -> 0 `i `b ]
 [v _EEPROMData `uc ~T0 @X0 -> 32 `i a ]
-"100
-[v _EEPROMDataLength `ui ~T0 @X0 1 a ]
-[; ;main.c: 99: UBYTE EEPROMData[32];
-[; ;main.c: 100: UINT EEPROMDataLength;
-[; ;main.c: 102: _delay((unsigned long)((200)*(10000000/4000.0)));
-"102
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 103: EEPROM_Read(0x50,0x00,0xE0, EEPROMData,&EEPROMDataLength);
-"103
-[e ( _EEPROM_Read (4 , , , , -> -> 80 `i `uc -> -> 0 `i `uc -> -> 224 `i `uc &U _EEPROMData &U _EEPROMDataLength ]
-[; ;main.c: 104: _delay((unsigned long)((200)*(10000000/4000.0)));
-"104
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 110: SendPacket(EEPROMData);
 "110
-[e ( _SendPacket (1 &U _EEPROMData ]
-[; ;main.c: 113: _delay((unsigned long)((200)*(10000000/4000.0)));
-"113
+[v _EEPROMDataLength `ui ~T0 @X0 1 a ]
+[; ;main.c: 109: UBYTE EEPROMData[32];
+[; ;main.c: 110: UINT EEPROMDataLength;
+[; ;main.c: 112: _delay((unsigned long)((200)*(10000000/4000.0)));
+"112
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"138
+[; ;main.c: 114: _delay((unsigned long)((200)*(10000000/4000.0)));
+"114
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"120
+[v _EEPROMTestData `uc ~T0 @X0 -> 5 `i a ]
+[; ;main.c: 120: UBYTE EEPROMTestData[5];
+[; ;main.c: 121: EEPROMTestData[0] = 'u';
+"121
+[e = *U + &U _EEPROMTestData * -> -> -> 0 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 117 `ui `uc ]
+[; ;main.c: 122: EEPROMTestData[1] = 'n';
+"122
+[e = *U + &U _EEPROMTestData * -> -> -> 1 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 110 `ui `uc ]
+[; ;main.c: 123: EEPROMTestData[2] = 'k';
+"123
+[e = *U + &U _EEPROMTestData * -> -> -> 2 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 107 `ui `uc ]
+[; ;main.c: 124: EEPROMTestData[3] = 'o';
+"124
+[e = *U + &U _EEPROMTestData * -> -> -> 3 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 111 `ui `uc ]
+[; ;main.c: 125: EEPROMTestData[4] = 0x0d;
+"125
+[e = *U + &U _EEPROMTestData * -> -> -> 4 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 13 `i `uc ]
+[; ;main.c: 126: SendPacket(EEPROMTestData);
+"126
+[e ( _SendPacket (1 &U _EEPROMTestData ]
+[; ;main.c: 130: _delay((unsigned long)((200)*(10000000/4000.0)));
+"130
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"155
 }
-[; ;main.c: 138: }else{
-[e $U 287  ]
-[e :U 286 ]
+[; ;main.c: 155: }else{
+[e $U 283  ]
+[e :U 282 ]
 {
-[; ;main.c: 139: put_error;
-"139
+[; ;main.c: 156: put_error;
+"156
 [e &U _put_error ]
-"141
+"158
 }
-[e :U 287 ]
-[; ;main.c: 141: }
-[; ;main.c: 146: _delay((unsigned long)((200)*(10000000/4000.0)));
-"146
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"149
+[e :U 283 ]
+"166
 }
 [e :U 279 ]
-"51
+"57
 [e $U 280  ]
 [e :U 281 ]
-[; ;main.c: 149: }
-[; ;main.c: 151: }
-"151
+[; ;main.c: 158: }
+[; ;main.c: 166: }
+[; ;main.c: 168: }
+"168
 [e :UE 278 ]
 }

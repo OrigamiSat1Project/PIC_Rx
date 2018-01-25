@@ -4214,7 +4214,7 @@ UINT getbit(void);
 void ReceivePacket(void);
 void ReceivePacket_data(UBYTE *);
 
-# 25 "encode_AX25.h"
+# 27 "encode_AX25.h"
 void SendPacket(UBYTE *);
 void test_Packetmaker(UBYTE *);
 
@@ -4284,109 +4284,6 @@ buf = buf | 0x80;
 }
 }
 }
-if(buf == ("JQ1YCZ"[0] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1YCZ"[1] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1YCZ"[2] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1YCZ"[3] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1YCZ"[4] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1YCZ"[5] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-rcv_state ++;
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
 if(buf == ("JQ1ZHX"[0] << 1)){
 dPacket[dPacketnum] = buf;
 dPacketnum ++;
@@ -4448,6 +4345,109 @@ buf = buf | 0x80;
 }
 }
 if(buf == ("JQ1ZHX"[5] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+rcv_state ++;
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JQ1YCZ"[0] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JQ1YCZ"[1] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JQ1YCZ"[2] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JQ1YCZ"[3] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JQ1YCZ"[4] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JQ1YCZ"[5] << 1)){
 dPacket[dPacketnum] = buf;
 dPacketnum ++;
 rcv_state ++;
