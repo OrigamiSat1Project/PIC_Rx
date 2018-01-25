@@ -40,12 +40,13 @@ void main(void) {
     //OSCCON = 0x40;
     //Init_FMCW();
     
-    __delay_ms(500);
+    __delay_ms(3000);
     
     Init_SERIAL();
     Init_MPU();
     Init_I2C_M(I2Cbps);
-    Init_WDT();
+//    Init_WDT();
+    
     //PLL setting
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
     //Set PLL DATA 
@@ -58,7 +59,7 @@ void main(void) {
     FMRX(FMRX_Nref, FMRX_Nprg);
     led_white = 0;
     printf("start\r\n");
-    RA1 = 0;
+//    RA1 = 0;
     while(1){
         /*
         while(1){
@@ -79,7 +80,6 @@ void main(void) {
         led_white = 1;
         __delay_ms(500);
         led_white = 0;
-        
         //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
         //printf("%s\r\n", dData);

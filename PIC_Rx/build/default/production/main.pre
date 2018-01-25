@@ -2346,16 +2346,13 @@ void main(void) {
 
 
 
-_delay((unsigned long)((500)*(10000000/4000.0)));
+_delay((unsigned long)((3000)*(10000000/4000.0)));
 
 Init_SERIAL();
 Init_MPU();
 Init_I2C_M(400000);
-Init_WDT();
 
-
-
-
+# 54
 RB2 = 1;
 _delay((unsigned long)((500)*(10000000/4000.0)));
 
@@ -2364,16 +2361,15 @@ CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 RB2 = 0;
 printf("start\r\n");
-RA1 = 0;
+
 while(1){
 
-# 77
+# 78
 UBYTE *dData;
 dData = ReceivePacket_data();
 RB2 = 1;
 _delay((unsigned long)((500)*(10000000/4000.0)));
 RB2 = 0;
-
 
 EEPROM_Write(0x50,0x00,0x00,dData);
 

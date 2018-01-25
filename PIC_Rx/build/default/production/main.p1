@@ -10,8 +10,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Init_MPU `(v ~T0 @X0 0 ef ]
 "16 I2C.h
 [v _Init_I2C_M `(v ~T0 @X0 0 ef1`Cul ]
-"48 main.c
-[v _Init_WDT `(i ~T0 @X0 0 ef ]
 "3848 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f887.h
 [v _RB2 `Vb ~T0 @X0 0 e@50 ]
 "37 FMCW.h
@@ -22,8 +20,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _FMRX `(v ~T0 @X0 0 ef2`i`*i ]
 "195 C:\Program Files (x86)\Microchip\xc8\v1.38\include\stdio.h
 [v _printf `(i ~T0 @X0 0 ev`*Cuc ]
-"3830 C:\Program Files (x86)\Microchip\xc8\v1.38\include\pic16f887.h
-[v _RA1 `Vb ~T0 @X0 0 e@41 ]
 "45 decode_AX25.h
 [v _ReceivePacket_data `(*uc ~T0 @X0 0 ef ]
 "23 I2C.h
@@ -1748,9 +1744,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 38: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 43: _delay((unsigned long)((500)*(10000000/4000.0)));
+[; ;main.c: 43: _delay((unsigned long)((3000)*(10000000/4000.0)));
 "43
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * -> -> 3000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;main.c: 45: Init_SERIAL();
 "45
 [e ( _Init_SERIAL ..  ]
@@ -1760,51 +1756,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 47: Init_I2C_M(400000);
 "47
 [e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
-[; ;main.c: 48: Init_WDT();
-"48
-[e ( _Init_WDT ..  ]
-[; ;main.c: 53: RB2 = 1;
-"53
-[e = _RB2 -> -> 1 `i `b ]
-[; ;main.c: 54: _delay((unsigned long)((500)*(10000000/4000.0)));
+[; ;main.c: 54: RB2 = 1;
 "54
+[e = _RB2 -> -> 1 `i `b ]
+[; ;main.c: 55: _delay((unsigned long)((500)*(10000000/4000.0)));
+"55
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 56: FMTX(FMTX_Nref, FMTX_Nprg);
-"56
-[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
-[; ;main.c: 57: CWTX(CWTX_Nref, CWTX_Nprg);
+[; ;main.c: 57: FMTX(FMTX_Nref, FMTX_Nprg);
 "57
-[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
-[; ;main.c: 58: FMRX(FMRX_Nref, FMRX_Nprg);
+[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
+[; ;main.c: 58: CWTX(CWTX_Nref, CWTX_Nprg);
 "58
-[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
-[; ;main.c: 59: RB2 = 0;
+[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
+[; ;main.c: 59: FMRX(FMRX_Nref, FMRX_Nprg);
 "59
-[e = _RB2 -> -> 0 `i `b ]
-[; ;main.c: 60: printf("start\r\n");
+[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
+[; ;main.c: 60: RB2 = 0;
 "60
-[e ( _printf :s 1C ]
-[; ;main.c: 61: RA1 = 0;
+[e = _RB2 -> -> 0 `i `b ]
+[; ;main.c: 61: printf("start\r\n");
 "61
-[e = _RA1 -> -> 0 `i `b ]
-[; ;main.c: 62: while(1){
-"62
+[e ( _printf :s 1C ]
+[; ;main.c: 63: while(1){
+"63
 [e :U 146 ]
 {
-"77
-[v _dData `*uc ~T0 @X0 1 a ]
-[; ;main.c: 77: UBYTE *dData;
-[; ;main.c: 78: dData = ReceivePacket_data();
 "78
-[e = _dData ( _ReceivePacket_data ..  ]
-[; ;main.c: 79: RB2 = 1;
+[v _dData `*uc ~T0 @X0 1 a ]
+[; ;main.c: 78: UBYTE *dData;
+[; ;main.c: 79: dData = ReceivePacket_data();
 "79
-[e = _RB2 -> -> 1 `i `b ]
-[; ;main.c: 80: _delay((unsigned long)((500)*(10000000/4000.0)));
+[e = _dData ( _ReceivePacket_data ..  ]
+[; ;main.c: 80: RB2 = 1;
 "80
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 81: RB2 = 0;
+[e = _RB2 -> -> 1 `i `b ]
+[; ;main.c: 81: _delay((unsigned long)((500)*(10000000/4000.0)));
 "81
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 82: RB2 = 0;
+"82
 [e = _RB2 -> -> 0 `i `b ]
 [; ;main.c: 84: EEPROM_Write(0x50,0x00,0x00,dData);
 "84
@@ -1877,8 +1867,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 117: _delay((unsigned long)((5000)*(10000000/4000.0)));
 "117
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[v F2008 `i ~T0 @X0 -> 5 `i s ]
-[i F2008
+[v F2007 `i ~T0 @X0 -> 5 `i s ]
+[i F2007
 :U ..
 "120
 -> 8 `i
@@ -1890,9 +1880,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _FMTX_Nprg `i ~T0 @X0 -> 5 `i a ]
 [; ;main.c: 120: int FMTX_Nprg[5] = {8,7,3,0,0};
-[e = _FMTX_Nprg F2008 ]
-[v F2010 `i ~T0 @X0 -> 5 `i s ]
-[i F2010
+[e = _FMTX_Nprg F2007 ]
+[v F2009 `i ~T0 @X0 -> 5 `i s ]
+[i F2009
 :U ..
 "121
 -> 0 `i
@@ -1904,9 +1894,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _CWTX_Nprg `i ~T0 @X0 -> 5 `i a ]
 [; ;main.c: 121: int CWTX_Nprg[5] = {0,1,7,4,7};
-[e = _CWTX_Nprg F2010 ]
-[v F2012 `i ~T0 @X0 -> 5 `i s ]
-[i F2012
+[e = _CWTX_Nprg F2009 ]
+[v F2011 `i ~T0 @X0 -> 5 `i s ]
+[i F2011
 :U ..
 "122
 -> 2 `i
@@ -1918,7 +1908,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [v _FMRX_Nprg `i ~T0 @X0 -> 5 `i a ]
 [; ;main.c: 122: int FMRX_Nprg[5] = {2,4,8,8,7};
-[e = _FMRX_Nprg F2012 ]
+[e = _FMRX_Nprg F2011 ]
 [; ;main.c: 124: FMTX(FMTX_Nref, FMTX_Nprg);
 "124
 [e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
@@ -2001,7 +1991,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "194
 }
 [e :U 145 ]
-"62
+"63
 [e $U 146  ]
 [e :U 147 ]
 [; ;main.c: 194: }
