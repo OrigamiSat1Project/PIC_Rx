@@ -4,7 +4,6 @@
 #include "Init_MPU.h"
 #include "Type_define.h"
 #include "time.h"
-#include "decode_AX25.h"
 #include "encode_AX25.h"
 
 #define bit_H 0x01
@@ -29,14 +28,14 @@ UBYTE efcslo, efcshi;
 UBYTE ePacket[50];
 UINT ebitstatus = low;
 
-
-void test_Packetmaker(UBYTE *eDataField){
-    UINT num_ = Packetmaker(eDataField);
-    for(UINT i=0;i<num_;i++){
-        putch(ePacket[i]);
-    }
-    putcrlf();
-}
+//
+//void test_Packetmaker(UBYTE *eDataField){
+//    UINT num_ = Packetmaker(eDataField);
+//    for(UINT i=0;i<num_;i++){
+//        putch(ePacket[i]);
+//    }
+//    putcrlf();
+//}
 
 UINT Packetmaker(UBYTE *eDataField){
     for(UINT i=0;i<6;i++){

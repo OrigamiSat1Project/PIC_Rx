@@ -40,8 +40,8 @@ void putAX25(void);
 void conv_DI_UARTRX(void);
 UBYTE reverse_bit8(UBYTE x);*/
 
-void ReceivePacket(void);
-void ReceivePacket_data(UBYTE *);
+//void ReceivePacket(void);
+//void ReceivePacket_data(UBYTE *);
 
 #endif	/* DECODE_AX25_H */
 

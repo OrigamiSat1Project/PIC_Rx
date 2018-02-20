@@ -1,6 +1,9 @@
 #include <xc.h>
 #include "UART.h"
 #include "Type_define.h"
+#include "EEPROM.h"
+#include "encode_AX25.h"
+#include "I2C.h"
 
 void Init_SERIAL(void){
     SPBRG  = 129;                   // boudrate is 1200 bps
@@ -31,8 +34,11 @@ UBYTE getch(void){
         NOP();
         CREN = 1;
     }
-	while(!RCIF);  
-	return RCREG;
+	while(!RCIF);
+//    char RXD;
+//    RXD = RCREG;
+//	return RXD;
+    return RCREG;
 }
 
 void putch(UBYTE byte){
@@ -43,36 +49,66 @@ void putch(UBYTE byte){
 
 
 
-void putstr(UBYTE *x)
-{
-    while(*x != '\0'){
-        putch(*x);
-        x++;
-    }
-}
+//void putstr(UBYTE *x)
+//{
+//    while(*x != '\0'){
+//        putch(*x);
+//        x++;
+//    }
+//}
 
-void putcrlf(void){
-    putch('\r');
-    putch('\n');
-}
+//void putcrlf(void){
+//    putch('\r');
+//    putch('\n');
+//}
+//
+//void put_error(void){
+//    putch('E');
+//    putch('R');
+//    putch('R');
+//    putch('O');
+//    putch('R');
+//    putch('!');
+//}
+//
+//void put_ok(void){
+//    putch('O');
+//    putch('K');
+//    putch('!');
+//}
 
-void put_error(void){
-    putch('E');
-    putch('R');
-    putch('R');
-    putch('O');
-    putch('R');
-    putch('!');
-}
+//void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
+//    putch(NM_wad_header);
+//    putch(whigh_address);
+//    putch(wlow_address);
+//}
 
-void put_ok(void){
-    putch('O');
-    putch('K');
-    putch('!');
-}
-
-void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-    putch(NM_wad_header);
-    putch(whigh_address);
-    putch(wlow_address);
+void interrupt InterReceiver( void ){
+    UBYTE RXDATA[32];
+    if (RCIF == 1) {
+          RXDATA[0] = getch();
+          RXDATA[1] = getch();
+          RXDATA[2] = getch();
+          RCIF = 0 ;
+          
+          __delay_ms(200);
+          UBYTE EEPROMData[1];
+          UINT EEPROMDataLength;
+          EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMData,&EEPROMDataLength);
+          FMPTT = 1;
+          CWKEY = 0;
+//          UBYTE SendData[3];
+//          for (int i = 0;i<3;i++){
+//              SendData[i] = EEPROMData[i];
+//          }
+//          SendData = EEPROMData;
+          for(int i = 0; i<5;i++){
+//              SendPacket(SendData);
+//              SendPacket(EEPROMData);
+              __delay_ms(200);
+          }
+          FMPTT = 0;
+          
+          
+     }
 }

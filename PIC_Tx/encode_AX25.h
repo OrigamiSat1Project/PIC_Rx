@@ -25,7 +25,7 @@
 #define CWKEY RB3
 
 void SendPacket(UBYTE *);
-void test_Packetmaker(UBYTE *);
+//void test_Packetmaker(UBYTE *);
 /*
 //void SendByte(UBYTE);
 //void flipout(void);

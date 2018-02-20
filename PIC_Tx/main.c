@@ -6,7 +6,6 @@
 #include "Init_MPU.h"
 #include "Type_define.h"
 #include "time.h"
-#include "decode_AX25.h"
 #include "encode_AX25.h"
 #include "I2C.h"
 #include "EEPROM.h"
@@ -117,13 +116,13 @@ void main(void) {
             //  encoder
             //UBYTE ePacket[50];
 //            FMPTT = 1;
-            UBYTE EEPROMTestData[5];
-            EEPROMTestData[0] = 'u';
-            EEPROMTestData[1] = 'n';
-            EEPROMTestData[2] = 'k';
-            EEPROMTestData[3] = 'o';
-            EEPROMTestData[4] = 0x0d;
-            SendPacket(EEPROMTestData);
+//            UBYTE EEPROMTestData[5];
+//            EEPROMTestData[0] = 'u';
+//            EEPROMTestData[1] = 'n';
+//            EEPROMTestData[2] = 'k';
+//            EEPROMTestData[3] = 'o';
+//            EEPROMTestData[4] = 0x0d;
+//            SendPacket(EEPROMTestData);
 //            SendPacket(EEPROMData);    
             //test_Packetmaker(EEPROMData);
             //SendPacket();
