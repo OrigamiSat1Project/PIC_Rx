@@ -153,7 +153,8 @@ void main(void) {
 
         
         }else{
-            put_error;
+//            put_error;
+            FMPTT = 0;
             //putch('B');
         }
         //}

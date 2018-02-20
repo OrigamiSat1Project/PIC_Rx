@@ -20,8 +20,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _RB3 `Vb ~T0 @X0 0 e@51 ]
 "27 encode_AX25.h
 [v _SendPacket `(v ~T0 @X0 0 ef1`*uc ]
-"21 UART.h
-[v _put_error `(v ~T0 @X0 0 ef ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -3200,21 +3198,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 283  ]
 [e :U 282 ]
 {
-[; ;main.c: 156: put_error;
-"156
-[e &U _put_error ]
-"158
+[; ;main.c: 157: RC0 = 0;
+"157
+[e = _RC0 -> -> 0 `i `b ]
+"159
 }
 [e :U 283 ]
-"166
+"167
 }
 [e :U 279 ]
 "57
 [e $U 280  ]
 [e :U 281 ]
-[; ;main.c: 158: }
-[; ;main.c: 166: }
-[; ;main.c: 168: }
-"168
+[; ;main.c: 159: }
+[; ;main.c: 167: }
+[; ;main.c: 169: }
+"169
 [e :UE 278 ]
 }

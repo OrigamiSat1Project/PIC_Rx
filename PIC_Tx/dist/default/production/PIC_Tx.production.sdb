@@ -174,7 +174,7 @@
 {
 "120
 [v main@EEPROMTestData EEPROMTestData `[5]uc  1 a 5 15 ]
-"168
+"169
 } 0
 "60 C:\Users\Kosuke\Documents\PIC_Tx\PIC_Tx\encode_AX25.c
 [v _SendPacket SendPacket `(v  1 e 1 0 ]
