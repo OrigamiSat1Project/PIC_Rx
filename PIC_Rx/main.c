@@ -82,11 +82,17 @@ void main(void) {
         led_white = 0;
         //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
+        
+        //inform TXPIC RXDATA(PIN43 = 1)
+        
+        UBYTE TXOBC_wad_header = 0x74;
+        TXOBC_waddress(TXOBC_wad_header, whigh_address, wlow_address);
+        
         //printf("%s\r\n", dData);
-        for (UINT i = 0;i < 32;i++){
+//        for (UINT i = 0;i < 32;i++){
 //            printf("%c", dData[i]);
 //            dData[i] = 0x00;
-        }
+//        }
 //        led_white = 1;
 //        __delay_ms(500);
 //        led_white = 0;

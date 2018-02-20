@@ -1,6 +1,7 @@
 #include <xc.h>
 #include "UART.h"
 #include "Type_define.h"
+#include "time.h"
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 14400 bps
@@ -72,4 +73,13 @@ void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
     putch(NM_wad_header);
     putch(whigh_address);
     putch(wlow_address);
+}
+
+void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
+    TXOBC_MULTI = 1;
+    __delay_ms(50);
+    putch(TXOBC_wad_header);
+    putch(whigh_address);
+    putch(wlow_address);
+    TXOBC_MULTI = 0;
 }

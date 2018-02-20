@@ -2134,7 +2134,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 15 "UART.h"
+# 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
 void putstr(UBYTE *);
@@ -2144,6 +2144,7 @@ void putcrlf(void);
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
+void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
 # 24 "Init_MPU.h"
 void Init_MPU(void);
@@ -2373,12 +2374,12 @@ RB2 = 0;
 
 EEPROM_Write(0x50,0x00,0x00,dData);
 
-for (UINT i = 0;i < 32;i++){
 
 
-}
+UBYTE TXOBC_wad_header = 0x74;
+TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
 
-# 96
+# 102
 if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
@@ -2439,7 +2440,7 @@ _delay((unsigned long)((1000)*(10000000/4000.0)));
 RB2 = 0;
 }
 
-# 198
+# 204
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;

@@ -2240,7 +2240,7 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 15 "UART.h"
+# 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
 void putstr(UBYTE *);
@@ -2250,6 +2250,7 @@ void putcrlf(void);
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
+void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
 # 36 "decode_AX25.h"
 UINT getbit(void);

@@ -9,6 +9,8 @@
 #ifndef UART_H
 #define	UART_H
 
+#define TXOBC_MULTI        RC5
+
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "Type_define.h"
 
@@ -21,6 +23,7 @@ void putcrlf(void);
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
+void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
 #ifdef	__cplusplus
 }

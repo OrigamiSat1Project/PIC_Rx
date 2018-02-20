@@ -2099,7 +2099,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 15 "UART.h"
+# 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
 void putstr(UBYTE *);
@@ -2109,8 +2109,13 @@ void putcrlf(void);
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
+void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
-# 5 "UART.c"
+# 23 "time.h"
+void delay_ms(UWORD);
+void delay_us(UWORD);
+
+# 6 "UART.c"
 void Init_SERIAL(void){
 SPBRG = 10;
 BRGH = 0;
@@ -2132,7 +2137,7 @@ UBYTE getch(void){
 if(FERR || OERR)
 {
 
-# 30
+# 31
 CREN = 0;
 __nop();
 CREN = 1;
@@ -2178,4 +2183,13 @@ void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
 putch(NM_wad_header);
 putch(whigh_address);
 putch(wlow_address);
+}
+
+void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
+RC5 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+putch(TXOBC_wad_header);
+putch(whigh_address);
+putch(wlow_address);
+RC5 = 0;
 }

@@ -1,7 +1,7 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "20 encode_AX25.c
 [v _Packetmaker `(ui ~T0 @X0 0 ef ]
-"16 UART.h
+"18 UART.h
 [v _putch `(v ~T0 @X0 0 ef1`uc ]
 "17 encode_AX25.c
 [v _SendByte `(v ~T0 @X0 0 ef1`uc ]
@@ -1511,14 +1511,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;UART.h: 15: void Init_SERIAL(void);
-[; ;UART.h: 16: void putch(UBYTE c);
-[; ;UART.h: 17: void putstr(UBYTE *);
-[; ;UART.h: 18: UBYTE getch(void);
-[; ;UART.h: 19: void putcrlf(void);
-[; ;UART.h: 21: void put_error(void);
-[; ;UART.h: 22: void put_ok(void);
-[; ;UART.h: 23: void NM_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 17: void Init_SERIAL(void);
+[; ;UART.h: 18: void putch(UBYTE c);
+[; ;UART.h: 19: void putstr(UBYTE *);
+[; ;UART.h: 20: UBYTE getch(void);
+[; ;UART.h: 21: void putcrlf(void);
+[; ;UART.h: 23: void put_error(void);
+[; ;UART.h: 24: void put_ok(void);
+[; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
 [; ;Init_MPU.h: 25: void led_onoff(void);
 [; ;Init_MPU.h: 26: void debug_ledy(void);

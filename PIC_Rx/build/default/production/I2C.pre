@@ -2099,7 +2099,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 15 "UART.h"
+# 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
 void putstr(UBYTE *);
@@ -2109,6 +2109,7 @@ void putcrlf(void);
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
+void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
 # 6 "I2C.c"
 UBYTE EEPROMData[32];
