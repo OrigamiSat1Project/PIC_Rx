@@ -84,13 +84,14 @@ void main(void) {
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
         //printf("%s\r\n", dData);
         for (UINT i = 0;i < 32;i++){
-            printf("%c", dData[i]);
-            dData[i] = 0x00;
+//            printf("%c", dData[i]);
+//            dData[i] = 0x00;
         }
+//        led_white = 1;
+//        __delay_ms(500);
+//        led_white = 0;
+        
         //printf("\r\n");
-        
-        
-        
         // Command target
         if(dData[0]=='n'){      //NanoMind
             //Send address to NanoMind
@@ -99,9 +100,9 @@ void main(void) {
             
         }else if(dData[0]=='p'){        //PIC_RX
             //Task target
-            led_white = 1;
-            __delay_ms(500);
-            led_white = 0;
+//            led_white = 1;
+//            __delay_ms(500);
+//            led_white = 0;
             if(dData[2] == 'r'){        // PIC_RX
                 // Command type
 //                led_white = 1;
@@ -146,6 +147,10 @@ void main(void) {
             }else if(dData[2] == 't'){      // PIC_TX
 
             }
+        }else{
+            led_white = 1;
+            __delay_ms(1000);
+            led_white = 0;
         }
         
         

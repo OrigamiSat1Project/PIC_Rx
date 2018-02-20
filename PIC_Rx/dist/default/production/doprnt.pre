@@ -288,36 +288,10 @@ const char * cp;
 
 while(c = *f++) {
 
-if(c != '%')
-
+# 540
 {
 (putch(c) );
 continue;
-}
-
-# 548
-flag = 0;
-
-# 635
-switch(c = *f++) {
-
-case 0:
-goto alldone;
-
-# 784
-case 'c':
-
-# 799
-c = (*(int *)__va_arg((*(int **)ap), (int)0));
-
-
-default:
-
-# 809
-(putch(c) );
-continue;
-
-# 822
 }
 
 # 1422
@@ -328,8 +302,6 @@ continue;
 
 # 1533
 }
-
-alldone:
 
 # 1540
 return 0;

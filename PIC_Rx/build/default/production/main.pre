@@ -2374,11 +2374,11 @@ RB2 = 0;
 EEPROM_Write(0x50,0x00,0x00,dData);
 
 for (UINT i = 0;i < 32;i++){
-printf("%c", dData[i]);
-dData[i] = 0x00;
+
+
 }
 
-# 95
+# 96
 if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
@@ -2386,9 +2386,9 @@ NM_waddress(NM_wad_header, 0x00, 0x00);
 
 }else if(dData[0]=='p'){
 
-RB2 = 1;
-_delay((unsigned long)((500)*(10000000/4000.0)));
-RB2 = 0;
+
+
+
 if(dData[2] == 'r'){
 
 
@@ -2433,9 +2433,13 @@ break;
 }else if(dData[2] == 't'){
 
 }
+}else{
+RB2 = 1;
+_delay((unsigned long)((1000)*(10000000/4000.0)));
+RB2 = 0;
 }
 
-# 193
+# 198
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;

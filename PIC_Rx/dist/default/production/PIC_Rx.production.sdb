@@ -89,7 +89,7 @@
 [v _STATUS STATUS `VEuc  1 e 1 @3 ]
 "160
 [v _PORTA PORTA `VEuc  1 e 1 @5 ]
-[s S332 . 1 `uc 1 RA0 1 0 :1:0 
+[s S331 . 1 `uc 1 RA0 1 0 :1:0 
 `uc 1 RA1 1 0 :1:1 
 `uc 1 RA2 1 0 :1:2 
 `uc 1 RA3 1 0 :1:3 
@@ -99,13 +99,13 @@
 `uc 1 RA7 1 0 :1:7 
 ]
 "177
-[u S341 . 1 `S332 1 . 1 0 ]
-[v _PORTAbits PORTAbits `VES341  1 e 1 @5 ]
+[u S340 . 1 `S331 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES340  1 e 1 @5 ]
 "221
 [v _PORTB PORTB `VEuc  1 e 1 @6 ]
 "282
 [v _PORTC PORTC `VEuc  1 e 1 @7 ]
-[s S366 . 1 `uc 1 RC0 1 0 :1:0 
+[s S365 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 RC3 1 0 :1:3 
@@ -115,11 +115,11 @@
 `uc 1 RC7 1 0 :1:7 
 ]
 "299
-[u S375 . 1 `S366 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES375  1 e 1 @7 ]
+[u S374 . 1 `S365 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES374  1 e 1 @7 ]
 "343
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
-[s S387 . 1 `uc 1 RD0 1 0 :1:0 
+[s S386 . 1 `uc 1 RD0 1 0 :1:0 
 `uc 1 RD1 1 0 :1:1 
 `uc 1 RD2 1 0 :1:2 
 `uc 1 RD3 1 0 :1:3 
@@ -129,19 +129,19 @@
 `uc 1 RD7 1 0 :1:7 
 ]
 "360
-[u S396 . 1 `S387 1 . 1 0 ]
-[v _PORTDbits PORTDbits `VES396  1 e 1 @8 ]
+[u S395 . 1 `S386 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES395  1 e 1 @8 ]
 "404
 [v _PORTE PORTE `VEuc  1 e 1 @9 ]
-[s S353 . 1 `uc 1 RE0 1 0 :1:0 
+[s S352 . 1 `uc 1 RE0 1 0 :1:0 
 `uc 1 RE1 1 0 :1:1 
 `uc 1 RE2 1 0 :1:2 
 `uc 1 RE3 1 0 :1:3 
 ]
 "417
-[u S358 . 1 `S353 1 . 1 0 ]
-[v _PORTEbits PORTEbits `VES358  1 e 1 @9 ]
-[s S508 . 1 `uc 1 RBIF 1 0 :1:0 
+[u S357 . 1 `S352 1 . 1 0 ]
+[v _PORTEbits PORTEbits `VES357  1 e 1 @9 ]
+[s S507 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INTF 1 0 :1:1 
 `uc 1 T0IF 1 0 :1:2 
 `uc 1 RBIE 1 0 :1:3 
@@ -151,14 +151,14 @@
 `uc 1 GIE 1 0 :1:7 
 ]
 "470
-[s S517 . 1 `uc 1 . 1 0 :2:0 
+[s S516 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 TMR0IF 1 0 :1:2 
 `uc 1 . 1 0 :2:3 
 `uc 1 TMR0IE 1 0 :1:5 
 ]
-[u S522 . 1 `S508 1 . 1 0 `S517 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES522  1 e 1 @11 ]
-[s S540 . 1 `uc 1 TMR1IF 1 0 :1:0 
+[u S521 . 1 `S507 1 . 1 0 `S516 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES521  1 e 1 @11 ]
+[s S539 . 1 `uc 1 TMR1IF 1 0 :1:0 
 `uc 1 TMR2IF 1 0 :1:1 
 `uc 1 CCP1IF 1 0 :1:2 
 `uc 1 SSPIF 1 0 :1:3 
@@ -167,11 +167,11 @@
 `uc 1 ADIF 1 0 :1:6 
 ]
 "540
-[u S548 . 1 `S540 1 . 1 0 ]
-[v _PIR1bits PIR1bits `VES548  1 e 1 @12 ]
+[u S547 . 1 `S539 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES547  1 e 1 @12 ]
 "635
 [v _TMR1 TMR1 `VEus  1 e 2 @14 ]
-[s S578 . 1 `uc 1 TMR1ON 1 0 :1:0 
+[s S577 . 1 `uc 1 TMR1ON 1 0 :1:0 
 `uc 1 TMR1CS 1 0 :1:1 
 `uc 1 nT1SYNC 1 0 :1:2 
 `uc 1 T1OSCEN 1 0 :1:3 
@@ -180,7 +180,7 @@
 `uc 1 T1GINV 1 0 :1:7 
 ]
 "682
-[s S586 . 1 `uc 1 . 1 0 :2:0 
+[s S585 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 T1INSYNC 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
 `uc 1 T1CKPS0 1 0 :1:4 
@@ -188,11 +188,11 @@
 `uc 1 . 1 0 :1:6 
 `uc 1 T1GIV 1 0 :1:7 
 ]
-[s S594 . 1 `uc 1 . 1 0 :2:0 
+[s S593 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 T1SYNC 1 0 :1:2 
 ]
-[u S597 . 1 `S578 1 . 1 0 `S586 1 . 1 0 `S594 1 . 1 0 ]
-[v _T1CONbits T1CONbits `VES597  1 e 1 @16 ]
+[u S596 . 1 `S577 1 . 1 0 `S585 1 . 1 0 `S593 1 . 1 0 ]
+[v _T1CONbits T1CONbits `VES596  1 e 1 @16 ]
 "822
 [v _SSPBUF SSPBUF `VEuc  1 e 1 @19 ]
 "828
@@ -211,7 +211,7 @@
 [v _TRISD TRISD `VEuc  1 e 1 @136 ]
 "1623
 [v _TRISE TRISE `VEuc  1 e 1 @137 ]
-[s S559 . 1 `uc 1 TMR1IE 1 0 :1:0 
+[s S558 . 1 `uc 1 TMR1IE 1 0 :1:0 
 `uc 1 TMR2IE 1 0 :1:1 
 `uc 1 CCP1IE 1 0 :1:2 
 `uc 1 SSPIE 1 0 :1:3 
@@ -220,8 +220,8 @@
 `uc 1 ADIE 1 0 :1:6 
 ]
 "1676
-[u S567 . 1 `S559 1 . 1 0 ]
-[v _PIE1bits PIE1bits `VES567  1 e 1 @140 ]
+[u S566 . 1 `S558 1 . 1 0 ]
+[v _PIE1bits PIE1bits `VES566  1 e 1 @140 ]
 "1932
 [v _SSPCON2 SSPCON2 `VEuc  1 e 1 @145 ]
 "1999
@@ -329,40 +329,38 @@
 "38 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"122
+"123
 [v main@FMRX_Nprg FMRX_Nprg `[5]i  1 a 10 20 ]
-"121
+"122
 [v main@CWTX_Nprg CWTX_Nprg `[5]i  1 a 10 10 ]
-"120
+"121
 [v main@FMTX_Nprg FMTX_Nprg `[5]i  1 a 10 0 ]
-"97
+"98
 [v main@NM_wad_header NM_wad_header `uc  1 a 1 30 ]
 "86
 [v main@i i `ui  1 a 2 31 ]
 "78
 [v main@dData dData `*.5uc  1 a 1 33 ]
-"117
-[v main@F2007 F2007 `[5]i  1 s 10 F2007 ]
-"120
-[v main@F2009 F2009 `[5]i  1 s 10 F2009 ]
+"118
+[v main@F2006 F2006 `[5]i  1 s 10 F2006 ]
 "121
-[v main@F2011 F2011 `[5]i  1 s 10 F2011 ]
-"196
+[v main@F2008 F2008 `[5]i  1 s 10 F2008 ]
+"122
+[v main@F2010 F2010 `[5]i  1 s 10 F2010 ]
+"201
 } 0
 "464 C:\Program Files (x86)\Microchip\xc8\v1.38\sources\common\doprnt.c
 [v _printf printf `(i  1 e 2 0 ]
 {
 [v printf@f f `*.24DCCuc  1 a 1 wreg ]
 "499
-[v printf@c c `c  1 a 1 7 ]
+[v printf@c c `c  1 a 1 3 ]
 "466
-[v printf@ap ap `[1]*.1v  1 a 1 5 ]
-"508
-[v printf@flag flag `uc  1 a 1 4 ]
+[v printf@ap ap `[1]*.1v  1 a 1 2 ]
 "464
 [v printf@f f `*.24DCCuc  1 a 1 wreg ]
 "533
-[v printf@f f `*.24DCCuc  1 a 1 6 ]
+[v printf@f f `*.24DCCuc  1 a 1 4 ]
 "1541
 } 0
 "19 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\EPS.c
@@ -563,9 +561,9 @@
 [v _RFDOUT RFDOUT `(v  1 e 1 0 ]
 {
 "214
-[v RFDOUT@i_474 i `i  1 a 2 31 ]
+[v RFDOUT@i_473 i `i  1 a 2 31 ]
 "208
-[v RFDOUT@i_473 i `i  1 a 2 27 ]
+[v RFDOUT@i_472 i `i  1 a 2 27 ]
 "203
 [v RFDOUT@i i `i  1 a 2 29 ]
 "201
@@ -581,9 +579,9 @@
 "146
 [v OUTFQ@j j `i  1 a 2 58 ]
 "172
-[v OUTFQ@i_464 i `i  1 a 2 56 ]
+[v OUTFQ@i_463 i `i  1 a 2 56 ]
 "145
-[v OUTFQ@i_462 i `i  1 a 2 50 ]
+[v OUTFQ@i_461 i `i  1 a 2 50 ]
 "140
 [v OUTFQ@i i `i  1 a 2 54 ]
 "138
