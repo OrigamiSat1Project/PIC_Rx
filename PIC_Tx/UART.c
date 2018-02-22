@@ -6,7 +6,9 @@
 #include "I2C.h"
 
 void Init_SERIAL(void){
-    SPBRG  = 129;                   // boudrate is 1200 bps
+    SPBRG  = 10;                   // boudrate is 1200 bps
+    GIE    = 1;
+    PEIE   = 1;
     BRGH   = 0;                   	// Fast baudrate
 	SYNC   = 0;						// Asynchronous
 	SPEN   = 1;						// Enable serial port pins
@@ -86,29 +88,37 @@ void putch(UBYTE byte){
 void interrupt InterReceiver( void ){
     UBYTE RXDATA[32];
     if (RCIF == 1) {
-          RXDATA[0] = getch();
-          RXDATA[1] = getch();
-          RXDATA[2] = getch();
-          RCIF = 0 ;
-          
-          __delay_ms(200);
-          UBYTE EEPROMData[1];
-          UINT EEPROMDataLength;
-          EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMData,&EEPROMDataLength);
-          FMPTT = 1;
-          CWKEY = 0;
-//          UBYTE SendData[3];
-//          for (int i = 0;i<3;i++){
-//              SendData[i] = EEPROMData[i];
-//          }
-//          SendData = EEPROMData;
-          for(int i = 0; i<5;i++){
-//              SendPacket(SendData);
-//              SendPacket(EEPROMData);
-              __delay_ms(200);
-          }
-          FMPTT = 0;
-          
-          
-     }
+//        led_yellow = 1;
+        
+        RXDATA[0] = getch();
+        
+        if (RXDATA[0] == 0x74){
+            led_yellow = 1;
+            RXDATA[1] = getch();
+            RXDATA[2] = getch();
+            RCIF = 0 ;
+
+            __delay_ms(200);
+            UBYTE EEPROMCmdData[1];
+            UINT EEPROMCmdDataLength;
+            EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,&EEPROMCmdDataLength);
+            FMPTT = 1;
+            CWKEY = 0;
+    //          UBYTE SendData[3];
+    //          for (int i = 0;i<3;i++){
+    //              SendData[i] = EEPROMData[i];
+    //          }
+    //          SendData = EEPROMData;
+            for(int i = 0; i<5;i++){
+    //            SendPacket(SendData);
+                SendPacket(EEPROMCmdData);
+                __delay_ms(200);
+            }
+            FMPTT = 0;
+            led_yellow = 0;
+        }else{
+            RCIF = 0 ;
+//            led_yellow = 0;
+        }
+    }
 }

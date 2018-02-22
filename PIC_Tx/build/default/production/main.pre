@@ -4304,6 +4304,7 @@ void _NOP(void);
 #pragma config WRT = OFF
 
 void main(void) {
+_delay((unsigned long)((1000)*(10000000/4000.0)));
 
 
 
@@ -4314,23 +4315,16 @@ Init_MPU();
 
 Init_I2C_M(400000);
 
-# 54
-_delay((unsigned long)((6000)*(10000000/4000.0)));
-
+# 57
 while(1){
 
-# 72
+# 73
 UBYTE dData[];
 
-# 81
-RB1 = 1;
+# 83
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-
-
-RB1 = 0;
-
-# 104
+# 105
 UBYTE *EEPROMData;
 if (RC2==1){
 RC0 = 1;
@@ -4342,17 +4336,17 @@ _delay((unsigned long)((200)*(10000000/4000.0)));
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 129
+# 130
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 154
+# 155
 }else{
 
 RC0 = 0;
 
 }
 
-# 166
+# 167
 }
 
 }

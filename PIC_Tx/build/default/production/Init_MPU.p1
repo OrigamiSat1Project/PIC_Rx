@@ -3042,9 +3042,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Init_MPU.c: 23: TRISA = 0b10000000;
 "23
 [e = _TRISA -> -> 128 `i `uc ]
-[; ;Init_MPU.c: 24: TRISB = 0b00000000;
+[; ;Init_MPU.c: 24: TRISB = 0b00010000;
 "24
-[e = _TRISB -> -> 0 `i `uc ]
+[e = _TRISB -> -> 16 `i `uc ]
 [; ;Init_MPU.c: 25: TRISC = 0b01011100;
 "25
 [e = _TRISC -> -> 92 `i `uc ]

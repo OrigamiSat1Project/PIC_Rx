@@ -4271,7 +4271,9 @@ void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 
 # 8 "UART.c"
 void Init_SERIAL(void){
-SPBRG = 129;
+SPBRG = 10;
+GIE = 1;
+PEIE = 1;
 BRGH = 0;
 SYNC = 0;
 SPEN = 1;
@@ -4291,7 +4293,7 @@ UBYTE getch(void){
 if(FERR || OERR)
 {
 
-# 33
+# 35
 CREN = 0;
 __nop();
 CREN = 1;
@@ -4308,30 +4310,38 @@ while(!TXIF);
 TXREG = byte;
 }
 
-# 86
+# 88
 void interrupt InterReceiver( void ){
 UBYTE RXDATA[32];
 if (RCIF == 1) {
+
+
 RXDATA[0] = getch();
+
+if (RXDATA[0] == 0x74){
+RB1 = 1;
 RXDATA[1] = getch();
 RXDATA[2] = getch();
 RCIF = 0 ;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-UBYTE EEPROMData[1];
-UINT EEPROMDataLength;
-EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMData,&EEPROMDataLength);
+UBYTE EEPROMCmdData[1];
+UINT EEPROMCmdDataLength;
+EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,&EEPROMCmdDataLength);
 RC0 = 1;
 RB3 = 0;
 
-# 105
+# 112
 for(int i = 0; i<5;i++){
 
-
+SendPacket(EEPROMCmdData);
 _delay((unsigned long)((200)*(10000000/4000.0)));
 }
 RC0 = 0;
+RB1 = 0;
+}else{
+RCIF = 0 ;
 
-
+}
 }
 }

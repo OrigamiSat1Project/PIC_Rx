@@ -33,6 +33,7 @@
 #pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
 void main(void) {
+    __delay_ms(1000);
     /*初期化*/
     //OSCCON = 0x40;
     //Init_FMCW();
@@ -51,7 +52,7 @@ void main(void) {
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);*/
 //    FMPTT = 1;
-    __delay_ms(6000);
+//    __delay_ms(6000);
     
     while(1){
         /*
@@ -78,12 +79,12 @@ void main(void) {
 //        for (write_data_length = 0; dData[write_data_length]!= '\0'; ++write_data_length);
         //EEPROM書き込み
         //for(UINT i=0;i<=4;i++){
-        led_yellow = 1;
+//        led_yellow = 1;
         __delay_ms(200);
         //EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData,write_data_length);
         //EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData,6);
 //        __delay_ms(200);
-        led_yellow = 0;
+//        led_yellow = 0;
         //}
         /*
         //デバッグ用データUART送信

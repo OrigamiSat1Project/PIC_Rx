@@ -1,18 +1,16 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
+[v F1552 `(v ~T0 @X0 1 tf1`ul ]
+"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
+[v __delay `JF1552 ~T0 @X0 0 e ]
+[p i __delay ]
 "15 UART.h
 [v _Init_SERIAL `(v ~T0 @X0 0 ef ]
 "22 Init_MPU.h
 [v _Init_MPU `(v ~T0 @X0 0 ef ]
 "17 I2C.h
 [v _Init_I2C_M `(v ~T0 @X0 0 ef1`Cul ]
-[v F1552 `(v ~T0 @X0 1 tf1`ul ]
-"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
-[v __delay `JF1552 ~T0 @X0 0 e ]
-[p i __delay ]
-"3738 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
-[v _RB1 `Vb ~T0 @X0 0 e@49 ]
-"3760
+"3760 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
 [v _RC2 `Vb ~T0 @X0 0 e@58 ]
 "3756
 [v _RC0 `Vb ~T0 @X0 0 e@56 ]
@@ -3100,82 +3098,76 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 35: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 40: Init_SERIAL();
-"40
-[e ( _Init_SERIAL ..  ]
-[; ;main.c: 41: Init_MPU();
+[; ;main.c: 36: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"36
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 41: Init_SERIAL();
 "41
+[e ( _Init_SERIAL ..  ]
+[; ;main.c: 42: Init_MPU();
+"42
 [e ( _Init_MPU ..  ]
-[; ;main.c: 44: Init_I2C_M(400000);
-"44
+[; ;main.c: 45: Init_I2C_M(400000);
+"45
 [e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
-[; ;main.c: 54: _delay((unsigned long)((6000)*(10000000/4000.0)));
-"54
-[e ( __delay (1 -> * -> -> 6000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 56: while(1){
-"56
+[; ;main.c: 57: while(1){
+"57
 [e :U 278 ]
 {
-"72
+"73
 [v _dData `uc ~T0 @X0 -> 0 `x a ]
-[; ;main.c: 72: UBYTE dData[];
-[; ;main.c: 81: RB1 = 1;
-"81
-[e = _RB1 -> -> 1 `i `b ]
-[; ;main.c: 82: _delay((unsigned long)((200)*(10000000/4000.0)));
-"82
+[; ;main.c: 73: UBYTE dData[];
+[; ;main.c: 83: _delay((unsigned long)((200)*(10000000/4000.0)));
+"83
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 86: RB1 = 0;
-"86
-[e = _RB1 -> -> 0 `i `b ]
-"104
-[v _EEPROMData `*uc ~T0 @X0 1 a ]
-[; ;main.c: 104: UBYTE *EEPROMData;
-[; ;main.c: 105: if (RC2==1){
 "105
+[v _EEPROMData `*uc ~T0 @X0 1 a ]
+[; ;main.c: 105: UBYTE *EEPROMData;
+[; ;main.c: 106: if (RC2==1){
+"106
 [e $ ! == -> _RC2 `i -> 1 `i 280  ]
 {
-[; ;main.c: 106: RC0 = 1;
-"106
-[e = _RC0 -> -> 1 `i `b ]
-[; ;main.c: 107: RB3 = 0;
+[; ;main.c: 107: RC0 = 1;
 "107
+[e = _RC0 -> -> 1 `i `b ]
+[; ;main.c: 108: RB3 = 0;
+"108
 [e = _RB3 -> -> 0 `i `b ]
 [v _EEPROMData `uc ~T0 @X0 -> 32 `i a ]
-"109
+"110
 [v _EEPROMDataLength `ui ~T0 @X0 1 a ]
-[; ;main.c: 108: UBYTE EEPROMData[32];
-[; ;main.c: 109: UINT EEPROMDataLength;
-[; ;main.c: 111: _delay((unsigned long)((200)*(10000000/4000.0)));
-"111
+[; ;main.c: 109: UBYTE EEPROMData[32];
+[; ;main.c: 110: UINT EEPROMDataLength;
+[; ;main.c: 112: _delay((unsigned long)((200)*(10000000/4000.0)));
+"112
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 113: _delay((unsigned long)((200)*(10000000/4000.0)));
-"113
+[; ;main.c: 114: _delay((unsigned long)((200)*(10000000/4000.0)));
+"114
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 129: _delay((unsigned long)((200)*(10000000/4000.0)));
-"129
+[; ;main.c: 130: _delay((unsigned long)((200)*(10000000/4000.0)));
+"130
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"154
+"155
 }
-[; ;main.c: 154: }else{
+[; ;main.c: 155: }else{
 [e $U 281  ]
 [e :U 280 ]
 {
-[; ;main.c: 156: RC0 = 0;
-"156
+[; ;main.c: 157: RC0 = 0;
+"157
 [e = _RC0 -> -> 0 `i `b ]
-"158
+"159
 }
 [e :U 281 ]
-"166
+"167
 }
 [e :U 277 ]
-"56
+"57
 [e $U 278  ]
 [e :U 279 ]
-[; ;main.c: 158: }
-[; ;main.c: 166: }
-[; ;main.c: 168: }
-"168
+[; ;main.c: 159: }
+[; ;main.c: 167: }
+[; ;main.c: 169: }
+"169
 [e :UE 276 ]
 }
