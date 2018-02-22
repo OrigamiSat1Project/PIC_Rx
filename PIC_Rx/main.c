@@ -40,7 +40,7 @@ void main(void) {
     //OSCCON = 0x40;
     //Init_FMCW();
     
-    __delay_ms(3000);
+    __delay_ms(200);
     
     Init_SERIAL();
     Init_MPU();
@@ -52,13 +52,13 @@ void main(void) {
     //Set PLL DATA 
     /**/
     led_white = 1;
-    __delay_ms(500);
+    __delay_ms(1000);
     
     FMTX(FMTX_Nref, FMTX_Nprg);
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);
     led_white = 0;
-    printf("start\r\n");
+//    printf("start\r\n");
 //    RA1 = 0;
     while(1){
         /*
@@ -82,6 +82,7 @@ void main(void) {
         led_white = 0;
         //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
+        __delay_ms(100);
         
         //inform TXPIC RXDATA(PIN43 = 1)
         

@@ -79,7 +79,10 @@ void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_addr
     TXOBC_MULTI = 1;
     __delay_ms(50);
     putch(TXOBC_wad_header);
+    __delay_ms(50);
     putch(whigh_address);
+    __delay_ms(50);
     putch(wlow_address);
+    __delay_ms(50);
     TXOBC_MULTI = 0;
 }
