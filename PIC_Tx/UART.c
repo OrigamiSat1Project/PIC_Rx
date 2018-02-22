@@ -4,6 +4,7 @@
 #include "EEPROM.h"
 #include "encode_AX25.h"
 #include "I2C.h"
+#include "CW.h"
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 1200 bps
@@ -119,6 +120,55 @@ void interrupt InterReceiver( void ){
                 __delay_ms(300);
             }
             FMPTT = 0;
+            led_yellow = 0;
+        }else if (RXDATA[0] == 0xCC){
+            led_yellow = 1;
+            RXDATA[1] = getch();
+            RXDATA[2] = getch();
+            RCIF = 0 ;
+
+            __delay_ms(200);
+            UBYTE EEPROMCmdData[];
+            UINT EEPROMCmdDataLength;
+            EEPROMCmdDataLength = 1;
+            EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            __delay_ms(200);
+            FMPTT = 1;
+            CWKEY = 0;
+            for(int i = 0; i<5;i++){
+                SendPacket(EEPROMCmdData);
+                __delay_ms(300);
+            }
+            FMPTT = 0;
+            led_yellow = 0;
+        }else if (RXDATA[0] == 0xDD){
+            led_yellow = 1;
+            RXDATA[1] = getch();
+            RCIF = 0 ;
+
+            __delay_ms(200);
+            if (RXDATA[1] == 0xDD){
+                CWKEY = 1;
+                __delay_ms(Morse_Short);
+                CWKEY = 0;
+                __delay_ms(Morse_Short);
+
+                CWKEY = 1;
+                __delay_ms(Morse_Short);
+                CWKEY = 0;
+                __delay_ms(Morse_Short);
+
+                CWKEY = 1;
+                __delay_ms(Morse_Short);
+                CWKEY = 0;
+                __delay_ms(Morse_Short);
+
+                CWKEY = 1;
+                __delay_ms(Morse_Long);
+                CWKEY = 0;
+                __delay_ms(Morse_Short);
+            }
+            
             led_yellow = 0;
         }else{
             RCIF = 0 ;

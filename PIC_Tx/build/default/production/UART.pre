@@ -4270,7 +4270,7 @@ void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 
-# 8 "UART.c"
+# 9 "UART.c"
 void Init_SERIAL(void){
 SPBRG = 10;
 GIE = 1;
@@ -4294,7 +4294,7 @@ UBYTE getch(void){
 if(FERR || OERR)
 {
 
-# 35
+# 36
 CREN = 0;
 __nop();
 CREN = 1;
@@ -4311,7 +4311,7 @@ while(!TXIF);
 TXREG = byte;
 }
 
-# 88
+# 89
 void interrupt InterReceiver( void ){
 UBYTE RXDATA[32];
 if (RCIF == 1) {
@@ -4346,6 +4346,55 @@ SendPacket(EEPROMTestData);
 _delay((unsigned long)((300)*(10000000/4000.0)));
 }
 RC0 = 0;
+RB1 = 0;
+}else if (RXDATA[0] == 0xCC){
+RB1 = 1;
+RXDATA[1] = getch();
+RXDATA[2] = getch();
+RCIF = 0 ;
+
+_delay((unsigned long)((200)*(10000000/4000.0)));
+UBYTE EEPROMCmdData[];
+UINT EEPROMCmdDataLength;
+EEPROMCmdDataLength = 1;
+EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+_delay((unsigned long)((200)*(10000000/4000.0)));
+RC0 = 1;
+RB3 = 0;
+for(int i = 0; i<5;i++){
+SendPacket(EEPROMCmdData);
+_delay((unsigned long)((300)*(10000000/4000.0)));
+}
+RC0 = 0;
+RB1 = 0;
+}else if (RXDATA[0] == 0xDD){
+RB1 = 1;
+RXDATA[1] = getch();
+RCIF = 0 ;
+
+_delay((unsigned long)((200)*(10000000/4000.0)));
+if (RXDATA[1] == 0xDD){
+RB3 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+RB3 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+RB3 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+RB3 = 1;
+_delay((unsigned long)((150)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+}
+
 RB1 = 0;
 }else{
 RCIF = 0 ;
