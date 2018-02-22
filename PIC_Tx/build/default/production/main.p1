@@ -3008,6 +3008,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 23: UBYTE I2C_Master_Read(UBYTE a);
 [; ;I2C.h: 24: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 [; ;I2C.h: 25: void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 26: void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 "13 FMCW.h
 [v _FMTX_Nref `i ~T0 @X0 1 e ]
 [i _FMTX_Nref

@@ -1461,6 +1461,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 23: UBYTE I2C_Master_Read(UBYTE a);
 [; ;I2C.h: 24: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 [; ;I2C.h: 25: void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 26: void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 "8 I2C.c
 [v _EEPROMData `uc ~T0 @X0 -> 16 `i e ]
 [; ;I2C.c: 8: UBYTE EEPROMData[16];
@@ -1688,15 +1689,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 144 ]
 }
 "77
-[v _EEPROM_Read `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`*ui ]
+[v _EEPROM_Read2 `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`ui ]
 {
-[; ;I2C.c: 77: void EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
-[e :U _EEPROM_Read ]
+[; ;I2C.c: 77: void EEPROM_Read2(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+[e :U _EEPROM_Read2 ]
 [v _EEPROM_address `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
 [v _low_address `uc ~T0 @X0 1 r3 ]
 [v _ReadData `*uc ~T0 @X0 1 r4 ]
-[v _EEPROMDataLength `*ui ~T0 @X0 1 r5 ]
+[v _EEPROMDataLength `ui ~T0 @X0 1 r5 ]
 [f ]
 "78
 [v _Address `uc ~T0 @X0 1 a ]
@@ -1724,24 +1725,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 90: I2C_Master_Write(ReadAddress);
 "90
 [e ( _I2C_Master_Write (1 -> _ReadAddress `ui ]
-[; ;I2C.c: 92: for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= 0x00; *EEPROMDataLength++);
-"92
-{
-[e = *U _EEPROMDataLength -> -> 0 `i `ui ]
-[e $U 156  ]
-[e :U 153 ]
-[e *U ++ _EEPROMDataLength * -> -> 1 `i `x -> -> # *U _EEPROMDataLength `i `x ]
-[e :U 156 ]
-[e $ != -> *U + _ReadData * -> *U _EEPROMDataLength `ux -> -> # *U _ReadData `ui `ux `i -> 0 `i 153  ]
-[e :U 154 ]
-}
-[; ;I2C.c: 95: for(UINT i = 0; i < *EEPROMDataLength; i++){
+[; ;I2C.c: 95: for(UINT i = 0; i < EEPROMDataLength - 1; i++){
 "95
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $U 160  ]
-[e :U 157 ]
+[e $U 156  ]
+[e :U 153 ]
 {
 [; ;I2C.c: 99: ReadData[i] = I2C_Master_Read(1);
 "99
@@ -1750,15 +1740,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "95
 [e ++ _i -> -> 1 `i `ui ]
-[e :U 160 ]
-[e $ < _i *U _EEPROMDataLength 157  ]
-[e :U 158 ]
+[e :U 156 ]
+[e $ < _i - _EEPROMDataLength -> -> 1 `i `ui 153  ]
+[e :U 154 ]
 "101
 }
 [; ;I2C.c: 101: }
-[; ;I2C.c: 102: ReadData[*EEPROMDataLength] = I2C_Master_Read(0);
+[; ;I2C.c: 102: ReadData[EEPROMDataLength - 1] = I2C_Master_Read(0);
 "102
-[e = *U + _ReadData * -> *U _EEPROMDataLength `ux -> -> # *U _ReadData `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
+[e = *U + _ReadData * -> - _EEPROMDataLength -> -> 1 `i `ui `ux -> -> # *U _ReadData `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
 [; ;I2C.c: 104: I2C_Master_Stop();
 "104
 [e ( _I2C_Master_Stop ..  ]
@@ -1768,4 +1758,86 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 114: }
 "114
 [e :UE 152 ]
+}
+"116
+[v _EEPROM_Read `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`*ui ]
+{
+[; ;I2C.c: 116: void EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
+[e :U _EEPROM_Read ]
+[v _EEPROM_address `uc ~T0 @X0 1 r1 ]
+[v _high_address `uc ~T0 @X0 1 r2 ]
+[v _low_address `uc ~T0 @X0 1 r3 ]
+[v _ReadData `*uc ~T0 @X0 1 r4 ]
+[v _EEPROMDataLength `*ui ~T0 @X0 1 r5 ]
+[f ]
+"117
+[v _Address `uc ~T0 @X0 1 a ]
+[; ;I2C.c: 117: UBYTE Address = EEPROM_address << 1;
+[e = _Address -> << -> _EEPROM_address `i -> 1 `i `uc ]
+"118
+[v _ReadAddress `uc ~T0 @X0 1 a ]
+[; ;I2C.c: 118: UBYTE ReadAddress = Address | 0x01;
+[e = _ReadAddress -> | -> _Address `i -> 1 `i `uc ]
+[; ;I2C.c: 122: I2C_Master_Start();
+"122
+[e ( _I2C_Master_Start ..  ]
+[; ;I2C.c: 123: I2C_Master_Write(Address);
+"123
+[e ( _I2C_Master_Write (1 -> _Address `ui ]
+[; ;I2C.c: 124: I2C_Master_Write(high_address);
+"124
+[e ( _I2C_Master_Write (1 -> _high_address `ui ]
+[; ;I2C.c: 125: I2C_Master_Write(low_address);
+"125
+[e ( _I2C_Master_Write (1 -> _low_address `ui ]
+[; ;I2C.c: 126: I2C_Master_RepeatedStart();
+"126
+[e ( _I2C_Master_RepeatedStart ..  ]
+[; ;I2C.c: 129: I2C_Master_Write(ReadAddress);
+"129
+[e ( _I2C_Master_Write (1 -> _ReadAddress `ui ]
+[; ;I2C.c: 131: for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= 0xFF; *EEPROMDataLength++);
+"131
+{
+[e = *U _EEPROMDataLength -> -> 0 `i `ui ]
+[e $U 161  ]
+[e :U 158 ]
+[e *U ++ _EEPROMDataLength * -> -> 1 `i `x -> -> # *U _EEPROMDataLength `i `x ]
+[e :U 161 ]
+[e $ != -> *U + _ReadData * -> *U _EEPROMDataLength `ux -> -> # *U _ReadData `ui `ux `i -> 255 `i 158  ]
+[e :U 159 ]
+}
+[; ;I2C.c: 134: for(UINT i = 0; i < *EEPROMDataLength; i++){
+"134
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $U 165  ]
+[e :U 162 ]
+{
+[; ;I2C.c: 138: ReadData[i] = I2C_Master_Read(1);
+"138
+[e = *U + _ReadData * -> _i `ux -> -> # *U _ReadData `ui `ux ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
+"140
+}
+"134
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 165 ]
+[e $ < _i *U _EEPROMDataLength 162  ]
+[e :U 163 ]
+"140
+}
+[; ;I2C.c: 140: }
+[; ;I2C.c: 141: ReadData[*EEPROMDataLength] = I2C_Master_Read(0);
+"141
+[e = *U + _ReadData * -> *U _EEPROMDataLength `ux -> -> # *U _ReadData `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
+[; ;I2C.c: 143: I2C_Master_Stop();
+"143
+[e ( _I2C_Master_Stop ..  ]
+[; ;I2C.c: 152: _delay((unsigned long)((200)*(10000000/4000.0)));
+"152
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 153: }
+"153
+[e :UE 157 ]
 }

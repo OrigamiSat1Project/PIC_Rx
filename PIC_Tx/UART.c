@@ -99,20 +99,24 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 
             __delay_ms(200);
-            UBYTE EEPROMCmdData[1];
+            UBYTE EEPROMCmdData[];
             UINT EEPROMCmdDataLength;
-            EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,&EEPROMCmdDataLength);
+            EEPROMCmdDataLength = 32;
+            EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            __delay_ms(200);
             FMPTT = 1;
             CWKEY = 0;
-    //          UBYTE SendData[3];
-    //          for (int i = 0;i<3;i++){
-    //              SendData[i] = EEPROMData[i];
-    //          }
-    //          SendData = EEPROMData;
+            UBYTE EEPROMTestData[5];
+            EEPROMTestData[0] = 'u';
+            EEPROMTestData[1] = 'n';
+            EEPROMTestData[2] = 'k';
+            EEPROMTestData[3] = 'o';
+            EEPROMTestData[4] = 0x0d;
             for(int i = 0; i<5;i++){
-    //            SendPacket(SendData);
                 SendPacket(EEPROMCmdData);
-                __delay_ms(200);
+                __delay_ms(300);
+                SendPacket(EEPROMTestData);
+                __delay_ms(300);
             }
             FMPTT = 0;
             led_yellow = 0;

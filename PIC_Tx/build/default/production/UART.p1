@@ -3046,6 +3046,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 23: UBYTE I2C_Master_Read(UBYTE a);
 [; ;I2C.h: 24: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 [; ;I2C.h: 25: void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+[; ;I2C.h: 26: void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 "8 UART.c
 [v _Init_SERIAL `(v ~T0 @X0 1 ef ]
 {
@@ -3200,22 +3201,46 @@ Version 3.2 HI-TECH Software Intermediate Code
 "101
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 "102
-[v _EEPROMCmdData `uc ~T0 @X0 -> -> 1 `i `ux a ]
+[v _EEPROMCmdData `uc ~T0 @X0 -> 0 `x a ]
 "103
 [v _EEPROMCmdDataLength `ui ~T0 @X0 1 a ]
-[; ;UART.c: 102: UBYTE EEPROMCmdData[1];
+[; ;UART.c: 102: UBYTE EEPROMCmdData[];
 [; ;UART.c: 103: UINT EEPROMCmdDataLength;
-[; ;UART.c: 104: EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,&EEPROMCmdDataLength);
+[; ;UART.c: 104: EEPROMCmdDataLength = 32;
 "104
-[e ( _EEPROM_Read (4 , , , , -> -> 80 `i `uc *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux &U _EEPROMCmdData &U _EEPROMCmdDataLength ]
-[; ;UART.c: 105: RC0 = 1;
+[e = _EEPROMCmdDataLength -> -> 32 `i `ui ]
+[; ;UART.c: 105: EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
 "105
-[e = _RC0 -> -> 1 `i `b ]
-[; ;UART.c: 106: RB3 = 0;
+[e ( _EEPROM_Read (4 , , , , -> -> 80 `i `uc *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux &U _EEPROMCmdData -> _EEPROMCmdDataLength `*ui ]
+[; ;UART.c: 106: _delay((unsigned long)((200)*(10000000/4000.0)));
 "106
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;UART.c: 107: RC0 = 1;
+"107
+[e = _RC0 -> -> 1 `i `b ]
+[; ;UART.c: 108: RB3 = 0;
+"108
 [e = _RB3 -> -> 0 `i `b ]
-[; ;UART.c: 112: for(int i = 0; i<5;i++){
+"109
+[v _EEPROMTestData `uc ~T0 @X0 -> 5 `i a ]
+[; ;UART.c: 109: UBYTE EEPROMTestData[5];
+[; ;UART.c: 110: EEPROMTestData[0] = 'u';
+"110
+[e = *U + &U _EEPROMTestData * -> -> -> 0 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 117 `ui `uc ]
+[; ;UART.c: 111: EEPROMTestData[1] = 'n';
+"111
+[e = *U + &U _EEPROMTestData * -> -> -> 1 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 110 `ui `uc ]
+[; ;UART.c: 112: EEPROMTestData[2] = 'k';
 "112
+[e = *U + &U _EEPROMTestData * -> -> -> 2 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 107 `ui `uc ]
+[; ;UART.c: 113: EEPROMTestData[3] = 'o';
+"113
+[e = *U + &U _EEPROMTestData * -> -> -> 3 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 111 `ui `uc ]
+[; ;UART.c: 114: EEPROMTestData[4] = 0x0d;
+"114
+[e = *U + &U _EEPROMTestData * -> -> -> 4 `i `ui `ux -> -> # *U &U _EEPROMTestData `ui `ux -> -> 13 `i `uc ]
+[; ;UART.c: 115: for(int i = 0; i<5;i++){
+"115
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
@@ -3223,45 +3248,51 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 290  ]
 [e :U 289 ]
 {
-[; ;UART.c: 114: SendPacket(EEPROMCmdData);
-"114
-[e ( _SendPacket (1 &U _EEPROMCmdData ]
-[; ;UART.c: 115: _delay((unsigned long)((200)*(10000000/4000.0)));
-"115
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;UART.c: 116: SendPacket(EEPROMCmdData);
 "116
+[e ( _SendPacket (1 &U _EEPROMCmdData ]
+[; ;UART.c: 117: _delay((unsigned long)((300)*(10000000/4000.0)));
+"117
+[e ( __delay (1 -> * -> -> 300 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;UART.c: 118: SendPacket(EEPROMTestData);
+"118
+[e ( _SendPacket (1 &U _EEPROMTestData ]
+[; ;UART.c: 119: _delay((unsigned long)((300)*(10000000/4000.0)));
+"119
+[e ( __delay (1 -> * -> -> 300 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"120
 }
-"112
+"115
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 5 `i 289  ]
 [e :U 290 ]
-"116
+"120
 }
-[; ;UART.c: 116: }
-[; ;UART.c: 117: RC0 = 0;
-"117
+[; ;UART.c: 120: }
+[; ;UART.c: 121: RC0 = 0;
+"121
 [e = _RC0 -> -> 0 `i `b ]
-[; ;UART.c: 118: RB1 = 0;
-"118
+[; ;UART.c: 122: RB1 = 0;
+"122
 [e = _RB1 -> -> 0 `i `b ]
-"119
+"123
 }
-[; ;UART.c: 119: }else{
+[; ;UART.c: 123: }else{
 [e $U 292  ]
 [e :U 288 ]
 {
-[; ;UART.c: 120: RCIF = 0 ;
-"120
+[; ;UART.c: 124: RCIF = 0 ;
+"124
 [e = _RCIF -> -> 0 `i `b ]
-"122
+"126
 }
 [e :U 292 ]
-"123
+"127
 }
 [e :U 287 ]
-[; ;UART.c: 122: }
-[; ;UART.c: 123: }
-[; ;UART.c: 124: }
-"124
+[; ;UART.c: 126: }
+[; ;UART.c: 127: }
+[; ;UART.c: 128: }
+"128
 [e :UE 286 ]
 }

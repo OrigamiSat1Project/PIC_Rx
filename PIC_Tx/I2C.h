@@ -12,7 +12,7 @@
 #define	I2C_H
 
 #define I2Cbps 400000
-#define I2Cnull 0x00
+#define I2Cnull 0xFF
 
 void Init_I2C_M(const UDWORD c);
 //void I2C_Master_Wait(void);
@@ -23,6 +23,7 @@ void I2C_Master_Write(unsigned d);
 UBYTE I2C_Master_Read(UBYTE a);
 void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 
 
 #endif	/* I2C_H */

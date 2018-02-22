@@ -74,6 +74,45 @@ void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYT
     __delay_ms(200);
 }
 
+void EEPROM_Read2(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+    UBYTE Address = EEPROM_address << 1;
+    UBYTE ReadAddress = Address | 0x01;
+    
+    
+    //UINT Datasize = sizeof(data);
+    I2C_Master_Start();         //Start condition
+    I2C_Master_Write(Address);     //7 bit address + Write
+    I2C_Master_Write(high_address);    //Adress High Byte
+    I2C_Master_Write(low_address);    //Adress Low Byte
+    I2C_Master_RepeatedStart();         //Restart condition
+    
+    
+    I2C_Master_Write(ReadAddress);     //7 bit address + Read
+    
+//    for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++);
+    
+    //for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++){
+    for(UINT i = 0; i < EEPROMDataLength - 1; i++){
+    /*
+    //for(UINT i = 0; i < 5; i++){*/    
+        
+        ReadData[i] = I2C_Master_Read(1); //Read + Acknowledge
+        //putch(ReadData[i]);
+    }
+    ReadData[EEPROMDataLength - 1] = I2C_Master_Read(0);
+    //ReadData[0] = I2C_Master_Read(0);
+    I2C_Master_Stop();          //Stop condition
+    /*
+    for(UINT j = 0; j < *EEPROMDataLength; j++){
+    //putch(ReadData[0]);
+    //for(UINT j = 0; j < 5; j++){
+        putch(ReadData[j]);
+    }
+    putcrlf();*/
+    //return EEPROMData;
+    __delay_ms(200);
+}
+
 void EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
     UBYTE Address = EEPROM_address << 1;
     UBYTE ReadAddress = Address | 0x01;

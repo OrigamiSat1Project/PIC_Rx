@@ -4268,6 +4268,7 @@ void I2C_Master_Write(unsigned d);
 UBYTE I2C_Master_Read(UBYTE a);
 void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 
 # 8 "UART.c"
 void Init_SERIAL(void){
@@ -4325,17 +4326,24 @@ RXDATA[2] = getch();
 RCIF = 0 ;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-UBYTE EEPROMCmdData[1];
+UBYTE EEPROMCmdData[];
 UINT EEPROMCmdDataLength;
-EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,&EEPROMCmdDataLength);
+EEPROMCmdDataLength = 32;
+EEPROM_Read(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+_delay((unsigned long)((200)*(10000000/4000.0)));
 RC0 = 1;
 RB3 = 0;
-
-# 112
+UBYTE EEPROMTestData[5];
+EEPROMTestData[0] = 'u';
+EEPROMTestData[1] = 'n';
+EEPROMTestData[2] = 'k';
+EEPROMTestData[3] = 'o';
+EEPROMTestData[4] = 0x0d;
 for(int i = 0; i<5;i++){
-
 SendPacket(EEPROMCmdData);
-_delay((unsigned long)((200)*(10000000/4000.0)));
+_delay((unsigned long)((300)*(10000000/4000.0)));
+SendPacket(EEPROMTestData);
+_delay((unsigned long)((300)*(10000000/4000.0)));
 }
 RC0 = 0;
 RB1 = 0;
