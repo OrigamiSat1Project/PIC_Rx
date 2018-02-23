@@ -10,6 +10,7 @@
 #include "I2C.h"
 #include "EEPROM.h"
 #include "FMCW.h"
+#include "WDT.h"
 
 // PIC16F887 Configuration Bit Settings
 
@@ -19,7 +20,7 @@
 
 /* PIC16F887 Configuration Bit Settings */
 #pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
-#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config WDTE     = ON           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
 #pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
 //#pragma config POR      = ON            // Power On Reset is enabled
 #pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
@@ -37,12 +38,12 @@ void main(void) {
     /*èâä˙âª*/
     //OSCCON = 0x40;
     //Init_FMCW();
-    
     Init_SERIAL();
     Init_MPU();
 //    led_yellow = 1;
 //    __delay_ms(200);
     Init_I2C_M(I2Cbps);
+    Init_WDT();
 //    led_yellow = 0;
     //PLLê›íË
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);

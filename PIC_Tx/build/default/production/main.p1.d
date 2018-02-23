@@ -5,6 +5,7 @@ I2C.h  \
 UART.h  \
 Type_define.h  \
 Init_MPU.h  \
+WDT.h  \
 EEPROM.h  \
 FMCW.h  \
 time.h  \

@@ -4288,10 +4288,14 @@ void FMRX(int Nref, int *Nprg);
 # 47
 void _NOP(void);
 
+# 17 "WDT.h"
+void Init_WDT(void);
+void interrupt intr(void);
 
-# 21 "main.c"
+
+# 22 "main.c"
 #pragma config FOSC = HS
-#pragma config WDTE = OFF
+#pragma config WDTE = ON
 #pragma config PWRTE = ON
 
 #pragma config MCLRE = ON
@@ -4309,23 +4313,23 @@ _delay((unsigned long)((1000)*(10000000/4000.0)));
 
 
 
-
 Init_SERIAL();
 Init_MPU();
 
 
 Init_I2C_M(400000);
+Init_WDT();
 
-# 57
+# 58
 while(1){
 
-# 73
+# 74
 UBYTE dData[];
 
-# 83
+# 84
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 105
+# 106
 UBYTE *EEPROMData;
 if (RC2==1){
 RC0 = 1;
@@ -4337,17 +4341,17 @@ _delay((unsigned long)((200)*(10000000/4000.0)));
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 130
+# 131
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 155
+# 156
 }else{
 
 RC0 = 0;
 
 }
 
-# 167
+# 168
 }
 
 }

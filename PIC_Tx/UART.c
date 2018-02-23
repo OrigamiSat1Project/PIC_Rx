@@ -5,6 +5,7 @@
 #include "encode_AX25.h"
 #include "I2C.h"
 #include "CW.h"
+#include "WDT.h"
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 1200 bps
@@ -87,8 +88,9 @@ void putch(UBYTE byte){
 //}
 
 void interrupt InterReceiver( void ){
-    UBYTE RXDATA[32];
+    volatile static int intr_counter;
     if (RCIF == 1) {
+        UBYTE RXDATA[32];
 //        led_yellow = 1;
         
         RXDATA[0] = getch();
@@ -174,5 +176,15 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 //            led_yellow = 0;
         }
+    }else if(PIR1bits.TMR1IF == 1){
+        TMR1 = TIMER_INTERVAL;  // ?????????
+ 
+        intr_counter++;
+        if (intr_counter >= 2) {
+            CLRWDT();
+            intr_counter = 0;
+        }
+ 
+        PIR1bits.TMR1IF = 0;    // ???????????
     }
 }

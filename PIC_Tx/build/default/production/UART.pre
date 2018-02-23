@@ -4270,7 +4270,11 @@ void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 
-# 9 "UART.c"
+# 17 "WDT.h"
+void Init_WDT(void);
+void interrupt intr(void);
+
+# 10 "UART.c"
 void Init_SERIAL(void){
 SPBRG = 10;
 GIE = 1;
@@ -4294,7 +4298,7 @@ UBYTE getch(void){
 if(FERR || OERR)
 {
 
-# 36
+# 37
 CREN = 0;
 __nop();
 CREN = 1;
@@ -4311,10 +4315,11 @@ while(!TXIF);
 TXREG = byte;
 }
 
-# 89
+# 90
 void interrupt InterReceiver( void ){
-UBYTE RXDATA[32];
+volatile static int intr_counter;
 if (RCIF == 1) {
+UBYTE RXDATA[32];
 
 
 RXDATA[0] = getch();
@@ -4400,5 +4405,15 @@ RB1 = 0;
 RCIF = 0 ;
 
 }
+}else if(PIR1bits.TMR1IF == 1){
+TMR1 = (0xffff - 62500);
+
+intr_counter++;
+if (intr_counter >= 2) {
+asm("clrwdt");
+intr_counter = 0;
+}
+
+PIR1bits.TMR1IF = 0;
 }
 }
