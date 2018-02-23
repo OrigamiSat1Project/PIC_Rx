@@ -16,10 +16,10 @@
 void Init_I2C_M(const UDWORD c);
 void I2C_Master_Wait(void);
 void I2C_Master_Start(void);
-void I2C_Master_RepeatedStart(void);
+//void I2C_Master_RepeatedStart(void);
 void I2C_Master_Stop(void);
 void I2C_Master_Write(unsigned d);
-UBYTE I2C_Master_Read(UBYTE a);
+//UBYTE I2C_Master_Read(UBYTE a);
 void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *);
 //UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
 

@@ -12,7 +12,7 @@
 #define	EEPROM_H
 
 #define EEPROM_address 0x50
-#define whigh_address 0x00
+#define whigh_address 0x10
 #define wlow_address 0x00
 #define rhigh_address 0x00
 #define rlow_address 0x00

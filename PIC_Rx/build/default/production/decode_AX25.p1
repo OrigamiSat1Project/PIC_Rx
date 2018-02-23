@@ -7,10 +7,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p i __delay ]
 "71 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f887.h
 [v _STATUS `Vuc ~T0 @X0 0 e@3 ]
-"18 UART.h
-[v _putch `(v ~T0 @X0 0 ef1`uc ]
 "16 decode_AX25.c
 [v _reverse_bit8 `(uc ~T0 @X0 0 ef1`uc ]
+"18 UART.h
+[v _putch `(v ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -2807,12 +2807,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 318: byte = dPacket[i];
 "318
 [e = _byte *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux ]
-[; ;decode_AX25.c: 319: for(UINT i=0;i<8;i++){
+[; ;decode_AX25.c: 319: for(UINT j=0;j<8;j++){
 "319
 {
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 8 `i `ui 268  ]
+[v _j `ui ~T0 @X0 1 a ]
+[e = _j -> -> 0 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 268  ]
 [e $U 269  ]
 [e :U 268 ]
 {
@@ -2845,8 +2845,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "331
 }
 "319
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 8 `i `ui 268  ]
+[e ++ _j -> -> 1 `i `ui ]
+[e $ < _j -> -> 8 `i `ui 268  ]
 [e :U 269 ]
 "331
 }
@@ -2977,112 +2977,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "381
 [e :UE 274 ]
 }
-"384
-[v _putAX25 `(v ~T0 @X0 1 ef ]
-{
-[; ;decode_AX25.c: 384: void putAX25(void){
-[e :U _putAX25 ]
-[f ]
-[; ;decode_AX25.c: 385: for(UINT i=0;i<6;i++){
-"385
-{
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 281  ]
-[e $U 282  ]
-[e :U 281 ]
-{
-[; ;decode_AX25.c: 386: dPacket[i] = dPacket[i] >> 1;
-"386
-[e = *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux -> >> -> *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux `i -> 1 `i `uc ]
-[; ;decode_AX25.c: 387: dPacket[i+7] = dPacket[i+7] >> 1;
-"387
-[e = *U + &U _dPacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _dPacket `ui `ux -> >> -> *U + &U _dPacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _dPacket `ui `ux `i -> 1 `i `uc ]
-"388
-}
-"385
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 281  ]
-[e :U 282 ]
-"388
-}
-[; ;decode_AX25.c: 388: }
-[; ;decode_AX25.c: 389: for(UINT i=0;i<6;i++){
-"389
-{
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 284  ]
-[e $U 285  ]
-[e :U 284 ]
-{
-[; ;decode_AX25.c: 390: putch(dPacket[i]);
-"390
-[e ( _putch (1 *U + &U _dPacket * -> _i `ux -> -> # *U &U _dPacket `ui `ux ]
-"391
-}
-"389
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 284  ]
-[e :U 285 ]
-"391
-}
-[; ;decode_AX25.c: 391: }
-[; ;decode_AX25.c: 392: putch('>');
-"392
-[e ( _putch (1 -> -> 62 `ui `uc ]
-[; ;decode_AX25.c: 393: for(UINT i=0;i<6;i++){
-"393
-{
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 287  ]
-[e $U 288  ]
-[e :U 287 ]
-{
-[; ;decode_AX25.c: 394: putch(dPacket[i+7]);
-"394
-[e ( _putch (1 *U + &U _dPacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _dPacket `ui `ux ]
-"395
-}
-"393
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 287  ]
-[e :U 288 ]
-"395
-}
-[; ;decode_AX25.c: 395: }
-[; ;decode_AX25.c: 396: putch(':');
-"396
-[e ( _putch (1 -> -> 58 `ui `uc ]
-[; ;decode_AX25.c: 397: for(UINT i=0;i<dPacketnum-18;i++){
-"397
-{
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
-[e $U 293  ]
-[e :U 290 ]
-{
-[; ;decode_AX25.c: 398: putch(dPacket[i+16]);
-"398
-[e ( _putch (1 *U + &U _dPacket * -> + _i -> -> 16 `i `ui `ux -> -> # *U &U _dPacket `ui `ux ]
-"399
-}
-"397
-[e ++ _i -> -> 1 `i `ui ]
-[e :U 293 ]
-[e $ < _i - _dPacketnum -> -> 18 `i `ui 290  ]
-[e :U 291 ]
-"399
-}
-[; ;decode_AX25.c: 399: }
-[; ;decode_AX25.c: 400: return;
-"400
-[e $UE 280  ]
-[; ;decode_AX25.c: 401: }
-"401
-[e :UE 280 ]
-}
 "404
 [v _conv_DI_UARTRX `(v ~T0 @X0 1 ef ]
 {
@@ -3102,17 +2996,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _getbit ..  ]
 [; ;decode_AX25.c: 409: while(RB5 == 0){
 "409
-[e $U 295  ]
-[e :U 296 ]
+[e $U 281  ]
+[e :U 282 ]
 {
 [; ;decode_AX25.c: 410: for(UINT i=0;i<8;i++){
 "410
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 8 `i `ui 298  ]
-[e $U 299  ]
-[e :U 298 ]
+[e $ < _i -> -> 8 `i `ui 284  ]
+[e $U 285  ]
+[e :U 284 ]
 {
 [; ;decode_AX25.c: 411: getbit();
 "411
@@ -3122,7 +3016,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _buf_dammy -> << -> _buf_dammy `i -> 1 `i `uc ]
 [; ;decode_AX25.c: 413: if(RB5 == 0){
 "413
-[e $ ! == -> _RB5 `i -> 0 `i 301  ]
+[e $ ! == -> _RB5 `i -> 0 `i 287  ]
 {
 [; ;decode_AX25.c: 414: buf_dammy = buf_dammy | 0x00;
 "414
@@ -3130,21 +3024,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 "415
 }
 [; ;decode_AX25.c: 415: }else{
-[e $U 302  ]
-[e :U 301 ]
+[e $U 288  ]
+[e :U 287 ]
 {
 [; ;decode_AX25.c: 416: buf_dammy = buf_dammy | 0x01;
 "416
 [e = _buf_dammy -> | -> _buf_dammy `i -> 1 `i `uc ]
 "417
 }
-[e :U 302 ]
+[e :U 288 ]
 "418
 }
 "410
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 8 `i `ui 298  ]
-[e :U 299 ]
+[e $ < _i -> -> 8 `i `ui 284  ]
+[e :U 285 ]
 "418
 }
 [; ;decode_AX25.c: 417: }
@@ -3160,35 +3054,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _putch (1 _buf ]
 "422
 }
-[e :U 295 ]
+[e :U 281 ]
 "409
-[e $ == -> _RB5 `i -> 0 `i 296  ]
-[e :U 297 ]
+[e $ == -> _RB5 `i -> 0 `i 282  ]
+[e :U 283 ]
 [; ;decode_AX25.c: 422: }
 [; ;decode_AX25.c: 423: }
 "423
-[e :UE 294 ]
-}
-"426
-[v _reverse_bit8 `(uc ~T0 @X0 1 ef1`uc ]
-{
-[; ;decode_AX25.c: 426: UBYTE reverse_bit8(UBYTE x){
-[e :U _reverse_bit8 ]
-[v _x `uc ~T0 @X0 1 r1 ]
-[f ]
-[; ;decode_AX25.c: 427: x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
-"427
-[e = _x -> | << & -> _x `i -> 85 `i -> 1 `i >> & -> _x `i -> 170 `i -> 1 `i `uc ]
-[; ;decode_AX25.c: 428: x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
-"428
-[e = _x -> | << & -> _x `i -> 51 `i -> 2 `i >> & -> _x `i -> 204 `i -> 2 `i `uc ]
-[; ;decode_AX25.c: 429: return (x << 4) | (x >> 4);
-"429
-[e ) -> | << -> _x `i -> 4 `i >> -> _x `i -> 4 `i `uc ]
-[e $UE 303  ]
-[; ;decode_AX25.c: 430: }
-"430
-[e :UE 303 ]
+[e :UE 280 ]
 }
 [a 1C 74 81 49 89 67 90 0 ]
 [a 2C 74 81 49 89 67 90 0 ]

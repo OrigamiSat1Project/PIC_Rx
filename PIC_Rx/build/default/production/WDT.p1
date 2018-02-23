@@ -1558,22 +1558,57 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 2560 `i
 ]
 [; ;FMCW.h: 13: int FMTX_Nref = 2560;
+"14
+[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMTX_Nprg
+:U ..
+-> 8 `i
+-> 7 `i
+-> 3 `i
+-> 0 `i
+-> 0 `i
+..
+]
+[; ;FMCW.h: 14: int FMTX_Nprg[5] = {8,7,3,0,0};
 "15
 [v _CWTX_Nref `i ~T0 @X0 1 e ]
 [i _CWTX_Nref
 -> 160 `i
 ]
 [; ;FMCW.h: 15: int CWTX_Nref = 160;
+"16
+[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _CWTX_Nprg
+:U ..
+-> 0 `i
+-> 1 `i
+-> 7 `i
+-> 4 `i
+-> 7 `i
+..
+]
+[; ;FMCW.h: 16: int CWTX_Nprg[5] = {0,1,7,4,7};
 "17
 [v _FMRX_Nref `i ~T0 @X0 1 e ]
 [i _FMRX_Nref
 -> 2560 `i
 ]
 [; ;FMCW.h: 17: int FMRX_Nref = 2560;
+"18
+[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMRX_Nprg
+:U ..
+-> 2 `i
+-> 4 `i
+-> 8 `i
+-> 8 `i
+-> 7 `i
+..
+]
+[; ;FMCW.h: 18: int FMRX_Nprg[5] = {2,4,8,8,7};
 [; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
 [; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
 [; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
-[; ;FMCW.h: 40: void ResetFreq(void);
 [; ;FMCW.h: 48: void _NOP(void);
 "7 WDT.c
 [v _Init_WDT `(v ~T0 @X0 1 ef ]
@@ -1613,17 +1648,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 138 ]
 }
 [v $root$_InterReceiver `(v ~T0 @X0 0 e ]
-[v F1677 `(v ~T0 @X0 1 tf ]
+[v F1678 `(v ~T0 @X0 1 tf ]
 "27
-[v _InterReceiver `IF1677 ~T0 @X0 1 e ]
+[v _InterReceiver `IF1678 ~T0 @X0 1 e ]
 {
 [; ;WDT.c: 27: void interrupt InterReceiver( void ){
 [e :U _InterReceiver ]
 [f ]
 "28
-[v F1678 `Vi ~T0 @X0 1 s intr_counter ]
+[v F1679 `Vi ~T0 @X0 1 s intr_counter ]
 "29
-[v F1679 `Vi ~T0 @X0 1 s intr_counter_H ]
+[v F1680 `Vi ~T0 @X0 1 s intr_counter_H ]
 [; ;WDT.c: 28: volatile static int intr_counter;
 [; ;WDT.c: 29: volatile static int intr_counter_H;
 [; ;WDT.c: 30: if(PIR1bits.TMR1IF == 1){
@@ -1635,23 +1670,23 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
 [; ;WDT.c: 33: intr_counter++;
 "33
-[e ++ F1678 -> 1 `i ]
+[e ++ F1679 -> 1 `i ]
 [; ;WDT.c: 34: if (intr_counter >= 2) {
 "34
-[e $ ! >= F1678 -> 2 `i 141  ]
+[e $ ! >= F1679 -> 2 `i 141  ]
 {
 [; ;WDT.c: 35: asm("clrwdt");
 "35
 [; <" clrwdt ;# ">
 [; ;WDT.c: 36: intr_counter = 0;
 "36
-[e = F1678 -> 0 `i ]
+[e = F1679 -> 0 `i ]
 [; ;WDT.c: 37: intr_counter_H ++;
 "37
-[e ++ F1679 -> 1 `i ]
+[e ++ F1680 -> 1 `i ]
 [; ;WDT.c: 38: if (intr_counter_H >= 60) {
 "38
-[e $ ! >= F1679 -> 60 `i 142  ]
+[e $ ! >= F1680 -> 60 `i 142  ]
 {
 [; ;WDT.c: 47: _delay((unsigned long)((500)*(10000000/4000.0)));
 "47

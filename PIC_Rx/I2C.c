@@ -21,10 +21,10 @@ void I2C_Master_Start(){
   SEN = 1;
 }
 
-void I2C_Master_RepeatedStart(){
-  I2C_Master_Wait();
-  RSEN = 1;
-}
+//void I2C_Master_RepeatedStart(){
+//  I2C_Master_Wait();
+//  RSEN = 1;
+//}
 
 void I2C_Master_Stop(){
   I2C_Master_Wait();
@@ -36,17 +36,17 @@ void I2C_Master_Write(unsigned d){
   SSPBUF = d;
 }
 
-UBYTE I2C_Master_Read(UBYTE a){
-  unsigned char temp;
-  I2C_Master_Wait();
-  RCEN = 1;
-  I2C_Master_Wait();
-  temp = SSPBUF;
-  I2C_Master_Wait();
-  ACKDT = (a)?0:1;
-  ACKEN = 1;
-  return temp;
-}
+//UBYTE I2C_Master_Read(UBYTE a){
+//  unsigned char temp;
+//  I2C_Master_Wait();
+//  RCEN = 1;
+//  I2C_Master_Wait();
+//  temp = SSPBUF;
+//  I2C_Master_Wait();
+//  ACKDT = (a)?0:1;
+//  ACKEN = 1;
+//  return temp;
+//}
 
 void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *data){
     UBYTE Address = EEPROM_address << 1;

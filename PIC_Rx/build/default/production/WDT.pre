@@ -2131,16 +2131,16 @@ void interrupt intr(void);
 
 # 13 "FMCW.h"
 int FMTX_Nref = 2560;
-
+int FMTX_Nprg[5] = {8,7,3,0,0};
 int CWTX_Nref = 160;
-
+int CWTX_Nprg[5] = {0,1,7,4,7};
 int FMRX_Nref = 2560;
+int FMRX_Nprg[5] = {2,4,8,8,7};
 
 # 37
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
-void ResetFreq(void);
 
 # 48
 void _NOP(void);

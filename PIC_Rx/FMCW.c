@@ -302,26 +302,26 @@ void FMRX(int Nref, int *Nprg){
     OUTFQ(fmrx, Nprg);
 }
 
-void ResetFreq(void){
-    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
-
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
-}
+//void ResetFreq(void){
+//    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+//    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+//    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+//
+//    FMTX(FMTX_Nref, FMTX_Nprg);
+//    CWTX(CWTX_Nref, CWTX_Nprg);
+//    FMRX(FMRX_Nref, FMRX_Nprg);
+//}
 
 
 
 /*
  * 【PLL設定を行う�?
  */
-void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
-}
+//void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
+//    FMTX(FMTX_Nref, FMTX_Nprg);
+//    CWTX(CWTX_Nref, CWTX_Nprg);
+//    FMRX(FMRX_Nref, FMRX_Nprg);
+//}
 
 
 

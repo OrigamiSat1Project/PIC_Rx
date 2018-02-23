@@ -1518,22 +1518,57 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 2560 `i
 ]
 [; ;fmcw.h: 13: int FMTX_Nref = 2560;
+"14
+[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMTX_Nprg
+:U ..
+-> 8 `i
+-> 7 `i
+-> 3 `i
+-> 0 `i
+-> 0 `i
+..
+]
+[; ;fmcw.h: 14: int FMTX_Nprg[5] = {8,7,3,0,0};
 "15
 [v _CWTX_Nref `i ~T0 @X0 1 e ]
 [i _CWTX_Nref
 -> 160 `i
 ]
 [; ;fmcw.h: 15: int CWTX_Nref = 160;
+"16
+[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _CWTX_Nprg
+:U ..
+-> 0 `i
+-> 1 `i
+-> 7 `i
+-> 4 `i
+-> 7 `i
+..
+]
+[; ;fmcw.h: 16: int CWTX_Nprg[5] = {0,1,7,4,7};
 "17
 [v _FMRX_Nref `i ~T0 @X0 1 e ]
 [i _FMRX_Nref
 -> 2560 `i
 ]
 [; ;fmcw.h: 17: int FMRX_Nref = 2560;
+"18
+[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMRX_Nprg
+:U ..
+-> 2 `i
+-> 4 `i
+-> 8 `i
+-> 8 `i
+-> 7 `i
+..
+]
+[; ;fmcw.h: 18: int FMRX_Nprg[5] = {2,4,8,8,7};
 [; ;fmcw.h: 37: void FMTX(int Nref, int *Nprg);
 [; ;fmcw.h: 38: void CWTX(int Nref, int *Nprg);
 [; ;fmcw.h: 39: void FMRX(int Nref, int *Nprg);
-[; ;fmcw.h: 40: void ResetFreq(void);
 [; ;fmcw.h: 48: void _NOP(void);
 [; ;Type_define.h: 15: typedef signed char SBYTE;
 [; ;Type_define.h: 16: typedef unsigned char UBYTE;
@@ -2235,92 +2270,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "303
 [e :UE 187 ]
 }
-"305
-[v _ResetFreq `(v ~T0 @X0 1 ef ]
-{
-[; ;FMCW.c: 305: void ResetFreq(void){
-[e :U _ResetFreq ]
-[f ]
-[v F1704 `i ~T0 @X0 -> 5 `i s ]
-[i F1704
-:U ..
-"306
--> 8 `i
--> 7 `i
--> 3 `i
--> 0 `i
--> 0 `i
-..
-]
-[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i a ]
-[; ;FMCW.c: 306: int FMTX_Nprg[5] = {8,7,3,0,0};
-[e = _FMTX_Nprg F1704 ]
-[v F1706 `i ~T0 @X0 -> 5 `i s ]
-[i F1706
-:U ..
-"307
--> 0 `i
--> 1 `i
--> 7 `i
--> 4 `i
--> 7 `i
-..
-]
-[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i a ]
-[; ;FMCW.c: 307: int CWTX_Nprg[5] = {0,1,7,4,7};
-[e = _CWTX_Nprg F1706 ]
-[v F1708 `i ~T0 @X0 -> 5 `i s ]
-[i F1708
-:U ..
-"308
--> 2 `i
--> 4 `i
--> 8 `i
--> 8 `i
--> 7 `i
-..
-]
-[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i a ]
-[; ;FMCW.c: 308: int FMRX_Nprg[5] = {2,4,8,8,7};
-[e = _FMRX_Nprg F1708 ]
-[; ;FMCW.c: 310: FMTX(FMTX_Nref, FMTX_Nprg);
-"310
-[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
-[; ;FMCW.c: 311: CWTX(CWTX_Nref, CWTX_Nprg);
-"311
-[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
-[; ;FMCW.c: 312: FMRX(FMRX_Nref, FMRX_Nprg);
-"312
-[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
-[; ;FMCW.c: 313: }
-"313
-[e :UE 188 ]
-}
-"320
-[v _SetPLL `(v ~T0 @X0 1 ef6`i`i`i`i`i`i ]
-{
-[; ;FMCW.c: 320: void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-[e :U _SetPLL ]
-[v _FMTX_Nref `i ~T0 @X0 1 r1 ]
-[v _FMTX_Nprg `i ~T0 @X0 1 r2 ]
-[v _CWTX_Nref `i ~T0 @X0 1 r3 ]
-[v _CWTX_Nprg `i ~T0 @X0 1 r4 ]
-[v _FMRX_Nref `i ~T0 @X0 1 r5 ]
-[v _FMRX_Nprg `i ~T0 @X0 1 r6 ]
-[f ]
-[; ;FMCW.c: 321: FMTX(FMTX_Nref, FMTX_Nprg);
-"321
-[e ( _FMTX (2 , _FMTX_Nref -> _FMTX_Nprg `*i ]
-[; ;FMCW.c: 322: CWTX(CWTX_Nref, CWTX_Nprg);
-"322
-[e ( _CWTX (2 , _CWTX_Nref -> _CWTX_Nprg `*i ]
-[; ;FMCW.c: 323: FMRX(FMRX_Nref, FMRX_Nprg);
-"323
-[e ( _FMRX (2 , _FMRX_Nref -> _FMRX_Nprg `*i ]
-[; ;FMCW.c: 324: }
-"324
-[e :UE 189 ]
-}
 "360
 [v __NOP `(v ~T0 @X0 1 ef ]
 {
@@ -2332,9 +2281,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 5 `i 191  ]
-[e $U 192  ]
-[e :U 191 ]
+[e $ < _i -> 5 `i 189  ]
+[e $U 190  ]
+[e :U 189 ]
 {
 [; ;FMCW.c: 362: __nop();
 "362
@@ -2343,12 +2292,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "361
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 5 `i 191  ]
-[e :U 192 ]
+[e $ < _i -> 5 `i 189  ]
+[e :U 190 ]
 "363
 }
 [; ;FMCW.c: 363: }
 [; ;FMCW.c: 364: }
 "364
-[e :UE 190 ]
+[e :UE 188 ]
 }

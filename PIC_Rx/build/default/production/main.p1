@@ -10,12 +10,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Init_MPU `(v ~T0 @X0 0 ef ]
 "16 I2C.h
 [v _Init_I2C_M `(v ~T0 @X0 0 ef1`Cul ]
-"17 WDT.h
-[v _Init_WDT `(v ~T0 @X0 0 ef ]
 "3922 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f887.h
 [v _RB2 `Vb ~T0 @X0 0 e@50 ]
-"40 FMCW.h
-[v _ResetFreq `(v ~T0 @X0 0 ef ]
+"37 FMCW.h
+[v _FMTX `(v ~T0 @X0 0 ef2`i`*i ]
+"38
+[v _CWTX `(v ~T0 @X0 0 ef2`i`*i ]
+"39
+[v _FMRX `(v ~T0 @X0 0 ef2`i`*i ]
 "49 decode_AX25.h
 [v _ReceivePacket_data `(*uc ~T0 @X0 0 ef ]
 "23 I2C.h
@@ -1638,10 +1640,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 16: void Init_I2C_M(const UDWORD c);
 [; ;I2C.h: 17: void I2C_Master_Wait(void);
 [; ;I2C.h: 18: void I2C_Master_Start(void);
-[; ;I2C.h: 19: void I2C_Master_RepeatedStart(void);
 [; ;I2C.h: 20: void I2C_Master_Stop(void);
 [; ;I2C.h: 21: void I2C_Master_Write(unsigned d);
-[; ;I2C.h: 22: UBYTE I2C_Master_Read(UBYTE a);
 [; ;I2C.h: 23: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *);
 "13 FMCW.h
 [v _FMTX_Nref `i ~T0 @X0 1 e ]
@@ -1649,22 +1649,57 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> 2560 `i
 ]
 [; ;FMCW.h: 13: int FMTX_Nref = 2560;
+"14
+[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMTX_Nprg
+:U ..
+-> 8 `i
+-> 7 `i
+-> 3 `i
+-> 0 `i
+-> 0 `i
+..
+]
+[; ;FMCW.h: 14: int FMTX_Nprg[5] = {8,7,3,0,0};
 "15
 [v _CWTX_Nref `i ~T0 @X0 1 e ]
 [i _CWTX_Nref
 -> 160 `i
 ]
 [; ;FMCW.h: 15: int CWTX_Nref = 160;
+"16
+[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _CWTX_Nprg
+:U ..
+-> 0 `i
+-> 1 `i
+-> 7 `i
+-> 4 `i
+-> 7 `i
+..
+]
+[; ;FMCW.h: 16: int CWTX_Nprg[5] = {0,1,7,4,7};
 "17
 [v _FMRX_Nref `i ~T0 @X0 1 e ]
 [i _FMRX_Nref
 -> 2560 `i
 ]
 [; ;FMCW.h: 17: int FMRX_Nref = 2560;
+"18
+[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i e ]
+[i _FMRX_Nprg
+:U ..
+-> 2 `i
+-> 4 `i
+-> 8 `i
+-> 8 `i
+-> 7 `i
+..
+]
+[; ;FMCW.h: 18: int FMRX_Nprg[5] = {2,4,8,8,7};
 [; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
 [; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
 [; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
-[; ;FMCW.h: 40: void ResetFreq(void);
 [; ;FMCW.h: 48: void _NOP(void);
 [; ;EPS.h: 22: void Reset_EPS(void);
 [; ;WDT.h: 17: void Init_WDT(void);
@@ -1672,7 +1707,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "25 main.c
 [p x FOSC=HS ]
 "26
-[p x WDTE=ON ]
+[p x WDTE=OFF ]
 "27
 [p x PWRTE=ON ]
 "29
@@ -1712,18 +1747,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 48: Init_I2C_M(400000);
 "48
 [e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
-[; ;main.c: 49: Init_WDT();
-"49
-[e ( _Init_WDT ..  ]
 [; ;main.c: 55: RB2 = 1;
 "55
 [e = _RB2 -> -> 1 `i `b ]
 [; ;main.c: 56: _delay((unsigned long)((1000)*(10000000/4000.0)));
 "56
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 57: ResetFreq();
-"57
-[e ( _ResetFreq ..  ]
+[; ;main.c: 58: FMTX(FMTX_Nref, FMTX_Nprg);
+"58
+[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
+[; ;main.c: 59: CWTX(CWTX_Nref, CWTX_Nprg);
+"59
+[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
+[; ;main.c: 60: FMRX(FMRX_Nref, FMRX_Nprg);
+"60
+[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
 [; ;main.c: 61: RB2 = 0;
 "61
 [e = _RB2 -> -> 0 `i `b ]
@@ -1746,9 +1784,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 83: RB2 = 0;
 "83
 [e = _RB2 -> -> 0 `i `b ]
-[; ;main.c: 85: EEPROM_Write(0x50,0x00,0x00,dData);
+[; ;main.c: 85: EEPROM_Write(0x50,0x10,0x00,dData);
 "85
-[e ( _EEPROM_Write (4 , , , -> -> 80 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc _dData ]
+[e ( _EEPROM_Write (4 , , , -> -> 80 `i `uc -> -> 16 `i `uc -> -> 0 `i `uc _dData ]
 [; ;main.c: 86: _delay((unsigned long)((100)*(10000000/4000.0)));
 "86
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
@@ -1756,9 +1794,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TXOBC_wad_header `uc ~T0 @X0 1 a ]
 [; ;main.c: 90: UBYTE TXOBC_wad_header = 0x74;
 [e = _TXOBC_wad_header -> -> 116 `i `uc ]
-[; ;main.c: 91: TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
+[; ;main.c: 91: TXOBC_waddress(TXOBC_wad_header, 0x10, 0x00);
 "91
-[e ( _TXOBC_waddress (3 , , _TXOBC_wad_header -> -> 0 `i `uc -> -> 0 `i `uc ]
+[e ( _TXOBC_waddress (3 , , _TXOBC_wad_header -> -> 16 `i `uc -> -> 0 `i `uc ]
 [; ;main.c: 104: if(dData[0]=='n'){
 "104
 [e $ ! == -> *U + _dData * -> -> 0 `i `x -> -> # *U _dData `i `x `ui -> 110 `ui 147  ]
@@ -1767,9 +1805,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _NM_wad_header `uc ~T0 @X0 1 a ]
 [; ;main.c: 106: UBYTE NM_wad_header = 0x72;
 [e = _NM_wad_header -> -> 114 `i `uc ]
-[; ;main.c: 107: NM_waddress(NM_wad_header, 0x00, 0x00);
+[; ;main.c: 107: NM_waddress(NM_wad_header, 0x10, 0x00);
 "107
-[e ( _NM_waddress (3 , , _NM_wad_header -> -> 0 `i `uc -> -> 0 `i `uc ]
+[e ( _NM_waddress (3 , , _NM_wad_header -> -> 16 `i `uc -> -> 0 `i `uc ]
 "109
 }
 [; ;main.c: 109: }else if(dData[0]=='p'){
@@ -1797,9 +1835,57 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 127: _delay((unsigned long)((1000)*(10000000/4000.0)));
 "127
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 137: ResetFreq();
-"137
-[e ( _ResetFreq ..  ]
+[v F1991 `i ~T0 @X0 -> 5 `i s ]
+[i F1991
+:U ..
+"130
+-> 8 `i
+-> 7 `i
+-> 3 `i
+-> 0 `i
+-> 0 `i
+..
+]
+[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i a ]
+[; ;main.c: 130: int FMTX_Nprg[5] = {8,7,3,0,0};
+[e = _FMTX_Nprg F1991 ]
+[v F1993 `i ~T0 @X0 -> 5 `i s ]
+[i F1993
+:U ..
+"131
+-> 0 `i
+-> 1 `i
+-> 7 `i
+-> 4 `i
+-> 7 `i
+..
+]
+[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i a ]
+[; ;main.c: 131: int CWTX_Nprg[5] = {0,1,7,4,7};
+[e = _CWTX_Nprg F1993 ]
+[v F1995 `i ~T0 @X0 -> 5 `i s ]
+[i F1995
+:U ..
+"132
+-> 2 `i
+-> 4 `i
+-> 8 `i
+-> 8 `i
+-> 7 `i
+..
+]
+[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i a ]
+[; ;main.c: 132: int FMRX_Nprg[5] = {2,4,8,8,7};
+[e = _FMRX_Nprg F1995 ]
+[; ;main.c: 134: FMTX(FMTX_Nref, FMTX_Nprg);
+"134
+[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
+[; ;main.c: 135: CWTX(CWTX_Nref, CWTX_Nprg);
+"135
+[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
+[; ;main.c: 136: FMRX(FMRX_Nref, FMRX_Nprg);
+"136
+[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
 [; ;main.c: 138: _delay((unsigned long)((500)*(10000000/4000.0)));
 "138
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]

@@ -2116,16 +2116,16 @@ extern __bank0 __bit __timeout;
 
 # 13 "fmcw.h"
 int FMTX_Nref = 2560;
-
+int FMTX_Nprg[5] = {8,7,3,0,0};
 int CWTX_Nref = 160;
-
+int CWTX_Nprg[5] = {0,1,7,4,7};
 int FMRX_Nref = 2560;
+int FMRX_Nprg[5] = {2,4,8,8,7};
 
 # 37
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
-void ResetFreq(void);
 
 # 48
 void _NOP(void);
@@ -2356,23 +2356,6 @@ int fmrx = 3;
 OPINIT(fmrx);
 RFDOUT(fmrx, Nref);
 OUTFQ(fmrx, Nprg);
-}
-
-void ResetFreq(void){
-int FMTX_Nprg[5] = {8,7,3,0,0};
-int CWTX_Nprg[5] = {0,1,7,4,7};
-int FMRX_Nprg[5] = {2,4,8,8,7};
-
-FMTX(FMTX_Nref, FMTX_Nprg);
-CWTX(CWTX_Nref, CWTX_Nprg);
-FMRX(FMRX_Nref, FMRX_Nprg);
-}
-
-# 320
-void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-FMTX(FMTX_Nref, FMTX_Nprg);
-CWTX(CWTX_Nref, CWTX_Nprg);
-FMRX(FMRX_Nref, FMRX_Nprg);
 }
 
 # 360

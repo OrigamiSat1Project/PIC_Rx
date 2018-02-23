@@ -2585,7 +2585,7 @@ dfcslo = dfcshi = 0xff;
 while(rcv_state == 3){
 for(UINT i=0;i<dPacketnum-2;i++){
 byte = dPacket[i];
-for(UINT i=0;i<8;i++){
+for(UINT j=0;j<8;j++){
 bt = byte & 0x01;
 
 # 321
@@ -2646,27 +2646,7 @@ return 0x00;
 }
 }
 
-
-void putAX25(void){
-for(UINT i=0;i<6;i++){
-dPacket[i] = dPacket[i] >> 1;
-dPacket[i+7] = dPacket[i+7] >> 1;
-}
-for(UINT i=0;i<6;i++){
-putch(dPacket[i]);
-}
-putch('>');
-for(UINT i=0;i<6;i++){
-putch(dPacket[i+7]);
-}
-putch(':');
-for(UINT i=0;i<dPacketnum-18;i++){
-putch(dPacket[i+16]);
-}
-return;
-}
-
-
+# 404
 void conv_DI_UARTRX(void){
 UBYTE buf_dammy = 0x00;
 UBYTE buf = 0x00;
@@ -2688,9 +2668,3 @@ putch(buf);
 }
 }
 
-
-UBYTE reverse_bit8(UBYTE x){
-x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
-x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
-return (x << 4) | (x >> 4);
-}

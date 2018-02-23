@@ -316,7 +316,7 @@ UINT fcscheck(void){
     while(rcv_state == 3){
         for(UINT i=0;i<dPacketnum-2;i++){      //dPacketnumはmycall,SSID,ucall,Control,PID,Data,FCSのbyte数．-2でFCS分を除く．
             byte = dPacket[i];
-            for(UINT i=0;i<8;i++){
+            for(UINT j=0;j<8;j++){
                 bt = byte & bit_H;
                 #asm
                     BCF 03,0
@@ -381,24 +381,24 @@ UBYTE *ReceivePacket_data(void){
 }
 
 
-void putAX25(void){
-    for(UINT i=0;i<6;i++){
-        dPacket[i] = dPacket[i] >> 1;
-        dPacket[i+7] = dPacket[i+7] >> 1;
-    }
-    for(UINT i=0;i<6;i++){
-        putch(dPacket[i]);
-    }
-    putch('>');
-    for(UINT i=0;i<6;i++){
-        putch(dPacket[i+7]);
-    }
-    putch(':');
-    for(UINT i=0;i<dPacketnum-18;i++){
-        putch(dPacket[i+16]);
-    }
-    return;
-}
+//void putAX25(void){
+//    for(UINT i=0;i<6;i++){
+//        dPacket[i] = dPacket[i] >> 1;
+//        dPacket[i+7] = dPacket[i+7] >> 1;
+//    }
+//    for(UINT i=0;i<6;i++){
+//        putch(dPacket[i]);
+//    }
+//    putch('>');
+//    for(UINT i=0;i<6;i++){
+//        putch(dPacket[i+7]);
+//    }
+//    putch(':');
+//    for(UINT i=0;i<dPacketnum-18;i++){
+//        putch(dPacket[i+16]);
+//    }
+//    return;
+//}
 
 //  デジタルインプットをUARTRXとして使えるプログラム
 void conv_DI_UARTRX(void){
@@ -423,8 +423,8 @@ void conv_DI_UARTRX(void){
 }
 
 //  MNB,LNBの逆転処理するプログラム
-UBYTE reverse_bit8(UBYTE x){
-	x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
-	x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
-	return (x << 4) | (x >> 4);
-}
+//UBYTE reverse_bit8(UBYTE x){
+//	x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
+//	x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
+//	return (x << 4) | (x >> 4);
+//}
