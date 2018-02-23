@@ -2128,12 +2128,12 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
 
-void put_error(void);
-void put_ok(void);
+UBYTE getch(void);
+
+
+
+
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
@@ -2141,10 +2141,6 @@ void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void Init_MPU(void);
 void led_onoff(void);
 void debug_ledy(void);
-
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
 
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
 typedef unsigned size_t;
@@ -2278,15 +2274,11 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 36 "decode_AX25.h"
+# 40 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
-void ReceivePacket(void);
+# 49
 UBYTE *ReceivePacket_data(void);
-
-# 24 "encode_AX25.h"
-void SendPacket(void);
 
 # 10 "decode_AX25.c"
 void UART_TX(UINT,UINT);
@@ -2320,7 +2312,7 @@ oldbit = RB5;
 for(UINT i=0;i<62;i++){
 if(RB5 != oldbit){
 _delay((unsigned long)((400)*(10000000/4000000.0)));
-RC2= 1- RC2;
+
 return 0;
 }
 }
@@ -2629,12 +2621,7 @@ return 0;
 }
 }
 
-void ReceivePacket(void){
-waitFlag();
-getdata();
-fcscheck();
-}
-
+# 359
 UBYTE *ReceivePacket_data(void){
 UINT fcschecker;
 

@@ -10,7 +10,6 @@
       <itemPath>Init_MPU.h</itemPath>
       <itemPath>decode_AX25.h</itemPath>
       <itemPath>memo.h</itemPath>
-      <itemPath>encode_AX25.h</itemPath>
       <itemPath>I2C.h</itemPath>
       <itemPath>EEPROM.h</itemPath>
       <itemPath>FMCW.h</itemPath>
@@ -28,7 +27,6 @@
       <itemPath>UART.c</itemPath>
       <itemPath>Init_MPU.c</itemPath>
       <itemPath>decode_AX25.c</itemPath>
-      <itemPath>encode_AX25.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
       <itemPath>FMCW.c</itemPath>

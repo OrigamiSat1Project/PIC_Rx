@@ -1501,8 +1501,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 "19 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {
@@ -1515,18 +1513,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;EPS.c: 21: RA1 = 1;
 "21
 [e = _RA1 -> -> 1 `i `b ]
-[; ;EPS.c: 22: _delay((unsigned long)((5000)*(10000000/4000.0)));
+[; ;EPS.c: 22: _delay((unsigned long)((1000)*(10000000/4000.0)));
 "22
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;EPS.c: 23: RB4 = 0;
 "23
 [e = _RB4 -> -> 0 `i `b ]
 [; ;EPS.c: 24: RA1 = 0;
 "24
 [e = _RA1 -> -> 0 `i `b ]
-[; ;EPS.c: 25: _delay((unsigned long)((500)*(10000000/4000.0)));
-"25
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;EPS.c: 26: }
 "26
 [e :UE 138 ]

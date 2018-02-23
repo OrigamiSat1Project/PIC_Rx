@@ -19,9 +19,9 @@
 void Reset_EPS(void){
     SEP_SW = 1;
     RBF_SW = 1;
-    __delay_ms(5000);
+    __delay_ms(1000);
     SEP_SW = 0;
     RBF_SW = 0;
-    __delay_ms(500);
+//    __delay_ms(500);
 }
 

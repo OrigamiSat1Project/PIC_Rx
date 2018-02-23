@@ -2128,18 +2128,14 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
 
-void put_error(void);
-void put_ok(void);
+UBYTE getch(void);
+
+
+
+
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
 
 # 6 "UART.c"
 void Init_SERIAL(void){
@@ -2177,34 +2173,7 @@ while(!TXIF);
 TXREG = byte;
 }
 
-void putstr(UBYTE *x)
-{
-while(*x != '\0'){
-putch(*x);
-x++;
-}
-}
-
-void putcrlf(void){
-putch('\r');
-putch('\n');
-}
-
-void put_error(void){
-putch('E');
-putch('R');
-putch('R');
-putch('O');
-putch('R');
-putch('!');
-}
-
-void put_ok(void){
-putch('O');
-putch('K');
-putch('!');
-}
-
+# 72
 void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
 putch(NM_wad_header);
 putch(whigh_address);

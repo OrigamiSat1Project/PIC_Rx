@@ -21,7 +21,7 @@ void I2C_Master_Stop(void);
 void I2C_Master_Write(unsigned d);
 UBYTE I2C_Master_Read(UBYTE a);
 void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *);
-UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
+//UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
 
 
 #endif	/* I2C_H */

@@ -2163,12 +2163,12 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
 
-void put_error(void);
-void put_ok(void);
+UBYTE getch(void);
+
+
+
+
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
@@ -2176,10 +2176,6 @@ void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void Init_MPU(void);
 void led_onoff(void);
 void debug_ledy(void);
-
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
 
 # 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdarg.h"
 typedef void * va_list[1];
@@ -2310,15 +2306,11 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 36 "decode_AX25.h"
+# 40 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
-void ReceivePacket(void);
+# 49
 UBYTE *ReceivePacket_data(void);
-
-# 24 "encode_AX25.h"
-void SendPacket(void);
 
 # 16 "I2C.h"
 void Init_I2C_M(const UDWORD c);
@@ -2329,33 +2321,34 @@ void I2C_Master_Stop(void);
 void I2C_Master_Write(unsigned d);
 UBYTE I2C_Master_Read(UBYTE a);
 void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *);
-UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
 
 # 13 "FMCW.h"
 int FMTX_Nref = 2560;
-int FMTX_Nprg[5] = {8,7,3,0,0};
+
 int CWTX_Nref = 160;
-int CWTX_Nprg[5] = {0,1,7,4,7};
+
 int FMRX_Nref = 2560;
-int FMRX_Nprg[5] = {2,4,8,8,7};
 
-# 35
-void Init_FMCW(void);
-
+# 37
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
+void ResetFreq(void);
 
-# 47
+# 48
 void _NOP(void);
 
 # 22 "EPS.h"
 void Reset_EPS(void);
 
+# 17 "WDT.h"
+void Init_WDT(void);
+void interrupt intr(void);
 
-# 24 "main.c"
+
+# 25 "main.c"
 #pragma config FOSC = HS
-#pragma config WDTE = OFF
+#pragma config WDTE = ON
 #pragma config PWRTE = ON
 
 #pragma config MCLRE = ON
@@ -2378,20 +2371,21 @@ _delay((unsigned long)((200)*(10000000/4000.0)));
 Init_SERIAL();
 Init_MPU();
 Init_I2C_M(400000);
+Init_WDT();
 
-# 54
+# 55
 RB2 = 1;
 _delay((unsigned long)((1000)*(10000000/4000.0)));
+ResetFreq();
 
-FMTX(FMTX_Nref, FMTX_Nprg);
-CWTX(CWTX_Nref, CWTX_Nprg);
-FMRX(FMRX_Nref, FMRX_Nprg);
+
+
 RB2 = 0;
 
 
 while(1){
 
-# 78
+# 79
 UBYTE *dData;
 dData = ReceivePacket_data();
 RB2 = 1;
@@ -2406,7 +2400,7 @@ _delay((unsigned long)((100)*(10000000/4000.0)));
 UBYTE TXOBC_wad_header = 0x74;
 TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
 
-# 103
+# 104
 if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
@@ -2428,17 +2422,12 @@ case 'E':
 
 
 
-Reset_EPS();
 _delay((unsigned long)((5000)*(10000000/4000.0)));
+Reset_EPS();
+_delay((unsigned long)((1000)*(10000000/4000.0)));
 
-
-int FMTX_Nprg[5] = {8,7,3,0,0};
-int CWTX_Nprg[5] = {0,1,7,4,7};
-int FMRX_Nprg[5] = {2,4,8,8,7};
-
-FMTX(FMTX_Nref, FMTX_Nprg);
-CWTX(CWTX_Nref, CWTX_Nprg);
-FMRX(FMRX_Nref, FMRX_Nprg);
+# 137
+ResetFreq();
 _delay((unsigned long)((500)*(10000000/4000.0)));
 break;
 case 'I':
@@ -2467,7 +2456,7 @@ _delay((unsigned long)((1000)*(10000000/4000.0)));
 RB2 = 0;
 }
 
-# 205
+# 208
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;

@@ -5,7 +5,7 @@
 #include "Type_define.h"
 #include "time.h"
 #include "decode_AX25.h"
-#include "encode_AX25.h"
+//#include "encode_AX25.h"
 
 void UART_TX(UINT,UINT);
 void waitByte(UINT,UINT);
@@ -43,7 +43,7 @@ UINT getbit(void){
     for(UINT i=0;i<getbitloop;i++){
         if(FX614_RXD != oldbit){
             __delay_us(hspan);
-            led_yellow= 1- led_yellow;
+//            led_white= 1- led_white;
             return 0;
         }
     }
@@ -350,11 +350,11 @@ UINT fcscheck(void){
     }
 }
 
-void ReceivePacket(void){
-    waitFlag();
-    getdata();
-    fcscheck();
-}
+//void ReceivePacket(void){
+//    waitFlag();
+//    getdata();
+//    fcscheck();
+//}
 
 UBYTE *ReceivePacket_data(void){
     UINT fcschecker;

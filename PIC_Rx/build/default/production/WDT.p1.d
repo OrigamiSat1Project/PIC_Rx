@@ -2,4 +2,6 @@
  build/default/production/WDT.p1:  \
  WDT.c  \
 Type_define.h  \
-WDT.h 
+WDT.h  \
+FMCW.h  \
+time.h 

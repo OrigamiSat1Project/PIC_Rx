@@ -10,15 +10,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Init_MPU `(v ~T0 @X0 0 ef ]
 "16 I2C.h
 [v _Init_I2C_M `(v ~T0 @X0 0 ef1`Cul ]
+"17 WDT.h
+[v _Init_WDT `(v ~T0 @X0 0 ef ]
 "3922 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f887.h
 [v _RB2 `Vb ~T0 @X0 0 e@50 ]
-"37 FMCW.h
-[v _FMTX `(v ~T0 @X0 0 ef2`i`*i ]
-"38
-[v _CWTX `(v ~T0 @X0 0 ef2`i`*i ]
-"39
-[v _FMRX `(v ~T0 @X0 0 ef2`i`*i ]
-"45 decode_AX25.h
+"40 FMCW.h
+[v _ResetFreq `(v ~T0 @X0 0 ef ]
+"49 decode_AX25.h
 [v _ReceivePacket_data `(*uc ~T0 @X0 0 ef ]
 "23 I2C.h
 [v _EEPROM_Write `(v ~T0 @X0 0 ef4`uc`uc`uc`*uc ]
@@ -1550,18 +1548,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
 [; ;Init_MPU.h: 25: void led_onoff(void);
 [; ;Init_MPU.h: 26: void debug_ledy(void);
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 [; ;stdarg.h: 7: typedef void * va_list[1];
 [; ;stdarg.h: 10: extern void * __va_start(void);
 [; ;stdarg.h: 13: extern void * __va_arg(void *, ...);
@@ -1641,10 +1633,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdlib.h: 101: extern char * ltoa(char * buf, long val, int base);
 [; ;stdlib.h: 102: extern char * ultoa(char * buf, unsigned long val, int base);
 [; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
-[; ;decode_AX25.h: 36: UINT getbit(void);
-[; ;decode_AX25.h: 44: void ReceivePacket(void);
-[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
-[; ;encode_AX25.h: 24: void SendPacket(void);
+[; ;decode_AX25.h: 40: UINT getbit(void);
+[; ;decode_AX25.h: 49: UBYTE *ReceivePacket_data(void);
 [; ;I2C.h: 16: void Init_I2C_M(const UDWORD c);
 [; ;I2C.h: 17: void I2C_Master_Wait(void);
 [; ;I2C.h: 18: void I2C_Master_Start(void);
@@ -1653,287 +1643,204 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 21: void I2C_Master_Write(unsigned d);
 [; ;I2C.h: 22: UBYTE I2C_Master_Read(UBYTE a);
 [; ;I2C.h: 23: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *);
-[; ;I2C.h: 24: UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
 "13 FMCW.h
 [v _FMTX_Nref `i ~T0 @X0 1 e ]
 [i _FMTX_Nref
 -> 2560 `i
 ]
 [; ;FMCW.h: 13: int FMTX_Nref = 2560;
-"14
-[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i e ]
-[i _FMTX_Nprg
-:U ..
--> 8 `i
--> 7 `i
--> 3 `i
--> 0 `i
--> 0 `i
-..
-]
-[; ;FMCW.h: 14: int FMTX_Nprg[5] = {8,7,3,0,0};
 "15
 [v _CWTX_Nref `i ~T0 @X0 1 e ]
 [i _CWTX_Nref
 -> 160 `i
 ]
 [; ;FMCW.h: 15: int CWTX_Nref = 160;
-"16
-[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i e ]
-[i _CWTX_Nprg
-:U ..
--> 0 `i
--> 1 `i
--> 7 `i
--> 4 `i
--> 7 `i
-..
-]
-[; ;FMCW.h: 16: int CWTX_Nprg[5] = {0,1,7,4,7};
 "17
 [v _FMRX_Nref `i ~T0 @X0 1 e ]
 [i _FMRX_Nref
 -> 2560 `i
 ]
 [; ;FMCW.h: 17: int FMRX_Nref = 2560;
-"18
-[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i e ]
-[i _FMRX_Nprg
-:U ..
--> 2 `i
--> 4 `i
--> 8 `i
--> 8 `i
--> 7 `i
-..
-]
-[; ;FMCW.h: 18: int FMRX_Nprg[5] = {2,4,8,8,7};
-[; ;FMCW.h: 35: void Init_FMCW(void);
 [; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
 [; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
 [; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
-[; ;FMCW.h: 47: void _NOP(void);
+[; ;FMCW.h: 40: void ResetFreq(void);
+[; ;FMCW.h: 48: void _NOP(void);
 [; ;EPS.h: 22: void Reset_EPS(void);
-"24 main.c
+[; ;WDT.h: 17: void Init_WDT(void);
+[; ;WDT.h: 18: void interrupt intr(void);
+"25 main.c
 [p x FOSC=HS ]
-"25
-[p x WDTE=OFF ]
 "26
+[p x WDTE=ON ]
+"27
 [p x PWRTE=ON ]
-"28
-[p x MCLRE=ON ]
 "29
-[p x CP=OFF ]
+[p x MCLRE=ON ]
 "30
-[p x CPD=OFF ]
+[p x CP=OFF ]
 "31
-[p x BOREN=ON ]
+[p x CPD=OFF ]
 "32
-[p x IESO=OFF ]
+[p x BOREN=ON ]
 "33
-[p x FCMEN=OFF ]
+[p x IESO=OFF ]
 "34
-[p x LVP=OFF ]
+[p x FCMEN=OFF ]
 "35
-[p x BOR4V=BOR21V ]
+[p x LVP=OFF ]
 "36
+[p x BOR4V=BOR21V ]
+"37
 [p x WRT=OFF ]
 [v $root$_main `(v ~T0 @X0 0 e ]
-"38
+"39
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 38: void main(void) {
+[; ;main.c: 39: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 43: _delay((unsigned long)((200)*(10000000/4000.0)));
-"43
+[; ;main.c: 44: _delay((unsigned long)((200)*(10000000/4000.0)));
+"44
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 45: Init_SERIAL();
-"45
-[e ( _Init_SERIAL ..  ]
-[; ;main.c: 46: Init_MPU();
+[; ;main.c: 46: Init_SERIAL();
 "46
-[e ( _Init_MPU ..  ]
-[; ;main.c: 47: Init_I2C_M(400000);
+[e ( _Init_SERIAL ..  ]
+[; ;main.c: 47: Init_MPU();
 "47
+[e ( _Init_MPU ..  ]
+[; ;main.c: 48: Init_I2C_M(400000);
+"48
 [e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
-[; ;main.c: 54: RB2 = 1;
-"54
-[e = _RB2 -> -> 1 `i `b ]
-[; ;main.c: 55: _delay((unsigned long)((1000)*(10000000/4000.0)));
+[; ;main.c: 49: Init_WDT();
+"49
+[e ( _Init_WDT ..  ]
+[; ;main.c: 55: RB2 = 1;
 "55
+[e = _RB2 -> -> 1 `i `b ]
+[; ;main.c: 56: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"56
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 57: FMTX(FMTX_Nref, FMTX_Nprg);
+[; ;main.c: 57: ResetFreq();
 "57
-[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
-[; ;main.c: 58: CWTX(CWTX_Nref, CWTX_Nprg);
-"58
-[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
-[; ;main.c: 59: FMRX(FMRX_Nref, FMRX_Nprg);
-"59
-[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
-[; ;main.c: 60: RB2 = 0;
-"60
+[e ( _ResetFreq ..  ]
+[; ;main.c: 61: RB2 = 0;
+"61
 [e = _RB2 -> -> 0 `i `b ]
-[; ;main.c: 63: while(1){
-"63
+[; ;main.c: 64: while(1){
+"64
 [e :U 145 ]
 {
-"78
-[v _dData `*uc ~T0 @X0 1 a ]
-[; ;main.c: 78: UBYTE *dData;
-[; ;main.c: 79: dData = ReceivePacket_data();
 "79
-[e = _dData ( _ReceivePacket_data ..  ]
-[; ;main.c: 80: RB2 = 1;
+[v _dData `*uc ~T0 @X0 1 a ]
+[; ;main.c: 79: UBYTE *dData;
+[; ;main.c: 80: dData = ReceivePacket_data();
 "80
-[e = _RB2 -> -> 1 `i `b ]
-[; ;main.c: 81: _delay((unsigned long)((500)*(10000000/4000.0)));
+[e = _dData ( _ReceivePacket_data ..  ]
+[; ;main.c: 81: RB2 = 1;
 "81
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 82: RB2 = 0;
+[e = _RB2 -> -> 1 `i `b ]
+[; ;main.c: 82: _delay((unsigned long)((500)*(10000000/4000.0)));
 "82
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 83: RB2 = 0;
+"83
 [e = _RB2 -> -> 0 `i `b ]
-[; ;main.c: 84: EEPROM_Write(0x50,0x00,0x00,dData);
-"84
-[e ( _EEPROM_Write (4 , , , -> -> 80 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc _dData ]
-[; ;main.c: 85: _delay((unsigned long)((100)*(10000000/4000.0)));
+[; ;main.c: 85: EEPROM_Write(0x50,0x00,0x00,dData);
 "85
+[e ( _EEPROM_Write (4 , , , -> -> 80 `i `uc -> -> 0 `i `uc -> -> 0 `i `uc _dData ]
+[; ;main.c: 86: _delay((unsigned long)((100)*(10000000/4000.0)));
+"86
 [e ( __delay (1 -> * -> -> 100 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"89
-[v _TXOBC_wad_header `uc ~T0 @X0 1 a ]
-[; ;main.c: 89: UBYTE TXOBC_wad_header = 0x74;
-[e = _TXOBC_wad_header -> -> 116 `i `uc ]
-[; ;main.c: 90: TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
 "90
+[v _TXOBC_wad_header `uc ~T0 @X0 1 a ]
+[; ;main.c: 90: UBYTE TXOBC_wad_header = 0x74;
+[e = _TXOBC_wad_header -> -> 116 `i `uc ]
+[; ;main.c: 91: TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
+"91
 [e ( _TXOBC_waddress (3 , , _TXOBC_wad_header -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 103: if(dData[0]=='n'){
-"103
+[; ;main.c: 104: if(dData[0]=='n'){
+"104
 [e $ ! == -> *U + _dData * -> -> 0 `i `x -> -> # *U _dData `i `x `ui -> 110 `ui 147  ]
 {
-"105
-[v _NM_wad_header `uc ~T0 @X0 1 a ]
-[; ;main.c: 105: UBYTE NM_wad_header = 0x72;
-[e = _NM_wad_header -> -> 114 `i `uc ]
-[; ;main.c: 106: NM_waddress(NM_wad_header, 0x00, 0x00);
 "106
+[v _NM_wad_header `uc ~T0 @X0 1 a ]
+[; ;main.c: 106: UBYTE NM_wad_header = 0x72;
+[e = _NM_wad_header -> -> 114 `i `uc ]
+[; ;main.c: 107: NM_waddress(NM_wad_header, 0x00, 0x00);
+"107
 [e ( _NM_waddress (3 , , _NM_wad_header -> -> 0 `i `uc -> -> 0 `i `uc ]
-"108
+"109
 }
-[; ;main.c: 108: }else if(dData[0]=='p'){
+[; ;main.c: 109: }else if(dData[0]=='p'){
 [e $U 148  ]
 [e :U 147 ]
 [e $ ! == -> *U + _dData * -> -> 0 `i `x -> -> # *U _dData `i `x `ui -> 112 `ui 149  ]
 {
-[; ;main.c: 113: if(dData[2] == 'r'){
-"113
+[; ;main.c: 114: if(dData[2] == 'r'){
+"114
 [e $ ! == -> *U + _dData * -> -> 2 `i `x -> -> # *U _dData `i `x `ui -> 114 `ui 150  ]
 {
-[; ;main.c: 118: switch(dData[3]){
-"118
+[; ;main.c: 119: switch(dData[3]){
+"119
 [e $U 152  ]
 {
-[; ;main.c: 119: case 'E':
-"119
+[; ;main.c: 120: case 'E':
+"120
 [e :U 153 ]
-[; ;main.c: 124: Reset_EPS();
-"124
-[e ( _Reset_EPS ..  ]
 [; ;main.c: 125: _delay((unsigned long)((5000)*(10000000/4000.0)));
 "125
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[v F2012 `i ~T0 @X0 -> 5 `i s ]
-[i F2012
-:U ..
-"128
--> 8 `i
--> 7 `i
--> 3 `i
--> 0 `i
--> 0 `i
-..
-]
-[v _FMTX_Nprg `i ~T0 @X0 -> 5 `i a ]
-[; ;main.c: 128: int FMTX_Nprg[5] = {8,7,3,0,0};
-[e = _FMTX_Nprg F2012 ]
-[v F2014 `i ~T0 @X0 -> 5 `i s ]
-[i F2014
-:U ..
-"129
--> 0 `i
--> 1 `i
--> 7 `i
--> 4 `i
--> 7 `i
-..
-]
-[v _CWTX_Nprg `i ~T0 @X0 -> 5 `i a ]
-[; ;main.c: 129: int CWTX_Nprg[5] = {0,1,7,4,7};
-[e = _CWTX_Nprg F2014 ]
-[v F2016 `i ~T0 @X0 -> 5 `i s ]
-[i F2016
-:U ..
-"130
--> 2 `i
--> 4 `i
--> 8 `i
--> 8 `i
--> 7 `i
-..
-]
-[v _FMRX_Nprg `i ~T0 @X0 -> 5 `i a ]
-[; ;main.c: 130: int FMRX_Nprg[5] = {2,4,8,8,7};
-[e = _FMRX_Nprg F2016 ]
-[; ;main.c: 132: FMTX(FMTX_Nref, FMTX_Nprg);
-"132
-[e ( _FMTX (2 , _FMTX_Nref &U _FMTX_Nprg ]
-[; ;main.c: 133: CWTX(CWTX_Nref, CWTX_Nprg);
-"133
-[e ( _CWTX (2 , _CWTX_Nref &U _CWTX_Nprg ]
-[; ;main.c: 134: FMRX(FMRX_Nref, FMRX_Nprg);
-"134
-[e ( _FMRX (2 , _FMRX_Nref &U _FMRX_Nprg ]
-[; ;main.c: 135: _delay((unsigned long)((500)*(10000000/4000.0)));
-"135
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 136: break;
-"136
-[e $U 151  ]
-[; ;main.c: 137: case 'I':
+[; ;main.c: 126: Reset_EPS();
+"126
+[e ( _Reset_EPS ..  ]
+[; ;main.c: 127: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"127
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 137: ResetFreq();
 "137
-[e :U 154 ]
+[e ( _ResetFreq ..  ]
+[; ;main.c: 138: _delay((unsigned long)((500)*(10000000/4000.0)));
+"138
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;main.c: 139: break;
 "139
 [e $U 151  ]
-[; ;main.c: 140: case '3':
+[; ;main.c: 140: case 'I':
 "140
-[e :U 155 ]
+[e :U 154 ]
 [; ;main.c: 142: break;
 "142
 [e $U 151  ]
-[; ;main.c: 143: case 'N':
+[; ;main.c: 143: case '3':
 "143
-[e :U 156 ]
+[e :U 155 ]
 [; ;main.c: 145: break;
 "145
 [e $U 151  ]
-[; ;main.c: 146: case 'T':
+[; ;main.c: 146: case 'N':
 "146
-[e :U 157 ]
+[e :U 156 ]
 [; ;main.c: 148: break;
 "148
 [e $U 151  ]
-[; ;main.c: 149: default:
+[; ;main.c: 149: case 'T':
 "149
-[e :U 158 ]
+[e :U 157 ]
 [; ;main.c: 151: break;
 "151
 [e $U 151  ]
+[; ;main.c: 152: default:
 "152
-}
-[; ;main.c: 152: }
+[e :U 158 ]
+[; ;main.c: 154: break;
+"154
 [e $U 151  ]
-"118
+"155
+}
+[; ;main.c: 155: }
+[e $U 151  ]
+"119
 [e :U 152 ]
 [e [\ *U + _dData * -> -> 3 `i `x -> -> # *U _dData `i `x , $ -> -> 69 `ui `uc 153
  , $ -> -> 73 `ui `uc 154
@@ -1941,54 +1848,54 @@ Version 3.2 HI-TECH Software Intermediate Code
  , $ -> -> 78 `ui `uc 156
  , $ -> -> 84 `ui `uc 157
  158 ]
-"152
+"155
 [e :U 151 ]
-"154
+"157
 }
-[; ;main.c: 154: }else if(dData[2] == 't'){
+[; ;main.c: 157: }else if(dData[2] == 't'){
 [e $U 159  ]
 [e :U 150 ]
 [e $ ! == -> *U + _dData * -> -> 2 `i `x -> -> # *U _dData `i `x `ui -> 116 `ui 160  ]
 {
-"156
+"159
 }
 [e :U 160 ]
-"157
+"160
 [e :U 159 ]
 }
-[; ;main.c: 156: }
-[; ;main.c: 157: }else{
+[; ;main.c: 159: }
+[; ;main.c: 160: }else{
 [e $U 161  ]
 [e :U 149 ]
 {
-[; ;main.c: 158: RB2 = 1;
-"158
-[e = _RB2 -> -> 1 `i `b ]
-[; ;main.c: 159: _delay((unsigned long)((1000)*(10000000/4000.0)));
-"159
-[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 160: RB2 = 0;
-"160
-[e = _RB2 -> -> 0 `i `b ]
+[; ;main.c: 161: RB2 = 1;
 "161
+[e = _RB2 -> -> 1 `i `b ]
+[; ;main.c: 162: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"162
+[e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 163: RB2 = 0;
+"163
+[e = _RB2 -> -> 0 `i `b ]
+"164
 }
 [e :U 161 ]
 [e :U 148 ]
-[; ;main.c: 161: }
-[; ;main.c: 205: _delay((unsigned long)((500)*(10000000/4000.0)));
-"205
+[; ;main.c: 164: }
+[; ;main.c: 208: _delay((unsigned long)((500)*(10000000/4000.0)));
+"208
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"206
+"209
 }
 [e :U 144 ]
-"63
+"64
 [e $U 145  ]
 [e :U 146 ]
-[; ;main.c: 206: }
-[; ;main.c: 207: return;
-"207
+[; ;main.c: 209: }
+[; ;main.c: 210: return;
+"210
 [e $UE 143  ]
-[; ;main.c: 208: }
-"208
+[; ;main.c: 211: }
+"211
 [e :UE 143 ]
 }

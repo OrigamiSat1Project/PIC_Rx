@@ -10,6 +10,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S15 . . . ]
 "480
 [v _INTCONbits `VS15 ~T0 @X0 0 e@11 ]
+"1350
+[s S50 :3 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S50 . PS PSA T0SE T0CS INTEDG nRBPU ]
+"1358
+[s S51 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S51 . PS0 PS1 PS2 ]
+"1349
+[u S49 `S50 1 `S51 1 ]
+[n S49 . . . ]
+"1364
+[v _OPTION_REGbits `VS49 ~T0 @X0 0 e@129 ]
 "541
 [s S19 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S19 . TMR1IF TMR2IF CCP1IF SSPIF TXIF RCIF ADIF ]
@@ -42,6 +53,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _T1CONbits `VS22 ~T0 @X0 0 e@16 ]
 "648
 [v _TMR1 `Vus ~T0 @X0 0 e@14 ]
+[v F1637 `(v ~T0 @X0 1 tf1`ul ]
+"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
+[v __delay `JF1637 ~T0 @X0 0 e ]
+[p i __delay ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1537,34 +1552,126 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;WDT.h: 17: void Init_WDT(void);
 [; ;WDT.h: 18: void interrupt intr(void);
-"5 WDT.c
+"13 FMCW.h
+[v _FMTX_Nref `i ~T0 @X0 1 e ]
+[i _FMTX_Nref
+-> 2560 `i
+]
+[; ;FMCW.h: 13: int FMTX_Nref = 2560;
+"15
+[v _CWTX_Nref `i ~T0 @X0 1 e ]
+[i _CWTX_Nref
+-> 160 `i
+]
+[; ;FMCW.h: 15: int CWTX_Nref = 160;
+"17
+[v _FMRX_Nref `i ~T0 @X0 1 e ]
+[i _FMRX_Nref
+-> 2560 `i
+]
+[; ;FMCW.h: 17: int FMRX_Nref = 2560;
+[; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
+[; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
+[; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
+[; ;FMCW.h: 40: void ResetFreq(void);
+[; ;FMCW.h: 48: void _NOP(void);
+"7 WDT.c
 [v _Init_WDT `(v ~T0 @X0 1 ef ]
 {
-[; ;WDT.c: 5: void Init_WDT(void){
+[; ;WDT.c: 7: void Init_WDT(void){
 [e :U _Init_WDT ]
 [f ]
-[; ;WDT.c: 6: INTCONbits.GIE = 1;
-"6
+[; ;WDT.c: 8: INTCONbits.GIE = 1;
+"8
 [e = . . _INTCONbits 0 7 -> -> 1 `i `uc ]
-[; ;WDT.c: 7: INTCONbits.PEIE = 1;
-"7
-[e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
-[; ;WDT.c: 9: PIR1bits.TMR1IF = 0;
+[; ;WDT.c: 9: INTCONbits.PEIE = 1;
 "9
-[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
-[; ;WDT.c: 10: PIE1bits.TMR1IE = 1;
-"10
-[e = . . _PIE1bits 0 0 -> -> 1 `i `uc ]
-[; ;WDT.c: 13: T1CONbits.T1CKPS = 2;
-"13
-[e = . . _T1CONbits 0 4 -> -> 2 `i `uc ]
-[; ;WDT.c: 14: TMR1 = (0xffff - 62500);
-"14
-[e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
-[; ;WDT.c: 16: T1CONbits.TMR1ON = 1;
+[e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
+[; ;WDT.c: 11: OPTION_REGbits.PSA = 1;
+"11
+[e = . . _OPTION_REGbits 0 1 -> -> 1 `i `uc ]
+[; ;WDT.c: 12: OPTION_REGbits.PS = 7;
+"12
+[e = . . _OPTION_REGbits 0 0 -> -> 7 `i `uc ]
+[; ;WDT.c: 16: PIR1bits.TMR1IF = 0;
 "16
+[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
+[; ;WDT.c: 17: PIE1bits.TMR1IE = 1;
+"17
+[e = . . _PIE1bits 0 0 -> -> 1 `i `uc ]
+[; ;WDT.c: 20: T1CONbits.T1CKPS = 3;
+"20
+[e = . . _T1CONbits 0 4 -> -> 3 `i `uc ]
+[; ;WDT.c: 21: TMR1 = (0xffff - 62500);
+"21
+[e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
+[; ;WDT.c: 23: T1CONbits.TMR1ON = 1;
+"23
 [e = . . _T1CONbits 0 0 -> -> 1 `i `uc ]
-[; ;WDT.c: 19: }
-"19
+[; ;WDT.c: 24: }
+"24
 [e :UE 138 ]
+}
+[v $root$_InterReceiver `(v ~T0 @X0 0 e ]
+[v F1677 `(v ~T0 @X0 1 tf ]
+"27
+[v _InterReceiver `IF1677 ~T0 @X0 1 e ]
+{
+[; ;WDT.c: 27: void interrupt InterReceiver( void ){
+[e :U _InterReceiver ]
+[f ]
+"28
+[v F1678 `Vi ~T0 @X0 1 s intr_counter ]
+"29
+[v F1679 `Vi ~T0 @X0 1 s intr_counter_H ]
+[; ;WDT.c: 28: volatile static int intr_counter;
+[; ;WDT.c: 29: volatile static int intr_counter_H;
+[; ;WDT.c: 30: if(PIR1bits.TMR1IF == 1){
+"30
+[e $ ! == -> . . _PIR1bits 0 0 `i -> 1 `i 140  ]
+{
+[; ;WDT.c: 31: TMR1 = (0xffff - 62500);
+"31
+[e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
+[; ;WDT.c: 33: intr_counter++;
+"33
+[e ++ F1678 -> 1 `i ]
+[; ;WDT.c: 34: if (intr_counter >= 2) {
+"34
+[e $ ! >= F1678 -> 2 `i 141  ]
+{
+[; ;WDT.c: 35: asm("clrwdt");
+"35
+[; <" clrwdt ;# ">
+[; ;WDT.c: 36: intr_counter = 0;
+"36
+[e = F1678 -> 0 `i ]
+[; ;WDT.c: 37: intr_counter_H ++;
+"37
+[e ++ F1679 -> 1 `i ]
+[; ;WDT.c: 38: if (intr_counter_H >= 60) {
+"38
+[e $ ! >= F1679 -> 60 `i 142  ]
+{
+[; ;WDT.c: 47: _delay((unsigned long)((500)*(10000000/4000.0)));
+"47
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"48
+}
+[e :U 142 ]
+"49
+}
+[e :U 141 ]
+[; ;WDT.c: 48: }
+[; ;WDT.c: 49: }
+[; ;WDT.c: 51: PIR1bits.TMR1IF = 0;
+"51
+[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
+"52
+}
+[e :U 140 ]
+[; ;WDT.c: 52: }
+[; ;WDT.c: 53: }
+"53
+[e :UE 139 ]
 }

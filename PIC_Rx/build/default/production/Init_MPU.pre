@@ -2130,10 +2130,6 @@ void Init_MPU(void);
 void led_onoff(void);
 void debug_ledy(void);
 
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
-
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
 typedef unsigned size_t;
 
@@ -2269,24 +2265,20 @@ extern char * ftoa(float f, int * status);
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
 
-void put_error(void);
-void put_ok(void);
+UBYTE getch(void);
+
+
+
+
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
-# 36 "decode_AX25.h"
+# 40 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
-void ReceivePacket(void);
+# 49
 UBYTE *ReceivePacket_data(void);
-
-# 24 "encode_AX25.h"
-void SendPacket(void);
 
 # 8 "Init_MPU.c"
 void Init_MPU(void)
@@ -2317,16 +2309,4 @@ PORTC = 0x00;
 PORTD = 0x00;
 PORTE = 0x00;
 }
-void led_onoff(void){
-RC2 = 1;;
-_delay((unsigned long)((795)*(10000000/4000000.0)));
-RC2 = 0;;
-_delay((unsigned long)((795)*(10000000/4000000.0)));
-}
-void debug_ledy(void){
-if(RC2 == 1){
-RC2 = 0;;
-}else{
-RC2 = 1;;
-}
-}
+

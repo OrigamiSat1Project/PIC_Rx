@@ -16,12 +16,12 @@
 
 #ifndef ENCODE_AX25_H
 #define	ENCODE_AX25_H
+//
+//#define mycall "JQ1YCZ"
+//#define ucall  "JQ1ZHX"
+//#define txd RB2
 
-#define mycall "JQ1YCZ"
-#define ucall  "JQ1ZHX"
-#define txd RB2
-
-void SendPacket(void);
+//void SendPacket(void);
 /*
 //void SendByte(UBYTE);
 //void flipout(void);

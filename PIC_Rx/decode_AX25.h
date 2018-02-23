@@ -25,6 +25,10 @@
 #define getbitloop 62//20MHz:130  10MHz:66  ¼–³üü”g”İ’èŠÜ‚ß‚é‚Æ60‚ª“K³’lH
 #define Flag_AX25 0x7e
 #define flagcounter_max 9
+
+#define mycall "JQ1YCZ"
+#define ucall  "JQ1ZHX"
+
 // 1/25 
 // 0x7E‚ğ”»’è‚Å‚«‚égetbitloop
 // waitflag()        ‚¾‚Æ   91 -113
@@ -41,7 +45,7 @@ void putAX25(void);
 void conv_DI_UARTRX(void);
 UBYTE reverse_bit8(UBYTE x);*/
 
-void ReceivePacket(void);
+//void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 
 #endif	/* DECODE_AX25_H */

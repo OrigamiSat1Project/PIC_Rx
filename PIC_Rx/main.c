@@ -8,11 +8,12 @@
 #include "Type_define.h"
 #include "time.h"
 #include "decode_AX25.h"
-#include "encode_AX25.h"
+//#include "encode_AX25.h"
 #include "I2C.h"
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "EPS.h"
+#include "WDT.h"
 
 // PIC16F887 Configuration Bit Settings
 
@@ -22,7 +23,7 @@
 
 /* PIC16F887 Configuration Bit Settings */
 #pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
-#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config WDTE     = ON           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
 #pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
 //#pragma config POR      = ON            // Power On Reset is enabled
 #pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
@@ -45,7 +46,7 @@ void main(void) {
     Init_SERIAL();
     Init_MPU();
     Init_I2C_M(I2Cbps);
-//    Init_WDT();
+    Init_WDT();
     
     //PLL setting
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
@@ -53,10 +54,10 @@ void main(void) {
     /**/
     led_white = 1;
     __delay_ms(1000);
-    
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
+    ResetFreq();
+//    FMTX(FMTX_Nref, FMTX_Nprg);
+//    CWTX(CWTX_Nref, CWTX_Nprg);
+//    FMRX(FMRX_Nref, FMRX_Nprg);
     led_white = 0;
 //    printf("start\r\n");
 //    RA1 = 0;
@@ -121,17 +122,19 @@ void main(void) {
 //                    __delay_ms(500);
 //                    led_white = 0;
                     // EPS kill
-                    Reset_EPS();
                     __delay_ms(5000);
+                    Reset_EPS();
+                    __delay_ms(1000);
                     //以下�?�数字�?�初期設定時と変化して�?るためも�?�?度定義
                     //本来なら変化する�?字�?�を他に用意したほ�?が良�?かもしれな�?
-                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
-                    
-                    FMTX(FMTX_Nref, FMTX_Nprg);
-                    CWTX(CWTX_Nref, CWTX_Nprg);
-                    FMRX(FMRX_Nref, FMRX_Nprg);
+//                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+//                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+//                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+//                    
+//                    FMTX(FMTX_Nref, FMTX_Nprg);
+//                    CWTX(CWTX_Nref, CWTX_Nprg);
+//                    FMRX(FMRX_Nref, FMRX_Nprg);
+                    ResetFreq();
                     __delay_ms(500);
                     break;
                 case 'I':

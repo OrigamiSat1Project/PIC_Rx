@@ -1,8 +1,4 @@
 Version 3.2 HI-TECH Software Intermediate Code
-[v F1637 `(v ~T0 @X0 1 tf1`ul ]
-"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
-[v __delay `JF1637 ~T0 @X0 0 e ]
-[p i __delay ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1496,75 +1492,3 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
-"8 time.c
-[v _delay_ms `(v ~T0 @X0 1 ef1`us ]
-"9
-{
-[; ;time.c: 8: void delay_ms(UWORD msec)
-[; ;time.c: 9: {
-[e :U _delay_ms ]
-"8
-[v _msec `us ~T0 @X0 1 r1 ]
-"9
-[f ]
-[; ;time.c: 10: while(msec)
-"10
-[e $U 139  ]
-[e :U 140 ]
-[; ;time.c: 11: {
-"11
-{
-[; ;time.c: 12: _delay((unsigned long)((1)*(10000000/4000.0)));
-"12
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;time.c: 13: msec--;
-"13
-[e -- _msec -> -> 1 `i `us ]
-"14
-}
-[e :U 139 ]
-"10
-[e $ != -> _msec `ui -> -> -> 0 `i `us `ui 140  ]
-[e :U 141 ]
-[; ;time.c: 14: }
-[; ;time.c: 15: }
-"15
-[e :UE 138 ]
-}
-"18
-[v _delay_us `(v ~T0 @X0 1 ef1`us ]
-"19
-{
-[; ;time.c: 18: void delay_us(UWORD usec)
-[; ;time.c: 19: {
-[e :U _delay_us ]
-"18
-[v _usec `us ~T0 @X0 1 r1 ]
-"19
-[f ]
-[; ;time.c: 20: while(usec)
-"20
-[e $U 143  ]
-[e :U 144 ]
-[; ;time.c: 21: {
-"21
-{
-[; ;time.c: 22: _delay((unsigned long)((1)*(10000000/4000000.0)));
-"22
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;time.c: 23: usec--;
-"23
-[e -- _usec -> -> 1 `i `us ]
-"24
-}
-[e :U 143 ]
-"20
-[e $ != -> _usec `ui -> -> -> 0 `i `us `ui 144  ]
-[e :U 145 ]
-[; ;time.c: 24: }
-[; ;time.c: 25: }
-"25
-[e :UE 142 ]
-}

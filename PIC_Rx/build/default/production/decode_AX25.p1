@@ -5,9 +5,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1637 ~T0 @X0 0 e ]
 [p i __delay ]
-"3942 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f887.h
-[v _RC2 `Vb ~T0 @X0 0 e@58 ]
-"71
+"71 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f887.h
 [v _STATUS `Vuc ~T0 @X0 0 e@3 ]
 "18 UART.h
 [v _putch `(v ~T0 @X0 0 ef1`uc ]
@@ -1508,18 +1506,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
 [; ;Init_MPU.h: 25: void led_onoff(void);
 [; ;Init_MPU.h: 26: void debug_ledy(void);
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
 [; ;stdarg.h: 10: extern void * __va_start(void);
@@ -1600,10 +1592,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdlib.h: 101: extern char * ltoa(char * buf, long val, int base);
 [; ;stdlib.h: 102: extern char * ultoa(char * buf, unsigned long val, int base);
 [; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
-[; ;decode_AX25.h: 36: UINT getbit(void);
-[; ;decode_AX25.h: 44: void ReceivePacket(void);
-[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
-[; ;encode_AX25.h: 24: void SendPacket(void);
+[; ;decode_AX25.h: 40: UINT getbit(void);
+[; ;decode_AX25.h: 49: UBYTE *ReceivePacket_data(void);
 [; ;decode_AX25.c: 10: void UART_TX(UINT,UINT);
 [; ;decode_AX25.c: 11: void waitByte(UINT,UINT);
 [; ;decode_AX25.c: 12: UINT getbit(void);
@@ -1652,11 +1642,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _getbit ]
 [f ]
 "41
-[v F1903 `ui ~T0 @X0 1 s oldbit ]
+[v F1887 `ui ~T0 @X0 1 s oldbit ]
 [; ;decode_AX25.c: 41: static UINT oldbit;
 [; ;decode_AX25.c: 42: oldbit = RB5;
 "42
-[e = F1903 -> -> _RB5 `i `ui ]
+[e = F1887 -> -> _RB5 `i `ui ]
 [; ;decode_AX25.c: 43: for(UINT i=0;i<62;i++){
 "43
 {
@@ -1668,14 +1658,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;decode_AX25.c: 44: if(RB5 != oldbit){
 "44
-[e $ ! != -> -> _RB5 `i `ui F1903 147  ]
+[e $ ! != -> -> _RB5 `i `ui F1887 147  ]
 {
 [; ;decode_AX25.c: 45: _delay((unsigned long)((400)*(10000000/4000000.0)));
 "45
 [e ( __delay (1 -> * -> -> 400 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;decode_AX25.c: 46: RC2= 1- RC2;
-"46
-[e = _RC2 -> - -> 1 `i -> _RC2 `i `b ]
 [; ;decode_AX25.c: 47: return 0;
 "47
 [e ) -> -> 0 `i `ui ]
@@ -2913,25 +2900,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "351
 [e :UE 260 ]
 }
-"353
-[v _ReceivePacket `(v ~T0 @X0 1 ef ]
-{
-[; ;decode_AX25.c: 353: void ReceivePacket(void){
-[e :U _ReceivePacket ]
-[f ]
-[; ;decode_AX25.c: 354: waitFlag();
-"354
-[e ( _waitFlag ..  ]
-[; ;decode_AX25.c: 355: getdata();
-"355
-[e ( _getdata ..  ]
-[; ;decode_AX25.c: 356: fcscheck();
-"356
-[e ( _fcscheck ..  ]
-[; ;decode_AX25.c: 357: }
-"357
-[e :UE 274 ]
-}
 "359
 [v _ReceivePacket_data `(*uc ~T0 @X0 1 ef ]
 {
@@ -2952,16 +2920,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _fcschecker ( _fcscheck ..  ]
 [; ;decode_AX25.c: 369: if(fcschecker == 1){
 "369
-[e $ ! == _fcschecker -> -> 1 `i `ui 276  ]
+[e $ ! == _fcschecker -> -> 1 `i `ui 275  ]
 {
 [; ;decode_AX25.c: 370: for(UINT i=0; i<commandSize; i++){
 "370
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i _commandSize 277  ]
-[e $U 278  ]
-[e :U 277 ]
+[e $ < _i _commandSize 276  ]
+[e $U 277  ]
+[e :U 276 ]
 {
 [; ;decode_AX25.c: 371: dData[i] = dPacket[i+20];
 "371
@@ -2970,8 +2938,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "370
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i _commandSize 277  ]
-[e :U 278 ]
+[e $ < _i _commandSize 276  ]
+[e :U 277 ]
 "372
 }
 [; ;decode_AX25.c: 372: }
@@ -2984,12 +2952,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 375: return dData;
 "375
 [e ) &U _dData ]
-[e $UE 275  ]
+[e $UE 274  ]
 "376
 }
 [; ;decode_AX25.c: 376: }else{
-[e $U 280  ]
-[e :U 276 ]
+[e $U 279  ]
+[e :U 275 ]
 {
 [; ;decode_AX25.c: 377: dPacketnum = 0;
 "377
@@ -3000,14 +2968,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 379: return 0x00;
 "379
 [e ) -> -> 0 `i `*uc ]
-[e $UE 275  ]
+[e $UE 274  ]
 "380
 }
-[e :U 280 ]
+[e :U 279 ]
 [; ;decode_AX25.c: 380: }
 [; ;decode_AX25.c: 381: }
 "381
-[e :UE 275 ]
+[e :UE 274 ]
 }
 "384
 [v _putAX25 `(v ~T0 @X0 1 ef ]
@@ -3020,9 +2988,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 282  ]
-[e $U 283  ]
-[e :U 282 ]
+[e $ < _i -> -> 6 `i `ui 281  ]
+[e $U 282  ]
+[e :U 281 ]
 {
 [; ;decode_AX25.c: 386: dPacket[i] = dPacket[i] >> 1;
 "386
@@ -3034,8 +3002,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "385
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 282  ]
-[e :U 283 ]
+[e $ < _i -> -> 6 `i `ui 281  ]
+[e :U 282 ]
 "388
 }
 [; ;decode_AX25.c: 388: }
@@ -3044,9 +3012,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 285  ]
-[e $U 286  ]
-[e :U 285 ]
+[e $ < _i -> -> 6 `i `ui 284  ]
+[e $U 285  ]
+[e :U 284 ]
 {
 [; ;decode_AX25.c: 390: putch(dPacket[i]);
 "390
@@ -3055,8 +3023,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "389
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 285  ]
-[e :U 286 ]
+[e $ < _i -> -> 6 `i `ui 284  ]
+[e :U 285 ]
 "391
 }
 [; ;decode_AX25.c: 391: }
@@ -3068,9 +3036,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 288  ]
-[e $U 289  ]
-[e :U 288 ]
+[e $ < _i -> -> 6 `i `ui 287  ]
+[e $U 288  ]
+[e :U 287 ]
 {
 [; ;decode_AX25.c: 394: putch(dPacket[i+7]);
 "394
@@ -3079,8 +3047,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "393
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 6 `i `ui 288  ]
-[e :U 289 ]
+[e $ < _i -> -> 6 `i `ui 287  ]
+[e :U 288 ]
 "395
 }
 [; ;decode_AX25.c: 395: }
@@ -3092,8 +3060,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $U 294  ]
-[e :U 291 ]
+[e $U 293  ]
+[e :U 290 ]
 {
 [; ;decode_AX25.c: 398: putch(dPacket[i+16]);
 "398
@@ -3102,18 +3070,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "397
 [e ++ _i -> -> 1 `i `ui ]
-[e :U 294 ]
-[e $ < _i - _dPacketnum -> -> 18 `i `ui 291  ]
-[e :U 292 ]
+[e :U 293 ]
+[e $ < _i - _dPacketnum -> -> 18 `i `ui 290  ]
+[e :U 291 ]
 "399
 }
 [; ;decode_AX25.c: 399: }
 [; ;decode_AX25.c: 400: return;
 "400
-[e $UE 281  ]
+[e $UE 280  ]
 [; ;decode_AX25.c: 401: }
 "401
-[e :UE 281 ]
+[e :UE 280 ]
 }
 "404
 [v _conv_DI_UARTRX `(v ~T0 @X0 1 ef ]
@@ -3134,17 +3102,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _getbit ..  ]
 [; ;decode_AX25.c: 409: while(RB5 == 0){
 "409
-[e $U 296  ]
-[e :U 297 ]
+[e $U 295  ]
+[e :U 296 ]
 {
 [; ;decode_AX25.c: 410: for(UINT i=0;i<8;i++){
 "410
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 8 `i `ui 299  ]
-[e $U 300  ]
-[e :U 299 ]
+[e $ < _i -> -> 8 `i `ui 298  ]
+[e $U 299  ]
+[e :U 298 ]
 {
 [; ;decode_AX25.c: 411: getbit();
 "411
@@ -3154,7 +3122,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _buf_dammy -> << -> _buf_dammy `i -> 1 `i `uc ]
 [; ;decode_AX25.c: 413: if(RB5 == 0){
 "413
-[e $ ! == -> _RB5 `i -> 0 `i 302  ]
+[e $ ! == -> _RB5 `i -> 0 `i 301  ]
 {
 [; ;decode_AX25.c: 414: buf_dammy = buf_dammy | 0x00;
 "414
@@ -3162,21 +3130,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 "415
 }
 [; ;decode_AX25.c: 415: }else{
-[e $U 303  ]
-[e :U 302 ]
+[e $U 302  ]
+[e :U 301 ]
 {
 [; ;decode_AX25.c: 416: buf_dammy = buf_dammy | 0x01;
 "416
 [e = _buf_dammy -> | -> _buf_dammy `i -> 1 `i `uc ]
 "417
 }
-[e :U 303 ]
+[e :U 302 ]
 "418
 }
 "410
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 8 `i `ui 299  ]
-[e :U 300 ]
+[e $ < _i -> -> 8 `i `ui 298  ]
+[e :U 299 ]
 "418
 }
 [; ;decode_AX25.c: 417: }
@@ -3192,14 +3160,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _putch (1 _buf ]
 "422
 }
-[e :U 296 ]
+[e :U 295 ]
 "409
-[e $ == -> _RB5 `i -> 0 `i 297  ]
-[e :U 298 ]
+[e $ == -> _RB5 `i -> 0 `i 296  ]
+[e :U 297 ]
 [; ;decode_AX25.c: 422: }
 [; ;decode_AX25.c: 423: }
 "423
-[e :UE 295 ]
+[e :UE 294 ]
 }
 "426
 [v _reverse_bit8 `(uc ~T0 @X0 1 ef1`uc ]
@@ -3217,10 +3185,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 429: return (x << 4) | (x >> 4);
 "429
 [e ) -> | << -> _x `i -> 4 `i >> -> _x `i -> 4 `i `uc ]
-[e $UE 304  ]
+[e $UE 303  ]
 [; ;decode_AX25.c: 430: }
 "430
-[e :UE 304 ]
+[e :UE 303 ]
 }
 [a 1C 74 81 49 89 67 90 0 ]
 [a 2C 74 81 49 89 67 90 0 ]

@@ -2129,20 +2129,61 @@ typedef unsigned long UDWORD;
 void Init_WDT(void);
 void interrupt intr(void);
 
-# 5 "WDT.c"
+# 13 "FMCW.h"
+int FMTX_Nref = 2560;
+
+int CWTX_Nref = 160;
+
+int FMRX_Nref = 2560;
+
+# 37
+void FMTX(int Nref, int *Nprg);
+void CWTX(int Nref, int *Nprg);
+void FMRX(int Nref, int *Nprg);
+void ResetFreq(void);
+
+# 48
+void _NOP(void);
+
+# 7 "WDT.c"
 void Init_WDT(void){
 INTCONbits.GIE = 1;
 INTCONbits.PEIE = 1;
+
+OPTION_REGbits.PSA = 1;
+OPTION_REGbits.PS = 7;
+
+
 
 PIR1bits.TMR1IF = 0;
 PIE1bits.TMR1IE = 1;
 
 
-T1CONbits.T1CKPS = 2;
+T1CONbits.T1CKPS = 3;
 TMR1 = (0xffff - 62500);
 
 T1CONbits.TMR1ON = 1;
-
-
 }
 
+
+void interrupt InterReceiver( void ){
+volatile static int intr_counter;
+volatile static int intr_counter_H;
+if(PIR1bits.TMR1IF == 1){
+TMR1 = (0xffff - 62500);
+
+intr_counter++;
+if (intr_counter >= 2) {
+asm("clrwdt");
+intr_counter = 0;
+intr_counter_H ++;
+if (intr_counter_H >= 60) {
+
+# 47
+_delay((unsigned long)((500)*(10000000/4000.0)));
+}
+}
+
+PIR1bits.TMR1IF = 0;
+}
+}
