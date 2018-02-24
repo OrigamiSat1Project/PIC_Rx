@@ -95,7 +95,7 @@ void main(void) {
 //            dData[i] = 0x00;
 //        }
 //        led_white = 1;
-//        __delay_ms(500);
+        __delay_ms(7000);
 //        led_white = 0;
         
         //printf("\r\n");
@@ -121,8 +121,8 @@ void main(void) {
 //                    __delay_ms(500);
 //                    led_white = 0;
                     // EPS kill
-                    
-                    __delay_ms(5000);
+//                    
+//                    __delay_ms(5000);
                     Reset_EPS();
                     __delay_ms(3000);
                     //以下�?�数字�?�初期設定時と変化して�?るためも�?�?度定義

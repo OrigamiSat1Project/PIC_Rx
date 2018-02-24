@@ -2406,7 +2406,12 @@ _delay((unsigned long)((100)*(10000000/4000.0)));
 UBYTE TXOBC_wad_header = 0x74;
 TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
 
-# 103
+# 98
+_delay((unsigned long)((7000)*(10000000/4000.0)));
+
+
+
+
 if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
@@ -2425,8 +2430,7 @@ if(dData[2] == 'r'){
 switch(dData[3]){
 case 'E':
 
-# 125
-_delay((unsigned long)((5000)*(10000000/4000.0)));
+# 126
 Reset_EPS();
 _delay((unsigned long)((3000)*(10000000/4000.0)));
 

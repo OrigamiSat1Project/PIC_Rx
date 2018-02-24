@@ -1807,6 +1807,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 90: TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
 "90
 [e ( _TXOBC_waddress (3 , , _TXOBC_wad_header -> -> 0 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 98: _delay((unsigned long)((7000)*(10000000/4000.0)));
+"98
+[e ( __delay (1 -> * -> -> 7000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;main.c: 103: if(dData[0]=='n'){
 "103
 [e $ ! == -> *U + _dData * -> -> 0 `i `x -> -> # *U _dData `i `x `ui -> 110 `ui 147  ]
@@ -1836,9 +1839,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 119: case 'E':
 "119
 [e :U 153 ]
-[; ;main.c: 125: _delay((unsigned long)((5000)*(10000000/4000.0)));
-"125
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [; ;main.c: 126: Reset_EPS();
 "126
 [e ( _Reset_EPS ..  ]
