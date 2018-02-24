@@ -25,8 +25,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1637 ~T0 @X0 0 e ]
 [p i __delay ]
-"18 UART.h
-[v _putch `(v ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1524,15 +1522,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 18: void putch(UBYTE c);
 [; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-"6 I2C.c
-[v _EEPROMData `uc ~T0 @X0 -> 32 `i e ]
-[; ;I2C.c: 6: UBYTE EEPROMData[32];
-"8
+"8 I2C.c
 [v _Init_I2C_M `(v ~T0 @X0 1 ef1`Cul ]
 {
 [; ;I2C.c: 8: void Init_I2C_M(const UDWORD c){
@@ -1729,99 +1721,4 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 65: }
 "65
 [e :UE 148 ]
-}
-"67
-[v _EEPROM_Read `(*uc ~T0 @X0 1 ef4`uc`uc`uc`ui ]
-{
-[; ;I2C.c: 67: UBYTE *EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address, UINT DataSize){
-[e :U _EEPROM_Read ]
-[v _EEPROM_address `uc ~T0 @X0 1 r1 ]
-[v _high_address `uc ~T0 @X0 1 r2 ]
-[v _low_address `uc ~T0 @X0 1 r3 ]
-[v _DataSize `ui ~T0 @X0 1 r4 ]
-[f ]
-"68
-[v _Address `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 68: UBYTE Address = EEPROM_address << 1;
-[e = _Address -> << -> _EEPROM_address `i -> 1 `i `uc ]
-"69
-[v _ReadAddress `uc ~T0 @X0 1 a ]
-[; ;I2C.c: 69: UBYTE ReadAddress = Address | 0x01;
-[e = _ReadAddress -> | -> _Address `i -> 1 `i `uc ]
-[; ;I2C.c: 73: I2C_Master_Start();
-"73
-[e ( _I2C_Master_Start ..  ]
-[; ;I2C.c: 74: I2C_Master_Write(Address);
-"74
-[e ( _I2C_Master_Write (1 -> _Address `ui ]
-[; ;I2C.c: 75: I2C_Master_Write(high_address);
-"75
-[e ( _I2C_Master_Write (1 -> _high_address `ui ]
-[; ;I2C.c: 76: I2C_Master_Write(low_address);
-"76
-[e ( _I2C_Master_Write (1 -> _low_address `ui ]
-[; ;I2C.c: 77: I2C_Master_RepeatedStart();
-"77
-[e ( _I2C_Master_RepeatedStart ..  ]
-[; ;I2C.c: 80: I2C_Master_Write(ReadAddress);
-"80
-[e ( _I2C_Master_Write (1 -> _ReadAddress `ui ]
-[; ;I2C.c: 81: for(UINT i = 0; i < DataSize-1; i++){
-"81
-{
-[v _i `ui ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `ui ]
-[e $U 156  ]
-[e :U 153 ]
-{
-[; ;I2C.c: 82: EEPROMData[i] = I2C_Master_Read(1);
-"82
-[e = *U + &U _EEPROMData * -> _i `ux -> -> # *U &U _EEPROMData `ui `ux ( _I2C_Master_Read (1 -> -> 1 `i `uc ]
-"83
-}
-"81
-[e ++ _i -> -> 1 `i `ui ]
-[e :U 156 ]
-[e $ < _i - _DataSize -> -> 1 `i `ui 153  ]
-[e :U 154 ]
-"83
-}
-[; ;I2C.c: 83: }
-[; ;I2C.c: 84: EEPROMData[DataSize-1] = I2C_Master_Read(0);
-"84
-[e = *U + &U _EEPROMData * -> - _DataSize -> -> 1 `i `ui `ux -> -> # *U &U _EEPROMData `ui `ux ( _I2C_Master_Read (1 -> -> 0 `i `uc ]
-[; ;I2C.c: 85: I2C_Master_Stop();
-"85
-[e ( _I2C_Master_Stop ..  ]
-[; ;I2C.c: 87: for(UINT j = 0; j < DataSize; j++){
-"87
-{
-[v _j `ui ~T0 @X0 1 a ]
-[e = _j -> -> 0 `i `ui ]
-[e $U 160  ]
-[e :U 157 ]
-{
-[; ;I2C.c: 88: putch(EEPROMData[j]);
-"88
-[e ( _putch (1 *U + &U _EEPROMData * -> _j `ux -> -> # *U &U _EEPROMData `ui `ux ]
-"89
-}
-"87
-[e ++ _j -> -> 1 `i `ui ]
-[e :U 160 ]
-[e $ < _j _DataSize 157  ]
-[e :U 158 ]
-"89
-}
-[; ;I2C.c: 89: }
-[; ;I2C.c: 90: return EEPROMData;
-"90
-[e ) &U _EEPROMData ]
-[e $UE 152  ]
-[; ;I2C.c: 91: _delay((unsigned long)((200)*(10000000/4000.0)));
-"91
-[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;I2C.c: 92: }
-"92
-[e :UE 152 ]
 }

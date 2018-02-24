@@ -2165,21 +2165,15 @@ void Init_SERIAL(void);
 void putch(UBYTE c);
 void putstr(UBYTE *);
 UBYTE getch(void);
-void putcrlf(void);
 
-void put_error(void);
-void put_ok(void);
+
+
+
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
 # 24 "Init_MPU.h"
 void Init_MPU(void);
-void led_onoff(void);
-void debug_ledy(void);
-
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
 
 # 7 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\stdarg.h"
 typedef void * va_list[1];
@@ -2310,15 +2304,12 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 36 "decode_AX25.h"
+# 40 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
+# 48
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
-
-# 24 "encode_AX25.h"
-void SendPacket(void);
 
 # 16 "I2C.h"
 void Init_I2C_M(const UDWORD c);
@@ -2329,7 +2320,6 @@ void I2C_Master_Stop(void);
 void I2C_Master_Write(unsigned d);
 UBYTE I2C_Master_Read(UBYTE a);
 void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *);
-UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
 
 # 13 "FMCW.h"
 int FMTX_Nref = 2560;
@@ -2339,9 +2329,7 @@ int CWTX_Nprg[5] = {0,1,7,4,7};
 int FMRX_Nref = 2560;
 int FMRX_Nprg[5] = {2,4,8,8,7};
 
-# 35
-void Init_FMCW(void);
-
+# 37
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
@@ -2398,19 +2386,19 @@ RB2 = 1;
 _delay((unsigned long)((500)*(10000000/4000.0)));
 RB2 = 0;
 
-EEPROM_Write(0x50,0x00,0x00,dData);
+EEPROM_Write(0x50,0x30,0x30,dData);
 _delay((unsigned long)((100)*(10000000/4000.0)));
 
 
 
 UBYTE TXOBC_wad_header = 0x74;
-TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
+TXOBC_waddress(TXOBC_wad_header, 0x30, 0x30);
 
 # 103
 if(dData[0]=='n'){
 
 UBYTE NM_wad_header = 0x72;
-NM_waddress(NM_wad_header, 0x00, 0x00);
+NM_waddress(NM_wad_header, 0x30, 0x30);
 
 }else if(dData[0]=='p'){
 

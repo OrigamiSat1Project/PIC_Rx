@@ -23,12 +23,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TRISD `Vuc ~T0 @X0 0 e@136 ]
 "1662
 [v _TRISE `Vuc ~T0 @X0 0 e@137 ]
-"3942
-[v _RC2 `Vb ~T0 @X0 0 e@58 ]
-[v F1637 `(v ~T0 @X0 1 tf1`ul ]
-"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
-[v __delay `JF1637 ~T0 @X0 0 e ]
-[p i __delay ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1523,10 +1517,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;Init_MPU.h: 24: void Init_MPU(void);
-[; ;Init_MPU.h: 25: void led_onoff(void);
-[; ;Init_MPU.h: 26: void debug_ledy(void);
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
 [; ;stdarg.h: 10: extern void * __va_start(void);
@@ -1611,14 +1601,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 18: void putch(UBYTE c);
 [; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-[; ;decode_AX25.h: 36: UINT getbit(void);
-[; ;decode_AX25.h: 44: void ReceivePacket(void);
-[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
+[; ;decode_AX25.h: 40: UINT getbit(void);
+[; ;decode_AX25.h: 48: void ReceivePacket(void);
+[; ;decode_AX25.h: 49: UBYTE *ReceivePacket_data(void);
 [; ;encode_AX25.h: 24: void SendPacket(void);
 "8 Init_MPU.c
 [v _Init_MPU `(v ~T0 @X0 1 ef ]
@@ -1682,56 +1669,4 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Init_MPU.c: 35: }
 "35
 [e :UE 143 ]
-}
-"36
-[v _led_onoff `(v ~T0 @X0 1 ef ]
-{
-[; ;Init_MPU.c: 36: void led_onoff(void){
-[e :U _led_onoff ]
-[f ]
-[; ;Init_MPU.c: 37: RC2 = 1;;
-"37
-[e = _RC2 -> -> 1 `i `b ]
-[; ;Init_MPU.c: 38: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"38
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;Init_MPU.c: 39: RC2 = 0;;
-"39
-[e = _RC2 -> -> 0 `i `b ]
-[; ;Init_MPU.c: 40: _delay((unsigned long)((795)*(10000000/4000000.0)));
-"40
-[e ( __delay (1 -> * -> -> 795 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;Init_MPU.c: 41: }
-"41
-[e :UE 144 ]
-}
-"42
-[v _debug_ledy `(v ~T0 @X0 1 ef ]
-{
-[; ;Init_MPU.c: 42: void debug_ledy(void){
-[e :U _debug_ledy ]
-[f ]
-[; ;Init_MPU.c: 43: if(RC2 == 1){
-"43
-[e $ ! == -> _RC2 `i -> 1 `i 146  ]
-{
-[; ;Init_MPU.c: 44: RC2 = 0;;
-"44
-[e = _RC2 -> -> 0 `i `b ]
-"45
-}
-[; ;Init_MPU.c: 45: }else{
-[e $U 147  ]
-[e :U 146 ]
-{
-[; ;Init_MPU.c: 46: RC2 = 1;;
-"46
-[e = _RC2 -> -> 1 `i `b ]
-"47
-}
-[e :U 147 ]
-[; ;Init_MPU.c: 47: }
-[; ;Init_MPU.c: 48: }
-"48
-[e :UE 145 ]
 }

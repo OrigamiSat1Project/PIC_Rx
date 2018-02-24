@@ -9,5 +9,4 @@ EPS.h  \
 EEPROM.h  \
 FMCW.h  \
 decode_AX25.h  \
-time.h  \
-encode_AX25.h 
+time.h 

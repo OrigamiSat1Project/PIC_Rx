@@ -18,10 +18,10 @@ void Init_SERIAL(void);
 void putch(UBYTE c);                  // Writes a character to the serial port
 void putstr(UBYTE *);
 UBYTE getch(void);
-void putcrlf(void);
-
-void put_error(void);
-void put_ok(void);
+//void putcrlf(void);
+//
+//void put_error(void);
+//void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 

@@ -32,7 +32,7 @@ int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [1
 #define CWTX_STB        PORTDbits.RD0
 #define CWTX_KEY        PORTDbits.RD3
 
-void Init_FMCW(void);
+//void Init_FMCW(void);
 
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
@@ -45,7 +45,7 @@ void H_OUT(int fmcwtxrx);
 void STBOUT(int fmcwtxrx);
 void Morse_V(void);*/
 void _NOP(void);
-//void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg);
+//void SetPLL(void);
 
 #endif	/* FMCW_H */
 

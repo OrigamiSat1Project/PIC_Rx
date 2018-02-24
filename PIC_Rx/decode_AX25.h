@@ -18,6 +18,10 @@
 #ifndef DECODE_AX25_H
 #define	DECODE_AX25_H
 
+
+#define mycall "JQ1YCZ"
+#define ucall  "JQ1ZHX"
+
 //  AX25—p‚Ìƒtƒ‰ƒOãˆÊ4bit(Mnib)‚Æ‰ºˆÊ4bit(Lnib)
 #define Flag_Mnib 7
 #define Flag_Lnib 14

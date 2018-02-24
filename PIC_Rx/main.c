@@ -8,7 +8,7 @@
 #include "Type_define.h"
 #include "time.h"
 #include "decode_AX25.h"
-#include "encode_AX25.h"
+//#include "encode_AX25.h"
 #include "I2C.h"
 #include "EEPROM.h"
 #include "FMCW.h"
@@ -53,7 +53,7 @@ void main(void) {
     /**/
     led_white = 1;
     __delay_ms(1000);
-    
+//    SetPLL();
     FMTX(FMTX_Nref, FMTX_Nprg);
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);

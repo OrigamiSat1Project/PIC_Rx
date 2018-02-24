@@ -1539,13 +1539,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 18: void putch(UBYTE c);
 [; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 "6 UART.c
 [v _Init_SERIAL `(v ~T0 @X0 1 ef ]
 {
@@ -1689,69 +1684,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "50
 [e :UE 148 ]
 }
-"52
-[v _putcrlf `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 52: void putcrlf(void){
-[e :U _putcrlf ]
-[f ]
-[; ;UART.c: 53: putch('\r');
-"53
-[e ( _putch (1 -> -> 13 `ui `uc ]
-[; ;UART.c: 54: putch('\n');
-"54
-[e ( _putch (1 -> -> 10 `ui `uc ]
-[; ;UART.c: 55: }
-"55
-[e :UE 152 ]
-}
-"57
-[v _put_error `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 57: void put_error(void){
-[e :U _put_error ]
-[f ]
-[; ;UART.c: 58: putch('E');
-"58
-[e ( _putch (1 -> -> 69 `ui `uc ]
-[; ;UART.c: 59: putch('R');
-"59
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 60: putch('R');
-"60
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 61: putch('O');
-"61
-[e ( _putch (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 62: putch('R');
-"62
-[e ( _putch (1 -> -> 82 `ui `uc ]
-[; ;UART.c: 63: putch('!');
-"63
-[e ( _putch (1 -> -> 33 `ui `uc ]
-[; ;UART.c: 64: }
-"64
-[e :UE 153 ]
-}
-"66
-[v _put_ok `(v ~T0 @X0 1 ef ]
-{
-[; ;UART.c: 66: void put_ok(void){
-[e :U _put_ok ]
-[f ]
-[; ;UART.c: 67: putch('O');
-"67
-[e ( _putch (1 -> -> 79 `ui `uc ]
-[; ;UART.c: 68: putch('K');
-"68
-[e ( _putch (1 -> -> 75 `ui `uc ]
-[; ;UART.c: 69: putch('!');
-"69
-[e ( _putch (1 -> -> 33 `ui `uc ]
-[; ;UART.c: 70: }
-"70
-[e :UE 154 ]
-}
 "72
 [v _NM_waddress `(v ~T0 @X0 1 ef3`uc`uc`uc ]
 {
@@ -1772,7 +1704,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( _putch (1 _wlow_address ]
 [; ;UART.c: 76: }
 "76
-[e :UE 155 ]
+[e :UE 152 ]
 }
 "78
 [v _TXOBC_waddress `(v ~T0 @X0 1 ef3`uc`uc`uc ]
@@ -1812,5 +1744,5 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _RC5 -> -> 0 `i `b ]
 [; ;UART.c: 88: }
 "88
-[e :UE 156 ]
+[e :UE 153 ]
 }

@@ -5,7 +5,7 @@
 #include "Type_define.h"
 #include "time.h"
 #include "decode_AX25.h"
-#include "encode_AX25.h"
+//#include "encode_AX25.h"
 
 void UART_TX(UINT,UINT);
 void waitByte(UINT,UINT);
