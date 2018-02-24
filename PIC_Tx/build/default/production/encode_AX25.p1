@@ -3027,8 +3027,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _efcshi `uc ~T0 @X0 1 e ]
 [; ;encode_AX25.c: 25: UBYTE efcslo, efcshi;
 "28
-[v _ePacket `uc ~T0 @X0 -> 50 `i e ]
-[; ;encode_AX25.c: 28: UBYTE ePacket[50];
+[v _ePacket `uc ~T0 @X0 -> 47 `i e ]
+[; ;encode_AX25.c: 28: UBYTE ePacket[47];
 "29
 [v _ebitstatus `ui ~T0 @X0 1 e ]
 [i _ebitstatus

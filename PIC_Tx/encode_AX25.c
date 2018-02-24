@@ -25,7 +25,7 @@ UINT estuff = 0;
 UBYTE efcslo, efcshi;
 //UBYTE eDataField[] = "Hello! I'm OrigamiSat1!!";
 //UBYTE eDataField[] = "unko";
-UBYTE ePacket[50];
+UBYTE ePacket[47];
 UINT ebitstatus = low;
 
 //

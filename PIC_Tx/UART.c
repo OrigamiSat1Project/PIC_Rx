@@ -102,24 +102,30 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 
             __delay_ms(200);
-            UBYTE EEPROMCmdData[];
+            UBYTE EEPROMCmdData[6];
             UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 32;
-            EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            EEPROMCmdDataLength = 6;
+            EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
             __delay_ms(200);
             FMPTT = 1;
             CWKEY = 0;
-            UBYTE EEPROMTestData[5];
-            EEPROMTestData[0] = 'u';
-            EEPROMTestData[1] = 'n';
-            EEPROMTestData[2] = 'k';
-            EEPROMTestData[3] = 'o';
-            EEPROMTestData[4] = 0x0d;
+//            UBYTE EEPROMTestData[5];
+//            EEPROMTestData[0] = 'u';
+//            EEPROMTestData[0] = EEPROMCmdData[0];
+//            EEPROMTestData[1] = EEPROMCmdData[1];
+//            EEPROMTestData[2] = EEPROMCmdData[2];
+//            EEPROMTestData[3] = EEPROMCmdData[3];
+//            EEPROMTestData[4] = EEPROMCmdData[4];
+            
+//            EEPROMTestData[1] = 'n';
+//            EEPROMTestData[2] = 'k';
+//            EEPROMTestData[3] = 'o';
+//            EEPROMTestData[4] = 0x0d;
             for(int i = 0; i<5;i++){
                 SendPacket(EEPROMCmdData);
                 __delay_ms(300);
-                SendPacket(EEPROMTestData);
-                __delay_ms(300);
+//                SendPacket(EEPROMTestData);
+//                __delay_ms(300);
             }
             FMPTT = 0;
             led_yellow = 0;
@@ -130,10 +136,10 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 
             __delay_ms(200);
-            UBYTE EEPROMCmdData[];
+            UBYTE EEPROMCmdData[1];
             UINT EEPROMCmdDataLength;
             EEPROMCmdDataLength = 1;
-            EEPROM_Read(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
             __delay_ms(200);
             FMPTT = 1;
             CWKEY = 0;

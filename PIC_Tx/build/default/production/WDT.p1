@@ -1481,7 +1481,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;WDT.h: 17: void Init_WDT(void);
-[; ;WDT.h: 18: void interrupt intr(void);
 "5 WDT.c
 [v _Init_WDT `(v ~T0 @X0 1 ef ]
 {

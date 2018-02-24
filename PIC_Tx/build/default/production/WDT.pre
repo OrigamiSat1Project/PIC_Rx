@@ -2030,7 +2030,6 @@ typedef unsigned long UDWORD;
 
 # 17 "WDT.h"
 void Init_WDT(void);
-void interrupt intr(void);
 
 # 5 "WDT.c"
 void Init_WDT(void){

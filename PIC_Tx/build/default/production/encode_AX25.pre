@@ -4271,7 +4271,7 @@ UINT estuff = 0;
 UBYTE efcslo, efcshi;
 
 
-UBYTE ePacket[50];
+UBYTE ePacket[47];
 UINT ebitstatus = 0;
 
 # 40

@@ -14,10 +14,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Init_WDT `(v ~T0 @X0 0 ef ]
 "3760 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
 [v _RC2 `Vb ~T0 @X0 0 e@58 ]
-"3756
-[v _RC0 `Vb ~T0 @X0 0 e@56 ]
 "3742
 [v _RB3 `Vb ~T0 @X0 0 e@51 ]
+"3738
+[v _RB1 `Vb ~T0 @X0 0 e@49 ]
+"3756
+[v _RC0 `Vb ~T0 @X0 0 e@56 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -3071,111 +3073,158 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
 [; ;FMCW.h: 47: void _NOP(void);
 [; ;WDT.h: 17: void Init_WDT(void);
-[; ;WDT.h: 18: void interrupt intr(void);
-"22 main.c
+"23 main.c
 [p x FOSC=HS ]
-"23
-[p x WDTE=ON ]
 "24
+[p x WDTE=OFF ]
+"25
 [p x PWRTE=ON ]
-"26
-[p x MCLRE=ON ]
 "27
-[p x CP=OFF ]
+[p x MCLRE=ON ]
 "28
-[p x CPD=OFF ]
+[p x CP=OFF ]
 "29
-[p x BOREN=OFF ]
+[p x CPD=OFF ]
 "30
-[p x IESO=OFF ]
+[p x BOREN=OFF ]
 "31
-[p x FCMEN=OFF ]
+[p x IESO=OFF ]
 "32
-[p x LVP=OFF ]
+[p x FCMEN=OFF ]
 "33
-[p x BOR4V=BOR40V ]
+[p x LVP=OFF ]
 "34
+[p x BOR4V=BOR40V ]
+"35
 [p x WRT=OFF ]
 [v $root$_main `(v ~T0 @X0 0 e ]
-"36
+"37
 [v _main `(v ~T0 @X0 1 ef ]
 {
-[; ;main.c: 36: void main(void) {
+[; ;main.c: 37: void main(void) {
 [e :U _main ]
 [f ]
-[; ;main.c: 37: _delay((unsigned long)((1000)*(10000000/4000.0)));
-"37
+[; ;main.c: 38: _delay((unsigned long)((1000)*(10000000/4000.0)));
+"38
 [e ( __delay (1 -> * -> -> 1000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 41: Init_SERIAL();
-"41
-[e ( _Init_SERIAL ..  ]
-[; ;main.c: 42: Init_MPU();
+[; ;main.c: 42: Init_SERIAL();
 "42
+[e ( _Init_SERIAL ..  ]
+[; ;main.c: 43: Init_MPU();
+"43
 [e ( _Init_MPU ..  ]
-[; ;main.c: 45: Init_I2C_M(400000);
-"45
-[e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
-[; ;main.c: 46: Init_WDT();
+[; ;main.c: 46: Init_I2C_M(400000);
 "46
+[e ( _Init_I2C_M (1 -> -> 400000 `l `ul ]
+[; ;main.c: 47: Init_WDT();
+"47
 [e ( _Init_WDT ..  ]
-[; ;main.c: 58: while(1){
-"58
+[; ;main.c: 59: while(1){
+"59
 [e :U 278 ]
 {
-"74
+"75
 [v _dData `uc ~T0 @X0 -> 0 `x a ]
-[; ;main.c: 74: UBYTE dData[];
-[; ;main.c: 84: _delay((unsigned long)((200)*(10000000/4000.0)));
-"84
+[; ;main.c: 75: UBYTE dData[];
+[; ;main.c: 85: _delay((unsigned long)((200)*(10000000/4000.0)));
+"85
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"106
-[v _EEPROMData `*uc ~T0 @X0 1 a ]
-[; ;main.c: 106: UBYTE *EEPROMData;
-[; ;main.c: 107: if (RC2==1){
 "107
+[v _EEPROMData `*uc ~T0 @X0 1 a ]
+[; ;main.c: 107: UBYTE *EEPROMData;
+[; ;main.c: 108: if (RC2==1){
+"108
 [e $ ! == -> _RC2 `i -> 1 `i 280  ]
 {
-[; ;main.c: 108: RC0 = 1;
-"108
-[e = _RC0 -> -> 1 `i `b ]
-[; ;main.c: 109: RB3 = 0;
-"109
+[; ;main.c: 110: RB3 = 0;
+"110
 [e = _RB3 -> -> 0 `i `b ]
 [v _EEPROMData `uc ~T0 @X0 -> 32 `i a ]
-"111
+"112
 [v _EEPROMDataLength `ui ~T0 @X0 1 a ]
-[; ;main.c: 110: UBYTE EEPROMData[32];
-[; ;main.c: 111: UINT EEPROMDataLength;
-[; ;main.c: 113: _delay((unsigned long)((200)*(10000000/4000.0)));
-"113
+[; ;main.c: 111: UBYTE EEPROMData[32];
+[; ;main.c: 112: UINT EEPROMDataLength;
+[; ;main.c: 114: _delay((unsigned long)((200)*(10000000/4000.0)));
+"114
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 115: _delay((unsigned long)((200)*(10000000/4000.0)));
-"115
+[; ;main.c: 116: _delay((unsigned long)((200)*(10000000/4000.0)));
+"116
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;main.c: 131: _delay((unsigned long)((200)*(10000000/4000.0)));
-"131
+[; ;main.c: 132: RB3 = 1;
+"132
+[e = _RB3 -> -> 1 `i `b ]
+[; ;main.c: 133: _delay((unsigned long)((50)*(10000000/4000.0)));
+"133
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 134: RB3 = 0;
+"134
+[e = _RB3 -> -> 0 `i `b ]
+[; ;main.c: 135: _delay((unsigned long)((50)*(10000000/4000.0)));
+"135
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 137: RB3 = 1;
+"137
+[e = _RB3 -> -> 1 `i `b ]
+[; ;main.c: 138: _delay((unsigned long)((50)*(10000000/4000.0)));
+"138
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 139: RB3 = 0;
+"139
+[e = _RB3 -> -> 0 `i `b ]
+[; ;main.c: 140: _delay((unsigned long)((50)*(10000000/4000.0)));
+"140
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 142: RB3 = 1;
+"142
+[e = _RB3 -> -> 1 `i `b ]
+[; ;main.c: 143: _delay((unsigned long)((50)*(10000000/4000.0)));
+"143
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 144: RB3 = 0;
+"144
+[e = _RB3 -> -> 0 `i `b ]
+[; ;main.c: 145: _delay((unsigned long)((50)*(10000000/4000.0)));
+"145
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 147: RB3 = 1;
+"147
+[e = _RB3 -> -> 1 `i `b ]
+[; ;main.c: 148: _delay((unsigned long)((150)*(10000000/4000.0)));
+"148
+[e ( __delay (1 -> * -> -> 150 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 149: RB3 = 0;
+"149
+[e = _RB3 -> -> 0 `i `b ]
+[; ;main.c: 150: _delay((unsigned long)((50)*(10000000/4000.0)));
+"150
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 153: RB1 = 0;
+"153
+[e = _RB1 -> -> 0 `i `b ]
+[; ;main.c: 154: _delay((unsigned long)((200)*(10000000/4000.0)));
+"154
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-"156
+"179
 }
-[; ;main.c: 156: }else{
+[; ;main.c: 179: }else{
 [e $U 281  ]
 [e :U 280 ]
 {
-[; ;main.c: 158: RC0 = 0;
-"158
+[; ;main.c: 181: RC0 = 0;
+"181
 [e = _RC0 -> -> 0 `i `b ]
-"160
+"183
 }
 [e :U 281 ]
-"168
+"191
 }
 [e :U 277 ]
-"58
+"59
 [e $U 278  ]
 [e :U 279 ]
-[; ;main.c: 160: }
-[; ;main.c: 168: }
-[; ;main.c: 170: }
-"170
+[; ;main.c: 183: }
+[; ;main.c: 191: }
+[; ;main.c: 193: }
+"193
 [e :UE 276 ]
 }

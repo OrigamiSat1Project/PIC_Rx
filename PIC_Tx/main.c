@@ -11,6 +11,7 @@
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "WDT.h"
+#include "CW.h"
 
 // PIC16F887 Configuration Bit Settings
 
@@ -20,7 +21,7 @@
 
 /* PIC16F887 Configuration Bit Settings */
 #pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
-#pragma config WDTE     = ON           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
 #pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
 //#pragma config POR      = ON            // Power On Reset is enabled
 #pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
@@ -105,7 +106,7 @@ void main(void) {
         //RB5Ç™HighÇ»ÇÁEEPROMì«Ç›çûÇ›
         UBYTE *EEPROMData;
         if (UHFstart==1){
-            FMPTT = 1;
+//            FMPTT = 1;
             CWKEY = 0;
             UBYTE EEPROMData[32];
             UINT EEPROMDataLength;
@@ -128,6 +129,28 @@ void main(void) {
 //            SendPacket(EEPROMData);    
             //test_Packetmaker(EEPROMData);
             //SendPacket();
+            CWKEY = 1;
+            __delay_ms(Morse_Short);
+            CWKEY = 0;
+            __delay_ms(Morse_Short);
+
+            CWKEY = 1;
+            __delay_ms(Morse_Short);
+            CWKEY = 0;
+            __delay_ms(Morse_Short);
+
+            CWKEY = 1;
+            __delay_ms(Morse_Short);
+            CWKEY = 0;
+            __delay_ms(Morse_Short);
+
+            CWKEY = 1;
+            __delay_ms(Morse_Long);
+            CWKEY = 0;
+            __delay_ms(Morse_Short);
+            
+            
+            led_yellow = 0;
             __delay_ms(200);
             
             

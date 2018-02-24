@@ -4290,12 +4290,11 @@ void _NOP(void);
 
 # 17 "WDT.h"
 void Init_WDT(void);
-void interrupt intr(void);
 
 
-# 22 "main.c"
+# 23 "main.c"
 #pragma config FOSC = HS
-#pragma config WDTE = ON
+#pragma config WDTE = OFF
 #pragma config PWRTE = ON
 
 #pragma config MCLRE = ON
@@ -4320,19 +4319,19 @@ Init_MPU();
 Init_I2C_M(400000);
 Init_WDT();
 
-# 58
+# 59
 while(1){
 
-# 74
+# 75
 UBYTE dData[];
 
-# 84
+# 85
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 106
+# 107
 UBYTE *EEPROMData;
 if (RC2==1){
-RC0 = 1;
+
 RB3 = 0;
 UBYTE EEPROMData[32];
 UINT EEPROMDataLength;
@@ -4341,17 +4340,39 @@ _delay((unsigned long)((200)*(10000000/4000.0)));
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 131
+# 132
+RB3 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+RB3 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+RB3 = 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+RB3 = 1;
+_delay((unsigned long)((150)*(10000000/4000.0)));
+RB3 = 0;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+
+
+RB1 = 0;
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 156
+# 179
 }else{
 
 RC0 = 0;
 
 }
 
-# 168
+# 191
 }
 
 }
