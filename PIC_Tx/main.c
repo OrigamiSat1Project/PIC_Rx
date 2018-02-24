@@ -105,11 +105,11 @@ void main(void) {
         //while(1){
         //RB5Ç™HighÇ»ÇÁEEPROMì«Ç›çûÇ›
         UBYTE *EEPROMData;
-        if (UHFstart==1){
+//        if (UHFstart==1){
 //            FMPTT = 1;
             CWKEY = 0;
-            UBYTE EEPROMData[32];
-            UINT EEPROMDataLength;
+//            UBYTE EEPROMData[32];
+//            UINT EEPROMDataLength;
             //putch('B');
             __delay_ms(200);
 //            EEPROM_Read(EEPROM_address,rhigh_address,rlow_address, EEPROMData,&EEPROMDataLength);
@@ -129,25 +129,25 @@ void main(void) {
 //            SendPacket(EEPROMData);    
             //test_Packetmaker(EEPROMData);
             //SendPacket();
-            CWKEY = 1;
-            __delay_ms(Morse_Short);
-            CWKEY = 0;
-            __delay_ms(Morse_Short);
-
-            CWKEY = 1;
-            __delay_ms(Morse_Short);
-            CWKEY = 0;
-            __delay_ms(Morse_Short);
-
-            CWKEY = 1;
-            __delay_ms(Morse_Short);
-            CWKEY = 0;
-            __delay_ms(Morse_Short);
-
-            CWKEY = 1;
-            __delay_ms(Morse_Long);
-            CWKEY = 0;
-            __delay_ms(Morse_Short);
+//            CWKEY = 1;
+//            __delay_ms(Morse_Short);
+//            CWKEY = 0;
+//            __delay_ms(Morse_Short);
+//
+//            CWKEY = 1;
+//            __delay_ms(Morse_Short);
+//            CWKEY = 0;
+//            __delay_ms(Morse_Short);
+//
+//            CWKEY = 1;
+//            __delay_ms(Morse_Short);
+//            CWKEY = 0;
+//            __delay_ms(Morse_Short);
+//
+//            CWKEY = 1;
+//            __delay_ms(Morse_Long);
+//            CWKEY = 0;
+//            __delay_ms(Morse_Short);
             
             
             led_yellow = 0;
@@ -176,11 +176,11 @@ void main(void) {
             }*/
 
         
-        }else{
+//        }else{
 //            put_error;
             FMPTT = 0;
             //putch('B');
-        }
+//        }
         //}
         
         //EPSÉLÉã

@@ -129,7 +129,7 @@ void interrupt InterReceiver( void ){
             }
             FMPTT = 0;
             led_yellow = 0;
-        }else if (RXDATA[0] == 0xCC){
+        }else if (RXDATA[0] == 0xCC && UHFstart==1){
             led_yellow = 1;
             RXDATA[1] = getch();
             RXDATA[2] = getch();
@@ -149,32 +149,38 @@ void interrupt InterReceiver( void ){
             }
             FMPTT = 0;
             led_yellow = 0;
-        }else if (RXDATA[0] == 0xDD){
+        }else if (RXDATA[0] == 0xDD && UHFstart==1){
             led_yellow = 1;
             RXDATA[1] = getch();
             RCIF = 0 ;
 
             __delay_ms(200);
-            if (RXDATA[1] == 0xDD){
-                CWKEY = 1;
-                __delay_ms(Morse_Short);
-                CWKEY = 0;
-                __delay_ms(Morse_Short);
+            if (RXDATA[1] == 0xDD && UHFstart==1){
+                __delay_ms(200);
+                FMPTT = 0;
+                for (int i = 0; i< 5;i++){
+                    CWKEY = 1;
+                    __delay_ms(Morse_Short);
+                    CWKEY = 0;
+                    __delay_ms(Morse_Short);
 
-                CWKEY = 1;
-                __delay_ms(Morse_Short);
-                CWKEY = 0;
-                __delay_ms(Morse_Short);
+                    CWKEY = 1;
+                    __delay_ms(Morse_Short);
+                    CWKEY = 0;
+                    __delay_ms(Morse_Short);
 
-                CWKEY = 1;
-                __delay_ms(Morse_Short);
-                CWKEY = 0;
-                __delay_ms(Morse_Short);
+                    CWKEY = 1;
+                    __delay_ms(Morse_Short);
+                    CWKEY = 0;
+                    __delay_ms(Morse_Short);
 
-                CWKEY = 1;
-                __delay_ms(Morse_Long);
-                CWKEY = 0;
-                __delay_ms(Morse_Short);
+                    CWKEY = 1;
+                    __delay_ms(Morse_Long);
+                    CWKEY = 0;
+                    __delay_ms(Morse_Short);
+                    __delay_ms(200);
+                } 
+                
             }
             
             led_yellow = 0;

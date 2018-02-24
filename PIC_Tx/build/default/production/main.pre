@@ -4330,47 +4330,22 @@ _delay((unsigned long)((200)*(10000000/4000.0)));
 
 # 107
 UBYTE *EEPROMData;
-if (RC2==1){
+
 
 RB3 = 0;
-UBYTE EEPROMData[32];
-UINT EEPROMDataLength;
+
+
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 132
-RB3 = 1;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-RB3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-RB3 = 1;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-RB3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-RB3 = 1;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-RB3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-RB3 = 1;
-_delay((unsigned long)((150)*(10000000/4000.0)));
-RB3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-
+# 153
 RB1 = 0;
 _delay((unsigned long)((200)*(10000000/4000.0)));
 
-# 179
-}else{
-
+# 181
 RC0 = 0;
-
-}
 
 # 191
 }

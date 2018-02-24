@@ -4347,7 +4347,7 @@ _delay((unsigned long)((300)*(10000000/4000.0)));
 }
 RC0 = 0;
 RB1 = 0;
-}else if (RXDATA[0] == 0xCC){
+}else if (RXDATA[0] == 0xCC && RC2==1){
 RB1 = 1;
 RXDATA[1] = getch();
 RXDATA[2] = getch();
@@ -4367,13 +4367,16 @@ _delay((unsigned long)((300)*(10000000/4000.0)));
 }
 RC0 = 0;
 RB1 = 0;
-}else if (RXDATA[0] == 0xDD){
+}else if (RXDATA[0] == 0xDD && RC2==1){
 RB1 = 1;
 RXDATA[1] = getch();
 RCIF = 0 ;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-if (RXDATA[1] == 0xDD){
+if (RXDATA[1] == 0xDD && RC2==1){
+_delay((unsigned long)((200)*(10000000/4000.0)));
+RC0 = 0;
+for (int i = 0; i< 5;i++){
 RB3 = 1;
 _delay((unsigned long)((50)*(10000000/4000.0)));
 RB3 = 0;
@@ -4393,6 +4396,9 @@ RB3 = 1;
 _delay((unsigned long)((150)*(10000000/4000.0)));
 RB3 = 0;
 _delay((unsigned long)((50)*(10000000/4000.0)));
+_delay((unsigned long)((200)*(10000000/4000.0)));
+}
+
 }
 
 RB1 = 0;
