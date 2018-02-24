@@ -2425,11 +2425,10 @@ if(dData[2] == 'r'){
 switch(dData[3]){
 case 'E':
 
-
-
-
-Reset_EPS();
+# 125
 _delay((unsigned long)((5000)*(10000000/4000.0)));
+Reset_EPS();
+_delay((unsigned long)((3000)*(10000000/4000.0)));
 
 
 int FMTX_Nprg[5] = {8,7,3,0,0};
@@ -2467,7 +2466,7 @@ _delay((unsigned long)((1000)*(10000000/4000.0)));
 RB2 = 0;
 }
 
-# 205
+# 207
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;
