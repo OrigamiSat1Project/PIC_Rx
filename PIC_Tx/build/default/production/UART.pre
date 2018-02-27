@@ -4318,7 +4318,7 @@ TXREG = byte;
 void interrupt InterReceiver( void ){
 volatile static int intr_counter;
 if (RCIF == 1) {
-UBYTE RXDATA[32];
+UBYTE RXDATA[3];
 
 
 RXDATA[0] = getch();
@@ -4330,9 +4330,9 @@ RXDATA[2] = getch();
 RCIF = 0 ;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-UBYTE EEPROMCmdData[6];
+UBYTE EEPROMCmdData[];
 UINT EEPROMCmdDataLength;
-EEPROMCmdDataLength = 6;
+EEPROMCmdDataLength = 32;
 EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
 _delay((unsigned long)((200)*(10000000/4000.0)));
 RC0 = 1;
@@ -4354,7 +4354,7 @@ RXDATA[2] = getch();
 RCIF = 0 ;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-UBYTE EEPROMCmdData[1];
+UBYTE EEPROMCmdData[];
 UINT EEPROMCmdDataLength;
 EEPROMCmdDataLength = 1;
 EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);

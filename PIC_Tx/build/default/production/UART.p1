@@ -3192,8 +3192,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $ ! == -> _RCIF `i -> 1 `i 287  ]
 {
 "93
-[v _RXDATA `uc ~T0 @X0 -> 32 `i a ]
-[; ;UART.c: 93: UBYTE RXDATA[32];
+[v _RXDATA `uc ~T0 @X0 -> 3 `i a ]
+[; ;UART.c: 93: UBYTE RXDATA[3];
 [; ;UART.c: 96: RXDATA[0] = getch();
 "96
 [e = *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ( _getch ..  ]
@@ -3217,14 +3217,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 "104
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 "105
-[v _EEPROMCmdData `uc ~T0 @X0 -> 6 `i a ]
+[v _EEPROMCmdData `uc ~T0 @X0 -> 0 `x a ]
 "106
 [v _EEPROMCmdDataLength `ui ~T0 @X0 1 a ]
-[; ;UART.c: 105: UBYTE EEPROMCmdData[6];
+[; ;UART.c: 105: UBYTE EEPROMCmdData[];
 [; ;UART.c: 106: UINT EEPROMCmdDataLength;
-[; ;UART.c: 107: EEPROMCmdDataLength = 6;
+[; ;UART.c: 107: EEPROMCmdDataLength = 32;
 "107
-[e = _EEPROMCmdDataLength -> -> 6 `i `ui ]
+[e = _EEPROMCmdDataLength -> -> 32 `i `ui ]
 [; ;UART.c: 108: EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
 "108
 [e ( _EEPROM_Read2 (4 , , , , -> -> 80 `i `uc *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux &U _EEPROMCmdData _EEPROMCmdDataLength ]
@@ -3290,10 +3290,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 "138
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 "139
-[v _EEPROMCmdData `uc ~T0 @X0 -> -> 1 `i `ux a ]
+[v _EEPROMCmdData `uc ~T0 @X0 -> 0 `x a ]
 "140
 [v _EEPROMCmdDataLength `ui ~T0 @X0 1 a ]
-[; ;UART.c: 139: UBYTE EEPROMCmdData[1];
+[; ;UART.c: 139: UBYTE EEPROMCmdData[];
 [; ;UART.c: 140: UINT EEPROMCmdDataLength;
 [; ;UART.c: 141: EEPROMCmdDataLength = 1;
 "141

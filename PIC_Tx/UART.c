@@ -90,7 +90,7 @@ void putch(UBYTE byte){
 void interrupt InterReceiver( void ){
     volatile static int intr_counter;
     if (RCIF == 1) {
-        UBYTE RXDATA[32];
+        UBYTE RXDATA[3];
 //        led_yellow = 1;
         
         RXDATA[0] = getch();
@@ -102,9 +102,9 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 
             __delay_ms(200);
-            UBYTE EEPROMCmdData[6];
+            UBYTE EEPROMCmdData[];
             UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 6;
+            EEPROMCmdDataLength = 32;
             EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
             __delay_ms(200);
             FMPTT = 1;
@@ -136,7 +136,7 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 
             __delay_ms(200);
-            UBYTE EEPROMCmdData[1];
+            UBYTE EEPROMCmdData[];
             UINT EEPROMCmdDataLength;
             EEPROMCmdDataLength = 1;
             EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
