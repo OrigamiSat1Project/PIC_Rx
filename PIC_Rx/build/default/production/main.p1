@@ -1842,9 +1842,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 126: Reset_EPS();
 "126
 [e ( _Reset_EPS ..  ]
-[; ;main.c: 127: _delay((unsigned long)((3000)*(10000000/4000.0)));
+[; ;main.c: 127: _delay((unsigned long)((5000)*(10000000/4000.0)));
 "127
-[e ( __delay (1 -> * -> -> 3000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 [v F2013 `i ~T0 @X0 -> 5 `i s ]
 [i F2013
 :U ..

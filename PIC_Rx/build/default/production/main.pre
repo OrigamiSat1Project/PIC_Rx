@@ -2432,7 +2432,7 @@ case 'E':
 
 # 126
 Reset_EPS();
-_delay((unsigned long)((3000)*(10000000/4000.0)));
+_delay((unsigned long)((5000)*(10000000/4000.0)));
 
 
 int FMTX_Nprg[5] = {8,7,3,0,0};
