@@ -2116,20 +2116,22 @@ extern __bank0 __bit __timeout;
 
 # 13 "fmcw.h"
 int FMTX_Nref = 2560;
-int FMTX_Nprg[5] = {8,7,3,0,0};
-int CWTX_Nref = 160;
-int CWTX_Nprg[5] = {0,1,7,4,7};
-int FMRX_Nref = 2560;
-int FMRX_Nprg[5] = {2,4,8,8,7};
+int FMTX_Nprg = 87300;
 
-# 35
+int CWTX_Nref = 160;
+int CWTX_Nprg = 1747;
+
+int FMRX_Nref = 2560;
+int FMRX_Nprg = 24887;
+
+# 38
 void Init_FMCW(void);
 
-void FMTX(int Nref, int *Nprg);
-void CWTX(int Nref, int *Nprg);
-void FMRX(int Nref, int *Nprg);
+void FMTX(int Nref, int Nprg);
+void CWTX(int Nref, int Nprg);
+void FMRX(int Nref, int Nprg);
 
-# 47
+# 50
 void _NOP(void);
 
 # 15 "Type_define.h"
@@ -2242,7 +2244,7 @@ PORTAbits.RA4 = 0;
 }
 
 # 136
-void OUTFQ(int fmcwtxrx, int *Nprg){
+void OUTFQ(int fmcwtxrx, int Nprg){
 int count = 0;
 int Nprg_b[17];
 
@@ -2252,32 +2254,11 @@ Nprg_b[i] = 0;
 
 
 for(int i = 0; i < 17; i++){
-for(int j = 0; j<5; j++){
-if(Nprg[j] % 2 == 0) {
-if(j == 4){
-Nprg[j] = Nprg[j] / 2;
-Nprg_b[count] = 0;
-count++;
-}
-else{
-Nprg[j] = Nprg[j] / 2;
-}
-}
-else if(Nprg[j] % 2 == 1) {
-if(j == 4){
-Nprg[j] = Nprg[j] / 2;
-Nprg_b[count] = 1;
-count++;
-}
-else{
-Nprg[j] = Nprg[j] / 2;
-Nprg[j+1] = Nprg[j+1] + 10;
-}
-}
-}
+Nprg_b[i] = Nprg % 2;
+Nprg = Nprg / 2;
 }
 
-
+# 177
 for (int i=0; i<17; i++)
 {
 if(Nprg_b[i] == 0)
@@ -2298,7 +2279,7 @@ L_OUT(fmcwtxrx);
 STBOUT(fmcwtxrx);
 }
 
-# 200
+# 205
 void RFDOUT(int fmcwtxrx, int Nref){
 int Nref_b[12];
 
@@ -2333,7 +2314,7 @@ H_OUT(fmcwtxrx);
 STBOUT(fmcwtxrx);
 }
 
-# 241
+# 246
 void OPINIT(int fmcwtxrx){
 
 L_OUT(fmcwtxrx);
@@ -2356,38 +2337,38 @@ L_OUT(fmcwtxrx);
 STBOUT(fmcwtxrx);
 }
 
-# 270
-void FMTX(int Nref, int *Nprg){
+# 275
+void FMTX(int Nref, int Nprg){
 int fmtx = 1;
 OPINIT(fmtx);
 RFDOUT(fmtx, Nref);
 OUTFQ(fmtx, Nprg);
 }
 
-# 284
-void CWTX(int Nref, int *Nprg){
+# 289
+void CWTX(int Nref, int Nprg){
 int cwtx = 2;
 OPINIT(cwtx);
 RFDOUT(cwtx, Nref);
 OUTFQ(cwtx, Nprg);
 }
 
-# 298
-void FMRX(int Nref, int *Nprg){
+# 303
+void FMRX(int Nref, int Nprg){
 int fmrx = 3;
 OPINIT(fmrx);
 RFDOUT(fmrx, Nref);
 OUTFQ(fmrx, Nprg);
 }
 
-# 309
+# 314
 void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
 FMTX(FMTX_Nref, FMTX_Nprg);
 CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 }
 
-# 322
+# 327
 void Morse_V(void){
 PORTDbits.RD3 = 1;
 _delay((unsigned long)((50)*(10000000/4000.0)));
@@ -2410,7 +2391,7 @@ PORTDbits.RD3 = 0;
 _delay((unsigned long)((50)*(10000000/4000.0)));
 }
 
-# 349
+# 354
 void _NOP(void) {
 for(int i=0; i<5; i++){
 __nop();

@@ -127,9 +127,9 @@ void main(void) {
                     __delay_ms(5000);
                     //以下�?�数字�?�初期設定時と変化して�?るためも�?�?度定義
                     //本来なら変化する�?字�?�を他に用意したほ�?が良�?かもしれな�?
-                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+//                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+//                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+//                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
                     
                     FMTX(FMTX_Nref, FMTX_Nprg);
                     CWTX(CWTX_Nref, CWTX_Nprg);

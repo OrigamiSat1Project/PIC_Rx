@@ -2333,20 +2333,22 @@ UBYTE *EEPROM_Read(UBYTE ,UBYTE ,UBYTE , UINT);
 
 # 13 "FMCW.h"
 int FMTX_Nref = 2560;
-int FMTX_Nprg[5] = {8,7,3,0,0};
-int CWTX_Nref = 160;
-int CWTX_Nprg[5] = {0,1,7,4,7};
-int FMRX_Nref = 2560;
-int FMRX_Nprg[5] = {2,4,8,8,7};
+int FMTX_Nprg = 87300;
 
-# 35
+int CWTX_Nref = 160;
+int CWTX_Nprg = 1747;
+
+int FMRX_Nref = 2560;
+int FMRX_Nprg = 24887;
+
+# 38
 void Init_FMCW(void);
 
-void FMTX(int Nref, int *Nprg);
-void CWTX(int Nref, int *Nprg);
-void FMRX(int Nref, int *Nprg);
+void FMTX(int Nref, int Nprg);
+void CWTX(int Nref, int Nprg);
+void FMRX(int Nref, int Nprg);
 
-# 47
+# 50
 void _NOP(void);
 
 # 22 "EPS.h"
@@ -2434,11 +2436,7 @@ case 'E':
 Reset_EPS();
 _delay((unsigned long)((5000)*(10000000/4000.0)));
 
-
-int FMTX_Nprg[5] = {8,7,3,0,0};
-int CWTX_Nprg[5] = {0,1,7,4,7};
-int FMRX_Nprg[5] = {2,4,8,8,7};
-
+# 134
 FMTX(FMTX_Nref, FMTX_Nprg);
 CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
