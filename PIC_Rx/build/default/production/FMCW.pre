@@ -2145,10 +2145,6 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
-
 # 18 "FMCW.c"
 void Init_FMCW(void){
 

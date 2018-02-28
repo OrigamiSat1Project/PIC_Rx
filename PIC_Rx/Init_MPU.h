@@ -22,8 +22,8 @@
 
 
 void Init_MPU(void);
-void led_onoff(void);
-void debug_ledy(void);
+//void led_onoff(void);
+//void debug_ledy(void);
 
 
 #endif	/* INITMPU_H */

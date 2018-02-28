@@ -2128,23 +2128,17 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
 
-void put_error(void);
-void put_ok(void);
+UBYTE getch(void);
+
+
+
+
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 
 # 24 "Init_MPU.h"
 void Init_MPU(void);
-void led_onoff(void);
-void debug_ledy(void);
-
-# 23 "time.h"
-void delay_ms(UWORD);
-void delay_us(UWORD);
 
 # 4 "C:\Program Files (x86)\Microchip\xc8\v1.45\include\__size_t.h"
 typedef unsigned size_t;
@@ -2278,10 +2272,10 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 36 "decode_AX25.h"
+# 41 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
+# 49
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 

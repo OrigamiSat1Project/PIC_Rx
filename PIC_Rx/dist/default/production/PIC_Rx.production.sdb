@@ -27,14 +27,6 @@
 [v _ReceivePacket_data ReceivePacket_data `(*.4uc  1 e 1 0 ]
 "426
 [v _reverse_bit8 reverse_bit8 `(uc  1 e 1 0 ]
-"39 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\encode_AX25.c
-[v _Packetmaker Packetmaker `(ui  1 e 2 0 ]
-"94
-[v _SendByte SendByte `(v  1 e 1 0 ]
-"118
-[v _flipout flipout `(v  1 e 1 0 ]
-"131
-[v _fcsbit fcsbit `(v  1 e 1 0 ]
 "19 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\EPS.c
 [v _Reset_EPS Reset_EPS `(v  1 e 1 0 ]
 "40 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\FMCW.c
@@ -89,7 +81,7 @@
 [v _STATUS STATUS `VEuc  1 e 1 @3 ]
 "164
 [v _PORTA PORTA `VEuc  1 e 1 @5 ]
-[s S336 . 1 `uc 1 RA0 1 0 :1:0 
+[s S267 . 1 `uc 1 RA0 1 0 :1:0 
 `uc 1 RA1 1 0 :1:1 
 `uc 1 RA2 1 0 :1:2 
 `uc 1 RA3 1 0 :1:3 
@@ -99,13 +91,13 @@
 `uc 1 RA7 1 0 :1:7 
 ]
 "181
-[u S345 . 1 `S336 1 . 1 0 ]
-[v _PORTAbits PORTAbits `VES345  1 e 1 @5 ]
+[u S276 . 1 `S267 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES276  1 e 1 @5 ]
 "226
 [v _PORTB PORTB `VEuc  1 e 1 @6 ]
 "288
 [v _PORTC PORTC `VEuc  1 e 1 @7 ]
-[s S370 . 1 `uc 1 RC0 1 0 :1:0 
+[s S301 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 RC3 1 0 :1:3 
@@ -115,11 +107,11 @@
 `uc 1 RC7 1 0 :1:7 
 ]
 "305
-[u S379 . 1 `S370 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES379  1 e 1 @7 ]
+[u S310 . 1 `S301 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES310  1 e 1 @7 ]
 "350
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
-[s S391 . 1 `uc 1 RD0 1 0 :1:0 
+[s S322 . 1 `uc 1 RD0 1 0 :1:0 
 `uc 1 RD1 1 0 :1:1 
 `uc 1 RD2 1 0 :1:2 
 `uc 1 RD3 1 0 :1:3 
@@ -129,19 +121,19 @@
 `uc 1 RD7 1 0 :1:7 
 ]
 "367
-[u S400 . 1 `S391 1 . 1 0 ]
-[v _PORTDbits PORTDbits `VES400  1 e 1 @8 ]
+[u S331 . 1 `S322 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES331  1 e 1 @8 ]
 "412
 [v _PORTE PORTE `VEuc  1 e 1 @9 ]
-[s S357 . 1 `uc 1 RE0 1 0 :1:0 
+[s S288 . 1 `uc 1 RE0 1 0 :1:0 
 `uc 1 RE1 1 0 :1:1 
 `uc 1 RE2 1 0 :1:2 
 `uc 1 RE3 1 0 :1:3 
 ]
 "425
-[u S362 . 1 `S357 1 . 1 0 ]
-[v _PORTEbits PORTEbits `VES362  1 e 1 @9 ]
-[s S510 . 1 `uc 1 RBIF 1 0 :1:0 
+[u S293 . 1 `S288 1 . 1 0 ]
+[v _PORTEbits PORTEbits `VES293  1 e 1 @9 ]
+[s S441 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INTF 1 0 :1:1 
 `uc 1 T0IF 1 0 :1:2 
 `uc 1 RBIE 1 0 :1:3 
@@ -151,14 +143,14 @@
 `uc 1 GIE 1 0 :1:7 
 ]
 "480
-[s S519 . 1 `uc 1 . 1 0 :2:0 
+[s S450 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 TMR0IF 1 0 :1:2 
 `uc 1 . 1 0 :2:3 
 `uc 1 TMR0IE 1 0 :1:5 
 ]
-[u S524 . 1 `S510 1 . 1 0 `S519 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES524  1 e 1 @11 ]
-[s S542 . 1 `uc 1 TMR1IF 1 0 :1:0 
+[u S455 . 1 `S441 1 . 1 0 `S450 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES455  1 e 1 @11 ]
+[s S473 . 1 `uc 1 TMR1IF 1 0 :1:0 
 `uc 1 TMR2IF 1 0 :1:1 
 `uc 1 CCP1IF 1 0 :1:2 
 `uc 1 SSPIF 1 0 :1:3 
@@ -167,11 +159,11 @@
 `uc 1 ADIF 1 0 :1:6 
 ]
 "551
-[u S550 . 1 `S542 1 . 1 0 ]
-[v _PIR1bits PIR1bits `VES550  1 e 1 @12 ]
+[u S481 . 1 `S473 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES481  1 e 1 @12 ]
 "648
 [v _TMR1 TMR1 `VEus  1 e 2 @14 ]
-[s S580 . 1 `uc 1 TMR1ON 1 0 :1:0 
+[s S511 . 1 `uc 1 TMR1ON 1 0 :1:0 
 `uc 1 TMR1CS 1 0 :1:1 
 `uc 1 nT1SYNC 1 0 :1:2 
 `uc 1 T1OSCEN 1 0 :1:3 
@@ -180,7 +172,7 @@
 `uc 1 T1GINV 1 0 :1:7 
 ]
 "698
-[s S588 . 1 `uc 1 . 1 0 :2:0 
+[s S519 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 T1INSYNC 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
 `uc 1 T1CKPS0 1 0 :1:4 
@@ -188,11 +180,11 @@
 `uc 1 . 1 0 :1:6 
 `uc 1 T1GIV 1 0 :1:7 
 ]
-[s S596 . 1 `uc 1 . 1 0 :2:0 
+[s S527 . 1 `uc 1 . 1 0 :2:0 
 `uc 1 T1SYNC 1 0 :1:2 
 ]
-[u S599 . 1 `S580 1 . 1 0 `S588 1 . 1 0 `S596 1 . 1 0 ]
-[v _T1CONbits T1CONbits `VES599  1 e 1 @16 ]
+[u S530 . 1 `S511 1 . 1 0 `S519 1 . 1 0 `S527 1 . 1 0 ]
+[v _T1CONbits T1CONbits `VES530  1 e 1 @16 ]
 "841
 [v _SSPBUF SSPBUF `VEuc  1 e 1 @19 ]
 "848
@@ -211,7 +203,7 @@
 [v _TRISD TRISD `VEuc  1 e 1 @136 ]
 "1662
 [v _TRISE TRISE `VEuc  1 e 1 @137 ]
-[s S561 . 1 `uc 1 TMR1IE 1 0 :1:0 
+[s S492 . 1 `uc 1 TMR1IE 1 0 :1:0 
 `uc 1 TMR2IE 1 0 :1:1 
 `uc 1 CCP1IE 1 0 :1:2 
 `uc 1 SSPIE 1 0 :1:3 
@@ -220,8 +212,8 @@
 `uc 1 ADIE 1 0 :1:6 
 ]
 "1716
-[u S569 . 1 `S561 1 . 1 0 ]
-[v _PIE1bits PIE1bits `VES569  1 e 1 @140 ]
+[u S500 . 1 `S492 1 . 1 0 ]
+[v _PIE1bits PIE1bits `VES500  1 e 1 @140 ]
 "1977
 [v _SSPCON2 SSPCON2 `VEuc  1 e 1 @145 ]
 "2046
@@ -299,21 +291,6 @@
 "29
 [v _dfcshi dfcshi `uc  1 e 1 0 ]
 [v _dfcslo dfcslo `uc  1 e 1 0 ]
-"23 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\encode_AX25.c
-[v _eflag eflag `ui  1 e 2 0 ]
-"24
-[v _efcsflag efcsflag `ui  1 e 2 0 ]
-"25
-[v _estuff estuff `ui  1 e 2 0 ]
-"26
-[v _efcslo efcslo `uc  1 e 1 0 ]
-[v _efcshi efcshi `uc  1 e 1 0 ]
-"27
-[v _eDataField eDataField `[25]uc  1 e 25 0 ]
-"28
-[v _ePacket ePacket `[5]uc  1 e 5 0 ]
-"29
-[v _ebitstatus ebitstatus `ui  1 e 2 0 ]
 "13 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\fmcw.h
 [v _FMTX_Nref FMTX_Nref `i  1 e 2 0 ]
 "14
@@ -367,31 +344,31 @@
 [v _waitFlag waitFlag `(v  1 e 1 0 ]
 {
 "236
-[v waitFlag@j_137 j `ui  1 a 2 24 ]
+[v waitFlag@j_121 j `ui  1 a 2 24 ]
 "133
-[v waitFlag@j_124 j `ui  1 a 2 10 ]
+[v waitFlag@j_108 j `ui  1 a 2 10 ]
 "224
-[v waitFlag@j_135 j `ui  1 a 2 22 ]
+[v waitFlag@j_119 j `ui  1 a 2 22 ]
 "121
-[v waitFlag@j_122 j `ui  1 a 2 8 ]
+[v waitFlag@j_106 j `ui  1 a 2 8 ]
 "212
-[v waitFlag@j_133 j `ui  1 a 2 20 ]
+[v waitFlag@j_117 j `ui  1 a 2 20 ]
 "109
-[v waitFlag@j_120 j `ui  1 a 2 6 ]
+[v waitFlag@j_104 j `ui  1 a 2 6 ]
 "200
-[v waitFlag@j_131 j `ui  1 a 2 18 ]
+[v waitFlag@j_115 j `ui  1 a 2 18 ]
 "97
-[v waitFlag@j_118 j `ui  1 a 2 4 ]
+[v waitFlag@j_102 j `ui  1 a 2 4 ]
 "188
-[v waitFlag@j_129 j `ui  1 a 2 16 ]
+[v waitFlag@j_113 j `ui  1 a 2 16 ]
 "85
 [v waitFlag@j j `ui  1 a 2 2 ]
 "72
 [v waitFlag@i i `ui  1 a 2 0 ]
 "176
-[v waitFlag@j_127 j `ui  1 a 2 14 ]
+[v waitFlag@j_111 j `ui  1 a 2 14 ]
 "165
-[v waitFlag@j_126 j `ui  1 a 2 12 ]
+[v waitFlag@j_110 j `ui  1 a 2 12 ]
 "55
 [v waitFlag@flag_judge flag_judge `ui  1 a 2 26 ]
 "56
@@ -424,7 +401,7 @@
 [v _fcscheck fcscheck `(ui  1 e 2 0 ]
 {
 "319
-[v fcscheck@i_149 i `ui  1 a 2 7 ]
+[v fcscheck@i_133 i `ui  1 a 2 7 ]
 "317
 [v fcscheck@i i `ui  1 a 2 5 ]
 "314
@@ -547,9 +524,9 @@
 [v _RFDOUT RFDOUT `(v  1 e 1 0 ]
 {
 "219
-[v RFDOUT@i_477 i `i  1 a 2 31 ]
+[v RFDOUT@i_408 i `i  1 a 2 31 ]
 "213
-[v RFDOUT@i_476 i `i  1 a 2 27 ]
+[v RFDOUT@i_407 i `i  1 a 2 27 ]
 "208
 [v RFDOUT@i i `i  1 a 2 29 ]
 "206
@@ -563,9 +540,9 @@
 [v _OUTFQ OUTFQ `(v  1 e 1 0 ]
 {
 "177
-[v OUTFQ@i_467 i `i  1 a 2 43 ]
+[v OUTFQ@i_398 i `i  1 a 2 43 ]
 "145
-[v OUTFQ@i_466 i `i  1 a 2 41 ]
+[v OUTFQ@i_397 i `i  1 a 2 41 ]
 "140
 [v OUTFQ@i i `i  1 a 2 39 ]
 "138

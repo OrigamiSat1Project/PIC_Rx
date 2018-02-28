@@ -1522,11 +1522,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 "6 I2C.c

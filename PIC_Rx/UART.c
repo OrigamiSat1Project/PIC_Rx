@@ -41,33 +41,33 @@ void putch(UBYTE byte){
 	TXREG = byte;
 }
 
-void putstr(UBYTE *x)
-{
-    while(*x != '\0'){
-        putch(*x);
-        x++;
-    }
-}
+//void putstr(UBYTE *x)
+//{
+//    while(*x != '\0'){
+//        putch(*x);
+//        x++;
+//    }
+//}
 
-void putcrlf(void){
-    putch('\r');
-    putch('\n');
-}
+//void putcrlf(void){
+//    putch('\r');
+//    putch('\n');
+//}
 
-void put_error(void){
-    putch('E');
-    putch('R');
-    putch('R');
-    putch('O');
-    putch('R');
-    putch('!');
-}
-
-void put_ok(void){
-    putch('O');
-    putch('K');
-    putch('!');
-}
+//void put_error(void){
+//    putch('E');
+//    putch('R');
+//    putch('R');
+//    putch('O');
+//    putch('R');
+//    putch('!');
+//}
+//
+//void put_ok(void){
+//    putch('O');
+//    putch('K');
+//    putch('!');
+//}
 
 void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
     putch(NM_wad_header);

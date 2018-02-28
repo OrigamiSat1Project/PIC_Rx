@@ -1508,18 +1508,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
-[; ;UART.h: 21: void putcrlf(void);
-[; ;UART.h: 23: void put_error(void);
-[; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
-[; ;Init_MPU.h: 25: void led_onoff(void);
-[; ;Init_MPU.h: 26: void debug_ledy(void);
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 [; ;__size_t.h: 4: typedef unsigned size_t;
 [; ;stdarg.h: 7: typedef void * va_list[1];
 [; ;stdarg.h: 10: extern void * __va_start(void);
@@ -1600,9 +1592,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdlib.h: 101: extern char * ltoa(char * buf, long val, int base);
 [; ;stdlib.h: 102: extern char * ultoa(char * buf, unsigned long val, int base);
 [; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
-[; ;decode_AX25.h: 36: UINT getbit(void);
-[; ;decode_AX25.h: 44: void ReceivePacket(void);
-[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
+[; ;decode_AX25.h: 41: UINT getbit(void);
+[; ;decode_AX25.h: 49: void ReceivePacket(void);
+[; ;decode_AX25.h: 50: UBYTE *ReceivePacket_data(void);
 [; ;encode_AX25.h: 24: void SendPacket(void);
 [; ;decode_AX25.c: 10: void UART_TX(UINT,UINT);
 [; ;decode_AX25.c: 11: void waitByte(UINT,UINT);
@@ -1652,11 +1644,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _getbit ]
 [f ]
 "41
-[v F1903 `ui ~T0 @X0 1 s oldbit ]
+[v F1887 `ui ~T0 @X0 1 s oldbit ]
 [; ;decode_AX25.c: 41: static UINT oldbit;
 [; ;decode_AX25.c: 42: oldbit = RB5;
 "42
-[e = F1903 -> -> _RB5 `i `ui ]
+[e = F1887 -> -> _RB5 `i `ui ]
 [; ;decode_AX25.c: 43: for(UINT i=0;i<62;i++){
 "43
 {
@@ -1668,7 +1660,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;decode_AX25.c: 44: if(RB5 != oldbit){
 "44
-[e $ ! != -> -> _RB5 `i `ui F1903 147  ]
+[e $ ! != -> -> _RB5 `i `ui F1887 147  ]
 {
 [; ;decode_AX25.c: 45: _delay((unsigned long)((400)*(10000000/4000000.0)));
 "45

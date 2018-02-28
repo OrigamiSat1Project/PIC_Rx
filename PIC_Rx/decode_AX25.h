@@ -25,6 +25,11 @@
 #define getbitloop 62//20MHz:130  10MHz:66  ¼–³üü”g”İ’èŠÜ‚ß‚é‚Æ60‚ª“K³’lH
 #define Flag_AX25 0x7e
 #define flagcounter_max 9
+
+
+#define mycall "JQ1YCZ"
+#define ucall  "JQ1ZHX"
+
 // 1/25 
 // 0x7E‚ğ”»’è‚Å‚«‚égetbitloop
 // waitflag()        ‚¾‚Æ   91 -113

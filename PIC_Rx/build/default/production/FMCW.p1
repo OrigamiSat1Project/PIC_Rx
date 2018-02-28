@@ -1574,8 +1574,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 21: typedef unsigned short long USLONG;
 [; ;Type_define.h: 22: typedef signed long SDWORD;
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
 "18 FMCW.c
 [v _Init_FMCW `(v ~T0 @X0 1 ef ]
 {
