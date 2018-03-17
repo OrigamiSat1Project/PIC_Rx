@@ -90,7 +90,7 @@ void putch(UBYTE byte){
 void interrupt InterReceiver( void ){
     volatile static int intr_counter;
     if (RCIF == 1) {
-        UBYTE RXDATA[3];
+        UBYTE RXDATA[];
 //        led_yellow = 1;
         
         RXDATA[0] = getch();
@@ -102,9 +102,9 @@ void interrupt InterReceiver( void ){
             RCIF = 0 ;
 
             __delay_ms(200);
-            UBYTE EEPROMCmdData[];
+            UBYTE EEPROMCmdData[40];
             UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 32;
+            EEPROMCmdDataLength = 40;
             EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
             __delay_ms(200);
             FMPTT = 1;
@@ -183,6 +183,29 @@ void interrupt InterReceiver( void ){
                 
             }
             
+            led_yellow = 0;
+        
+        //FM_photo_downlink
+        }else if (RXDATA[0] == 0xEE && UHFstart==1){
+            led_yellow = 1;
+            RXDATA[1] = getch();
+            RXDATA[2] = getch();
+            RXDATA[3] = getch();
+            RCIF = 0 ;
+
+            __delay_ms(200);
+            UBYTE EEPROMCmdData[];
+            UINT EEPROMCmdDataLength;
+            EEPROMCmdDataLength = 1;
+            EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            __delay_ms(200);
+            FMPTT = 1;
+            CWKEY = 0;
+            for(int i = 0; i<5;i++){
+                SendPacket(EEPROMCmdData);
+                __delay_ms(300);
+            }
+            FMPTT = 0;
             led_yellow = 0;
         }else{
             RCIF = 0 ;

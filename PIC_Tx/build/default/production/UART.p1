@@ -3192,8 +3192,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $ ! == -> _RCIF `i -> 1 `i 287  ]
 {
 "93
-[v _RXDATA `uc ~T0 @X0 -> 3 `i a ]
-[; ;UART.c: 93: UBYTE RXDATA[3];
+[v _RXDATA `uc ~T0 @X0 -> 0 `x a ]
+[; ;UART.c: 93: UBYTE RXDATA[];
 [; ;UART.c: 96: RXDATA[0] = getch();
 "96
 [e = *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ( _getch ..  ]
@@ -3217,14 +3217,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 "104
 [e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
 "105
-[v _EEPROMCmdData `uc ~T0 @X0 -> 0 `x a ]
+[v _EEPROMCmdData `uc ~T0 @X0 -> 40 `i a ]
 "106
 [v _EEPROMCmdDataLength `ui ~T0 @X0 1 a ]
-[; ;UART.c: 105: UBYTE EEPROMCmdData[];
+[; ;UART.c: 105: UBYTE EEPROMCmdData[40];
 [; ;UART.c: 106: UINT EEPROMCmdDataLength;
-[; ;UART.c: 107: EEPROMCmdDataLength = 32;
+[; ;UART.c: 107: EEPROMCmdDataLength = 40;
 "107
-[e = _EEPROMCmdDataLength -> -> 32 `i `ui ]
+[e = _EEPROMCmdDataLength -> -> 40 `i `ui ]
 [; ;UART.c: 108: EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
 "108
 [e ( _EEPROM_Read2 (4 , , , , -> -> 80 `i `uc *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux &U _EEPROMCmdData _EEPROMCmdDataLength ]
@@ -3445,57 +3445,134 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.c: 186: RB1 = 0;
 "186
 [e = _RB1 -> -> 0 `i `b ]
-"187
+"189
 }
-[; ;UART.c: 187: }else{
+[; ;UART.c: 189: }else if (RXDATA[0] == 0xEE && RC2==1){
 [e $U 303  ]
 [e :U 298 ]
+[e $ ! && == -> *U + &U _RXDATA * -> -> -> 0 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux `i -> 238 `i == -> _RC2 `i -> 1 `i 304  ]
 {
-[; ;UART.c: 188: RCIF = 0 ;
-"188
-[e = _RCIF -> -> 0 `i `b ]
+[; ;UART.c: 190: RB1 = 1;
 "190
+[e = _RB1 -> -> 1 `i `b ]
+[; ;UART.c: 191: RXDATA[1] = getch();
+"191
+[e = *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ( _getch ..  ]
+[; ;UART.c: 192: RXDATA[2] = getch();
+"192
+[e = *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ( _getch ..  ]
+[; ;UART.c: 193: RXDATA[3] = getch();
+"193
+[e = *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ( _getch ..  ]
+[; ;UART.c: 194: RCIF = 0 ;
+"194
+[e = _RCIF -> -> 0 `i `b ]
+[; ;UART.c: 196: _delay((unsigned long)((200)*(10000000/4000.0)));
+"196
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"197
+[v _EEPROMCmdData `uc ~T0 @X0 -> 0 `x a ]
+"198
+[v _EEPROMCmdDataLength `ui ~T0 @X0 1 a ]
+[; ;UART.c: 197: UBYTE EEPROMCmdData[];
+[; ;UART.c: 198: UINT EEPROMCmdDataLength;
+[; ;UART.c: 199: EEPROMCmdDataLength = 1;
+"199
+[e = _EEPROMCmdDataLength -> -> 1 `i `ui ]
+[; ;UART.c: 200: EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+"200
+[e ( _EEPROM_Read2 (4 , , , , -> -> 80 `i `uc *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux &U _EEPROMCmdData _EEPROMCmdDataLength ]
+[; ;UART.c: 201: _delay((unsigned long)((200)*(10000000/4000.0)));
+"201
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;UART.c: 202: RC0 = 1;
+"202
+[e = _RC0 -> -> 1 `i `b ]
+[; ;UART.c: 203: RB3 = 0;
+"203
+[e = _RB3 -> -> 0 `i `b ]
+[; ;UART.c: 204: for(int i = 0; i<5;i++){
+"204
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 5 `i 305  ]
+[e $U 306  ]
+[e :U 305 ]
+{
+[; ;UART.c: 205: SendPacket(EEPROMCmdData);
+"205
+[e ( _SendPacket (1 &U _EEPROMCmdData ]
+[; ;UART.c: 206: _delay((unsigned long)((300)*(10000000/4000.0)));
+"206
+[e ( __delay (1 -> * -> -> 300 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+"207
 }
+"204
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 5 `i 305  ]
+[e :U 306 ]
+"207
+}
+[; ;UART.c: 207: }
+[; ;UART.c: 208: RC0 = 0;
+"208
+[e = _RC0 -> -> 0 `i `b ]
+[; ;UART.c: 209: RB1 = 0;
+"209
+[e = _RB1 -> -> 0 `i `b ]
+"210
+}
+[; ;UART.c: 210: }else{
+[e $U 308  ]
+[e :U 304 ]
+{
+[; ;UART.c: 211: RCIF = 0 ;
+"211
+[e = _RCIF -> -> 0 `i `b ]
+"213
+}
+[e :U 308 ]
 [e :U 303 ]
 [e :U 297 ]
 [e :U 292 ]
-"191
+"214
 }
-[; ;UART.c: 190: }
-[; ;UART.c: 191: }else if(PIR1bits.TMR1IF == 1){
-[e $U 304  ]
+[; ;UART.c: 213: }
+[; ;UART.c: 214: }else if(PIR1bits.TMR1IF == 1){
+[e $U 309  ]
 [e :U 287 ]
-[e $ ! == -> . . _PIR1bits 0 0 `i -> 1 `i 305  ]
+[e $ ! == -> . . _PIR1bits 0 0 `i -> 1 `i 310  ]
 {
-[; ;UART.c: 192: TMR1 = (0xffff - 62500);
-"192
+[; ;UART.c: 215: TMR1 = (0xffff - 62500);
+"215
 [e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
-[; ;UART.c: 194: intr_counter++;
-"194
+[; ;UART.c: 217: intr_counter++;
+"217
 [e ++ F2888 -> 1 `i ]
-[; ;UART.c: 195: if (intr_counter >= 2) {
-"195
-[e $ ! >= F2888 -> 2 `i 306  ]
+[; ;UART.c: 218: if (intr_counter >= 2) {
+"218
+[e $ ! >= F2888 -> 2 `i 311  ]
 {
-[; ;UART.c: 196: asm("clrwdt");
-"196
+[; ;UART.c: 219: asm("clrwdt");
+"219
 [; <" clrwdt ;# ">
-[; ;UART.c: 197: intr_counter = 0;
-"197
+[; ;UART.c: 220: intr_counter = 0;
+"220
 [e = F2888 -> 0 `i ]
-"198
+"221
 }
-[e :U 306 ]
-[; ;UART.c: 198: }
-[; ;UART.c: 200: PIR1bits.TMR1IF = 0;
-"200
+[e :U 311 ]
+[; ;UART.c: 221: }
+[; ;UART.c: 223: PIR1bits.TMR1IF = 0;
+"223
 [e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
-"201
+"224
 }
-[e :U 305 ]
-"202
-[e :U 304 ]
-[; ;UART.c: 201: }
-[; ;UART.c: 202: }
+[e :U 310 ]
+"225
+[e :U 309 ]
+[; ;UART.c: 224: }
+[; ;UART.c: 225: }
 [e :UE 286 ]
 }

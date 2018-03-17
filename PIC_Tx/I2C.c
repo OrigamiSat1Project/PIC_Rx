@@ -5,7 +5,7 @@
 
 
 #define _XTAL_FREQ 10000000
-UBYTE EEPROMData[16];
+//UBYTE EEPROMData[16];
 //UINT EEPROMDataLength;
 
 void Init_I2C_M(const UDWORD c){

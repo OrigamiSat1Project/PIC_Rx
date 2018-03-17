@@ -4318,7 +4318,7 @@ TXREG = byte;
 void interrupt InterReceiver( void ){
 volatile static int intr_counter;
 if (RCIF == 1) {
-UBYTE RXDATA[3];
+UBYTE RXDATA[];
 
 
 RXDATA[0] = getch();
@@ -4330,9 +4330,9 @@ RXDATA[2] = getch();
 RCIF = 0 ;
 
 _delay((unsigned long)((200)*(10000000/4000.0)));
-UBYTE EEPROMCmdData[];
+UBYTE EEPROMCmdData[40];
 UINT EEPROMCmdDataLength;
-EEPROMCmdDataLength = 32;
+EEPROMCmdDataLength = 40;
 EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
 _delay((unsigned long)((200)*(10000000/4000.0)));
 RC0 = 1;
@@ -4401,6 +4401,29 @@ _delay((unsigned long)((200)*(10000000/4000.0)));
 
 }
 
+RB1 = 0;
+
+
+}else if (RXDATA[0] == 0xEE && RC2==1){
+RB1 = 1;
+RXDATA[1] = getch();
+RXDATA[2] = getch();
+RXDATA[3] = getch();
+RCIF = 0 ;
+
+_delay((unsigned long)((200)*(10000000/4000.0)));
+UBYTE EEPROMCmdData[];
+UINT EEPROMCmdDataLength;
+EEPROMCmdDataLength = 1;
+EEPROM_Read2(0x50,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+_delay((unsigned long)((200)*(10000000/4000.0)));
+RC0 = 1;
+RB3 = 0;
+for(int i = 0; i<5;i++){
+SendPacket(EEPROMCmdData);
+_delay((unsigned long)((300)*(10000000/4000.0)));
+}
+RC0 = 0;
 RB1 = 0;
 }else{
 RCIF = 0 ;

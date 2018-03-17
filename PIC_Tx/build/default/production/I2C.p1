@@ -1462,10 +1462,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.h: 24: void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
 [; ;I2C.h: 25: void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 [; ;I2C.h: 26: void EEPROM_Read2(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
-"8 I2C.c
-[v _EEPROMData `uc ~T0 @X0 -> 16 `i e ]
-[; ;I2C.c: 8: UBYTE EEPROMData[16];
-"11
+"11 I2C.c
 [v _Init_I2C_M `(v ~T0 @X0 1 ef1`Cul ]
 {
 [; ;I2C.c: 11: void Init_I2C_M(const UDWORD c){
