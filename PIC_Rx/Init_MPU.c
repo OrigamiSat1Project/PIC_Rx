@@ -15,8 +15,8 @@ void Init_MPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-	ANSEL  = 0x00;	//ADê›íË
-	ANSELH = 0x00;	//ADê›íË
+//	ANSEL  = 0x00;	//ADê›íË
+//	ANSELH = 0x00;	//ADê›íË
 	
 	//Port I/O Setting 
     //       0b76543210

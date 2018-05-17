@@ -1,7 +1,7 @@
 [p LITE_MODE AUTOSTATIC PIC14 PICREGULAR PICMID ]
 [d version 1.1 ]
 [d edition pro ]
-[d chip 16F887 ]
+[d chip 16LF877A ]
 [d frameptr 6 ]
 "6 C:\Program Files (x86)\Microchip\xc8\v1.45\sources\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
@@ -63,19 +63,15 @@
 [v _I2C_Master_Wait I2C_Master_Wait `(v  1 e 1 0 ]
 "19
 [v _I2C_Master_Start I2C_Master_Start `(v  1 e 1 0 ]
-"24
-[v _I2C_Master_RepeatedStart I2C_Master_RepeatedStart `(v  1 e 1 0 ]
 "29
 [v _I2C_Master_Stop I2C_Master_Stop `(v  1 e 1 0 ]
 "34
 [v _I2C_Master_Write I2C_Master_Write `(v  1 e 1 0 ]
-"39
-[v _I2C_Master_Read I2C_Master_Read `(uc  1 e 1 0 ]
 "51
 [v _EEPROM_Write EEPROM_Write `(v  1 e 1 0 ]
 "8 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\Init_MPU.c
 [v _Init_MPU Init_MPU `(v  1 e 1 0 ]
-"38 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
+"53 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
 [v _main main `(v  1 e 1 0 ]
 "6 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\UART.c
 [v _Init_SERIAL Init_SERIAL `(v  1 e 1 0 ]
@@ -85,27 +81,25 @@
 [v _NM_waddress NM_waddress `(v  1 e 1 0 ]
 "78
 [v _TXOBC_waddress TXOBC_waddress `(v  1 e 1 0 ]
-"71 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f887.h
+"71 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
 [v _STATUS STATUS `VEuc  1 e 1 @3 ]
 "164
 [v _PORTA PORTA `VEuc  1 e 1 @5 ]
-[s S342 . 1 `uc 1 RA0 1 0 :1:0 
+[s S324 . 1 `uc 1 RA0 1 0 :1:0 
 `uc 1 RA1 1 0 :1:1 
 `uc 1 RA2 1 0 :1:2 
 `uc 1 RA3 1 0 :1:3 
 `uc 1 RA4 1 0 :1:4 
 `uc 1 RA5 1 0 :1:5 
-`uc 1 RA6 1 0 :1:6 
-`uc 1 RA7 1 0 :1:7 
 ]
-"181
-[u S351 . 1 `S342 1 . 1 0 ]
-[v _PORTAbits PORTAbits `VES351  1 e 1 @5 ]
-"226
+"179
+[u S331 . 1 `S324 1 . 1 0 ]
+[v _PORTAbits PORTAbits `VES331  1 e 1 @5 ]
+"214
 [v _PORTB PORTB `VEuc  1 e 1 @6 ]
-"288
+"276
 [v _PORTC PORTC `VEuc  1 e 1 @7 ]
-[s S376 . 1 `uc 1 RC0 1 0 :1:0 
+[s S352 . 1 `uc 1 RC0 1 0 :1:0 
 `uc 1 RC1 1 0 :1:1 
 `uc 1 RC2 1 0 :1:2 
 `uc 1 RC3 1 0 :1:3 
@@ -114,12 +108,12 @@
 `uc 1 RC6 1 0 :1:6 
 `uc 1 RC7 1 0 :1:7 
 ]
-"305
-[u S385 . 1 `S376 1 . 1 0 ]
-[v _PORTCbits PORTCbits `VES385  1 e 1 @7 ]
-"350
+"293
+[u S361 . 1 `S352 1 . 1 0 ]
+[v _PORTCbits PORTCbits `VES361  1 e 1 @7 ]
+"338
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
-[s S397 . 1 `uc 1 RD0 1 0 :1:0 
+[s S373 . 1 `uc 1 RD0 1 0 :1:0 
 `uc 1 RD1 1 0 :1:1 
 `uc 1 RD2 1 0 :1:2 
 `uc 1 RD3 1 0 :1:3 
@@ -128,172 +122,165 @@
 `uc 1 RD6 1 0 :1:6 
 `uc 1 RD7 1 0 :1:7 
 ]
-"367
-[u S406 . 1 `S397 1 . 1 0 ]
-[v _PORTDbits PORTDbits `VES406  1 e 1 @8 ]
-"412
+"355
+[u S382 . 1 `S373 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES382  1 e 1 @8 ]
+"400
 [v _PORTE PORTE `VEuc  1 e 1 @9 ]
-[s S363 . 1 `uc 1 RE0 1 0 :1:0 
+[s S341 . 1 `uc 1 RE0 1 0 :1:0 
 `uc 1 RE1 1 0 :1:1 
 `uc 1 RE2 1 0 :1:2 
-`uc 1 RE3 1 0 :1:3 
 ]
-"425
-[u S368 . 1 `S363 1 . 1 0 ]
-[v _PORTEbits PORTEbits `VES368  1 e 1 @9 ]
-[s S518 . 1 `uc 1 RBIF 1 0 :1:0 
+"412
+[u S345 . 1 `S341 1 . 1 0 ]
+[v _PORTEbits PORTEbits `VES345  1 e 1 @9 ]
+[s S491 . 1 `uc 1 RBIF 1 0 :1:0 
 `uc 1 INTF 1 0 :1:1 
-`uc 1 T0IF 1 0 :1:2 
+`uc 1 TMR0IF 1 0 :1:2 
 `uc 1 RBIE 1 0 :1:3 
 `uc 1 INTE 1 0 :1:4 
-`uc 1 T0IE 1 0 :1:5 
+`uc 1 TMR0IE 1 0 :1:5 
 `uc 1 PEIE 1 0 :1:6 
 `uc 1 GIE 1 0 :1:7 
 ]
-"480
-[s S527 . 1 `uc 1 . 1 0 :2:0 
-`uc 1 TMR0IF 1 0 :1:2 
+"475
+[s S500 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T0IF 1 0 :1:2 
 `uc 1 . 1 0 :2:3 
-`uc 1 TMR0IE 1 0 :1:5 
+`uc 1 T0IE 1 0 :1:5 
 ]
-[u S532 . 1 `S518 1 . 1 0 `S527 1 . 1 0 ]
-[v _INTCONbits INTCONbits `VES532  1 e 1 @11 ]
-[s S550 . 1 `uc 1 TMR1IF 1 0 :1:0 
+[u S505 . 1 `S491 1 . 1 0 `S500 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES505  1 e 1 @11 ]
+[s S523 . 1 `uc 1 TMR1IF 1 0 :1:0 
 `uc 1 TMR2IF 1 0 :1:1 
 `uc 1 CCP1IF 1 0 :1:2 
 `uc 1 SSPIF 1 0 :1:3 
 `uc 1 TXIF 1 0 :1:4 
 `uc 1 RCIF 1 0 :1:5 
 `uc 1 ADIF 1 0 :1:6 
+`uc 1 PSPIF 1 0 :1:7 
 ]
-"551
-[u S558 . 1 `S550 1 . 1 0 ]
-[v _PIR1bits PIR1bits `VES558  1 e 1 @12 ]
-"648
+"547
+[u S532 . 1 `S523 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES532  1 e 1 @12 ]
+"632
 [v _TMR1 TMR1 `VEus  1 e 2 @14 ]
-[s S588 . 1 `uc 1 TMR1ON 1 0 :1:0 
+[s S565 . 1 `uc 1 TMR1ON 1 0 :1:0 
 `uc 1 TMR1CS 1 0 :1:1 
 `uc 1 nT1SYNC 1 0 :1:2 
 `uc 1 T1OSCEN 1 0 :1:3 
 `uc 1 T1CKPS 1 0 :2:4 
-`uc 1 TMR1GE 1 0 :1:6 
-`uc 1 T1GINV 1 0 :1:7 
 ]
-"698
-[s S596 . 1 `uc 1 . 1 0 :2:0 
-`uc 1 T1INSYNC 1 0 :1:2 
+"678
+[s S571 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T1SYNC 1 0 :1:2 
 `uc 1 . 1 0 :1:3 
 `uc 1 T1CKPS0 1 0 :1:4 
 `uc 1 T1CKPS1 1 0 :1:5 
-`uc 1 . 1 0 :1:6 
-`uc 1 T1GIV 1 0 :1:7 
 ]
-[s S604 . 1 `uc 1 . 1 0 :2:0 
-`uc 1 T1SYNC 1 0 :1:2 
+[s S577 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T1INSYNC 1 0 :1:2 
 ]
-[u S607 . 1 `S588 1 . 1 0 `S596 1 . 1 0 `S604 1 . 1 0 ]
-[v _T1CONbits T1CONbits `VES607  1 e 1 @16 ]
-"841
+[u S580 . 1 `S565 1 . 1 0 `S571 1 . 1 0 `S577 1 . 1 0 ]
+[v _T1CONbits T1CONbits `VES580  1 e 1 @16 ]
+"806
 [v _SSPBUF SSPBUF `VEuc  1 e 1 @19 ]
-"848
+"813
 [v _SSPCON SSPCON `VEuc  1 e 1 @20 ]
-"1131
+"1057
 [v _TXREG TXREG `VEuc  1 e 1 @25 ]
-"1138
+"1064
 [v _RCREG RCREG `VEuc  1 e 1 @26 ]
-"1414
+"1323
 [v _TRISA TRISA `VEuc  1 e 1 @133 ]
-"1476
+"1373
 [v _TRISB TRISB `VEuc  1 e 1 @134 ]
-"1538
+"1435
 [v _TRISC TRISC `VEuc  1 e 1 @135 ]
-"1600
+"1497
 [v _TRISD TRISD `VEuc  1 e 1 @136 ]
-"1662
+"1559
 [v _TRISE TRISE `VEuc  1 e 1 @137 ]
-[s S569 . 1 `uc 1 TMR1IE 1 0 :1:0 
+[s S544 . 1 `uc 1 TMR1IE 1 0 :1:0 
 `uc 1 TMR2IE 1 0 :1:1 
 `uc 1 CCP1IE 1 0 :1:2 
 `uc 1 SSPIE 1 0 :1:3 
 `uc 1 TXIE 1 0 :1:4 
 `uc 1 RCIE 1 0 :1:5 
 `uc 1 ADIE 1 0 :1:6 
+`uc 1 PSPIE 1 0 :1:7 
 ]
-"1716
-[u S577 . 1 `S569 1 . 1 0 ]
-[v _PIE1bits PIE1bits `VES577  1 e 1 @140 ]
-"1977
+"1633
+[u S553 . 1 `S544 1 . 1 0 ]
+[v _PIE1bits PIE1bits `VES553  1 e 1 @140 ]
+"1752
 [v _SSPCON2 SSPCON2 `VEuc  1 e 1 @145 ]
-"2046
+"1821
 [v _SSPADD SSPADD `VEuc  1 e 1 @147 ]
-"2175
+"1828
 [v _SSPSTAT SSPSTAT `VEuc  1 e 1 @148 ]
-"2640
+"2078
 [v _SPBRG SPBRG `VEuc  1 e 1 @153 ]
-"3385
-[v _ANSEL ANSEL `VEuc  1 e 1 @392 ]
-"3447
-[v _ANSELH ANSELH `VEuc  1 e 1 @393 ]
-"3558
+"2371
 [v _ACKDT ACKDT `VEb  1 e 0 @1165 ]
-"3560
+"2373
 [v _ACKEN ACKEN `VEb  1 e 0 @1164 ]
-"3646
+"2399
 [v _BRGH BRGH `VEb  1 e 0 @1218 ]
-"3740
+"2465
 [v _CREN CREN `VEb  1 e 0 @196 ]
-"3774
+"2497
 [v _FERR FERR `VEb  1 e 0 @194 ]
-"3850
+"2531
 [v _OERR OERR `VEb  1 e 0 @193 ]
-"3878
+"2543
 [v _PEN PEN `VEb  1 e 0 @1162 ]
-"3904
+"2561
 [v _RA1 RA1 `VEb  1 e 0 @41 ]
-"3922
+"2575
 [v _RB2 RB2 `VEb  1 e 0 @50 ]
-"3926
+"2579
 [v _RB4 RB4 `VEb  1 e 0 @52 ]
-"3928
+"2581
 [v _RB5 RB5 `VEb  1 e 0 @53 ]
-"3942
+"2595
 [v _RC2 RC2 `VEb  1 e 0 @58 ]
-"3948
+"2601
 [v _RC5 RC5 `VEb  1 e 0 @61 ]
-"3960
+"2613
 [v _RCEN RCEN `VEb  1 e 0 @1163 ]
-"3964
+"2615
 [v _RCIE RCIE `VEb  1 e 0 @1125 ]
-"3966
+"2617
 [v _RCIF RCIF `VEb  1 e 0 @101 ]
-"4000
+"2649
 [v _RSEN RSEN `VEb  1 e 0 @1161 ]
-"4002
+"2651
 [v _RX9 RX9 `VEb  1 e 0 @198 ]
-"4016
+"2659
 [v _SEN SEN `VEb  1 e 0 @1160 ]
-"4022
+"2663
 [v _SPEN SPEN `VEb  1 e 0 @199 ]
-"4028
+"2665
 [v _SREN SREN `VEb  1 e 0 @197 ]
-"4058
+"2683
 [v _SYNC SYNC `VEb  1 e 0 @1220 ]
-"4202
+"2803
 [v _TX9 TX9 `VEb  1 e 0 @1222 ]
-"4208
+"2809
 [v _TXEN TXEN `VEb  1 e 0 @1221 ]
-"4210
+"2811
 [v _TXIE TXIE `VEb  1 e 0 @1124 ]
-"4212
+"2813
 [v _TXIF TXIF `VEb  1 e 0 @100 ]
 "17 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\decode_AX25.c
 [v _commandSize commandSize `DCui  1 e 2 0 ]
 "25
 [v _rcv_state rcv_state `ui  1 s 2 rcv_state ]
 "26
-[v _dPacket dPacket `[50]uc  1 e 50 0 ]
+[v _dPacket dPacket `[52]uc  1 e 52 0 ]
 "27
-[v _dData dData `[16]uc  1 e 16 0 ]
+[v _dData dData `[32]uc  1 e 32 0 ]
 "28
 [v _dPacketnum dPacketnum `ui  1 e 2 0 ]
 "29
@@ -314,7 +301,7 @@
 [v _ePacket ePacket `[5]uc  1 e 5 0 ]
 "29
 [v _ebitstatus ebitstatus `ui  1 e 2 0 ]
-"13 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\fmcw.h
+"13 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\FMCW.h
 [v _FMTX_Nref FMTX_Nref `i  1 e 2 0 ]
 "14
 [v _FMTX_Nprg FMTX_Nprg `[5]i  1 e 10 0 ]
@@ -326,30 +313,28 @@
 [v _FMRX_Nref FMRX_Nref `i  1 e 2 0 ]
 "18
 [v _FMRX_Nprg FMRX_Nprg `[5]i  1 e 10 0 ]
-"6 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\I2C.c
-[v _EEPROMData EEPROMData `[32]uc  1 e 32 0 ]
-"38 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
+"53 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"132
+"147
 [v main@FMRX_Nprg FMRX_Nprg `[5]i  1 a 10 20 ]
-"131
+"146
 [v main@CWTX_Nprg CWTX_Nprg `[5]i  1 a 10 10 ]
-"130
+"145
 [v main@FMTX_Nprg FMTX_Nprg `[5]i  1 a 10 0 ]
-"105
+"120
 [v main@NM_wad_header NM_wad_header `uc  1 a 1 31 ]
-"78
+"93
 [v main@dData dData `*.5uc  1 a 1 32 ]
-"89
+"104
 [v main@TXOBC_wad_header TXOBC_wad_header `uc  1 a 1 30 ]
-"127
-[v main@F2013 F2013 `[5]i  1 s 10 F2013 ]
-"130
-[v main@F2015 F2015 `[5]i  1 s 10 F2015 ]
-"131
-[v main@F2017 F2017 `[5]i  1 s 10 F2017 ]
-"210
+"142
+[v main@F1460 F1460 `[5]i  1 s 10 F1460 ]
+"145
+[v main@F1462 F1462 `[5]i  1 s 10 F1462 ]
+"146
+[v main@F1464 F1464 `[5]i  1 s 10 F1464 ]
+"225
 } 0
 "78 C:\Users\Kosuke\Documents\PIC_Rx\PIC_Rx\UART.c
 [v _TXOBC_waddress TXOBC_waddress `(v  1 e 1 0 ]
@@ -379,31 +364,31 @@
 [v _waitFlag waitFlag `(v  1 e 1 0 ]
 {
 "236
-[v waitFlag@j_137 j `ui  1 a 2 24 ]
+[v waitFlag@j_135 j `ui  1 a 2 24 ]
 "133
-[v waitFlag@j_124 j `ui  1 a 2 10 ]
+[v waitFlag@j_122 j `ui  1 a 2 10 ]
 "224
-[v waitFlag@j_135 j `ui  1 a 2 22 ]
+[v waitFlag@j_133 j `ui  1 a 2 22 ]
 "121
-[v waitFlag@j_122 j `ui  1 a 2 8 ]
+[v waitFlag@j_120 j `ui  1 a 2 8 ]
 "212
-[v waitFlag@j_133 j `ui  1 a 2 20 ]
+[v waitFlag@j_131 j `ui  1 a 2 20 ]
 "109
-[v waitFlag@j_120 j `ui  1 a 2 6 ]
+[v waitFlag@j_118 j `ui  1 a 2 6 ]
 "200
-[v waitFlag@j_131 j `ui  1 a 2 18 ]
+[v waitFlag@j_129 j `ui  1 a 2 18 ]
 "97
-[v waitFlag@j_118 j `ui  1 a 2 4 ]
+[v waitFlag@j_116 j `ui  1 a 2 4 ]
 "188
-[v waitFlag@j_129 j `ui  1 a 2 16 ]
+[v waitFlag@j_127 j `ui  1 a 2 16 ]
 "85
 [v waitFlag@j j `ui  1 a 2 2 ]
 "72
 [v waitFlag@i i `ui  1 a 2 0 ]
 "176
-[v waitFlag@j_127 j `ui  1 a 2 14 ]
+[v waitFlag@j_125 j `ui  1 a 2 14 ]
 "165
-[v waitFlag@j_126 j `ui  1 a 2 12 ]
+[v waitFlag@j_124 j `ui  1 a 2 12 ]
 "55
 [v waitFlag@flag_judge flag_judge `ui  1 a 2 26 ]
 "56
@@ -436,7 +421,7 @@
 [v _fcscheck fcscheck `(ui  1 e 2 0 ]
 {
 "319
-[v fcscheck@i_149 i `ui  1 a 2 7 ]
+[v fcscheck@i_147 i `ui  1 a 2 7 ]
 "317
 [v fcscheck@i i `ui  1 a 2 5 ]
 "314
@@ -559,9 +544,9 @@
 [v _RFDOUT RFDOUT `(v  1 e 1 0 ]
 {
 "214
-[v RFDOUT@i_484 i `i  1 a 2 31 ]
+[v RFDOUT@i_457 i `i  1 a 2 31 ]
 "208
-[v RFDOUT@i_483 i `i  1 a 2 27 ]
+[v RFDOUT@i_456 i `i  1 a 2 27 ]
 "203
 [v RFDOUT@i i `i  1 a 2 29 ]
 "201
@@ -577,9 +562,9 @@
 "146
 [v OUTFQ@j j `i  1 a 2 58 ]
 "172
-[v OUTFQ@i_474 i `i  1 a 2 56 ]
+[v OUTFQ@i_447 i `i  1 a 2 56 ]
 "145
-[v OUTFQ@i_472 i `i  1 a 2 50 ]
+[v OUTFQ@i_445 i `i  1 a 2 50 ]
 "140
 [v OUTFQ@i i `i  1 a 2 54 ]
 "138

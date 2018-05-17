@@ -23,8 +23,8 @@ const UINT commandSize = 32;
 #define bit_dL 0x00
 
 static UINT rcv_state = 0;
-UBYTE dPacket[50];
-UBYTE dData[16];
+UBYTE dPacket[52];
+UBYTE dData[32];
 UINT  dPacketnum = 0;
 UBYTE dfcshi, dfcslo;
 

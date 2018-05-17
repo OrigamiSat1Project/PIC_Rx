@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <xc.h>
-#include <PIC16F887.h>
+#include <pic16lf877a.h>
 #include "UART.h"
 #include "Init_MPU.h"
 #include "Type_define.h"
