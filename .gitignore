@@ -1,0 +1,11 @@
+# gitignore file for manage repository
+
+# not ignore
+!*.c
+!*.h
+!/**/nbproject/
+
+# ignore
+/**/build
+/**/debug
+/**/dist
