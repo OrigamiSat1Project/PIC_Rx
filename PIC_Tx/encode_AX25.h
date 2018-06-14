@@ -22,7 +22,7 @@
 #define txd RC5
 #define UHFstart RC2
 #define FMPTT RC0
-#define CWKEY RB3
+#define CWKEY RB2
 
 void SendPacket(UBYTE *);
 //void test_Packetmaker(UBYTE *);

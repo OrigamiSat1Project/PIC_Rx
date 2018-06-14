@@ -48,8 +48,11 @@ UINT Packetmaker(UBYTE *eDataField){
     ePacket[13] = 0xe1; //SSID.e1?
     ePacket[14] = 0x03; //Control.30?
     ePacket[15] = 0xf0; //PID
-    UINT Datanum = 0;
-    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
+//    UINT Datanum = 0;
+//    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
+//    for(Datanum=0;eDataField[Datanum] != 0xD9;Datanum++);
+    UINT Datanum;
+    Datanum = 32;
     for(UINT i=0;i<Datanum;i++){
         ePacket[16+i] = eDataField[i];
     }

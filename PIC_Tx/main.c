@@ -106,7 +106,7 @@ void main(void) {
         //RB5Ç™HighÇ»ÇÁEEPROMì«Ç›çûÇ›
         UBYTE *EEPROMData;
 //        if (UHFstart==1){
-//            FMPTT = 1;
+            FMPTT = 1;
             CWKEY = 0;
 //            UBYTE EEPROMData[32];
 //            UINT EEPROMDataLength;
@@ -119,13 +119,13 @@ void main(void) {
             //  encoder
             //UBYTE ePacket[50];
 //            FMPTT = 1;
-//            UBYTE EEPROMTestData[5];
-//            EEPROMTestData[0] = 'u';
-//            EEPROMTestData[1] = 'n';
-//            EEPROMTestData[2] = 'k';
-//            EEPROMTestData[3] = 'o';
-//            EEPROMTestData[4] = 0x0d;
-//            SendPacket(EEPROMTestData);
+            UBYTE EEPROMTestData[5];
+            EEPROMTestData[0] = 'u';
+            EEPROMTestData[1] = 'n';
+            EEPROMTestData[2] = 'k';
+            EEPROMTestData[3] = 'o';
+            EEPROMTestData[4] = 0x0d;
+            SendPacket(EEPROMTestData);
 //            SendPacket(EEPROMData);    
             //test_Packetmaker(EEPROMData);
             //SendPacket();
@@ -178,7 +178,7 @@ void main(void) {
         
 //        }else{
 //            put_error;
-            FMPTT = 0;
+//            FMPTT = 0;
             //putch('B');
 //        }
         //}

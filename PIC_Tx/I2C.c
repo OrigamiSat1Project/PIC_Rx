@@ -74,7 +74,7 @@ void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYT
     __delay_ms(200);
 }
 
-void EEPROM_Read2(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+void EEPROM_Read_b(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
     UBYTE Address = EEPROM_address << 1;
     UBYTE ReadAddress = Address | 0x01;
     

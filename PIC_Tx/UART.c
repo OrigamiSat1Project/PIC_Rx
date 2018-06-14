@@ -105,7 +105,7 @@ void interrupt InterReceiver( void ){
             UBYTE EEPROMCmdData[40];
             UINT EEPROMCmdDataLength;
             EEPROMCmdDataLength = 40;
-            EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            EEPROM_Read_b(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
             __delay_ms(200);
             FMPTT = 1;
             CWKEY = 0;
@@ -139,7 +139,7 @@ void interrupt InterReceiver( void ){
             UBYTE EEPROMCmdData[];
             UINT EEPROMCmdDataLength;
             EEPROMCmdDataLength = 1;
-            EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
+            EEPROM_Read_b(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
             __delay_ms(200);
             FMPTT = 1;
             CWKEY = 0;
@@ -190,21 +190,40 @@ void interrupt InterReceiver( void ){
             led_yellow = 1;
             RXDATA[1] = getch();
             RXDATA[2] = getch();
-            RXDATA[3] = getch();
+            RXDATA[3] = getch();//No. of data
+            RXDATA[4] = getch();//No. of data
             RCIF = 0 ;
-
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 1;
-            EEPROM_Read2(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
+            
+            short int PhotoAdd;
+            PhotoAdd = RXDATA[1] * 256 + RXDATA[2];
+            short int RestPhotoSize;
+            RestPhotoSize = RXDATA[3] * 256 + RXDATA[4];
+            
+            while (RestPhotoSize > 0) {
+                __delay_ms(50);
+                UBYTE Packet[32];
+                UINT PacketSize;
+                PacketSize = 32;
+                UBYTE PhotoHAdd;
+                UBYTE PhotoLAdd;
+                PhotoHAdd = PhotoAdd / 256;
+                PhotoLAdd = PhotoAdd % 256;
+                EEPROM_Read_b(EEPROM_Maddress,PhotoHAdd,PhotoLAdd, Packet,PacketSize);
+                __delay_ms(200);
+                FMPTT = 1;
+                CWKEY = 0;
+//                for(int i = 0; i<20;i++){
+//                    SendPacket(Packet);
+//                    __delay_ms(250);
+//                }
+                for(int i = 0; i<32;i++){
+                    putch(Packet[i]);
+                    __delay_ms(10);
+                }
+                PhotoAdd = PhotoAdd + PacketSize;
+                RestPhotoSize = RestPhotoSize - PacketSize;
             }
+            
             FMPTT = 0;
             led_yellow = 0;
         }else{
