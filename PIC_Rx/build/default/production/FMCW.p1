@@ -7,6 +7,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S5 . . ]
 "179
 [v _PORTAbits `VS5 ~T0 @X0 0 e@5 ]
+"220
+[s S8 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S8 . RB0 RB1 RB2 RB3 RB4 RB5 RB6 RB7 ]
+"219
+[u S7 `S8 1 ]
+[n S7 . . ]
+"231
+[v _PORTBbits `VS7 ~T0 @X0 0 e@6 ]
 "406
 [s S14 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S14 . RE0 RE1 RE2 ]
@@ -1138,9 +1146,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.c: 21: PORTAbits.RA3 = 0;
 "21
 [e = . . _PORTAbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 22: PORTAbits.RA4 = 0;
+[; ;FMCW.c: 22: PORTBbits.RB0 = 0;
 "22
-[e = . . _PORTAbits 0 4 -> -> 0 `i `uc ]
+[e = . . _PORTBbits 0 0 -> -> 0 `i `uc ]
 [; ;FMCW.c: 23: PORTEbits.RE1 = 0;
 "23
 [e = . . _PORTEbits 0 1 -> -> 0 `i `uc ]
@@ -1392,15 +1400,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.c: 121: {
 "121
 {
-[; ;FMCW.c: 122: PORTAbits.RA4 = 1;
+[; ;FMCW.c: 122: PORTBbits.RB0 = 1;
 "122
-[e = . . _PORTAbits 0 4 -> -> 1 `i `uc ]
+[e = . . _PORTBbits 0 0 -> -> 1 `i `uc ]
 [; ;FMCW.c: 123: _NOP();
 "123
 [e ( __NOP ..  ]
-[; ;FMCW.c: 124: PORTAbits.RA4 = 0;
+[; ;FMCW.c: 124: PORTBbits.RB0 = 0;
 "124
-[e = . . _PORTAbits 0 4 -> -> 0 `i `uc ]
+[e = . . _PORTBbits 0 0 -> -> 0 `i `uc ]
 "125
 }
 [e :U 107 ]

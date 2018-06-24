@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files (x86)\Microchip\xc8\v1.45\dat\en_msgs.txt -cs \
   -h+dist/default/production\PIC_Rx.production.sym \
   --cmf=dist/default/production\PIC_Rx.production.cmf -z -Q16LF877A \
-  -oC:\Users\Kosuke\AppData\Local\Temp\s1tg.2 \
+  -oC:\Users\Kosuke\AppData\Local\Temp\s39o.2 \
   -Mdist/default/production/PIC_Rx.production.map -E1 -ver=XC8 \
   -ASTACK=0149h-016fh -pstack=STACK -ACODE=00h-07FFhx4 -ASTRCODE=00h-01FFFh \
   -ASTRING=00h-0FFhx32 -ACONST=00h-0FFhx32 -AENTRY=00h-0FFhx32 \
@@ -18,7 +18,7 @@ Linker command line:
   -pfunctab=ENTRY -ACONFIG=02007h-02007h -pconfig=CONFIG -DCONFIG=2 \
   -AIDLOC=02000h-02003h -pidloc=IDLOC -DIDLOC=2 -AEEDATA=00h-0FFh/02100h \
   -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 -DSTRCODE=2 -DSTRING=2 -DCONST=2 \
-  -DENTRY=2 -k C:\Users\Kosuke\AppData\Local\Temp\s1tg.obj \
+  -DENTRY=2 -k C:\Users\Kosuke\AppData\Local\Temp\s39o.obj \
   dist/default/production\PIC_Rx.production.obj 
 
 Object code version is 3.11
@@ -28,7 +28,7 @@ Machine type is 16LF877A
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\Kosuke\AppData\Local\Temp\s1tg.obj
+C:\Users\Kosuke\AppData\Local\Temp\s39o.obj
                 end_init                              0        0        3        0       0
                 config                             2007     2007        1     400E       0
 dist/default/production\PIC_Rx.production.obj
@@ -286,15 +286,15 @@ OUTFQ@Nprg_b                    cstackBANK0  0030
 OUTFQ@count                     cstackBANK0  0054
 OUTFQ@fmcwtxrx                  cstackCOMMON 0079
 OUTFQ@i                         cstackBANK0  0056
-OUTFQ@i_445                     cstackBANK0  0052
-OUTFQ@i_447                     cstackBANK0  0058
+OUTFQ@i_474                     cstackBANK0  0052
+OUTFQ@i_476                     cstackBANK0  0058
 OUTFQ@j                         cstackBANK0  005A
 RFDOUT@Nref                     cstackCOMMON 007B
 RFDOUT@Nref_b                   cstackBANK0  0023
 RFDOUT@fmcwtxrx                 cstackCOMMON 0079
 RFDOUT@i                        cstackBANK0  003D
-RFDOUT@i_456                    cstackBANK0  003B
-RFDOUT@i_457                    cstackBANK0  003F
+RFDOUT@i_485                    cstackBANK0  003B
+RFDOUT@i_486                    cstackBANK0  003F
 ReceivePacket_data@fcschecker   cstackBANK0  003D
 ReceivePacket_data@i            cstackBANK0  003F
 STBOUT@fmcwtxrx                 cstackCOMMON 0072
@@ -336,6 +336,7 @@ _PIR1bits                       (abs)        000C
 _PORTA                          (abs)        0005
 _PORTAbits                      (abs)        0005
 _PORTB                          (abs)        0006
+_PORTBbits                      (abs)        0006
 _PORTC                          (abs)        0007
 _PORTCbits                      (abs)        0007
 _PORTD                          (abs)        0008

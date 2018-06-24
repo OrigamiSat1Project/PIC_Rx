@@ -20,7 +20,7 @@ int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [1
 /* PIN assign of FMRX */
 #define FMRX_CLK        PORTAbits.RA2
 #define FMRX_DAT        PORTAbits.RA3
-#define FMRX_STB        PORTAbits.RA4
+#define FMRX_STB        PORTBbits.RB0
 /* PIN assign of FMTX */
 #define FMTX_CLK        PORTEbits.RE1
 #define FMTX_DAT        PORTEbits.RE0

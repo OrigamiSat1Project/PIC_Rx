@@ -1498,7 +1498,7 @@ void Init_FMCW(void){
 
 PORTAbits.RA2 = 0;
 PORTAbits.RA3 = 0;
-PORTAbits.RA4 = 0;
+PORTBbits.RB0 = 0;
 PORTEbits.RE1 = 0;
 PORTEbits.RE0 = 0;
 PORTAbits.RA5 = 0;
@@ -1581,9 +1581,9 @@ PORTDbits.RD0 = 0;
 }
 if(fmcwtxrx == 3)
 {
-PORTAbits.RA4 = 1;
+PORTBbits.RB0 = 1;
 _NOP();
-PORTAbits.RA4 = 0;
+PORTBbits.RB0 = 0;
 }
 }
 
