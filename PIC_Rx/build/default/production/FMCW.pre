@@ -1499,9 +1499,9 @@ void Init_FMCW(void){
 PORTAbits.RA2 = 0;
 PORTAbits.RA3 = 0;
 PORTBbits.RB0 = 0;
+PORTEbits.RE2 = 0;
 PORTEbits.RE1 = 0;
 PORTEbits.RE0 = 0;
-PORTAbits.RA5 = 0;
 PORTCbits.RC2 = 0;
 PORTDbits.RD2 = 0;
 PORTDbits.RD1 = 0;
@@ -1513,11 +1513,11 @@ PORTDbits.RD3 = 0;
 void L_OUT(int fmcwtxrx){
 if(fmcwtxrx == 1)
 {
-PORTEbits.RE0 = 0;
-_NOP();
-PORTEbits.RE1 = 1;
-_NOP();
 PORTEbits.RE1 = 0;
+_NOP();
+PORTEbits.RE2 = 1;
+_NOP();
+PORTEbits.RE2 = 0;
 }
 if(fmcwtxrx == 2)
 {
@@ -1541,11 +1541,11 @@ PORTAbits.RA2 = 0;
 void H_OUT(int fmcwtxrx){
 if(fmcwtxrx == 1)
 {
-PORTEbits.RE0 = 1;
-_NOP();
 PORTEbits.RE1 = 1;
 _NOP();
-PORTEbits.RE1 = 0;
+PORTEbits.RE2 = 1;
+_NOP();
+PORTEbits.RE2 = 0;
 }
 if(fmcwtxrx == 2)
 {
@@ -1569,9 +1569,9 @@ PORTAbits.RA2 = 0;
 void STBOUT(int fmcwtxrx){
 if(fmcwtxrx == 1)
 {
-PORTAbits.RA5 = 1;
+PORTEbits.RE0 = 1;
 _NOP();
-PORTAbits.RA5 = 0;
+PORTEbits.RE0 = 0;
 }
 if(fmcwtxrx == 2)
 {

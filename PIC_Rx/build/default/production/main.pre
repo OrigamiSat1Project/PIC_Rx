@@ -1721,6 +1721,7 @@ Init_MPU();
 Init_I2C_M(400000);
 
 # 69
+RB1 = 1;
 RB2 = 1;
 _delay((unsigned long)((1000)*(10000000/4000.0)));
 
@@ -1729,10 +1730,14 @@ CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 RB2 = 0;
 
+_delay((unsigned long)((500)*(10000000/4000.0)));
+RB3 = 1;
+
+
 
 while(1){
 
-# 93
+# 98
 UBYTE *dData;
 dData = ReceivePacket_data();
 RB2 = 1;
@@ -1747,7 +1752,7 @@ _delay((unsigned long)((100)*(10000000/4000.0)));
 UBYTE TXOBC_wad_header = 0x74;
 TXOBC_waddress(TXOBC_wad_header, 0x00, 0x00);
 
-# 113
+# 118
 _delay((unsigned long)((7000)*(10000000/4000.0)));
 
 
@@ -1771,7 +1776,7 @@ if(dData[2] == 'r'){
 switch(dData[3]){
 case 'E':
 
-# 141
+# 146
 Reset_EPS();
 _delay((unsigned long)((5000)*(10000000/4000.0)));
 
@@ -1811,7 +1816,7 @@ _delay((unsigned long)((1000)*(10000000/4000.0)));
 RB2 = 0;
 }
 
-# 222
+# 227
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 return;

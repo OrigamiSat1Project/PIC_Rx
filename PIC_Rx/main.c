@@ -66,6 +66,7 @@ void main(void) {
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
     //Set PLL DATA 
     /**/
+    RB1 = 1;
     led_white = 1;
     __delay_ms(1000);
     
@@ -73,6 +74,10 @@ void main(void) {
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);
     led_white = 0;
+    
+    __delay_ms(500);
+    RB3 = 1;
+//    RC5 = 1;
 //    printf("start\r\n");
 //    RA1 = 0;
     while(1){
