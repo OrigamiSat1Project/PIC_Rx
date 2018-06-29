@@ -66,7 +66,7 @@ void main(void) {
     //SetPLL(FMTX_Nref, FMTX_Nprg, CWTX_Nref, CWTX_Nprg, FMRX_Nref, FMRX_Nprg);
     //Set PLL DATA 
     /**/
-    RB1 = 1;
+//    RB1 = 1;
     led_white = 1;
     __delay_ms(1000);
     
