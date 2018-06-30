@@ -77,7 +77,7 @@ void main(void) {
     
     __delay_ms(500);
     RB3 = 1;
-//    RC5 = 1;
+    RC5 = 1;
 //    printf("start\r\n");
 //    RA1 = 0;
     while(1){
