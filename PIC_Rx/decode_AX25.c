@@ -6,6 +6,7 @@
 #include "time.h"
 #include "decode_AX25.h"
 #include "encode_AX25.h"
+#include "PIN_define.h"
 
 void UART_TX(UINT,UINT);
 void waitByte(UINT,UINT);
@@ -43,7 +44,7 @@ UINT getbit(void){
     for(UINT i=0;i<getbitloop;i++){
         if(FX614_RXD != oldbit){
             __delay_us(hspan);
-            led_yellow= 1- led_yellow;
+            LED_YELLOW= 1- LED_YELLOW;
             return 0;
         }
     }

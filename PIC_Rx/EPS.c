@@ -1,6 +1,7 @@
 //#include <string.h>
 #include <xc.h>
 #include "EPS.h"
+#include "PIN_define.h"
 #include "time.h"
 
 /*

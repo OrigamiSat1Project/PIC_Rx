@@ -14,6 +14,7 @@
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "EPS.h"
+#include "PIN_define.h"
 
 // PIC16F887 Configuration Bit Settings
 
@@ -67,13 +68,13 @@ void main(void) {
     //Set PLL DATA 
     /**/
 //    RB1 = 1;
-    led_white = 1;
+    LED_WHITE = 1;
     __delay_ms(1000);
     
     FMTX(FMTX_Nref, FMTX_Nprg);
     CWTX(CWTX_Nref, CWTX_Nprg);
     FMRX(FMRX_Nref, FMRX_Nprg);
-    led_white = 0;
+    LED_WHITE = 0;
     
     __delay_ms(500);
     RB3 = 1;
@@ -97,9 +98,9 @@ void main(void) {
 //        RA1 = 0;
         UBYTE *dData;
         dData = ReceivePacket_data();
-        led_white = 1;
+        LED_WHITE = 1;
         __delay_ms(500);
-        led_white = 0;
+        LED_WHITE = 0;
         //Write uplink command in EEPROM
         EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
         __delay_ms(100);
@@ -177,9 +178,9 @@ void main(void) {
 
             }
         }else{
-            led_white = 1;
+            LED_WHITE = 1;
             __delay_ms(1000);
-            led_white = 0;
+            LED_WHITE = 0;
         }
         
         

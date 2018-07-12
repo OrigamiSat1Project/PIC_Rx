@@ -18,19 +18,19 @@ int FMRX_Nref        =   2560;          // Nref = 2560 (const)
 int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
 
 /* PIN assign of FMRX */
-#define FMRX_CLK        PORTAbits.RA2
-#define FMRX_DAT        PORTAbits.RA3
-#define FMRX_STB        PORTBbits.RB0
+//#define FMRX_CLK        PORTAbits.RA2
+//#define FMRX_DAT        PORTAbits.RA3
+//#define FMRX_STB        PORTBbits.RB0
 /* PIN assign of FMTX */
-#define FMTX_CLK        PORTEbits.RE2
-#define FMTX_DAT        PORTEbits.RE1
-#define FMTX_STB        PORTEbits.RE0
-#define FMTX_PTT        PORTCbits.RC2
+//#define FMTX_CLK        PORTEbits.RE2
+//#define FMTX_DAT        PORTEbits.RE1
+//#define FMTX_STB        PORTEbits.RE0
+//#define FMTX_PTT        PORTCbits.RC2
 /* PIN assign of CWTX */
-#define CWRX_CLK        PORTDbits.RD2//RX -> TX?
-#define CWTX_DAT        PORTDbits.RD1
-#define CWTX_STB        PORTDbits.RD0
-#define CWTX_KEY        PORTDbits.RD3
+//#define CWRX_CLK        PORTDbits.RD2//RX -> TX?
+//#define CWTX_DAT        PORTDbits.RD1
+//#define CWTX_STB        PORTDbits.RD0
+//#define CWTX_KEY        PORTDbits.RD3
 
 void Init_FMCW(void);
 

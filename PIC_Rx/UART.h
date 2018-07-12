@@ -9,7 +9,7 @@
 #ifndef UART_H
 #define	UART_H
 
-#define TXOBC_MULTI        RC5
+//#define TXOBC_MULTI        RC5
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "Type_define.h"

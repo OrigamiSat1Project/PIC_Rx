@@ -6,6 +6,7 @@
 #include "time.h"
 #include "decode_AX25.h"
 #include "encode_AX25.h"
+#include "PIN_define.h"
 
 #define bit_H 0x01
 #define bit_L 0x00
@@ -95,11 +96,11 @@ void SendByte(UBYTE byte){
     UBYTE bt;
     for(UINT i=0;i<8;i++){
         bt = byte & bit_H;
-        //  eDataField ï¿½ï¿½ FCSCalculate
+        //  eDataField ?¿½?¿½ FCSCalculate
         if(efcsflag == 0 && eflag == 0){
             fcsbit(bt);
         }
-        //  eDataField, FCSField ï¿½ï¿½ bitestuffing
+        //  eDataField, FCSField ?¿½?¿½ bitestuffing
         if(bt == bit_L){
             flipout();
         }else{
@@ -118,10 +119,10 @@ void SendByte(UBYTE byte){
 void flipout(void){
     estuff = 0;
     if(ebitstatus == low){
-        txd = high;
+        TXD = high;
         ebitstatus = high;
     }else{
-        txd = low;
+        TXD = low;
         ebitstatus = low;
     }
 }

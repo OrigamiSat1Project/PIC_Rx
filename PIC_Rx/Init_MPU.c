@@ -1,5 +1,6 @@
 #include <xc.h>
 #include "Init_MPU.h"
+#include "PIN_define.h"
 #include "Type_define.h"
 #include "time.h"
 #include "decode_AX25.h"
@@ -40,7 +41,7 @@ void led_onoff(void){
     __delay_us(espan);
 }
 void debug_ledy(void){
-    if(led_yellow == high){
+    if(LED_YELLOW == high){
         ledy_off();
     }else{
         ledy_on();

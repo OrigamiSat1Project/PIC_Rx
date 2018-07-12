@@ -19,7 +19,7 @@
 
 #define mycall "JQ1YCZ"
 #define ucall  "JQ1ZHX"
-#define txd RB2
+//#define txd RB2
 
 void SendPacket(void);
 /*

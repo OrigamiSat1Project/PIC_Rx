@@ -8,9 +8,9 @@
 #ifndef EPS_H
 #define	EPS_H
 
-/* EPS銈儷銈广偆銉冦儊銇償銉抽厤缃倰瀹氱京 */
-#define SEP_SW        RB4
-#define RBF_SW        RA1
+/* EPS銈儷銈广偆銉?銉併?償銉抽厤缃倰瀹氱京 */
+//#define SEP_SW        RB4
+//#define RBF_SW        RA1
 
 //#define EPS_kill_1    "EA"
 //#define EPS_kill_2    0x0D

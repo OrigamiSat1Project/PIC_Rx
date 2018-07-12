@@ -1,6 +1,7 @@
 
 #include <xc.h>
 #include "FMCW.h"
+#include "PIN_define.h"
 
 /* Do not change!! */
 #define FMTX_   1
@@ -24,7 +25,7 @@ void Init_FMCW(void){
     FMTX_DAT = 0;
     FMTX_STB = 0;
     FMTX_PTT = 0;
-    CWRX_CLK = 0;
+    CWTX_CLK = 0;
     CWTX_DAT = 0;
     CWTX_STB = 0;
     CWTX_KEY = 0;
@@ -50,9 +51,9 @@ void L_OUT(int fmcwtxrx){
     {
         CWTX_DAT = 0;
         _NOP();
-        CWRX_CLK = 1;
+        CWTX_CLK = 1;
         _NOP();
-        CWRX_CLK = 0;
+        CWTX_CLK = 0;
     }
     if(fmcwtxrx == FMRX_)
     {
@@ -84,9 +85,9 @@ void H_OUT(int fmcwtxrx){
     {
         CWTX_DAT = 1;
         _NOP();
-        CWRX_CLK = 1;
+        CWTX_CLK = 1;
         _NOP();
-        CWRX_CLK = 0;
+        CWTX_CLK = 0;
     }
     if(fmcwtxrx == FMRX_)
     {
