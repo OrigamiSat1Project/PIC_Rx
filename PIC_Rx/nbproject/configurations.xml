@@ -16,6 +16,7 @@
       <itemPath>FMCW.h</itemPath>
       <itemPath>EPS.h</itemPath>
       <itemPath>WDT.h</itemPath>
+      <itemPath>CRC16.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -34,6 +35,7 @@
       <itemPath>FMCW.c</itemPath>
       <itemPath>EPS.c</itemPath>
       <itemPath>WDT.c</itemPath>
+      <itemPath>CRC16.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -170,7 +172,7 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1fff"/>
-        <property key="poweroptions.powerenable" value="false"/>
+        <property key="poweroptions.powerenable" value="true"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.preservedataflash" value="false"/>
@@ -185,7 +187,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="3.25"/>
+        <property key="voltagevalue" value="3.375"/>
       </ICD3PlatformTool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>

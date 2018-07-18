@@ -1,8 +1,12 @@
 #include <xc.h>
+
 #include "PIN_define.h"
+//#include <string.h>
+#include <stdio.h>
 #include "UART.h"
 #include "Type_define.h"
 #include "time.h"
+#include "CRC16.h"
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 14400 bps
@@ -86,4 +90,19 @@ void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_addr
     putch(wlow_address);
     __delay_ms(50);
     TXOBC_MULTI = 0;
+}
+
+void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4){
+    UBYTE Command[8];
+    UWORD CRC;
+    Command[0] = TaskTarget;
+    Command[1] = CommandType;
+    Command[2] = Parameter1;
+    Command[3] = Parameter2;
+    Command[4] = Parameter3;
+    Command[5] = Parameter4;
+    CRC = crc16(0, Command, 6);
+    Command[6] = CRC >> 8;
+    Command[7] = CRC && 0x00FF;
+    putstr(Command);
 }

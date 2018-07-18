@@ -78,7 +78,7 @@ void main(void) {
     
     __delay_ms(500);
     RB3 = 1;
-//    RC5 = 1;
+    RC5 = 1;
 //    printf("start\r\n");
 //    RA1 = 0;
     while(1){
@@ -97,18 +97,30 @@ void main(void) {
         //Receive command data
 //        RA1 = 0;
         UBYTE *dData;
+        UBYTE B0select;
+        UBYTE whigh_address;
+        UBYTE wlow_address;
         dData = ReceivePacket_data();
+
+        B0select = dData[20];
+        whigh_address = dData[21];
+        wlow_address = dData[22];
         LED_WHITE = 1;
-        __delay_ms(500);
-        LED_WHITE = 0;
-        //Write uplink command in EEPROM
-        EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
         __delay_ms(100);
+        LED_WHITE = 0;
+
+        //Write uplink command in EEPROM
+        EEPROM_Write(MainEEPROM_address || B0select,whigh_address,wlow_address,dData);
+        __delay_ms(100);
+        EEPROM_Write(SubEEPROM_address || B0select,whigh_address,wlow_address,dData);
+        __delay_ms(100);
+        
+        sendCommand('g', 'u', B0select, whigh_address, wlow_address, 0x00);
         
         //inform TXPIC RXDATA(PIN43 = 1)
         
-        UBYTE TXOBC_wad_header = 0x74;
-        TXOBC_waddress(TXOBC_wad_header, whigh_address, wlow_address);
+//        UBYTE TXOBC_wad_header = 0x74;
+//        TXOBC_waddress(TXOBC_wad_header, whigh_address, wlow_address);
         
         //printf("%s\r\n", dData);
 //        for (UINT i = 0;i < 32;i++){
@@ -116,7 +128,7 @@ void main(void) {
 //            dData[i] = 0x00;
 //        }
 //        led_white = 1;
-        __delay_ms(7000);
+//        __delay_ms(7000);
 //        led_white = 0;
         
         //printf("\r\n");

@@ -11,9 +11,10 @@
 #ifndef EEPROM_H
 #define	EEPROM_H
 
-#define EEPROM_address 0x50
-#define whigh_address 0x00
-#define wlow_address 0x00
+#define MainEEPROM_address 0x50
+#define SubEEPROM_address 0x52
+//#define whigh_address 0x00
+//#define wlow_address 0x00
 #define rhigh_address 0x00
 #define rlow_address 0x00
 
