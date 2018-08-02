@@ -22,7 +22,10 @@ UBYTE getch(void);
 //void put_ok(void);
 //void NM_waddress(UBYTE, UBYTE, UBYTE);
 void interrupt InterReceiver(void);
-
+void UplinkDownlink(UBYTE RXDATA[]);
+void CwDownlink(UBYTE RXDATA[]);
+void FmDownlink(UBYTE RXDATA[]);
+void Antenna(UBYTE RXDATA[]);
 #ifdef	__cplusplus
 }
 #endif

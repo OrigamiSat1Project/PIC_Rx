@@ -89,46 +89,36 @@ void putch(UBYTE byte){
 
 void interrupt InterReceiver( void ){
     volatile static int intr_counter;
+    UBYTE RXDATA[];
+    UBYTE EEPROMCmdData[32];
+    UINT EEPROMCmdDataLength = 32;
     if (RCIF == 1) {
-        UBYTE RXDATA[];
-//        led_yellow = 1;
-        
-        RXDATA[0] = getch();
-        
-        if (RXDATA[0] == 0x74){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RXDATA[2] = getch();
-            RCIF = 0 ;
-
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[40];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 40;
-            EEPROM_Read_b(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-//            UBYTE EEPROMTestData[5];
-//            EEPROMTestData[0] = 'u';
-//            EEPROMTestData[0] = EEPROMCmdData[0];
-//            EEPROMTestData[1] = EEPROMCmdData[1];
-//            EEPROMTestData[2] = EEPROMCmdData[2];
-//            EEPROMTestData[3] = EEPROMCmdData[3];
-//            EEPROMTestData[4] = EEPROMCmdData[4];
-            
-//            EEPROMTestData[1] = 'n';
-//            EEPROMTestData[2] = 'k';
-//            EEPROMTestData[3] = 'o';
-//            EEPROMTestData[4] = 0x0d;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
-//                SendPacket(EEPROMTestData);
-//                __delay_ms(300);
+        for (int i = 0; i <= 7; i++){
+            RXDATA[i] = getch();
+            NOP();
+        }
+       
+        if(crc16(0,RXDATA,6) == CRC_check(RXDATA,6){
+            switch(RXDATA[1]){
+                case 0x75:
+                    UpLinkDownLink(RXDATA);
+                    break;
+                case 0x63:
+                    CwDownLink(RXDATA);
+                    break;
+                case 0x66:
+                    FmDownLink(RXDATA);
+                    break;
+                case 0x61:
+                    Antenna(RXDATA);
+                    break;
             }
-            FMPTT = 0;
-            led_yellow = 0;
+        }else{
+            ///コマンドCRCダメだった時の処理
+        }
+        
+  
+         /*
         }else if (RXDATA[0] == 0xCC && UHFstart==1){
             led_yellow = 1;
             RXDATA[1] = getch();
@@ -241,4 +231,95 @@ void interrupt InterReceiver( void ){
  
         PIR1bits.TMR1IF = 0;    // ???????????
     }
+    */
+    }
+}
+
+void UplinkDownlink(UBYTE RXDATA[]){
+    UINT B0_select = (UINT)RXDATA[2] & 0x80;
+    UINT DownlinkTimes = (UINT)RXDATA[2] & 0x7F;
+    switch(B0_select){
+        case 0x00:
+            EEPROM_Read_b(EEPROM_address,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                EEPROMCmdData[31] = 0x0F;
+            }else{
+                EEPROM_Read_b(EEPROM_subaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                    EEPROMCmdData[31] = 0x6F;
+                }else{
+                    EEPROMCmdData[31] = 0xFF;
+                }
+            }
+            break;
+        case 0x80:
+            EEPROM_Read_b(EEPROM_Maddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                EEPROMCmdData[31] = 0x0F;
+            }else{
+                EEPROM_Read_b(EEPROM_subMaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                    EEPROMCmdData[31] = 0x6F;
+                }else{
+                    EEPROMCmdData[31] = 0xFF;
+                }
+            }
+            break;
+    }
+    __delay_ms(200);
+    FMPTT = 1;
+    for(int SendCounter = 0; SendCounter < DownlinkTimes; SendCounter++){
+        SendPacket(EEPROMCmdData);
+        __delay_ms(300);
+    }
+}
+
+void CwDownlink(UBYTE RXDATA[]){
+    
+}
+
+void FmDownlink(UBYTE RXDATA[]){
+    UINT B0_select = (UINT)RXDATA[2] & 0x80;
+    UINT DownlinkTimes = (UINT)RXDATA[2] & 0x7F
+    switch(B0_select){
+        case 0x00:
+            EEPROM_Read_b(EEPROM_address,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                EEPROMCmdData[31] = 0x0F;
+            }else{
+                EEPROM_Read_b(EEPROM_subaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                    EEPROMCmdData[31] = 0x6F;
+                }else{
+                    EEPROMCmdData[31] = 0xFF;
+                }
+            }
+            break;
+        case 0x80:
+            EEPROM_Read_b(EEPROM_Maddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                EEPROMCmdData[31] = 0x0F;
+            }else{
+                EEPROM_Read_b(EEPROM_subMaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                    EEPROMCmdData[31] = 0x6F;
+                }else{
+                    EEPROMCmdData[31] = 0xFF;
+                }
+            }
+            break;
+    }
+    __delay_ms(200);
+    FMPTT = 1;
+    for(int SendCounter = 0; SendCounter < DownlinkTimes; SendCounter++){
+        SendPacket(EEPROMCmdData);
+        __delay_ms(300);
+}
+
+void Antenna(UBYTE RXDATA[]){
+    UINT CutTime;
+    CutTime = (UINT)(RXDATA[2] << 8) + RXDATA[3];
+    HEAT = 1;
+    __delay_ms(CutTime);
+    HEAT = 0;
 }

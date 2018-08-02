@@ -29,6 +29,8 @@
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
       <itemPath>WDT.c</itemPath>
+      <itemPath>CRC16.c</itemPath>
+      <itemPath>CRC16.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

@@ -23,6 +23,7 @@
 #define UHFstart RC2
 #define FMPTT RC0
 #define CWKEY RB2
+#define HEAT RB3
 
 void SendPacket(UBYTE *);
 //void test_Packetmaker(UBYTE *);
