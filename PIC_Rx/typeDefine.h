@@ -1,16 +1,12 @@
 /* 
  * File:   Type_define.h
- * Author: Curie
+ * Author: Reo
  *
  * Created on 2017/01/21, 20:56
  */
 
 #ifndef TYPE_DEFINE_H
 #define	TYPE_DEFINE_H
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
 
 typedef signed char SBYTE;
 typedef unsigned char UBYTE;
@@ -22,11 +18,6 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* TYPE_DEFINE_H */
 

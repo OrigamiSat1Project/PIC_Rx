@@ -1,6 +1,11 @@
 #include "string.h"
-#include "Type_define.h"
+#include "typeDefine.h"
 
+
+/*
+ * CRC-16-CCITT with the polynom: x^16+x^12+x^5+1
+ * initial value 0, left shift, no out put inversion
+ */
 UWORD crc16(UWORD crc, UBYTE *ptr, UINT len){
     const UWORD CRC16POLY = 0xa001;
 	UINT i, j;
@@ -20,10 +25,10 @@ UWORD crc16(UWORD crc, UBYTE *ptr, UINT len){
 }
 
 
-UWORD CRC_check(UBYTE *Command, UINT Size_before_CRC){
-    UWORD CRC_check_receive = 0x0000;
-    CRC_check_receive |= Command[Size_before_CRC];
-    CRC_check_receive = CRC_check_receive << 8;
-    CRC_check_receive |= Command[Size_before_CRC +1];
-    return CRC_check_receive;
+UWORD checkCRC(UBYTE *command, UINT sizeBeforeCRC){
+    UWORD checkReceive = 0x0000;
+    checkReceive |= command[sizeBeforeCRC];
+    checkReceive = checkReceive << 8;
+    checkReceive |= command[sizeBeforeCRC +1];
+    return checkReceive;
 }

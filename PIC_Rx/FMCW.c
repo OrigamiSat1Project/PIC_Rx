@@ -1,45 +1,33 @@
 
 #include <xc.h>
 #include "FMCW.h"
-#include "PIN_define.h"
-
-/* Do not change!! */
-#define FMTX_   1
-#define CWTX_   2
-#define FMRX_   3
-
+#include "pinDefine.h"
 #include "time.h"
 
-/*
- * 縲色MCW險ｭ螳壹?ｮ蛻晄悄蛹悶??
- *  FM蜿嶺ｿ｡?ｼ熊M騾∽ｿ｡?ｼ靴W騾∽ｿ｡縺昴ｌ縺槭ｌ繧定ｨｭ螳?
- *  1. CLK遶ｯ蟄撰ｼ医け繝ｭ繝?繧ｯ?ｼ会ｼ轡AT遶ｯ蟄撰ｼ医ョ繝ｼ繧ｿ?ｼ会ｼ郡TB遶ｯ蟄撰ｼ医せ繝医Ο繝ｼ繝厄ｼ峨ｒ蜃ｺ蜉帙→縺励※菴ｿ逕ｨ
- *  2. 蜈ｨ縺ｦ縺ｮ繝昴?ｼ繝医ｒLow縺ｫ縺吶ｋ
- */
-void Init_FMCW(void){
-    /* Initialize (turn ports Low) */
-    FMRX_CLK = 0;
-    FMRX_DAT = 0;
-    FMRX_STB = 0;
-    FMTX_CLK = 0;
-    FMTX_DAT = 0;
-    FMTX_STB = 0;
-    FMTX_PTT = 0;
-    CWTX_CLK = 0;
-    CWTX_DAT = 0;
-    CWTX_STB = 0;
-    CWTX_KEY = 0;
-}
+/*Identifiers for the radio units (called unitID if given to a functions)*/
+/* Do not change!! */
+#define FMTX_ID   1
+#define CWTX_ID   2
+#define FMRX_ID   3
+
+/*Methods*/
+void sendLow(int unitID);
+void sendHigh(int unitID);
+void sendSTB(int unitID);
+void setNprg(int unitID, int *Nprg);
+void setNref(int unitID, int Nref);
+void setOptionRegister(int unitID);
+void _NOP(void);
 
 
-/*
- * 縲千┌邱壽ｩ溘↓'Low'繧帝?√ｋ縲?
- *  1. 縺ｩ縺ｮ辟｡邱壽ｩ溘↓騾√ｋ縺矩∈謚橸ｼ?FMTX or FMRX or CWTX?ｼ?
- *  2. DAT遶ｯ蟄舌ｒLow縺ｫ縺吶ｋ
- *  3. CLK遶ｯ蟄舌ｒ0竊?1竊?0縺ｨ螟牙喧縺輔○繧?
+/* 
+ * [Send 'Low' to radio]
+ * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
+ * 2. Set the DAT terminal to Low
+ * 3. Change the CLK pin from 0 → 1 → 0
  */
-void L_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
+void sendLow(int unitID){
+    if(unitID == FMTX_ID)
     {
         FMTX_DAT = 0;
         _NOP();
@@ -47,7 +35,7 @@ void L_OUT(int fmcwtxrx){
         _NOP();
         FMTX_CLK = 0;
     }
-    if(fmcwtxrx == CWTX_)
+    if(unitID == CWTX_ID)
     {
         CWTX_DAT = 0;
         _NOP();
@@ -55,7 +43,7 @@ void L_OUT(int fmcwtxrx){
         _NOP();
         CWTX_CLK = 0;
     }
-    if(fmcwtxrx == FMRX_)
+    if(unitID == FMRX_ID)
     {
         FMRX_DAT = 0;
         _NOP();
@@ -67,13 +55,13 @@ void L_OUT(int fmcwtxrx){
 
 
 /*
- * 縲千┌邱壽ｩ溘↓'High'繧帝?√ｋ縲?
- *  1. 縺ｩ縺ｮ辟｡邱壽ｩ溘↓騾√ｋ縺矩∈謚橸ｼ?FMTX or FMRX or CWTX?ｼ?
- *  2. DAT遶ｯ蟄舌ｒHigh縺ｫ縺吶ｋ
- *  3. CLK遶ｯ蟄舌ｒ0竊?1竊?0縺ｨ螟牙喧縺輔○繧? 
+ * [Send 'High' to radio]
+ * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
+ * 2. Set the DAT terminal to High
+ * 3. Change the CLK pin from 0 → 1 → 0
  */
-void H_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
+void sendHigh(int unitID){
+    if(unitID == FMTX_ID)
     {
         FMTX_DAT = 1;
         _NOP();
@@ -81,7 +69,7 @@ void H_OUT(int fmcwtxrx){
         _NOP();
         FMTX_CLK = 0;
     }
-    if(fmcwtxrx == CWTX_)
+    if(unitID == CWTX_ID)
     {
         CWTX_DAT = 1;
         _NOP();
@@ -89,7 +77,7 @@ void H_OUT(int fmcwtxrx){
         _NOP();
         CWTX_CLK = 0;
     }
-    if(fmcwtxrx == FMRX_)
+    if(unitID == FMRX_ID)
     {
         FMRX_DAT = 1;
         _NOP();
@@ -101,24 +89,24 @@ void H_OUT(int fmcwtxrx){
 
 
 /*
- * 縲千┌邱壽ｩ溘↓STB菫｡蜿ｷ繧帝?√ｋ縲?
- *  1. 縺ｩ縺ｮ辟｡邱壽ｩ溘↓騾√ｋ縺矩∈謚橸ｼ?FMTX or FMRX or CWTX?ｼ?
- *  2. STB遶ｯ蟄舌ｒ0竊?1竊?0縺ｨ螟牙喧縺輔○繧?
+ * [Send STB signal to radio]
+ * 1. Select which radio unit to send  to (FMTX or FMRX or CWTX)
+ * 2. Change the STB pin from 0 → 1 → 0
  */
-void STBOUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
+void sendSTB(int unitID){
+    if(unitID == FMTX_ID)
     {
         FMTX_STB = 1;
         _NOP();
         FMTX_STB = 0;
     }
-    if(fmcwtxrx == CWTX_)
+    if(unitID == CWTX_ID)
     {
         CWTX_STB = 1;
         _NOP();
         CWTX_STB = 0;
     }
-    if(fmcwtxrx == FMRX_)
+    if(unitID == FMRX_ID)
     {
         FMRX_STB = 1;
         _NOP();
@@ -128,13 +116,13 @@ void STBOUT(int fmcwtxrx){
 
 
 /*
- * 縲千┌邱壽ｩ溘?ｮ繝励Ο繧ｰ繝ｩ繝槭ヶ繝ｫ繧ｫ繧ｦ繝ｳ繧ｿ繧定ｨｭ螳壹☆繧九??
- *  1. 蠑墓焚縺九ｉ隱ｭ縺ｿ霎ｼ繧薙□繝励Ο繧ｰ繝ｩ繝槭ヶ繝ｫ繧ｫ繧ｦ繝ｳ繧ｿ繧?2騾ｲ謨ｰ縺ｫ螟画鋤?ｼ磯?榊?励→縺励※譬ｼ邏搾ｼ?
- *  2. 譬ｼ邏阪＠縺?2騾ｲ謨ｰ縺ｫ蜷医ｏ縺帙※High縺記ow繧堤┌邱壽ｩ溘↓騾√ｋ?ｼ郁ｨｭ螳壹?ｮ閧晢ｼ?
- *  3. 繧ｰ繝ｫ繝ｼ繝励さ繝ｼ繝峨ｒ騾√ｋ'10'
- *  4. STB菫｡蜿ｷ繧帝?√ｋ
+ * [Setting the programmable counter of the radio]
+ * 1. Convert programmable counter read from argument to binary number (stored as array)
+ * 2. Send High or Low to the radio according to the stored binary number 
+ * 3. Send group code '10'
+ * 4. Send STB signal
  */
-void OUTFQ(int fmcwtxrx, int *Nprg){
+void setNprg(int unitID, int *Nprg){
     int count = 0;
     int Nprg_b[17];
     
@@ -169,43 +157,43 @@ void OUTFQ(int fmcwtxrx, int *Nprg){
         }
     }
     
-    //Send Nprg data(binay) to communication module
+    //Send Nprg data(binary) to communication module
     for (int i=0; i<17; i++)
     {
         if(Nprg_b[i] == 0)
         {
-            L_OUT(fmcwtxrx);
+            sendLow(unitID);
         }
         if(Nprg_b[i] == 1)
         {
-            H_OUT(fmcwtxrx);
+            sendHigh(unitID);
         }
     }
     
     //GroupCode'10' is TX.DEV(?)
-    H_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
+    sendHigh(unitID);
+    sendLow(unitID);
     
     //STB Signal
-    STBOUT(fmcwtxrx);
+    sendSTB(unitID);
 }
 
 
 /*
- * 縲千┌邱壽ｩ溘?ｮ繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ繧ｫ繧ｦ繝ｳ繧ｿ繧定ｨｭ螳壹☆繧九??
- *  1. 蠑墓焚縺九ｉ隱ｭ縺ｿ霎ｼ繧薙□繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ繧ｫ繧ｦ繝ｳ繧ｿ繧?2騾ｲ謨ｰ縺ｫ螟画鋤?ｼ磯?榊?励→縺励※譬ｼ邏搾ｼ?
- *  2. 譬ｼ邏阪＠縺?2騾ｲ謨ｰ縺ｫ蜷医ｏ縺帙※High縺記ow繧堤┌邱壽ｩ溘↓騾√ｋ?ｼ郁ｨｭ螳壹?ｮ閧晢ｼ?
- *  3. 繧ｰ繝ｫ繝ｼ繝励さ繝ｼ繝峨ｒ騾√ｋ'11'
- *  4. STB菫｡蜿ｷ繧帝?√ｋ
+ * [Setting the reference counter of the radio]
+ * 1. Convert reference counter read from argument to binary number (stored as array)
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) （設定の肝）???
+ * 3. Send group code '11'
+ * 4. Send STB signal
  */
-void RFDOUT(int fmcwtxrx, int Nref){
+void setNref(int unitID, int Nref){
     int Nref_b[12];
     
     for(int i=0; i<12; i++){
         Nref_b[i] = 0;
     }
     
-    //Nref transforms decimal to binary
+    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
     for(int i=0; Nref>0; i++){
         Nref_b[i] = Nref % 2;
         Nref = Nref / 2;
@@ -216,136 +204,108 @@ void RFDOUT(int fmcwtxrx, int Nref){
     {
         if(Nref_b[i] == 0)
         {
-            L_OUT(fmcwtxrx);
+            sendLow(unitID);
         }
         if(Nref_b[i] == 1)
         {
-            H_OUT(fmcwtxrx);
+            sendHigh(unitID);
         }
     }
     
     //GroupCode'11' is REF.DEV
-    H_OUT(fmcwtxrx);
-    H_OUT(fmcwtxrx);
+    sendHigh(unitID);
+    sendHigh(unitID);
     
     //STB Signal
-    STBOUT(fmcwtxrx);
+    sendSTB(unitID);
 }
 
 
 /*
- * 縲千┌邱壽ｩ溘?ｮ繧ｪ繝励す繝ｧ繝ｳ繝ｬ繧ｸ繧ｹ繧ｿ繧定ｨｭ螳壹☆繧具ｼ亥?ｱ騾啀LL險ｭ螳夲ｼ峨??
- *  1. (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1)繧帝?√ｋ
- *  2. 繧ｰ繝ｫ繝ｼ繝励さ繝ｼ繝峨ｒ騾√ｋ'00'
- *  3. STB菫｡蜿ｷ繧帝?√ｋ
+ * [Setting Option Register of Radio Equipment (Common PLL Setting)(PLL = Phase-Locked Loop)
+ * 1 (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1) Send
+ * 2. Send group code '00'
+ * 3. Send STB signal
  */
-void OPINIT(int fmcwtxrx){
+void setOptionRegister(int unitID){
     //Send PLL Common DataSet to communiction module
-    L_OUT(fmcwtxrx);//T1
-    L_OUT(fmcwtxrx);//T2
-    L_OUT(fmcwtxrx);//T3
-    H_OUT(fmcwtxrx);//CpT1
-    H_OUT(fmcwtxrx);//CpT2
-    L_OUT(fmcwtxrx);//Cpr1
-    L_OUT(fmcwtxrx);//Cpr2
-    L_OUT(fmcwtxrx);//LD1
-    L_OUT(fmcwtxrx);//LD2
-    L_OUT(fmcwtxrx);//Tx
-    H_OUT(fmcwtxrx);//Rx
+    sendLow(unitID);//T1
+    sendLow(unitID);//T2
+    sendLow(unitID);//T3
+    sendHigh(unitID);//CpT1
+    sendHigh(unitID);//CpT2
+    sendLow(unitID);//Cpr1
+    sendLow(unitID);//Cpr2
+    sendLow(unitID);//LD1
+    sendLow(unitID);//LD2
+    sendLow(unitID);//Tx
+    sendHigh(unitID);//Rx
     
     //GroupCode'00' is option reg.
-    L_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
+    sendLow(unitID);
+    sendLow(unitID);
     
     //STB Signal
-    STBOUT(fmcwtxrx);
+    sendSTB(unitID);
 }
 
 
 /*
- * 縲色MTX縺ｮPLL險ｭ螳壹ｒ陦後≧縲?
- *  1. 繧ｪ繝励す繝ｧ繝ｳ繝ｬ繧ｸ繧ｹ繧ｿ縺ｮ險ｭ螳?
- *  2. 繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ繧ｫ繧ｦ繝ｳ繧ｿ縺ｮ險ｭ螳?
- *  3. 繝励Ο繧ｰ繝ｩ繝槭ヶ繝ｫ繧ｫ繧ｦ繝ｳ繧ｿ縺ｮ險ｭ螳?
+ * [Set PLL for FMTX]
+ * 1. Setting of Option register
+ * 2. Setting of Reference counter
+ * 3. Setting of programmable counter
  */
 void FMTX(int Nref, int *Nprg){
-    int fmtx = FMTX_;
-    OPINIT(fmtx);
-    RFDOUT(fmtx, Nref);
-    OUTFQ(fmtx, Nprg);
+    int fmtx = FMTX_ID;
+    setOptionRegister(fmtx);
+    setNref(fmtx, Nref);
+    setNprg(fmtx, Nprg);
 }
 
 
 /*
- * 縲燭WTX縺ｮPLL險ｭ螳壹ｒ陦後≧縲?
- *  1. 繧ｪ繝励す繝ｧ繝ｳ繝ｬ繧ｸ繧ｹ繧ｿ縺ｮ險ｭ螳?
- *  2. 繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ繧ｫ繧ｦ繝ｳ繧ｿ縺ｮ險ｭ螳?
- *  3. 繝励Ο繧ｰ繝ｩ繝槭ヶ繝ｫ繧ｫ繧ｦ繝ｳ繧ｿ縺ｮ險ｭ螳?
+ * [Set PLL for CWTX]
+ * 1. Setting of Option register
+ * 2. Setting of Reference counter
+ * 3. Setting of programmable counter
  */
 void CWTX(int Nref, int *Nprg){
-    int cwtx = CWTX_;
-    OPINIT(cwtx);
-    RFDOUT(cwtx, Nref);
-    OUTFQ(cwtx, Nprg);
+    int cwtx = CWTX_ID;
+    setOptionRegister(cwtx);
+    setNref(cwtx, Nref);
+    setNprg(cwtx, Nprg);
 }
 
 
 /*
- * 縲色MRX縺ｮPLL險ｭ螳壹ｒ陦後≧縲?
- *  1. 繧ｪ繝励す繝ｧ繝ｳ繝ｬ繧ｸ繧ｹ繧ｿ縺ｮ險ｭ螳?
- *  2. 繝ｪ繝輔ぃ繝ｬ繝ｳ繧ｹ繧ｫ繧ｦ繝ｳ繧ｿ縺ｮ險ｭ螳?
- *  3. 繝励Ο繧ｰ繝ｩ繝槭ヶ繝ｫ繧ｫ繧ｦ繝ｳ繧ｿ縺ｮ險ｭ螳?
+ * [Set PLL for FMRX]
+ * 1. Setting of Option register
+ * 2. Setting of Reference counter
+ * 3. Setting of programmable counter
  */
 void FMRX(int Nref, int *Nprg){
-    int fmrx = FMRX_;
-    OPINIT(fmrx);
-    RFDOUT(fmrx, Nref);
-    OUTFQ(fmrx, Nprg);
+    int fmrx = FMRX_ID;
+    setOptionRegister(fmrx);
+    setNref(fmrx, Nref);
+    setNprg(fmrx, Nprg);
 }
 
 
 /*
- * 縲娠LL險ｭ螳壹ｒ陦後≧縲?
+  * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
-void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
-}
+//void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
+//    FMTX(FMTX_Nref, FMTX_Nprg);
+//    CWTX(CWTX_Nref, CWTX_Nprg);
+//    FMRX(FMRX_Nref, FMRX_Nprg);
+//}
 
 
 
 /*
- * 縲舌Δ繝ｼ繝ｫ繧ｹ菫｡蜿ｷ縺ｮ'V'繧帝?√ｋ縲?
- *  1. CWKEY遶ｯ蟄舌ｒ0竊?1竊?0縺ｨ螟牙喧縺輔○繧?
- *  2. 窶ｻ1.繧定ｨ茨ｼ灘屓陦後≧
- */
-void Morse_V(void){
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(150);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-}
-
-
-/*
- * 縲蝉ｽ輔ｂ蜃ｦ逅?繧定｡後ｏ縺ｪ縺?ｼ亥ｾ?讖滂ｼ峨??
- *  5蜃ｦ逅?蛻?蠕?讖溘☆繧?
+ * [Do not process anything (standby)]
+ * (Wait for 5 loop iterations)
  */
 void _NOP(void) {
     for(int i=0; i<5; i++){

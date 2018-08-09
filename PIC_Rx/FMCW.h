@@ -3,6 +3,8 @@
  * Author: Kosuke
  *
  * Created on 2017/04/18, 17:45
+ * 
+ * Content: Set-up PLL 
  */
 
 #ifndef FMCW_H
@@ -10,6 +12,7 @@
 
 //#include "time.h"
 
+// set the values for reference counter(Nref) and programmable counter(Nprg) //TODO: rewrite Nprg values from arrays to integers
 int FMTX_Nref        =   2560;          // Nref = 2560 (const)
 int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87501 = Ftx / 0.05 [437.505MHz]
 int CWTX_Nref        =   128;           // Nref = * see 301ACWPLL-20080520.pdf *
@@ -17,34 +20,13 @@ int CWTX_Nprg[5]     =   {0,1,4,0,0};   // Nprg = 1400(* see 301ACWPLL-20080520.
 int FMRX_Nref        =   2560;          // Nref = 2560 (const)
 int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24916 = (Frx - 21.4) / 0.05 [145.980MHz]
 
-/* PIN assign of FMRX */
-//#define FMRX_CLK        PORTAbits.RA2
-//#define FMRX_DAT        PORTAbits.RA3
-//#define FMRX_STB        PORTBbits.RB0
-/* PIN assign of FMTX */
-//#define FMTX_CLK        PORTEbits.RE2
-//#define FMTX_DAT        PORTEbits.RE1
-//#define FMTX_STB        PORTEbits.RE0
-//#define FMTX_PTT        PORTCbits.RC2
-/* PIN assign of CWTX */
-//#define CWRX_CLK        PORTDbits.RD2//RX -> TX?
-//#define CWTX_DAT        PORTDbits.RD1
-//#define CWTX_STB        PORTDbits.RD0
-//#define CWTX_KEY        PORTDbits.RD3
-
-void Init_FMCW(void);
-
+//function declarations:
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
-/*void OUTFQ(int fmcwtxrx, int *Nprg);
-void RFDOUT(int fmcwtxrx, int Nref);
-void OPINIT(int fmcwtxrx);
-void L_OUT(int fmcwtxrx);
-void H_OUT(int fmcwtxrx);
-void STBOUT(int fmcwtxrx);
-void Morse_V(void);*/
-void _NOP(void);
+
+
+/*unused function declaration*/
 //void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg);
 
 #endif	/* FMCW_H */

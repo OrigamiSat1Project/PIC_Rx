@@ -1,6 +1,6 @@
 /* 
  * File:   UART.h
- * Author: Curie
+ * Author: Reo
  *
  * Created on 2017/01/21, 18:51
  */
@@ -9,26 +9,21 @@
 #ifndef UART_H
 #define	UART_H
 
-//#define TXOBC_MULTI        RC5
 
 #include <xc.h> // include processor files - each processor file is guarded.  
-#include "Type_define.h"
+#include "typeDefine.h"
 
-void Init_SERIAL(void);
-void putch(UBYTE c);                  // Writes a character to the serial port
-void putstr(UBYTE *);
-UBYTE getch(void);
-void putcrlf(void);
+void InitSerial(void);
+void putChar(UBYTE c);                  // Writes a character to the serial port
+void putString(UBYTE *);
+UBYTE getChar(void);
+void putCrLf(void);
 
-void put_error(void);
-void put_ok(void);
+void putError(void);
+void putOk(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* UART_H */
 

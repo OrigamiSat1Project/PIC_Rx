@@ -1,7 +1,7 @@
 /*** Timer controll ***/
 
 #include <htc.h>
-#include "Type_define.h"
+#include "typeDefine.h"
 #include "time.h"
 /**/
 //wait [ms] function

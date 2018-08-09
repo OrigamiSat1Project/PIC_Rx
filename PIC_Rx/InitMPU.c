@@ -1,12 +1,11 @@
 #include <xc.h>
-#include "Init_MPU.h"
-#include "PIN_define.h"
-#include "Type_define.h"
+#include "InitMPU.h"
+#include "pinDefine.h"
 #include "time.h"
-#include "decode_AX25.h"
-#include "encode_AX25.h"
 
-void Init_MPU(void)
+
+
+void InitMPU(void)
 {
 	//Initialize Port Status
 	PORTA  = 0x00;
@@ -16,8 +15,8 @@ void Init_MPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-//	ANSEL  = 0x00;	//ADê›íË
-//	ANSELH = 0x00;	//ADê›íË
+//	ANSEL  = 0x00;	//ADê›íË// AD setting
+//	ANSELH = 0x00;	//ADê›íË// AD setting
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -34,16 +33,16 @@ void Init_MPU(void)
     PORTD  = 0x00;
     PORTE  = 0x00;
 }
-void led_onoff(void){
-    ledy_on();
-    __delay_us(espan);
-    ledy_off();
-    __delay_us(espan);
+void LEDOnOff(void){
+    LED_Y_ON();
+    __delay_us(HALF_INTERVAL);
+    LED_Y_OFF();
+    __delay_us(HALF_INTERVAL);
 }
-void debug_ledy(void){
-    if(LED_YELLOW == high){
-        ledy_off();
+void debugLEDyellow(void){
+    if(LED_YELLOW == HIGH){
+        LED_Y_OFF();
     }else{
-        ledy_on();
+        LED_Y_ON();
     }
 }
