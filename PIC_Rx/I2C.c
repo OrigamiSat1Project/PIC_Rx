@@ -73,3 +73,26 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
     __delay_ms(200);
 }
 
+//process command data if the command type is 'I2C'
+void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow){ 
+    switch(command){    
+        case 'w': //I2C write
+            //TODO: write method for I2C write
+            break;
+        case 'r': //I2C read
+            //TODO: write method for I2C read
+            break;
+        case 't': //I2C test
+            //TODO: write method for I2C test
+            break;
+        case 'c': //I2C buffer clear
+            //TODO: write method for I2C buffer clear
+            break;
+        case 'b': //change I2C baud rate
+            //TODO: write method for change I2C baud rate
+            break;
+        default:
+            //TODO: error message
+            break;
+    }
+}

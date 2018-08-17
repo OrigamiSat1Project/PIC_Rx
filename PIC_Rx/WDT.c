@@ -18,4 +18,12 @@ void InitWDT(void){
 //    PORTAbits.RA0 = 1;
 }
 
+//process command data if the command type is 'WDT' 
+void commandWDT(UBYTE command, UBYTE timeHigh, UBYTE timeLow){   //times are given in ms
+    if(command = 's'){
+        //TODO: method to: "stop send pulse"
+    }else{
+        //TODO: return error message
+    }
+}
 

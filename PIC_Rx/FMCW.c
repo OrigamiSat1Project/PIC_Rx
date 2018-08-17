@@ -301,7 +301,23 @@ void FMRX(int Nref, int *Nprg){
 //    FMRX(FMRX_Nref, FMRX_Nprg);
 //}
 
-
+//process command data if the command type is 'radio unit'
+void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){ //TODO: specify which Nref and Nprg are which
+    switch(command){    
+        case 't': //FM TX
+            //TODO: write method for FM TX
+            break;
+        case 'c': //CW TX
+            //TODO: write method for CW TX
+            break;
+        case 'f': //FM RX
+            //TODO: write method for FM RX
+            break;
+        default:
+            //TODO: error message
+            break;
+    }
+}
 
 /*
  * [Do not process anything (standby)]

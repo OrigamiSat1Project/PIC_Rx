@@ -23,6 +23,8 @@ void InitMPU(void);
 void LEDOnOff(void);
 void debugLEDyellow(void);
 
-
+void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
+void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE);
+void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 #endif INITMPU_H
 

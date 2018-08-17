@@ -97,3 +97,24 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
     Command[7] = CRC && 0x00FF;
     putString(Command);
 }
+
+//process command data if the command type is UART
+void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){ //TODO: different format for writedataUART
+    switch(command){    
+        case 'w': //UART write
+            //TODO: write method for UART write
+            break;
+        case 'c': //UART buffer clear
+            //TODO: write method for UART buffer clear
+            break;
+        case 'b': //change UART buffer clear
+            //TODO: write method for change UART buffer clear
+            break;
+        case 'i': //interrupt permission
+            //TODO: write method for interrupt permission
+            break;
+        default:
+            //TODO: error message
+            break;
+    }
+}
