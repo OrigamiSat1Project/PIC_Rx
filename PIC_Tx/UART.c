@@ -6,6 +6,7 @@
 #include "I2C.h"
 #include "CW.h"
 #include "WDT.h"
+#include "pinDefine.h"
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 1200 bps
@@ -25,27 +26,19 @@ void Init_SERIAL(void){
 	TXEN   = 1;						// Enable the transmitter
 }
 
-UBYTE getch(void){
+UBYTE getChar(void){                //TODO: add time out feature
     /**/
 	if(FERR || OERR) // If over run error, then reset the receiver
 	{
-//        if(CREN = 0){
-//            do{
-//                CREN = 1; 
-//            }while(CREN = 1);
-//        }
         CREN = 0;
         NOP();
         CREN = 1;
     }
 	while(!RCIF);
-//    char RXD;
-//    RXD = RCREG;
-//	return RXD;
     return RCREG;
 }
 
-void putch(UBYTE byte){
+void putChar(UBYTE byte){
     while(!TXIF);  
 	TXREG = byte;
 }

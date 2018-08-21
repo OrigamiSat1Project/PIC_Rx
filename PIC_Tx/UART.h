@@ -13,9 +13,9 @@
 #include "Type_define.h"
 
 void Init_SERIAL(void);
-void putch(UBYTE c);                  // Writes a character to the serial port
+void putChar(UBYTE c);                  // Writes a character to the serial port
 //void putstr(UBYTE *);
-UBYTE getch(void);
+
 //void putcrlf(void);
 
 //void put_error(void);
@@ -26,6 +26,8 @@ void UplinkDownlink(UBYTE RXDATA[]);
 void CwDownlink(UBYTE RXDATA[]);
 void FmDownlink(UBYTE RXDATA[]);
 void Antenna(UBYTE RXDATA[]);
+UBYTE getChar(void);
+//void interrupt InterReceiver(void);
 #ifdef	__cplusplus
 }
 #endif

@@ -2,9 +2,9 @@
 #include "Init_MPU.h"
 #include "Type_define.h"
 #include "time.h"
-#include "decode_AX25.h"
+//#include "decode_AX25.h"
 #include "encode_AX25.h"
-
+#include "pinDefine.h"
 void Init_MPU(void)
 {
 	//Initialize Port Status
