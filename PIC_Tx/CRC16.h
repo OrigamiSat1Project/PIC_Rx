@@ -8,7 +8,7 @@
 #ifndef CRC16_H
 #define	CRC16_H
 
-#include "typedefine.h"
+#include "Type_define.h"
 
 UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD Identify_CRC16(UBYTE *);
