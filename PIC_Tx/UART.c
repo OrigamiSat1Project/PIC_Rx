@@ -6,6 +6,7 @@
 #include "I2C.h"
 #include "CW.h"
 #include "WDT.h"
+#include "pinDefine.h"
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 1200 bps
@@ -25,27 +26,19 @@ void Init_SERIAL(void){
 	TXEN   = 1;						// Enable the transmitter
 }
 
-UBYTE getch(void){
+UBYTE getChar(void){                //TODO: add time out feature
     /**/
 	if(FERR || OERR) // If over run error, then reset the receiver
 	{
-//        if(CREN = 0){
-//            do{
-//                CREN = 1; 
-//            }while(CREN = 1);
-//        }
         CREN = 0;
         NOP();
         CREN = 1;
     }
 	while(!RCIF);
-//    char RXD;
-//    RXD = RCREG;
-//	return RXD;
     return RCREG;
 }
 
-void putch(UBYTE byte){
+void putChar(UBYTE byte){
     while(!TXIF);  
 	TXREG = byte;
 }
@@ -87,158 +80,3 @@ void putch(UBYTE byte){
 //    putch(wlow_address);
 //}
 
-void interrupt InterReceiver( void ){
-    volatile static int intr_counter;
-    if (RCIF == 1) {
-        UBYTE RXDATA[];
-//        led_yellow = 1;
-        
-        RXDATA[0] = getch();
-        
-        if (RXDATA[0] == 0x74){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RXDATA[2] = getch();
-            RCIF = 0 ;
-
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[40];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 40;
-            EEPROM_Read_b(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-//            UBYTE EEPROMTestData[5];
-//            EEPROMTestData[0] = 'u';
-//            EEPROMTestData[0] = EEPROMCmdData[0];
-//            EEPROMTestData[1] = EEPROMCmdData[1];
-//            EEPROMTestData[2] = EEPROMCmdData[2];
-//            EEPROMTestData[3] = EEPROMCmdData[3];
-//            EEPROMTestData[4] = EEPROMCmdData[4];
-            
-//            EEPROMTestData[1] = 'n';
-//            EEPROMTestData[2] = 'k';
-//            EEPROMTestData[3] = 'o';
-//            EEPROMTestData[4] = 0x0d;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
-//                SendPacket(EEPROMTestData);
-//                __delay_ms(300);
-            }
-            FMPTT = 0;
-            led_yellow = 0;
-        }else if (RXDATA[0] == 0xCC && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RXDATA[2] = getch();
-            RCIF = 0 ;
-
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 1;
-            EEPROM_Read_b(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
-            }
-            FMPTT = 0;
-            led_yellow = 0;
-        }else if (RXDATA[0] == 0xDD && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RCIF = 0 ;
-
-            __delay_ms(200);
-            if (RXDATA[1] == 0xDD && UHFstart==1){
-                __delay_ms(200);
-                FMPTT = 0;
-                for (int i = 0; i< 5;i++){
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Long);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-                    __delay_ms(200);
-                } 
-                
-            }
-            
-            led_yellow = 0;
-        
-        //FM_photo_downlink
-        }else if (RXDATA[0] == 0xEE && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RXDATA[2] = getch();
-            RXDATA[3] = getch();//No. of data
-            RXDATA[4] = getch();//No. of data
-            RCIF = 0 ;
-            
-            short int PhotoAdd;
-            PhotoAdd = RXDATA[1] * 256 + RXDATA[2];
-            short int RestPhotoSize;
-            RestPhotoSize = RXDATA[3] * 256 + RXDATA[4];
-            
-            while (RestPhotoSize > 0) {
-                __delay_ms(50);
-                UBYTE Packet[32];
-                UINT PacketSize;
-                PacketSize = 32;
-                UBYTE PhotoHAdd;
-                UBYTE PhotoLAdd;
-                PhotoHAdd = PhotoAdd / 256;
-                PhotoLAdd = PhotoAdd % 256;
-                EEPROM_Read_b(EEPROM_Maddress,PhotoHAdd,PhotoLAdd, Packet,PacketSize);
-                __delay_ms(200);
-                FMPTT = 1;
-                CWKEY = 0;
-//                for(int i = 0; i<20;i++){
-//                    SendPacket(Packet);
-//                    __delay_ms(250);
-//                }
-                for(int i = 0; i<32;i++){
-                    putch(Packet[i]);
-                    __delay_ms(10);
-                }
-                PhotoAdd = PhotoAdd + PacketSize;
-                RestPhotoSize = RestPhotoSize - PacketSize;
-            }
-            
-            FMPTT = 0;
-            led_yellow = 0;
-        }else{
-            RCIF = 0 ;
-//            led_yellow = 0;
-        }
-    }else if(PIR1bits.TMR1IF == 1){
-        TMR1 = TIMER_INTERVAL;  // ?????????
- 
-        intr_counter++;
-        if (intr_counter >= 2) {
-            CLRWDT();
-            intr_counter = 0;
-        }
- 
-        PIR1bits.TMR1IF = 0;    // ???????????
-    }
-}

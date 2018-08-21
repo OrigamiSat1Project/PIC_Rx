@@ -8,9 +8,9 @@
 
 #define bit_H 0x01
 #define bit_L 0x00
-
-//reverse_bit8()Ç™MSB,LSBîΩì]ÉvÉçÉOÉâÉÄ
-
+#define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
+#define MYCALL  "JS1YAX"             //call sign of OrigamiSat-1
+#define PACKET_SIZE 47
 
 //void SendPacket(void);
 void SendByte(UBYTE);
@@ -23,9 +23,15 @@ UINT eflag = 0;
 UINT efcsflag = 0;
 UINT estuff = 0;
 UBYTE efcslo, efcshi;
+const UBYTE SSID_UCALL =0x60;
+const UBYTE SSID_MYCALL =0xE1;
+const UBYTE CONTROL =0xE1;
+const UBYTE PID =0xF0;
+const UINT NO_OF_START_FLAG = 28;
+const UINT NO_OF_END_FLAG = 7;
 //UBYTE eDataField[] = "Hello! I'm OrigamiSat1!!";
 //UBYTE eDataField[] = "unko";
-UBYTE ePacket[47];
+UBYTE ePacket[PACKET_SIZE];
 UINT ebitstatus = low;
 
 //
@@ -38,21 +44,22 @@ UINT ebitstatus = low;
 //}
 
 UINT Packetmaker(UBYTE *eDataField){
+    UINT Datanum;
+    Datanum = 32;//TODO: change value of Datanum
+    
     for(UINT i=0;i<6;i++){
-        ePacket[i] = mycall[i] << 1;
+        ePacket[i] = UCALL[i] << 1;
     }
-    ePacket[6] = 0x60;  //SSID
+    ePacket[6] = SSID_UCALL;  //SSID
     for(UINT i=0;i<6;i++){
-        ePacket[i+7] = ucall[i] << 1;
+        ePacket[i+7] = MYCALL[i] << 1;
     }
-    ePacket[13] = 0xe1; //SSID.e1?
-    ePacket[14] = 0x03; //Control.30?
-    ePacket[15] = 0xf0; //PID
+    ePacket[13] = SSID_MYCALL; //SSID.e1?
+    ePacket[14] = CONTROL; //Control.30?
+    ePacket[15] = PID; //PID
 //    UINT Datanum = 0;
 //    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
 //    for(Datanum=0;eDataField[Datanum] != 0xD9;Datanum++);
-    UINT Datanum;
-    Datanum = 32;
     for(UINT i=0;i<Datanum;i++){
         ePacket[16+i] = eDataField[i];
     }
@@ -60,9 +67,6 @@ UINT Packetmaker(UBYTE *eDataField){
 }
 
 void SendPacket(UBYTE *eDataField){
-//void SendPacket(void)
-//    FMPTT = 1;
-    __delay_ms(200);
     UINT Packetnum;
     Packetnum = 0;
     Packetnum = Packetmaker(eDataField);
@@ -72,7 +76,7 @@ void SendPacket(UBYTE *eDataField){
     //  FlagField
     eflag = 1;
     efcsflag = 0;
-    for(UINT i=0;i<27;i++){
+    for(UINT i=1;i<=NO_OF_START_FLAG;i++){
         SendByte(0x7e);
     }
     eflag = 0;
@@ -92,12 +96,9 @@ void SendPacket(UBYTE *eDataField){
     
     //  FlagField
     eflag = 1;
-    for(UINT i=0;i<6;i++){
+    for(UINT i=1;i<=NO_OF_END_FLAG;i++){
         SendByte(0x7e);
     }
-    
-    __delay_ms(200);
-//    FMPTT = 0;
 }
 
 
@@ -124,6 +125,7 @@ void SendByte(UBYTE byte){
         byte = byte >> 1;
     }
 }
+
 //NRZI
 void flipout(void){
     estuff = 0;

@@ -13,15 +13,10 @@
 #include "Type_define.h"
 
 void Init_SERIAL(void);
-void putch(UBYTE c);                  // Writes a character to the serial port
+void putChar(UBYTE c);                  // Writes a character to the serial port
 //void putstr(UBYTE *);
-UBYTE getch(void);
-//void putcrlf(void);
-
-//void put_error(void);
-//void put_ok(void);
-//void NM_waddress(UBYTE, UBYTE, UBYTE);
-void interrupt InterReceiver(void);
+UBYTE getChar(void);
+//void interrupt InterReceiver(void);
 
 #ifdef	__cplusplus
 }

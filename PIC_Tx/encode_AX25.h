@@ -17,8 +17,8 @@
 #ifndef ENCODE_AX25_H
 #define	ENCODE_AX25_H
 
-#define mycall "JQ1ZHX"
-#define ucall  "JQ1YCZ"
+//#define mycall "JQ1ZHX"
+//#define ucall  "JQ1YCZ"
 #define txd RC5
 #define UHFstart RC2
 #define FMPTT RC0
@@ -33,17 +33,6 @@ void SendPacket(UBYTE *);
 //UINT Packetmaker(void);
 //void test_Packetmaker(void);
 */
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-
-
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* ENCODE_AX25_H */
 
