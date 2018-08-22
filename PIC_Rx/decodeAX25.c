@@ -12,8 +12,8 @@
 #define BIT_LOW 0x00                
 #define BIT_D_H 0x80                
 #define BIT_D_L 0x00                
-#define MYCALL "JQ1YCZ"             //call sign of Tokyo Tech
-#define UCALL  "JS1YAX"             //call sign of OrigamiSat-1
+#define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
+#define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
 #define PACKET_SIZE 52
 #define DATA_SIZE 32
 
