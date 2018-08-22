@@ -74,19 +74,28 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
 }
 
 //process command data if the command type is 'I2C'
-void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow){ 
+void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
         case 'w': //I2C write
-            //TODO: write method for I2C write
+            I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
+            I2CMasterWrite(dataHigh);
+            I2CMasterWrite(dataLow);
             break;
         case 'r': //I2C read
-            //TODO: write method for I2C read
+            dataHigh = I2CMasterRead(slaveAdress);//TODO: check if method 'I2C read' is correct, especially do the pointers work as intended
+            dataLow = I2CMasterRead(slaveAdress); //TODO: what should happen with read in data?
+            //TODO: write data to EEPROM
+            //TODO: send Address where it is written to TXCOBC
             break;
         case 't': //I2C test
             //TODO: write method for I2C test
+            //TODO: write test data to EEPROM
+            //TODO: read EEPRON
+            //TODO: send EEPROM address to TXCOBC
             break;
         case 'c': //I2C buffer clear
-            //TODO: write method for I2C buffer clear
+            //TODO: write method for I2C buffer clear 
+            //TODO: clear: SSPBUF
             break;
         case 'b': //change I2C baud rate
             //TODO: write method for change I2C baud rate

@@ -14,15 +14,15 @@
 #define BIT_D_L 0x00                
 #define MYCALL "JQ1YCZ"             //call sign of Tokyo Tech
 #define UCALL  "JS1YAX"             //call sign of OrigamiSat-1
+#define PACKET_SIZE 52
+#define DATA_SIZE 32 
 
-//Global Data
-const UINT PACKET_SIZE = 52;
-const UINT DATA_SIZE = 32;       
+//Global Data     
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
 UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;           
-
+UBYTE dfcsHighByte, dfcsLowByte;
 
 //Methods
 void waitFlag(void);
@@ -179,7 +179,7 @@ void getData(void){
 
 // determine if the received data is valid
 UINT fcsCheck(void){
-    UBYTE bt, byte, dfcsHighByte, dfcsLowByte;
+    UBYTE bt, byte;//, dfcsHighByte, dfcsLowByte;
     dfcsLowByte = dfcsHighByte = 0xff;
     while(rcvState == 3){
         for(UINT i=0;i<dPacketCounter-2;i++){      //calculate the FCS for all except the last two bytes

@@ -104,7 +104,7 @@ void main(void) {
                     commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
                     break;
                 case 'p': /*power supply*/
-                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6]);
+                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
                     break;
                 case 'n': /*radio unit*/
                     commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);

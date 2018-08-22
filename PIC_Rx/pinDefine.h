@@ -17,11 +17,13 @@
 
 // PINs that are already used in code
 //-----------------------------------
-//Original Source: Init_MPU.h
 #define LED_YELLOW      PORTCbits.RC2 
 #define LED_WHITE       PORTBbits.RB2
 #define FX614_RXD       PORTBbits.RB5 //Receive radio data
-//Original Source: FMCW.h
+#define POWER_5R8G      PORTCbits.RC5 //Turn on 5R8G (high -> on)
+#define POWER_OBC       PORTDbits.RD3 //Turn on OBC sub power (high -> on)??
+#define POWER_WDT       PORTBbits.RB3 //turn off WDT(high -> WDT off)
+        
     /* PIN assignment for FMRX */
 #define FMRX_CLK        PORTAbits.RA2 //clock
 #define FMRX_DAT        PORTAbits.RA3 //data
@@ -34,7 +36,7 @@
 #define CWTX_CLK        PORTDbits.RD2
 #define CWTX_DAT        PORTDbits.RD1
 #define CWTX_STB        PORTDbits.RD0
-//Original Source: EPS.h /* Define pin arrangement of EPS kill switch */
+        
 #define SEP_SW          PORTBbits.RB4 //Short Separation switch 1&2
 #define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2
 
@@ -44,17 +46,14 @@
 //PORTAbits.RA4 //Pull down to GND
 //PORTAbits.RA5 //Pull down to GND
 //PORTBbits.RB1 //Send pulse to WDT
-//PORTBbits.RB3 //turn off WDT(high -> WDT off)
 //PORTBbits.RB6 //PGC
 //PORTBbits.RB7 //PGD
 //PORTCbits.RC0 //TXCOBC-3(RA4)
 //PORTCbits.RC1 //TXCOBC-22(RB4)
 //PORTCbits.RC3 //I2C SCL
 //PORTCbits.RC4 //I2C SCL
-//PORTCbits.RC5 //Turn on 5R8G (high -> on)
 //PORTCbits.RC6 //UART TX
 //PORTCbits.RC7 //UART RX (to debug connector)
-//PORTDbits.RD3 //Turn on OBC sub power (high -> on)??
 //PORTDbits.RD4 //12V status (Low -> over current 12V shut down)
 //PORTDbits.RD5 //OBC H2-50 (49)
 //PORTDbits.RD6 //Pull down to GND
