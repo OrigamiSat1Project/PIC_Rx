@@ -46,7 +46,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     __delay_ms(200);
     FMPTT = 1;
     for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
-        SendPacket(commandData);
+        SendPacket(commandData,EEPROM_COMMAND_DATA_SIZE);
         __delay_ms(300);
     }
     FMPTT = 0;
@@ -101,7 +101,7 @@ void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressL
     FMPTT = 1;
     __delay_ms(100);//TODO check time
     for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
-        SendPacket(readData);
+        SendPacket(readData,DataSize);
         __delay_ms(300);
     }
     FMPTT = 0;

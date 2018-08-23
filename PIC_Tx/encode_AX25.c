@@ -10,13 +10,13 @@
 #define bit_L 0x00
 #define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
 #define MYCALL  "JS1YAX"             //call sign of OrigamiSat-1
-#define PACKET_SIZE 47
+//#define PACKET_SIZE 47
 
 //void SendPacket(void);
 void SendByte(UBYTE);
 void flipout(void);
 void fcsbit(UBYTE);
-UINT Packetmaker(UBYTE *);
+UINT Packetmaker(UBYTE *,UINT,UBYTE *);
 //void test_Packetmaker(UBYTE *, UBYTE *);
 
 UINT eflag = 0;
@@ -31,7 +31,7 @@ const UINT NO_OF_START_FLAG = 28;
 const UINT NO_OF_END_FLAG = 7;
 //UBYTE eDataField[] = "Hello! I'm OrigamiSat1!!";
 //UBYTE eDataField[] = "unko";
-UBYTE ePacket[PACKET_SIZE];
+//UBYTE ePacket[];
 UINT ebitstatus = low;
 
 //
@@ -43,9 +43,9 @@ UINT ebitstatus = low;
 //    putcrlf();
 //}
 
-UINT Packetmaker(UBYTE *eDataField){
-    UINT Datanum;
-    Datanum = 32;//TODO: change value of Datanum
+UINT Packetmaker(UBYTE *eDataField, UINT DataSize,UBYTE *ePacket){
+//    UINT Datanum;
+//    Datanum = 32;//TODO: change value of Datanum
 //    Datanum = sizeof();
     for(UINT i=0;i<6;i++){
         ePacket[i] = UCALL[i] << 1;
@@ -60,16 +60,17 @@ UINT Packetmaker(UBYTE *eDataField){
 //    UINT Datanum = 0;
 //    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
 //    for(Datanum=0;eDataField[Datanum] != 0xD9;Datanum++);
-    for(UINT i=0;i<Datanum;i++){
+    for(UINT i=0;i<DataSize;i++){
         ePacket[16+i] = eDataField[i];
     }
-    return 16+Datanum;
+    return 16+DataSize;
 }
 
-void SendPacket(UBYTE *eDataField){
+void SendPacket(UBYTE *eDataField,UINT DataSize){
+    UBYTE ePacket[];
     UINT Packetnum;
     Packetnum = 0;
-    Packetnum = Packetmaker(eDataField);
+    Packetnum = Packetmaker(eDataField,DataSize,ePacket);
     ebitstatus = 1;
     efcslo = efcshi = 0xff;
     estuff = 0;

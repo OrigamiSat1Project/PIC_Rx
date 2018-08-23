@@ -25,7 +25,7 @@
 #define CWKEY RB2
 #define HEAT RB3
 
-void SendPacket(UBYTE *);
+void SendPacket(UBYTE *,UINT);
 //void test_Packetmaker(UBYTE *);
 /*
 //void SendByte(UBYTE);
