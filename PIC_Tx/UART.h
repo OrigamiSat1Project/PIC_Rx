@@ -12,6 +12,9 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "Type_define.h"
 
+
+UBYTE UPLINK_COMMAND_SIZE = 32;
+
 void Init_SERIAL(void);
 void putChar(UBYTE c);                  // Writes a character to the serial port
 //void putstr(UBYTE *);
@@ -21,11 +24,12 @@ void putChar(UBYTE c);                  // Writes a character to the serial port
 //void put_error(void);
 //void put_ok(void);
 //void NM_waddress(UBYTE, UBYTE, UBYTE);
-void interrupt InterReceiver(void);
-void UplinkDownlink(UBYTE RXDATA[]);
-void CwDownlink(UBYTE RXDATA[]);
-void FmDownlink(UBYTE RXDATA[]);
-void Antenna(UBYTE RXDATA[]);
+//void interrupt InterReceiver(void);
+//void UplinkDownlink(UBYTE RXDATA[]);
+//void CwDownlink(UBYTE RXDATA[]);
+//void FMDownlink(UBYTE RXDATA[]);
+//void Antenna(UBYTE RXDATA[]);
+void downlinkReceiveCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 UBYTE getChar(void);
 //void interrupt InterReceiver(void);
 #ifdef	__cplusplus

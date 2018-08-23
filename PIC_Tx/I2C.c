@@ -2,6 +2,7 @@
 #include "UART.h"
 #include "I2C.h"
 #include "Type_define.h"
+#include "EEPROM.h"
 
 
 #define _XTAL_FREQ 10000000
@@ -54,7 +55,8 @@ UBYTE I2CMasterRead(UBYTE a){
 }
 
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-    UBYTE address = addressEEPROM << 1;
+    UBYTE address;
+    address= addressEEPROM << 1;
     //UINT Datasize = sizeof(data);
     /**/
     I2CMasterStart();               //Start condition
@@ -68,9 +70,34 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
     I2CMasterStop();                //Stop condition
     __delay_ms(200);
 }
+/**/
+void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE address;
+    address= addressEEPROM << 1;
+    //UINT Datasize = sizeof(data);
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    I2CMasterWrite(data);      //Data
+    I2CMasterStop();                //Stop condition
+    __delay_ms(200);
+}
 
-void ReadDataFromEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
-    UBYTE Address = EEPROM_address << 1;
+void WriteCheckByteToEEPROMs(UBYTE B0,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    if(B0 == 0x00){
+        WriteOneByteToEEPROM(EEPROM_address,addressHigh,addressLow,data);
+        WriteOneByteToEEPROM(EEPROM_subaddress,addressHigh,addressLow,data);
+    }else if (B0 == 0x80){
+        WriteOneByteToEEPROM(EEPROM_Maddress,addressHigh,addressLow,data);
+        WriteOneByteToEEPROM(EEPROM_subMaddress,addressHigh,addressLow,data);
+    }else{
+//        TODO
+    }
+}
+//
+void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+    UBYTE Address = Address7Bytes << 1;
     UBYTE ReadAddress = Address | 0x01;
     I2CMasterStart();                       //Start condition
     I2CMasterWrite(Address);                //7 bit address + Write
@@ -96,8 +123,8 @@ void ReadDataFromEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_addres
     __delay_ms(200);
 }
 
-void ReadDataAndDataSizeFromEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
-    UBYTE Address = EEPROM_address << 1;
+void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
+    UBYTE Address = Address7Bytes << 1;
     UBYTE ReadAddress = Address | 0x01;
     I2CMasterStart();                       //Start condition
     I2CMasterWrite(Address);                //7 bit address + Write

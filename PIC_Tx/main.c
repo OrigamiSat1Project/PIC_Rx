@@ -13,6 +13,10 @@
 #include "WDT.h"
 #include "CW.h"
 #include "pinDefine.h"
+#include "CRC16.h"
+
+UBYTE COMMAND_SIZE = 10;
+
 
 // PIC16F887 Configuration Bit Settings
 
@@ -32,142 +36,34 @@
 #pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
 #pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
-void interrupt InterReceiver( void ){
+void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
     volatile static int intr_counter;
     if (RCIF == 1) {
-        UBYTE RXDATA[];
-        RXDATA[0] = getChar();
-        if (RXDATA[0] == 0x74){
-            RXDATA[1] = getChar();
-            RXDATA[2] = getChar();
-            RCIF = 0 ;
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[40];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 32;
-            ReadDataFromEEPROM(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
+        for (int i = 0; i < COMMAND_SIZE; i++){
+            RXDATA[i] = getch();
+            NOP();
+        }
+       
+        if(crc16(0,RXDATA,6) == CRC_check(RXDATA,6)){
+            switch(RXDATA[1]){
+                case 0x75:
+                    downlinkReceiveCommand(RXDATA[4],RXDATA[5],RXDATA[6],RXDATA[8]);
+                    break;
+                case 0x63:
+//                    CwDownLink(RXDATA);
+                    break;
+                case 0x66:
+//                    FMDownLink(RXDATA);
+                    break;
+                case 0x61:
+//                    Antenna(RXDATA);
+                    break;
             }
-            FMPTT = 0;
-        }else if (RXDATA[0] == 0xCC && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getChar();
-            RXDATA[2] = getChar();
-            RCIF = 0 ;
-
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 1;
-            ReadDataFromEEPROM(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
-            }
-            FMPTT = 0;
-            led_yellow = 0;
-        }else if (RXDATA[0] == 0xDD && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getChar();
-            RCIF = 0 ;
-
-            __delay_ms(200);
-            if (RXDATA[1] == 0xDD && UHFstart==1){
-                __delay_ms(200);
-                FMPTT = 0;
-                for (int i = 0; i< 5;i++){
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Long);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-                    __delay_ms(200);
-                } 
-                
-            }
-            
-            led_yellow = 0;
-        
-        //FM_photo_downlink
-        }else if (RXDATA[0] == 0xEE && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getChar();
-            RXDATA[2] = getChar();
-            RXDATA[3] = getChar();//No. of data
-            RXDATA[4] = getChar();//No. of data
-            RCIF = 0 ;
-            
-            short int PhotoAdd;
-            PhotoAdd = RXDATA[1] * 256 + RXDATA[2];
-            short int RestPhotoSize;
-            RestPhotoSize = RXDATA[3] * 256 + RXDATA[4];
-            
-            while (RestPhotoSize > 0) {
-                __delay_ms(50);
-                UBYTE Packet[32];
-                UINT PacketSize;
-                PacketSize = 32;
-                UBYTE PhotoHAdd;
-                UBYTE PhotoLAdd;
-                PhotoHAdd = PhotoAdd / 256;
-                PhotoLAdd = PhotoAdd % 256;
-                ReadDataFromEEPROM(EEPROM_Maddress,PhotoHAdd,PhotoLAdd, Packet,PacketSize);
-                __delay_ms(200);
-                FMPTT = 1;
-                CWKEY = 0;
-//                for(int i = 0; i<20;i++){
-//                    SendPacket(Packet);
-//                    __delay_ms(250);
-//                }
-                for(int i = 0; i<32;i++){
-                    putChar(Packet[i]);
-                    __delay_ms(10);
-                }
-                PhotoAdd = PhotoAdd + PacketSize;
-                RestPhotoSize = RestPhotoSize - PacketSize;
-            }
-            
-            FMPTT = 0;
-            led_yellow = 0;
         }else{
-            RCIF = 0 ;
-//            led_yellow = 0;
+            ///コマンドCRCダメだった時の処理
         }
-    }else if(PIR1bits.TMR1IF == 1){
-        TMR1 = TIMER_INTERVAL;  // ?????????
- 
-        intr_counter++;
-        if (intr_counter >= 2) {
-            CLRWDT();
-            intr_counter = 0;
-        }
- 
-        PIR1bits.TMR1IF = 0;    // ???????????
     }
 }
-
 
 void main(void) {
     __delay_ms(1000);

@@ -21,9 +21,11 @@ void InitI2CMaster(const UDWORD c);
 //void I2C_Master_Stop(void);
 void I2CMasterWrite(unsigned d);
 UBYTE I2CMasterRead(UBYTE a);
-void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
 
 
 #endif	/* I2C_H */

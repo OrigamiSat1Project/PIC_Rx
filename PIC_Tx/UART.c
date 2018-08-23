@@ -7,6 +7,14 @@
 #include "CW.h"
 #include "WDT.h"
 #include "pinDefine.h"
+#include "CRC16.h"
+
+#define EEPROM_COMMAND_DATA_SIZE 32
+
+UINT B0_select;
+UINT DownlinkTimes;
+UBYTE EEPROMCmdData[EEPROM_COMMAND_DATA_SIZE];
+UBYTE RXDATA[];
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is 1200 bps
@@ -80,165 +88,19 @@ void putChar(UBYTE byte){
 //    putch(wlow_address);
 //}
 
-void interrupt InterReceiver( void ){
-    volatile static int intr_counter;
-    UBYTE RXDATA[];
-    UBYTE EEPROMCmdData[32];
-    UINT EEPROMCmdDataLength = 32;
-    if (RCIF == 1) {
-        for (int i = 0; i <= 7; i++){
-            RXDATA[i] = getch();
-            NOP();
-        }
-       
-        if(crc16(0,RXDATA,6) == CRC_check(RXDATA,6){
-            switch(RXDATA[1]){
-                case 0x75:
-                    UpLinkDownLink(RXDATA);
-                    break;
-                case 0x63:
-                    CwDownLink(RXDATA);
-                    break;
-                case 0x66:
-                    FmDownLink(RXDATA);
-                    break;
-                case 0x61:
-                    Antenna(RXDATA);
-                    break;
-            }
-        }else{
-            ///コマンドCRCダメだった時の処理
-        }
-        
-  
-         /*
-        }else if (RXDATA[0] == 0xCC && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RXDATA[2] = getch();
-            RCIF = 0 ;
 
-            __delay_ms(200);
-            UBYTE EEPROMCmdData[];
-            UINT EEPROMCmdDataLength;
-            EEPROMCmdDataLength = 1;
-            EEPROM_Read_b(EEPROM_address,RXDATA[1],RXDATA[2], EEPROMCmdData,EEPROMCmdDataLength);
-            __delay_ms(200);
-            FMPTT = 1;
-            CWKEY = 0;
-            for(int i = 0; i<5;i++){
-                SendPacket(EEPROMCmdData);
-                __delay_ms(300);
-            }
-            FMPTT = 0;
-            led_yellow = 0;
-        }else if (RXDATA[0] == 0xDD && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RCIF = 0 ;
 
-            __delay_ms(200);
-            if (RXDATA[1] == 0xDD && UHFstart==1){
-                __delay_ms(200);
-                FMPTT = 0;
-                for (int i = 0; i< 5;i++){
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Short);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-
-                    CWKEY = 1;
-                    __delay_ms(Morse_Long);
-                    CWKEY = 0;
-                    __delay_ms(Morse_Short);
-                    __delay_ms(200);
-                } 
-                
-            }
-            
-            led_yellow = 0;
-        
-        //FM_photo_downlink
-        }else if (RXDATA[0] == 0xEE && UHFstart==1){
-            led_yellow = 1;
-            RXDATA[1] = getch();
-            RXDATA[2] = getch();
-            RXDATA[3] = getch();//No. of data
-            RXDATA[4] = getch();//No. of data
-            RCIF = 0 ;
-            
-            short int PhotoAdd;
-            PhotoAdd = RXDATA[1] * 256 + RXDATA[2];
-            short int RestPhotoSize;
-            RestPhotoSize = RXDATA[3] * 256 + RXDATA[4];
-            
-            while (RestPhotoSize > 0) {
-                __delay_ms(50);
-                UBYTE Packet[32];
-                UINT PacketSize;
-                PacketSize = 32;
-                UBYTE PhotoHAdd;
-                UBYTE PhotoLAdd;
-                PhotoHAdd = PhotoAdd / 256;
-                PhotoLAdd = PhotoAdd % 256;
-                EEPROM_Read_b(EEPROM_Maddress,PhotoHAdd,PhotoLAdd, Packet,PacketSize);
-                __delay_ms(200);
-                FMPTT = 1;
-                CWKEY = 0;
-//                for(int i = 0; i<20;i++){
-//                    SendPacket(Packet);
-//                    __delay_ms(250);
-//                }
-                for(int i = 0; i<32;i++){
-                    putch(Packet[i]);
-                    __delay_ms(10);
-                }
-                PhotoAdd = PhotoAdd + PacketSize;
-                RestPhotoSize = RestPhotoSize - PacketSize;
-            }
-            
-            FMPTT = 0;
-            led_yellow = 0;
-        }else{
-            RCIF = 0 ;
-//            led_yellow = 0;
-        }
-    }else if(PIR1bits.TMR1IF == 1){
-        TMR1 = TIMER_INTERVAL;  // ?????????
- 
-        intr_counter++;
-        if (intr_counter >= 2) {
-            CLRWDT();
-            intr_counter = 0;
-        }
- 
-        PIR1bits.TMR1IF = 0;    // ???????????
-    }
-    */
-    }
-}
-
-void UplinkDownlink(UBYTE RXDATA[]){
-    UINT B0_select = (UINT)RXDATA[2] & 0x80;
-    UINT DownlinkTimes = (UINT)RXDATA[2] & 0x7F;
-    switch(B0_select){
+void downlinkReceiveCommand(UBYTE B0, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes){
+    UBYTE CRCCheckAddress;
+    CRCCheckAddress = addressLow + 31;
+    switch(B0){
         case 0x00:
-            EEPROM_Read_b(EEPROM_address,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+            ReadDataFromEEPROM(EEPROM_address,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                 EEPROMCmdData[31] = 0x0F;
             }else{
-                EEPROM_Read_b(EEPROM_subaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                ReadDataFromEEPROM(EEPROM_subaddress,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                     EEPROMCmdData[31] = 0x6F;
                 }else{
                     EEPROMCmdData[31] = 0xFF;
@@ -246,12 +108,12 @@ void UplinkDownlink(UBYTE RXDATA[]){
             }
             break;
         case 0x80:
-            EEPROM_Read_b(EEPROM_Maddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+            ReadDataFromEEPROM(EEPROM_Maddress,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                 EEPROMCmdData[31] = 0x0F;
             }else{
-                EEPROM_Read_b(EEPROM_subMaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                ReadDataFromEEPROM(EEPROM_subMaddress,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                     EEPROMCmdData[31] = 0x6F;
                 }else{
                     EEPROMCmdData[31] = 0xFF;
@@ -259,29 +121,31 @@ void UplinkDownlink(UBYTE RXDATA[]){
             }
             break;
     }
+    WriteCheckByteToEEPROMs(B0,addressHigh,addressLow, EEPROMCmdData[31]);
     __delay_ms(200);
     FMPTT = 1;
-    for(int SendCounter = 0; SendCounter < DownlinkTimes; SendCounter++){
+    for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
         SendPacket(EEPROMCmdData);
         __delay_ms(300);
     }
+    FMPTT = 0;
 }
-
+/*
 void CwDownlink(UBYTE RXDATA[]){
     
 }
 
-void FmDownlink(UBYTE RXDATA[]){
+void FMDownlink(UBYTE RXDATA[]){
     UINT B0_select = (UINT)RXDATA[2] & 0x80;
-    UINT DownlinkTimes = (UINT)RXDATA[2] & 0x7F
+    UINT DownlinkTimes = (UINT)RXDATA[2] & 0x7F;
     switch(B0_select){
         case 0x00:
-            EEPROM_Read_b(EEPROM_address,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+            ReadDataFromEEPROM(EEPROM_address,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                 EEPROMCmdData[31] = 0x0F;
             }else{
-                EEPROM_Read_b(EEPROM_subaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                ReadDataFromEEPROM(EEPROM_subaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                     EEPROMCmdData[31] = 0x6F;
                 }else{
                     EEPROMCmdData[31] = 0xFF;
@@ -289,12 +153,12 @@ void FmDownlink(UBYTE RXDATA[]){
             }
             break;
         case 0x80:
-            EEPROM_Read_b(EEPROM_Maddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+            ReadDataFromEEPROM(EEPROM_Maddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                 EEPROMCmdData[31] = 0x0F;
             }else{
-                EEPROM_Read_b(EEPROM_subMaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMDATA,29)){
+                ReadDataFromEEPROM(EEPROM_subMaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                     EEPROMCmdData[31] = 0x6F;
                 }else{
                     EEPROMCmdData[31] = 0xFF;
@@ -307,6 +171,7 @@ void FmDownlink(UBYTE RXDATA[]){
     for(int SendCounter = 0; SendCounter < DownlinkTimes; SendCounter++){
         SendPacket(EEPROMCmdData);
         __delay_ms(300);
+    }
 }
 
 void Antenna(UBYTE RXDATA[]){
@@ -316,3 +181,4 @@ void Antenna(UBYTE RXDATA[]){
     __delay_ms(CutTime);
     HEAT = 0;
 }
+*/
