@@ -1,346 +1,19 @@
 
 #include <xc.h>
-#include "fmcw.h"
-
-/* Do not change!! */
-#define FMTX_   1
-#define CWTX_   2
-#define FMRX_   3
+#include "FMCW.h"
+#include "EEPROM.h"
+#include "pinDefine.h"
+#include "I2C.h"
+#include "CRC16.h"
+#include "encode_AX25.h"
 
 #include "time.h"
 
-/*
- * 【FMCW設定の初期化】
- *  FM受信，FM送信，CW送信それぞれを設定
- *  1. CLK端子（クロック），DAT端子（データ），STB端子（ストローブ）を出力として使用
- *  2. 全てのポートをLowにする
- */
-void Init_FMCW(void){
-    /* ポートをLowにする（初期化） */
-    FMRX_CLK = 0;
-    FMRX_DAT = 0;
-    FMRX_STB = 0;
-    FMTX_CLK = 0;
-    FMTX_DAT = 0;
-    FMTX_STB = 0;
-    FMTX_PTT = 0;
-    CWRX_CLK = 0;
-    CWTX_DAT = 0;
-    CWTX_STB = 0;
-    CWTX_KEY = 0;
-}
 
+#define EEPROM_COMMAND_DATA_SIZE 32
+#define MAX_DOWNLINK_DATA_SIZE 32
 
-/*
- * 【無線機に'Low'を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. DAT端子をLowにする
- *  3. CLK端子を0→1→0と変化させる 
- */
-void L_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
-    {
-        FMTX_DAT = 0;
-        _NOP();
-        FMTX_CLK = 1;
-        _NOP();
-        FMTX_CLK = 0;
-    }
-    if(fmcwtxrx == CWTX_)
-    {
-        CWTX_DAT = 0;
-        _NOP();
-        CWRX_CLK = 1;
-        _NOP();
-        CWRX_CLK = 0;
-    }
-    if(fmcwtxrx == FMRX_)
-    {
-        FMRX_DAT = 0;
-        _NOP();
-        FMRX_CLK = 1;
-        _NOP();
-        FMRX_CLK = 0;
-    }
-}
-
-
-/*
- * 【無線機に'High'を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. DAT端子をHighにする
- *  3. CLK端子を0→1→0と変化させる 
- */
-void H_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
-    {
-        FMTX_DAT = 1;
-        _NOP();
-        FMTX_CLK = 1;
-        _NOP();
-        FMTX_CLK = 0;
-    }
-    if(fmcwtxrx == CWTX_)
-    {
-        CWTX_DAT = 1;
-        _NOP();
-        CWRX_CLK = 1;
-        _NOP();
-        CWRX_CLK = 0;
-    }
-    if(fmcwtxrx == FMRX_)
-    {
-        FMRX_DAT = 1;
-        _NOP();
-        FMRX_CLK = 1;
-        _NOP();
-        FMRX_CLK = 0;
-    }
-}
-
-
-/*
- * 【無線機にSTB信号を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. STB端子を0→1→0と変化させる
- */
-void STBOUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
-    {
-        FMTX_STB = 1;
-        _NOP();
-        FMTX_STB = 0;
-    }
-    if(fmcwtxrx == CWTX_)
-    {
-        CWTX_STB = 1;
-        _NOP();
-        CWTX_STB = 0;
-    }
-    if(fmcwtxrx == FMRX_)
-    {
-        FMRX_STB = 1;
-        _NOP();
-        FMRX_STB = 0;
-    }
-}
-
-
-/*
- * 【無線機のプログラマブルカウンタを設定する】
- *  1. 引数から読み込んだプログラマブルカウンタを2進数に変換（配列として格納）
- *  2. 格納した2進数に合わせてHighかLowを無線機に送る（設定の肝）
- *  3. グループコードを送る'10'
- *  4. STB信号を送る
- */
-void OUTFQ(int fmcwtxrx, int *Nprg){
-    int count = 0;
-    int Nprg_b[17];
-    
-    for(int i=0; i<17; i++){
-        Nprg_b[i] = 0;
-    }
-    
-    //Nprg transforms decimal to binary
-    for(int i = 0; i < 17; i++){
-        for(int j = 0; j<5; j++){
-            if(Nprg[j] % 2 == 0) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 0;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                }
-            }
-            else if(Nprg[j] % 2 == 1) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 1;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg[j+1] = Nprg[j+1] + 10;
-                }
-            }
-        }
-    }
-    
-    //Send Nprg data(binay) to communication module
-    for (int i=0; i<17; i++)
-    {
-        if(Nprg_b[i] == 0)
-        {
-            L_OUT(fmcwtxrx);
-        }
-        if(Nprg_b[i] == 1)
-        {
-            H_OUT(fmcwtxrx);
-        }
-    }
-    
-    //GroupCode'10' is TX.DEV(?)
-    H_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
-    
-    //STB Signal
-    STBOUT(fmcwtxrx);
-}
-
-
-/*
- * 【無線機のリファレンスカウンタを設定する】
- *  1. 引数から読み込んだリファレンスカウンタを2進数に変換（配列として格納）
- *  2. 格納した2進数に合わせてHighかLowを無線機に送る（設定の肝）
- *  3. グループコードを送る'11'
- *  4. STB信号を送る
- */
-void RFDOUT(int fmcwtxrx, int Nref){
-    int Nref_b[12];
-    
-    for(int i=0; i<12; i++){
-        Nref_b[i] = 0;
-    }
-    
-    //Nref transforms decimal to binary
-    for(int i=0; Nref>0; i++){
-        Nref_b[i] = Nref % 2;
-        Nref = Nref / 2;
-    }
-    
-    //Send Nref data(binay) to communication module
-    for (int i=0; i<12; i++)
-    {
-        if(Nref_b[i] == 0)
-        {
-            L_OUT(fmcwtxrx);
-        }
-        if(Nref_b[i] == 1)
-        {
-            H_OUT(fmcwtxrx);
-        }
-    }
-    
-    //GroupCode'11' is REF.DEV
-    H_OUT(fmcwtxrx);
-    H_OUT(fmcwtxrx);
-    
-    //STB Signal
-    STBOUT(fmcwtxrx);
-}
-
-
-/*
- * 【無線機のオプションレジスタを設定する（共通PLL設定）】
- *  1. (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1)を送る
- *  2. グループコードを送る'00'
- *  3. STB信号を送る
- */
-void OPINIT(int fmcwtxrx){
-    //Send PLL Common DataSet to communiction module
-    L_OUT(fmcwtxrx);//T1
-    L_OUT(fmcwtxrx);//T2
-    L_OUT(fmcwtxrx);//T3
-    H_OUT(fmcwtxrx);//CpT1
-    H_OUT(fmcwtxrx);//CpT2
-    L_OUT(fmcwtxrx);//Cpr1
-    L_OUT(fmcwtxrx);//Cpr2
-    L_OUT(fmcwtxrx);//LD1
-    L_OUT(fmcwtxrx);//LD2
-    L_OUT(fmcwtxrx);//Tx
-    H_OUT(fmcwtxrx);//Rx
-    
-    //GroupCode'00' is option reg.
-    L_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
-    
-    //STB Signal
-    STBOUT(fmcwtxrx);
-}
-
-
-/*
- * 【FMTXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
- */
-void FMTX(int Nref, int *Nprg){
-    int fmtx = FMTX_;
-    OPINIT(fmtx);
-    RFDOUT(fmtx, Nref);
-    OUTFQ(fmtx, Nprg);
-}
-
-
-/*
- * 【CWTXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
- */
-void CWTX(int Nref, int *Nprg){
-    int cwtx = CWTX_;
-    OPINIT(cwtx);
-    RFDOUT(cwtx, Nref);
-    OUTFQ(cwtx, Nprg);
-}
-
-
-/*
- * 【FMRXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
- */
-void FMRX(int Nref, int *Nprg){
-    int fmrx = FMRX_;
-    OPINIT(fmrx);
-    RFDOUT(fmrx, Nref);
-    OUTFQ(fmrx, Nprg);
-}
-
-
-/*
- * 【PLL設定を行う】
- */
-void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
-}
-
-
-
-/*
- * 【モールス信号の'V'を送る】
- *  1. CWKEY端子を0→1→0と変化させる
- *  2. ※1.を計３回行う
- */
-void Morse_V(void){
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(150);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-}
-
+UBYTE commandData[EEPROM_COMMAND_DATA_SIZE];
 
 /*
  * 【何も処理を行わない（待機）】
@@ -351,3 +24,98 @@ void _NOP(void) {
         NOP();
     }
 }
+
+
+void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = EEPROM_address | B0Select;
+    subAddress = EEPROM_subaddress | B0Select;
+    ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
+    if(crc16(0,commandData,29) == CRC_check(commandData,29)){
+        commandData[31] = 0x0F;
+    }else{
+        ReadDataFromEEPROM(subAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
+        if(crc16(0,commandData,29) == CRC_check(commandData,29)){
+            commandData[31] = 0x6F;
+        }else{
+            commandData[31] = 0xFF;
+        }
+    }
+    WriteCheckByteToEEPROMs(B0Select,addressHigh,addressLow, commandData[31]);
+    __delay_ms(200);
+    FMPTT = 1;
+    for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+        SendPacket(commandData);
+        __delay_ms(300);
+    }
+    FMPTT = 0;
+    
+    /*-------------------------------------------------*/
+    if(commandData[0]=='T'){                //command target = PIC_TX
+        //Task target
+        if(commandData[2] == 't'){          //task target =  PIC_TX
+        // Command type
+            switch(commandData[3]){         //Process command type
+            case 'm': /*change sattelite mode*/
+//                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+                break;
+            case 'p': /*power supply*/
+//                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                break;
+            case 'n': /*radio unit*/
+//                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                break;
+            case 'i':/*I2C*/
+//                commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
+                break;
+            case 'u':/*UART*/
+//                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                break;
+            case 'w':/*WDT (watch dog timer)*/
+//                commandWDT(commandData[4], commandData[5], commandData[6]);
+                break;
+            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+                //TODO: write function directly here or in MPU.c
+                break;
+            case 'r':/*internal processing*/
+//                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+                break;
+            case 'f':/*downlink FM Signal*/
+                downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8]);
+                break;
+            default:
+                //TODO: error message
+                break;
+            }
+        }
+        
+    }
+}
+
+void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
+    UBYTE readAddress;
+    readAddress = EEPROM_address | EEPROMAndB0Select;
+    UBYTE readData[];
+    ReadDataFromEEPROM(readAddress,addressHigh,addressLow, readData,DataSize);
+    FMPTT = 1;
+    __delay_ms(100);//TODO check time
+    for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+        SendPacket(readData);
+        __delay_ms(300);
+    }
+    FMPTT = 0;
+}
+
+/*
+ 一文字中の
+tu = 3ton
+ton-ton間 = 1ton
+tu-tu間 = 1ton
+tu-ton間 = 1ton
+文字間
+3ton
+
+単語間
+7ton
+ */

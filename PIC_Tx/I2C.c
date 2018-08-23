@@ -84,16 +84,13 @@ void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow
     __delay_ms(200);
 }
 
-void WriteCheckByteToEEPROMs(UBYTE B0,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
-    if(B0 == 0x00){
-        WriteOneByteToEEPROM(EEPROM_address,addressHigh,addressLow,data);
-        WriteOneByteToEEPROM(EEPROM_subaddress,addressHigh,addressLow,data);
-    }else if (B0 == 0x80){
-        WriteOneByteToEEPROM(EEPROM_Maddress,addressHigh,addressLow,data);
-        WriteOneByteToEEPROM(EEPROM_subMaddress,addressHigh,addressLow,data);
-    }else{
-//        TODO
-    }
+void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = EEPROM_address | B0Select;
+    subAddress = EEPROM_subaddress | B0Select;
+    WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
 }
 //
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){

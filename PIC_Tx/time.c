@@ -24,3 +24,12 @@ void delay_us(UWORD usec)
 	}	
 }
 
+//sウェイト関数
+void delay_s(UWORD sec)
+{
+	while(sec)
+	{
+		__delay_s(1);
+		sec--;
+	}	
+}

@@ -9,11 +9,9 @@
 #include "pinDefine.h"
 #include "CRC16.h"
 
-#define EEPROM_COMMAND_DATA_SIZE 32
 
 UINT B0_select;
 UINT DownlinkTimes;
-UBYTE EEPROMCmdData[EEPROM_COMMAND_DATA_SIZE];
 UBYTE RXDATA[];
 
 void Init_SERIAL(void){
@@ -90,46 +88,7 @@ void putChar(UBYTE byte){
 
 
 
-void downlinkReceiveCommand(UBYTE B0, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes){
-    UBYTE CRCCheckAddress;
-    CRCCheckAddress = addressLow + 31;
-    switch(B0){
-        case 0x00:
-            ReadDataFromEEPROM(EEPROM_address,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                EEPROMCmdData[31] = 0x0F;
-            }else{
-                ReadDataFromEEPROM(EEPROM_subaddress,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                    EEPROMCmdData[31] = 0x6F;
-                }else{
-                    EEPROMCmdData[31] = 0xFF;
-                }
-            }
-            break;
-        case 0x80:
-            ReadDataFromEEPROM(EEPROM_Maddress,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                EEPROMCmdData[31] = 0x0F;
-            }else{
-                ReadDataFromEEPROM(EEPROM_subMaddress,addressHigh,addressLow, EEPROMCmdData,EEPROM_COMMAND_DATA_SIZE);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                    EEPROMCmdData[31] = 0x6F;
-                }else{
-                    EEPROMCmdData[31] = 0xFF;
-                }
-            }
-            break;
-    }
-    WriteCheckByteToEEPROMs(B0,addressHigh,addressLow, EEPROMCmdData[31]);
-    __delay_ms(200);
-    FMPTT = 1;
-    for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
-        SendPacket(EEPROMCmdData);
-        __delay_ms(300);
-    }
-    FMPTT = 0;
-}
+
 /*
 void CwDownlink(UBYTE RXDATA[]){
     
@@ -174,11 +133,4 @@ void FMDownlink(UBYTE RXDATA[]){
     }
 }
 
-void Antenna(UBYTE RXDATA[]){
-    UINT CutTime;
-    CutTime = (UINT)(RXDATA[2] << 8) + RXDATA[3];
-    HEAT = 1;
-    __delay_ms(CutTime);
-    HEAT = 0;
-}
 */

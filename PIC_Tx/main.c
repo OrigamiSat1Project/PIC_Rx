@@ -3,7 +3,7 @@
 #include <xc.h>
 #include <PIC16F886.h>
 #include "UART.h"
-#include "Init_MPU.h"
+#include "MPU.h"
 #include "Type_define.h"
 #include "time.h"
 #include "encode_AX25.h"
@@ -43,20 +43,20 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
             RXDATA[i] = getch();
             NOP();
         }
-       
+       //TODO add case RXDATA[0]!=t
         if(crc16(0,RXDATA,6) == CRC_check(RXDATA,6)){
             switch(RXDATA[1]){
                 case 0x75:
-                    downlinkReceiveCommand(RXDATA[4],RXDATA[5],RXDATA[6],RXDATA[8]);
+                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
                     break;
                 case 0x63:
 //                    CwDownLink(RXDATA);
                     break;
                 case 0x66:
-//                    FMDownLink(RXDATA);
+                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x61:
-//                    Antenna(RXDATA);
+                    cutWire(RXDATA[2],RXDATA[3]);
                     break;
             }
         }else{
@@ -72,9 +72,7 @@ void main(void) {
     Init_MPU();
     InitI2CMaster(I2Cbps);
 //    Init_WDT();
-    for (int i = 0; i<10; i++){
-        __delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
-    }
+    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
     
     
     while(1){
@@ -88,6 +86,7 @@ void main(void) {
         
         //TODO check AD value
         //TODO send CW command
+        //TODO send pulse to WDT
         
     }
     //return;

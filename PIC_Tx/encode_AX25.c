@@ -1,7 +1,7 @@
 #include <xc.h>
 //#include <PIC16F887.h>
 #include "UART.h"
-#include "Init_MPU.h"
+#include "MPU.h"
 #include "Type_define.h"
 #include "time.h"
 #include "encode_AX25.h"
@@ -46,7 +46,7 @@ UINT ebitstatus = low;
 UINT Packetmaker(UBYTE *eDataField){
     UINT Datanum;
     Datanum = 32;//TODO: change value of Datanum
-    
+//    Datanum = sizeof();
     for(UINT i=0;i<6;i++){
         ePacket[i] = UCALL[i] << 1;
     }

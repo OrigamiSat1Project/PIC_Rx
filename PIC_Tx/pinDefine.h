@@ -27,5 +27,6 @@
 //Original Source: Init_MPU.h
 #define led_yellow RB1
 #define FX614_RXD RB0
+#define WIRE_CUTTER RB3
 #endif	/* NEWFILE_H */
 

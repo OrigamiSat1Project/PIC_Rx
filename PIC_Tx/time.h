@@ -19,11 +19,12 @@
 #define espan 795//10MHz:795-803 20MHz:817   811-823
 #define hspan 400   //20MHz:360(300?),415
 #define lspan 1250
-#define TURN_ON_WAIT_TIME 20
+#define TURN_ON_WAIT_TIME 200
 
 //ïsê≥ämÇ»delayä÷êî
 void delay_ms(UWORD);
 void delay_us(UWORD);
+void delay_s(UWORD);
 
 
 #endif	/* TIME_H */
