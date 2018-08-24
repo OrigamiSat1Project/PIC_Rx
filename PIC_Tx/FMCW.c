@@ -58,9 +58,9 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         // Command type
             switch(commandData[3]){         //Process command type
             case 'p': /*power supply*/
-//                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
             case 'n': /*radio unit*/
+                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                break;
 //                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
                 break;
             case 'i':/*I2C*/

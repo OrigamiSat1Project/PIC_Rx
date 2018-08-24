@@ -93,6 +93,14 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             WDT_POWER = 1 - onOff;
             HEATER = invertStateWithTIme(WIRE_CUTTER,timeHigh, timeLow);
             break;
+        case 'p': //FMPTT
+            FMPTT = onOff;
+            HEATER = invertStateWithTIme(FMPTT,timeHigh, timeLow);
+            break;
+        case 'k': //CWKEY
+            CWKEY = onOff;
+            HEATER = invertStateWithTIme(CWKEY,timeHigh, timeLow);
+            break;
         default:
             //TODO: error message
             break;
