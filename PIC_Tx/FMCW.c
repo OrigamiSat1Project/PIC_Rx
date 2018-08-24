@@ -57,9 +57,6 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         if(commandData[2] == 't'){          //task target =  PIC_TX
         // Command type
             switch(commandData[3]){         //Process command type
-            case 'm': /*change sattelite mode*/
-//                commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-                break;
             case 'p': /*power supply*/
 //                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
                 break;
