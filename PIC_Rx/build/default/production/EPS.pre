@@ -1460,10 +1460,10 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 22 "EPS.h"
+# 14 "EPS.h"
 void Reset_EPS(void);
 
-# 15 "Type_define.h"
+# 11 "typeDefine.h"
 typedef signed char SBYTE;
 typedef unsigned char UBYTE;
 typedef signed short SWORD;
@@ -1474,17 +1474,17 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 23 "time.h"
+# 22 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-# 19 "EPS.c"
+# 8 "EPS.c"
 void Reset_EPS(void){
-RB4 = 1;
-RA1 = 1;
+PORTBbits.RB4 = 1;
+PORTAbits.RA1 = 1;
 _delay((unsigned long)((5000)*(10000000/4000.0)));
-RB4 = 0;
-RA1 = 0;
+PORTBbits.RB4 = 0;
+PORTAbits.RA1 = 0;
 _delay((unsigned long)((500)*(10000000/4000.0)));
 }
 

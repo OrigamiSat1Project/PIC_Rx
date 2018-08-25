@@ -1,6 +1,6 @@
 #include <xc.h>
 #include "WDT.h"
-//#include "typeDefine.h"
+#include "typeDefine.h"
 
 void InitWDT(void){
     INTCONbits.GIE  = 1;    // Grobal Interrupt Enable bit

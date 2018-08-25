@@ -11,6 +11,7 @@
 #define	FMCW_H
 
 //#include "time.h"
+#include "typeDefine.h"
 
 // set the values for reference counter(Nref) and programmable counter(Nprg) //TODO: rewrite Nprg values from arrays to integers
 int FMTX_Nref        =   2560;          // Nref = 2560 (const)

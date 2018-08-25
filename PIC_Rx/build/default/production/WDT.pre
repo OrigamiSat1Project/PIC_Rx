@@ -1460,7 +1460,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 15 "Type_define.h"
+# 11 "typeDefine.h"
 typedef signed char SBYTE;
 typedef unsigned char UBYTE;
 typedef signed short SWORD;
@@ -1471,12 +1471,12 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 17 "WDT.h"
-void Init_WDT(void);
-void interrupt intr(void);
+# 16 "WDT.h"
+void InitWDT(void);
+void commandWDT(UBYTE, UBYTE, UBYTE);
 
 # 5 "WDT.c"
-void Init_WDT(void){
+void InitWDT(void){
 INTCONbits.GIE = 1;
 INTCONbits.PEIE = 1;
 
@@ -1490,5 +1490,14 @@ TMR1 = (0xffff - 62500);
 T1CONbits.TMR1ON = 1;
 
 
+}
+
+
+void commandWDT(UBYTE command, UBYTE timeHigh, UBYTE timeLow){
+if(command = 's'){
+
+}else{
+
+}
 }
 

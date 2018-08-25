@@ -2,6 +2,7 @@
 #include "MPU.h"
 #include "pinDefine.h"
 #include "time.h"
+#include "typeDefine.h"
 
 
 

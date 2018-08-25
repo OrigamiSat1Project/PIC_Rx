@@ -1,8 +1,20 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"2579 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
-[v _RB4 `Vb ~T0 @X0 0 e@52 ]
-"2561
-[v _RA1 `Vb ~T0 @X0 0 e@41 ]
+"220 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
+[s S8 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S8 . RB0 RB1 RB2 RB3 RB4 RB5 RB6 RB7 ]
+"219
+[u S7 `S8 1 ]
+[n S7 . . ]
+"231
+[v _PORTBbits `VS7 ~T0 @X0 0 e@6 ]
+"170
+[s S6 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S6 . RA0 RA1 RA2 RA3 RA4 RA5 ]
+"169
+[u S5 `S6 1 ]
+[n S5 . . ]
+"179
+[v _PORTAbits `VS5 ~T0 @X0 0 e@5 ]
 [v F1089 `(v ~T0 @X0 1 tf1`ul ]
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
@@ -1023,43 +1035,43 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 193: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 194: extern __bank0 __bit __powerdown;
 [; ;pic.h: 195: extern __bank0 __bit __timeout;
-[; ;EPS.h: 22: void Reset_EPS(void);
-[; ;Type_define.h: 15: typedef signed char SBYTE;
-[; ;Type_define.h: 16: typedef unsigned char UBYTE;
-[; ;Type_define.h: 17: typedef signed short SWORD;
-[; ;Type_define.h: 18: typedef unsigned short UWORD;
-[; ;Type_define.h: 19: typedef signed int SINT;
-[; ;Type_define.h: 20: typedef unsigned int UINT;
-[; ;Type_define.h: 21: typedef unsigned short long USLONG;
-[; ;Type_define.h: 22: typedef signed long SDWORD;
-[; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;time.h: 23: void delay_ms(UWORD);
-[; ;time.h: 24: void delay_us(UWORD);
-"19 EPS.c
+[; ;EPS.h: 14: void Reset_EPS(void);
+[; ;typeDefine.h: 11: typedef signed char SBYTE;
+[; ;typeDefine.h: 12: typedef unsigned char UBYTE;
+[; ;typeDefine.h: 13: typedef signed short SWORD;
+[; ;typeDefine.h: 14: typedef unsigned short UWORD;
+[; ;typeDefine.h: 15: typedef signed int SINT;
+[; ;typeDefine.h: 16: typedef unsigned int UINT;
+[; ;typeDefine.h: 17: typedef unsigned short long USLONG;
+[; ;typeDefine.h: 18: typedef signed long SDWORD;
+[; ;typeDefine.h: 19: typedef unsigned long UDWORD;
+[; ;time.h: 22: void delay_ms(UWORD);
+[; ;time.h: 23: void delay_us(UWORD);
+"8 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {
-[; ;EPS.c: 19: void Reset_EPS(void){
+[; ;EPS.c: 8: void Reset_EPS(void){
 [e :U _Reset_EPS ]
 [f ]
-[; ;EPS.c: 20: RB4 = 1;
-"20
-[e = _RB4 -> -> 1 `i `b ]
-[; ;EPS.c: 21: RA1 = 1;
-"21
-[e = _RA1 -> -> 1 `i `b ]
-[; ;EPS.c: 22: _delay((unsigned long)((5000)*(10000000/4000.0)));
-"22
+[; ;EPS.c: 9: PORTBbits.RB4 = 1;
+"9
+[e = . . _PORTBbits 0 4 -> -> 1 `i `uc ]
+[; ;EPS.c: 10: PORTAbits.RA1 = 1;
+"10
+[e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
+[; ;EPS.c: 11: _delay((unsigned long)((5000)*(10000000/4000.0)));
+"11
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 23: RB4 = 0;
-"23
-[e = _RB4 -> -> 0 `i `b ]
-[; ;EPS.c: 24: RA1 = 0;
-"24
-[e = _RA1 -> -> 0 `i `b ]
-[; ;EPS.c: 25: _delay((unsigned long)((500)*(10000000/4000.0)));
-"25
+[; ;EPS.c: 12: PORTBbits.RB4 = 0;
+"12
+[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
+[; ;EPS.c: 13: PORTAbits.RA1 = 0;
+"13
+[e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
+[; ;EPS.c: 14: _delay((unsigned long)((500)*(10000000/4000.0)));
+"14
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 26: }
-"26
+[; ;EPS.c: 15: }
+"15
 [e :UE 95 ]
 }

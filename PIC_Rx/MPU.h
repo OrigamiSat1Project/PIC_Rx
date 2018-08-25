@@ -9,7 +9,7 @@
 #ifndef INITMPU_H
 #define	INITMPU_H
 
-//#include "typeDefine.h"
+#include "typeDefine.h"
 //#include "pinDefine.h"
 
 #define HIGH 1
@@ -26,5 +26,5 @@ void debugLEDyellow(void);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
-#endif INITMPU_H
+#endif /*INITMPU_H*/
 

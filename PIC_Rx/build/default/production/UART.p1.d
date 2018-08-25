@@ -3,5 +3,6 @@
  UART.c  \
 UART.h  \
 CRC16.h  \
-Type_define.h  \
+typeDefine.h  \
+pinDefine.h  \
 time.h 

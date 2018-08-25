@@ -3,6 +3,7 @@
 #include "FMCW.h"
 #include "pinDefine.h"
 #include "time.h"
+#include "typeDefine.h"
 
 /*Identifiers for the radio units (called unitID if given to a functions)*/
 /* Do not change!! */

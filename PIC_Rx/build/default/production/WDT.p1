@@ -1058,22 +1058,22 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 193: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 194: extern __bank0 __bit __powerdown;
 [; ;pic.h: 195: extern __bank0 __bit __timeout;
-[; ;Type_define.h: 15: typedef signed char SBYTE;
-[; ;Type_define.h: 16: typedef unsigned char UBYTE;
-[; ;Type_define.h: 17: typedef signed short SWORD;
-[; ;Type_define.h: 18: typedef unsigned short UWORD;
-[; ;Type_define.h: 19: typedef signed int SINT;
-[; ;Type_define.h: 20: typedef unsigned int UINT;
-[; ;Type_define.h: 21: typedef unsigned short long USLONG;
-[; ;Type_define.h: 22: typedef signed long SDWORD;
-[; ;Type_define.h: 23: typedef unsigned long UDWORD;
-[; ;WDT.h: 17: void Init_WDT(void);
-[; ;WDT.h: 18: void interrupt intr(void);
+[; ;typeDefine.h: 11: typedef signed char SBYTE;
+[; ;typeDefine.h: 12: typedef unsigned char UBYTE;
+[; ;typeDefine.h: 13: typedef signed short SWORD;
+[; ;typeDefine.h: 14: typedef unsigned short UWORD;
+[; ;typeDefine.h: 15: typedef signed int SINT;
+[; ;typeDefine.h: 16: typedef unsigned int UINT;
+[; ;typeDefine.h: 17: typedef unsigned short long USLONG;
+[; ;typeDefine.h: 18: typedef signed long SDWORD;
+[; ;typeDefine.h: 19: typedef unsigned long UDWORD;
+[; ;WDT.h: 16: void InitWDT(void);
+[; ;WDT.h: 17: void commandWDT(UBYTE, UBYTE, UBYTE);
 "5 WDT.c
-[v _Init_WDT `(v ~T0 @X0 1 ef ]
+[v _InitWDT `(v ~T0 @X0 1 ef ]
 {
-[; ;WDT.c: 5: void Init_WDT(void){
-[e :U _Init_WDT ]
+[; ;WDT.c: 5: void InitWDT(void){
+[e :U _InitWDT ]
 [f ]
 [; ;WDT.c: 6: INTCONbits.GIE = 1;
 "6
@@ -1099,4 +1099,31 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;WDT.c: 19: }
 "19
 [e :UE 95 ]
+}
+"22
+[v _commandWDT `(v ~T0 @X0 1 ef3`uc`uc`uc ]
+{
+[; ;WDT.c: 22: void commandWDT(UBYTE command, UBYTE timeHigh, UBYTE timeLow){
+[e :U _commandWDT ]
+[v _command `uc ~T0 @X0 1 r1 ]
+[v _timeHigh `uc ~T0 @X0 1 r2 ]
+[v _timeLow `uc ~T0 @X0 1 r3 ]
+[f ]
+[; ;WDT.c: 23: if(command = 's'){
+"23
+[e $ ! != -> = _command -> -> 115 `ui `uc `i -> -> -> 0 `i `uc `i 97  ]
+{
+"25
+}
+[; ;WDT.c: 25: }else{
+[e $U 98  ]
+[e :U 97 ]
+{
+"27
+}
+[e :U 98 ]
+[; ;WDT.c: 27: }
+[; ;WDT.c: 28: }
+"28
+[e :UE 96 ]
 }

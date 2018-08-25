@@ -13,6 +13,8 @@
 #ifndef DECODE_AX25_H
 #define	DECODE_AX25_H
 
+#include "typeDefine.h"
+
 #define GET_BIT_WAIT_LOOP 62           //Sets the wait time for a change //20MHz:130  10MHz:66 //TODO: check runtime
 #define FLAG_AX25 0x7e
 

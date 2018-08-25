@@ -1460,7 +1460,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 
-# 15 "Type_define.h"
+# 11 "typeDefine.h"
 typedef signed char SBYTE;
 typedef unsigned char UBYTE;
 typedef signed short SWORD;
@@ -1471,7 +1471,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 23 "time.h"
+# 22 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
