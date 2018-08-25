@@ -125,7 +125,7 @@ int change_baud_rate( UBYTE command_baud_rate ){
 }
 
 //TODO:check
-//TODO:SPBRGÇ™main.cÇÃInitSerial();Ç≈èâä˙âªÇ≥ÇÍÇÈÇØÇ«ëÂè‰ïvÇ©
+//TODO:SPBRG,BRGH,SYNCÇ™main.cÇÃInitSerial();Ç≈èâä˙âªÇ≥ÇÍÇÈÇØÇ«ëÂè‰ïvÇ©
 //UART_speed: high_speed = 1  / low_speed =0
 //UART_type : synchronous = 1 / asynchronous = 0
 //Data sheet : p113
@@ -134,12 +134,18 @@ void calculate_SPBRG(int baud_rate, UBYTE UART_speed, UBYTE UART_type){
     if ( UART_speed == high_speed ){
         spbrg = _XTAL_FREQ / ( 16 * baud_rate ) - 1;
         SPBRG = spbrg;
+        BRGH = high_speed;
+        SYNC = asynchronous;
     } else if ( UART_speed == low_speed && UART_type == asynchronous ){
         spbrg = _XTAL_FREQ / ( 64 * baud_rate ) - 1;
         SPBRG = spbrg;
+        BRGH = low_speed;
+        SYNC = asynchronous;
     } else if ( UART_speed == low_speed && UART_type == synchronous ){
         spbrg = _XTAL_FREQ / ( 4 * baud_rate ) - 1;
         SPBRG = spbrg;
+        BRGH = low_speed;
+        SYNC = synchronous;
     }
 }
 
