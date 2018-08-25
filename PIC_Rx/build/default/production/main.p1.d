@@ -7,6 +7,7 @@ typeDefine.h  \
 decodeAX25.h  \
 pinDefine.h  \
 EPS.h  \
+WDT.h  \
 EEPROM.h  \
 FMCW.h  \
 time.h  \

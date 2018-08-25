@@ -13,6 +13,7 @@
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "EPS.h"
+#include "WDT.h"
 
 
 // PIC16F887 Configuration Bit Settings

@@ -49,7 +49,8 @@ void debugLEDyellow(void){
 }
 
 //Used to switch PIN to the opposite status(high/low)
-bit invertState(bit pinState){
+//bit invertState(bit pinState){
+UINT invertState(UINT pinState){
     if(pinState==HIGH){
         return LOW;
     }else{
@@ -62,7 +63,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
         case 0x00: //Nominal mode //ON: CIB, EPS, OBC, Tx(CW), Rx
             //TODO: write method for nominal mode
             break;
-        case 0xFF: //Power saving mode //ON: CIB, Tx(CW), Rx //OFF: EPS, OBC
+        case 0x0F: //Power saving mode //ON: CIB, Tx(CW), Rx //OFF: EPS, OBC
             //TODO: write method for power saving mode
             //TODO: first kill EPS (this also kills Rx/Tx/OBC)
             //TODO: send command to TXCOBC to turn back on RX and TX
