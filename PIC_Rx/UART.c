@@ -101,7 +101,23 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
     putString(Command);
 }
 
-
+//TODO:check
+//TODO:command size 変更できるようにした方がいい？
+//TODO:I2CMasterWait();のようにwait必要？
+//TODO:書き込み先はSSBUFで大丈夫？
+//Write UART
+void WriteUART( UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
+    UBYTE data[5];
+    data[0] = data1;
+    data[1] = data2;
+    data[2] = data3;
+    data[3] = data4;
+    data[4] = data5;
+    for ( int i=0; i<5; i++ ){
+        SSPBUF = data[i]; //Serial Receive/Transmit Buffer Register
+        NOP();
+    }
+}
 
 //TODO:check
 int change_baud_rate( UBYTE command_baud_rate ){
@@ -156,7 +172,8 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
     
     switch(command){    
         case 'w': //UART write
-            //TODO: write method for UART write
+            //TODO: write method for UART write---finish?
+            WriteUART( data1, data2, data3, data4, data5);
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear
