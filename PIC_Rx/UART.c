@@ -23,15 +23,18 @@ void InitSerial(void){
 	TXEN   = 1;						// Enable the transmitter
 }
 
-UBYTE getChar(void){        //TODO: add time out feature
+UBYTE getChar(void){        //TODO: add time out feature---finish
 	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit
 	{
         CREN = 0;                   //Continuous Receive Enable bit
         NOP();
         CREN = 1;
     }
-	while(!RCIF);                   //USART Receive Interrupt Flag bit
-	return RCREG;                   //USART Receive Data Register
+    set_timer_counter_only_getChar(0);
+	while(!RCIF){                   //USART Receive Interrupt Flag bit
+        if(get_timer_counter_only_getChar() > 1000) break;
+    }
+    return RCREG;                   //USART Receive Data Register
 }
 
 void putChar(UBYTE byte){
