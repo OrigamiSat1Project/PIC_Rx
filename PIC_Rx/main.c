@@ -14,7 +14,7 @@
 #include "FMCW.h"
 #include "EPS.h"
 #include "WDT.h"
-
+#include "CRC16.h"
 
 // PIC16F887 Configuration Bit Settings
 #pragma config FOSC     = HS        // Oscillator Selection bits (HS oscillator)
@@ -28,6 +28,41 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
+//Receive command from TX_PIC
+void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
+    //volatile static int intr_counter;
+    if (RCIF == 1) {                              //The USART receive buffer is full
+        for (int i = 0; i < COMMAND_SIZE; i++){
+            RXDATA[i] = getChar();
+            NOP();
+        }
+        
+        RCIF = 0;  //USART Receive Interrupt Flag is reset
+        
+       //TODO add case RXDATA[0]!=t
+        if(crc16(0,RXDATA,6) == checkCRC(RXDATA,6)){
+            //TODO:change commands from TX_PIC
+            /*
+            switch(RXDATA[1]){
+                case 0x75:
+                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+                    break;
+                case 0x63:
+//                    CwDownLink(RXDATA);
+                    break;
+                case 0x66:
+                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+                    break;
+                case 0x61:
+                    cutWire(RXDATA[2],RXDATA[3]);
+                    break;
+            }
+            */
+        }else{
+            ///TODO:コマンドCRCダメだった時の処理
+        }
+    }
+}
 
 void main(void) {
     

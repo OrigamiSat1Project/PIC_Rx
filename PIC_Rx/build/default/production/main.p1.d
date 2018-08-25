@@ -3,6 +3,7 @@
  main.c  \
 I2C.h  \
 UART.h  \
+CRC16.h  \
 typeDefine.h  \
 decodeAX25.h  \
 pinDefine.h  \
