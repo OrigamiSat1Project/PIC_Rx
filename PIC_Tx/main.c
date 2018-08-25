@@ -36,7 +36,7 @@ UBYTE COMMAND_SIZE = 10;
 #pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
 #pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
-void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
+void interrupt ISR(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
     volatile static int intr_counter;
     if (RCIF == 1) {
         for (int i = 0; i < COMMAND_SIZE; i++){
@@ -63,7 +63,65 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
             ///コマンドCRCダメだった時の処理
         }
     }
+    if ( PIR1bits.TMR1IF == 1 ) {
+        TMR1 = TIMER_INTERVAL;  // ?????????
+ 
+        intr_counter++;
+        if ( intr_counter >= 100 ) {
+            intr_counter = 0;
+        }
+         //0.5sec???RB0???????    
+        if ( intr_counter <= 50 || intr_counter > 51) {
+//            PORTAbits.RA0 = 1;
+        } else {
+//            PORTAbits.RA0 = 0;
+        }
+ 
+        PIR1bits.TMR1IF = 0;    // ???????????
+    }   
+ 
+    return;
 }
+
+//void interrupt timer(void){
+    
+//    if(INTCONbits.TMR0IF){
+//        INTCONbits.TMR0IF = 0;
+//        TMR0L = 0x00;
+//        timer_counter++;
+//        constant_timer_counter++;
+//    }
+//    if(timer_counter >= 62){
+//        //  past 1 second
+//        increment_globalClock();
+//        timer_counter = 0;
+//        //sendCanData(&globalClock);
+//    }
+//    interruptI2C();
+//}
+
+//void interrupt intr(void){
+//    volatile static int intr_counter;
+//    if ( PIR1bits.TMR1IF == 1 ) {
+//        TMR1 = TIMER_INTERVAL;  // ?????????
+// 
+//        intr_counter++;
+//        if ( intr_counter >= 100 ) {
+//            intr_counter = 0;
+//        }
+// 
+//        // 0.5sec???RB0???????    
+//        if ( intr_counter <= 50 || intr_counter > 51) {
+//            PORTAbits.RA0 = 1;
+//        } else {
+//            PORTAbits.RA0 = 0;
+//        }
+// 
+//        PIR1bits.TMR1IF = 0;    // ???????????
+//    }   
+// 
+//    return;
+//}
 
 void main(void) {
     __delay_ms(1000);

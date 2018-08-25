@@ -2,7 +2,7 @@
 #define	ICM_H
 
 
-//int initICM();
-//int readICM(unsigned char *, int);
+int initICM();
+int readICM(unsigned char *, int);
 
 #endif	/* ICM_H */
