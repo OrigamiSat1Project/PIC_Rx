@@ -48,6 +48,9 @@ void main(void) {
     LED_WHITE = 0;              //for debugging of PLL setting
     __delay_ms(1000);           //wait for circuit of PLL
     
+    //define command ID
+    UBYTE lastCommandID;        //ID of last uplink command
+    
     while(1){
         
         /*measure the runtime of the getBitLoop*/    //for normal run not needed
@@ -60,7 +63,8 @@ void main(void) {
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
-        UBYTE *commandData;         //data of uplink command     
+        UBYTE *commandData;         //data of uplink command
+        UBYTE commandID;            //ID of uplink command
         //for information on EEPROM see data sheet: 24LC1025        
         UBYTE B0select;             //control byte B0 of EEPROM
         UBYTE wHighAddress;         //address high byte of EEPROM
@@ -68,10 +72,19 @@ void main(void) {
         UBYTE mainControlByte;      //control byte of main EEPROM
         UBYTE subControlByte;       //control byte of sub EEPROM
         
+        
+        UBYTE downlinkTimes;       //downlink times of received command
+        
         commandData = receiveDataPacket();
-        B0select = commandData[20];
-        wHighAddress = commandData[21];
-        wLowAddress = commandData[22];
+        
+        commandID = commandData[1];
+        if (commandID == lastCommandID) continue;       //same uplink command
+        lastCommandID = commandID;                      //update command ID
+        
+        B0select = commandData[19];
+        wHighAddress = commandData[20];
+        wLowAddress = commandData[21];
+        downlinkTimes = commandData[22];
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
         
@@ -88,9 +101,9 @@ void main(void) {
         WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
         
         
-        /*---Send command using UART to OBC and TXCOBC---*/
+        /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
-        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, 0x00);
+        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes);
         
         
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
