@@ -70,7 +70,8 @@ void main(void) {
     /*----------------------------------------------------------------------*/
     InitSerial();
     InitMPU();
-    InitI2CMaster(I2Cbps);
+    InitI2CMaster(I2Cbps_def);
+    //InitI2CMaster(I2Cbps);
     //InitWDT();
     
     LED_WHITE = 1;              //for debugging of init

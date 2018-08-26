@@ -1,16 +1,13 @@
 #include <xc.h>
 #include "typeDefine.h"
 #include "time.h"
+#include "EEPROM.h"
+#include "I2C.h"
 
-//UBYTE EEPROMData[32];
+//UBYTE EEPROMData[32];                                         
 
-//Methods
-void I2CMasterWait(void);                                               
-void I2CMasterStart(void);                                              
-void I2CMasterRepeatedStart(void);                                   
-void I2CMasterStop(void);                                               
-void I2CMasterWrite(unsigned d);                                        
-UBYTE I2CMasterRead(UBYTE a);                                           
+//Global Data
+UBYTE I2C_baud_rate = I2Cbps_def;
 
 void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
   SSPCON = 0b00101000;          //MSSP Control Register: Synchronous Serial Port Enabled;I2C Master mode, clock = FOSC/(4 * (SSPADD + 1))
@@ -78,6 +75,22 @@ void I2C_buffer_clear(void){
    SSPBUF = 0;   //Serial Receive/Transmit Buffer Register
 }
 
+//TODO:check
+//TODO:2‘ð‚Å‚æ‚¢‚Ì‚©H
+//change I2C baud rate
+//default 400000bps
+//h -> I2Cbps_high(400000bps) / l -> I2Cbps_low(100000bps)
+void change_I2C_baud_rate( UBYTE I2C_baud_rate_type ){
+    switch (I2C_baud_rate_type){
+        case 'h':
+            I2C_baud_rate = I2Cbps_high;
+            break;
+        case 'l':
+            I2C_baud_rate = I2Cbps_low;
+            break;
+    }
+}
+
 //process command data if the command type is 'I2C'
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
@@ -105,6 +118,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             break;
         case 'b': //change I2C baud rate
             //TODO: write method for change I2C baud rate
+            change_I2C_baud_rate( slaveAdress );
             break;
         default:
             //TODO: error message
