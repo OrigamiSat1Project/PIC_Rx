@@ -17,6 +17,8 @@
 
 void InitI2CMaster(const UDWORD c);
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
+void I2C_buffer_clear(void);
+
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE*, UBYTE*);
 
 #endif	/* I2C_H */

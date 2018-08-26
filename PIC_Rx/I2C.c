@@ -73,6 +73,11 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
     __delay_ms(200);
 }
 
+//TODO:check
+void I2C_buffer_clear(void){
+   SSPBUF = 0;   //Serial Receive/Transmit Buffer Register
+}
+
 //process command data if the command type is 'I2C'
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
@@ -94,8 +99,9 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             //TODO: send EEPROM address to TXCOBC
             break;
         case 'c': //I2C buffer clear
-            //TODO: write method for I2C buffer clear 
-            //TODO: clear: SSPBUF
+            //TODO: write method for I2C buffer clear---finish?
+            //TODO: clear: SSPBUF---finish?
+            I2C_buffer_clear();
             break;
         case 'b': //change I2C baud rate
             //TODO: write method for change I2C baud rate
