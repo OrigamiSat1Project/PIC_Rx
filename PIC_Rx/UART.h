@@ -30,7 +30,7 @@ void putOk(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-void WriteUART( UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void WriteUART( UBYTE* );
 int  change_baud_rate( UBYTE );
 void calculate_SPBRG(int, UBYTE, UBYTE);
 void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
