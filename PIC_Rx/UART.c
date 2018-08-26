@@ -112,6 +112,10 @@ void WriteUART( UBYTE *TXDATA ){
     }
 }
 
+void UART_buffer_clear(void){
+    RCREG = 0;   //USART Receive Register
+}
+
 //TODO:check
 int change_baud_rate( UBYTE command_baud_rate ){
     switch( command_baud_rate ){
@@ -169,7 +173,8 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
             WriteUART( data1 );  //TODO:change "data1" îCà”ÇÃêîÇ…ëŒâûÇ≈Ç´ÇÈÇÊÇ§Ç…
             break;
         case 'c': //UART buffer clear
-            //TODO: write method for UART buffer clear
+            //TODO: write method for UART buffer clear---finish?
+            UART_buffer_clear();
             break;
         case 'b': //change UART baud rate
             //TODO: write method for change UART baud rate---finish?
