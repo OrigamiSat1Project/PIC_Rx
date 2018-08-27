@@ -71,7 +71,39 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
 }
 
 //TODO:check
-void I2C_buffer_clear(void){
+//TODO:任意の字数に対応
+UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
+    UBYTE Address = EEPROM_address << 1;
+    UBYTE ReadAddress = Address | 0x01;
+    UBYTE ReadData;
+   
+    //UINT Datasize = sizeof(data);
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(high_address);    //Adress High Byte
+    I2CMasterWrite(low_address);    //Adress Low Byte
+    I2CMasterRepeatedStart();         //Restart condition
+    
+    I2CMasterWrite(ReadAddress);     //7 bit address + Read
+    
+    ReadData = I2CMasterRead(0); //Read + Acknowledge
+    
+    I2CMasterStop();          //Stop condition
+    return ReadData;
+    __delay_ms(200);  //TODO:delay時間は大丈夫か？
+}
+
+
+void TestI2C(void){
+    UBYTE I2C_test[4];
+    I2C_test[0]='T';
+    I2C_test[1]='E';
+    I2C_test[2]='S';
+    I2C_test[3]='T';
+}
+
+//TODO:check
+void I2CBufferClear(void){
    SSPBUF = 0;   //Serial Receive/Transmit Buffer Register
 }
 
@@ -80,7 +112,7 @@ void I2C_buffer_clear(void){
 //change I2C baud rate
 //default 400000bps
 //h -> I2Cbps_high(400000bps) / l -> I2Cbps_low(100000bps)
-void change_I2C_baud_rate( UBYTE I2C_baud_rate_type ){
+void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     switch (I2C_baud_rate_type){
         case 'h':
             I2C_baud_rate = I2Cbps_high;
@@ -108,17 +140,22 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
         case 't': //I2C test
             //TODO: write method for I2C test
             //TODO: write test data to EEPROM
-            //TODO: read EEPRON
+            //TODO: read EEPRON---finish
             //TODO: send EEPROM address to TXCOBC
+            TestI2C();
+            //TODO:コメントアウト外すとエラー発生
+            //WriteToEEPROM(slaveAdress, dataHigh, dataLow, I2C_test);
+            UBYTE EEPROMData;
+            EEPROMData = ReadEEPROM(slaveAdress, dataHigh, dataLow);
             break;
         case 'c': //I2C buffer clear
             //TODO: write method for I2C buffer clear---finish?
             //TODO: clear: SSPBUF---finish?
-            I2C_buffer_clear();
+            I2CBufferClear();
             break;
         case 'b': //change I2C baud rate
             //TODO: write method for change I2C baud rate
-            change_I2C_baud_rate( slaveAdress );
+            ChangeI2CBaudRate( slaveAdress );
             break;
         default:
             //TODO: error message

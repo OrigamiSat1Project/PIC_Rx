@@ -26,8 +26,10 @@ UBYTE I2CMasterRead(UBYTE a);
 
 void InitI2CMaster(const UDWORD c);
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
-void I2C_buffer_clear(void);
-void change_I2C_baud_rate(UBYTE);
+UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+void TestI2C(void);
+void I2CBufferClear(void);
+void ChangeI2CBaudRate(UBYTE);
 
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE*, UBYTE*);
 
