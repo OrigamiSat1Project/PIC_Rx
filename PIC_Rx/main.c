@@ -51,7 +51,10 @@ void main(void) {
     //define command ID
     UBYTE lastCommandID;        //ID of last uplink command
     
+    putChar('A');
+    
     while(1){
+        putChar('A');
         
         /*measure the runtime of the getBitLoop*/    //for normal run not needed
         /*------------------------------------------------------------------*/
@@ -77,9 +80,26 @@ void main(void) {
         
         commandData = receiveDataPacket();
         
+//        putString(commandData);
+        putChar('B');
+        
         commandID = commandData[1];
+        
+        putChar(commandID);
+        putCrLf();
+        putChar(lastCommandID);
+        putCrLf();
         if (commandID == lastCommandID) continue;       //same uplink command
         lastCommandID = commandID;                      //update command ID
+        
+        for (int i = 0; i<5;i++){
+            LED_WHITE = 1;
+            __delay_ms(2000);
+            LED_WHITE = 0;
+            __delay_ms(1000);
+        }
+        putChar('C');
+        
         
         B0select = commandData[19];
         wHighAddress = commandData[20];

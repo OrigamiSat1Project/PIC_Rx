@@ -14,11 +14,11 @@
 #define BIT_D_L 0x00                
 #define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
 #define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
-#define PACKET_SIZE 52
+#define PACKET_SIZE 50
 #define DATA_SIZE 32
 
 //Global Data
-//const UINT PACKET_SIZE = 52;
+//const UINT PACKET_SIZE = 50;
 //const UINT DATA_SIZE = 32;       
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
@@ -219,14 +219,21 @@ UBYTE *receiveDataPacket(void){
     getData();
     fcschecker = fcsCheck();
     
+    for(int i = 0; i<PACKET_SIZE;i++){
+        putChar(dPacket[i]);
+    }
+    
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
             dData[i] = dPacket[i+(PACKET_SIZE-DATA_SIZE)];                                     
         }
         dPacketCounter = 0;
         rcvState = 0;
+        for (int j=0; j<DATA_SIZE;j++){
+            putChar(dData[j]);
+        }
         return dData;
-    }else{                  //the data is invalid everything gets reset and data ignored
+    }else{                  //the data is invalid everything gets reset and data ignored //TODO check this function by test
         dPacketCounter = 0;
         rcvState = 0;
         return 0x00;
