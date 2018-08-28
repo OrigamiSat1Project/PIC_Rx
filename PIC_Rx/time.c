@@ -5,6 +5,7 @@
 #include "time.h"
 /**/
 
+//Global
 static UINT timer_counter_only_getChar = 0;
 
 //wait [ms] function

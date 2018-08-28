@@ -23,6 +23,7 @@ void InitMPU(void);
 void LEDOnOff(void);
 void debugLEDyellow(void);
 UINT invertState(UINT);
+void changeXtalFrequency(UBYTE);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);

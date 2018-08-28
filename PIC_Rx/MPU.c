@@ -5,7 +5,6 @@
 #include "typeDefine.h"
 
 
-
 void InitMPU(void)
 {
 	//Initialize Port Status
@@ -57,6 +56,23 @@ UINT invertState(UINT pinState){
         return HIGH;
     }
 }
+
+//TODO:コメントアウトとったときのエラー改善
+//time.cとtime.hもいじった
+void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
+    switch (XTAL_FREQUENCY_TYPE){                // Clock frequency
+        case 'h':
+            //_XTAL_FREQ = _XTAL_FREQ_HIGH;
+            break;
+        case 'm':
+            //_XTAL_FREQ = _XTAL_FREQ_MIDDLE;  //10M[Hz]
+            break;
+        case 'l':
+            //_XTAL_FREQ = _XTAL_FREQ_LOW;
+            break;
+    }
+}
+
 //process command data if the command type is 'change satellite mode'
 void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
     switch(command){    
@@ -118,6 +134,7 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
             break;
         case 'o': //change frequency
             //TODO: write method for change frequency
+            changeXtalFrequency(data1);
             break;
         default:
             //TODO: error message
