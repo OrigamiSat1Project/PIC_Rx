@@ -27,6 +27,7 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
+//extern UBYTE commandData[DATA_SIZE];
 
 void main(void) {
     
@@ -54,7 +55,7 @@ void main(void) {
     putChar('A');
     
     while(1){
-        putChar('A');
+        putChar('B');
         
         /*measure the runtime of the getBitLoop*/    //for normal run not needed
         /*------------------------------------------------------------------*/
@@ -66,7 +67,7 @@ void main(void) {
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
-        UBYTE *commandData;         //data of uplink command
+//        UBYTE *commandData;         //data of uplink command
         UBYTE commandID;            //ID of uplink command
         //for information on EEPROM see data sheet: 24LC1025        
         UBYTE B0select;             //control byte B0 of EEPROM
@@ -77,11 +78,11 @@ void main(void) {
         
         
         UBYTE downlinkTimes;       //downlink times of received command
-        
-        commandData = receiveDataPacket();
+        receiveDataPacket();
+//        commandData = receiveDataPacket();
         
 //        putString(commandData);
-        putChar('B');
+        putChar('C');
         
         commandID = commandData[1];
         
@@ -89,7 +90,7 @@ void main(void) {
         putCrLf();
         putChar(lastCommandID);
         putCrLf();
-        if (commandID == lastCommandID) continue;       //same uplink command
+//        if (commandID == lastCommandID) continue;       //same uplink command
         lastCommandID = commandID;                      //update command ID
         
         for (int i = 0; i<5;i++){
@@ -98,7 +99,7 @@ void main(void) {
             LED_WHITE = 0;
             __delay_ms(1000);
         }
-        putChar('C');
+        putChar('D');
         
         
         B0select = commandData[19];

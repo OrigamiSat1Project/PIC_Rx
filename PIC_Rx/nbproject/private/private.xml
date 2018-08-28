@@ -5,8 +5,8 @@
         <group>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/main.c</file>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/decodeAX25.c</file>
-            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/FMCW.h</file>
             <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/UART.c</file>
+            <file>file:/C:/Users/Kosuke/Documents/PIC_Rx/PIC_Rx/decodeAX25.h</file>
         </group>
     </open-files>
 </project-private>

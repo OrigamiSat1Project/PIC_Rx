@@ -1,4 +1,5 @@
 #include <xc.h>
+#include	<stdio.h>
 //#include <PIC16F887.h>
 #include "UART.h"
 //#include "InitMPU.h"
@@ -14,15 +15,13 @@
 #define BIT_D_L 0x00                
 #define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
 #define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
-#define PACKET_SIZE 50
-#define DATA_SIZE 32
 
 //Global Data
 //const UINT PACKET_SIZE = 50;
 //const UINT DATA_SIZE = 32;       
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
-UBYTE dData[DATA_SIZE];             //only information byte of uplink command
+//UBYTE commandData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
@@ -212,7 +211,7 @@ UINT fcsCheck(void){
     }
 }
 
-UBYTE *receiveDataPacket(void){
+void receiveDataPacket(void){
     UINT fcschecker;
     
     waitFlag();
@@ -222,21 +221,23 @@ UBYTE *receiveDataPacket(void){
     for(int i = 0; i<PACKET_SIZE;i++){
         putChar(dPacket[i]);
     }
-    
+    for(int i = 0; i<PACKET_SIZE;i++){
+        printf("%c",dPacket[i]);
+    }
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
-            dData[i] = dPacket[i+(PACKET_SIZE-DATA_SIZE)];                                     
+            commandData[i] = dPacket[i+20];   //20: size of address+SSID+PID+"ori1"
         }
         dPacketCounter = 0;
         rcvState = 0;
-        for (int j=0; j<DATA_SIZE;j++){
-            putChar(dData[j]);
+        for(UINT j=0; j<DATA_SIZE;j++){
+            putChar(commandData[j]);
         }
-        return dData;
+//        return dData;
     }else{                  //the data is invalid everything gets reset and data ignored //TODO check this function by test
         dPacketCounter = 0;
         rcvState = 0;
-        return 0x00;
+//        return 0x00;
     }
 }
 
