@@ -14,7 +14,7 @@ void waitFlag(void);
 void getdata(void);
 void conv_DI_UARTRX(void);
 UBYTE reverse_bit8(UBYTE x);
-const UINT commandSize = 32;
+//const UINT commandSize = 32;
 
 
 #define bit_H 0x01
@@ -367,8 +367,11 @@ UBYTE *ReceivePacket_data(void){
     fcschecker = fcscheck();
     
     if(fcschecker == 1){
+//        for(UINT i=0; i<52; i++){
+//            putch(dPacket[i]);
+//        }
         for(UINT i=0; i<commandSize; i++){
-            dData[i] = dPacket[i+20];
+            dData[i] = dPacket[i+22];
         }
         dPacketnum = 0;
         rcv_state = 0;

@@ -121,8 +121,8 @@ void main(void) {
         
         
         //Write uplink command in EEPROM
-        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,commandDataSize);
-        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,commandDataSize);
+        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,commandSize);
+        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,commandSize);
 //        __delay_ms(100);
         
         //inform TXPIC RXDATA(PIN43 = 1)

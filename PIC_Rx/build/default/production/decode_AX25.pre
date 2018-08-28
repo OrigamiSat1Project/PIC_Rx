@@ -1624,10 +1624,10 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 37 "decode_AX25.h"
+# 38 "decode_AX25.h"
 UINT getbit(void);
 
-# 45
+# 46
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 
@@ -1642,7 +1642,6 @@ void waitFlag(void);
 void getdata(void);
 void conv_DI_UARTRX(void);
 UBYTE reverse_bit8(UBYTE x);
-const UINT commandSize = 32;
 
 # 25
 static UINT rcv_state = 0;
@@ -1992,8 +1991,11 @@ getdata();
 fcschecker = fcscheck();
 
 if(fcschecker == 1){
-for(UINT i=0; i<commandSize; i++){
-dData[i] = dPacket[i+20];
+
+
+
+for(UINT i=0; i<32; i++){
+dData[i] = dPacket[i+22];
 }
 dPacketnum = 0;
 rcv_state = 0;
