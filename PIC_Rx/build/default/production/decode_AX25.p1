@@ -1189,12 +1189,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 42: oldbit = RB5;
 "42
 [e = F1355 -> -> _RB5 `i `ui ]
-[; ;decode_AX25.c: 43: for(UINT i=0;i<62;i++){
+[; ;decode_AX25.c: 43: for(UINT i=0;i<66;i++){
 "43
 {
 [v _i `ui ~T0 @X0 1 a ]
 [e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 62 `i `ui 101  ]
+[e $ < _i -> -> 66 `i `ui 101  ]
 [e $U 102  ]
 [e :U 101 ]
 {
@@ -1219,7 +1219,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "43
 [e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 62 `i `ui 101  ]
+[e $ < _i -> -> 66 `i `ui 101  ]
 [e :U 102 ]
 "49
 }

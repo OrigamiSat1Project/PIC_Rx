@@ -6,16 +6,15 @@
                    projectFiles="true">
       <itemPath>time.h</itemPath>
       <itemPath>UART.h</itemPath>
-      <itemPath>Type_define.h</itemPath>
-      <itemPath>Init_MPU.h</itemPath>
-      <itemPath>decode_AX25.h</itemPath>
       <itemPath>memo.h</itemPath>
-      <itemPath>encode_AX25.h</itemPath>
       <itemPath>I2C.h</itemPath>
       <itemPath>EEPROM.h</itemPath>
       <itemPath>FMCW.h</itemPath>
       <itemPath>EPS.h</itemPath>
       <itemPath>WDT.h</itemPath>
+      <itemPath>Init_MPU.h</itemPath>
+      <itemPath>Type_define.h</itemPath>
+      <itemPath>decode_AX25.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,14 +25,13 @@
                    projectFiles="true">
       <itemPath>time.c</itemPath>
       <itemPath>UART.c</itemPath>
-      <itemPath>Init_MPU.c</itemPath>
-      <itemPath>decode_AX25.c</itemPath>
-      <itemPath>encode_AX25.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
       <itemPath>FMCW.c</itemPath>
       <itemPath>EPS.c</itemPath>
       <itemPath>WDT.c</itemPath>
+      <itemPath>Init_MPU.c</itemPath>
+      <itemPath>decode_AX25.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -156,6 +154,7 @@
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

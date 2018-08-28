@@ -1663,7 +1663,7 @@ void conv_DI_UARTRX(void);
 UINT getbit(void){
 static UINT oldbit;
 oldbit = RB5;
-for(UINT i=0;i<62;i++){
+for(UINT i=0;i<66;i++){
 if(RB5 != oldbit){
 _delay((unsigned long)((400)*(10000000/4000000.0)));
 RC2= 1- RC2;
