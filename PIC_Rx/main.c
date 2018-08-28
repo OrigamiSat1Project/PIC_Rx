@@ -79,7 +79,8 @@ void main(void) {
     __delay_ms(500);
     RB3 = 1;
 //    RC5 = 1;
-    printf("start\r\n");
+//    printf("start\r\n");
+    putch(0x00);
 //    RA1 = 0;
     while(1){
         /*
@@ -120,9 +121,9 @@ void main(void) {
         
         
         //Write uplink command in EEPROM
-        EEPROM_Write(mainControlByte,wHighAddress,wLowAddress,commandData);
-        EEPROM_Write(subControlByte,wHighAddress,wLowAddress,commandData);
-        __delay_ms(100);
+        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,commandDataSize);
+        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,commandDataSize);
+//        __delay_ms(100);
         
         //inform TXPIC RXDATA(PIN43 = 1)
         
@@ -132,7 +133,10 @@ void main(void) {
         /*------------------------------------------------------------------*/
         sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes);
         
-        printf("%s\r\n", commandData);
+//        printf("%s\r\n", commandData);
+//        for(int i = 0; i< 32;i++){
+//            putch(commandData[i]);
+//        }
 //        for (UINT i = 0;i < 32;i++){
 //            printf("%c", dData[i]);
 //            dData[i] = 0x00;

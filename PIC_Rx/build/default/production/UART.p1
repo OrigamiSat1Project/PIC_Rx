@@ -1350,10 +1350,28 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.c: 90: Command[7] = CRC && 0x00FF;
 "90
 [e = *U + &U _Command * -> -> -> 7 `i `ui `ux -> -> # *U &U _Command `ui `ux -> -> && != -> _CRC `ui -> -> -> 0 `i `us `ui != -> 255 `i -> 0 `i `i `uc ]
-[; ;UART.c: 91: putString(Command);
-"91
-[e ( _putString (1 &U _Command ]
-[; ;UART.c: 92: }
+[; ;UART.c: 92: for(int i = 0; i<8;i++){
 "92
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 114  ]
+[e $U 115  ]
+[e :U 114 ]
+{
+[; ;UART.c: 93: putch(Command[i]);
+"93
+[e ( _putch (1 *U + &U _Command * -> -> _i `ui `ux -> -> # *U &U _Command `ui `ux ]
+"94
+}
+"92
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 114  ]
+[e :U 115 ]
+"94
+}
+[; ;UART.c: 94: }
+[; ;UART.c: 95: }
+"95
 [e :UE 113 ]
 }

@@ -88,5 +88,8 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
     CRC = crc16(0, Command, 6);
     Command[6] = CRC >> 8;
     Command[7] = CRC && 0x00FF;
-    putString(Command);
+    //putString(Command);
+    for(int i = 0; i<8;i++){
+        putch(Command[i]);
+    } 
 }

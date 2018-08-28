@@ -16,7 +16,7 @@ void I2C_Master_Wait(){
   while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
 }
 
-void I2C_Master_Start(){
+void I2CMasterStart(){
   I2C_Master_Wait();
   SEN = 1;
 }
@@ -26,12 +26,12 @@ void I2C_Master_RepeatedStart(){
   RSEN = 1;
 }
 
-void I2C_Master_Stop(){
+void I2CMasterStop(){
   I2C_Master_Wait();
   PEN = 1;
 }
 
-void I2C_Master_Write(unsigned d){
+void I2CMasterWrite(unsigned d){
   I2C_Master_Wait();
   SSPBUF = d;
 }
@@ -52,18 +52,33 @@ void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYT
     UBYTE Address = EEPROM_address << 1;
     //UINT Datasize = sizeof(data);
     /**/
-    I2C_Master_Start();         //Start condition
-    I2C_Master_Write(Address);     //7 bit address + Write
-    I2C_Master_Write(high_address);    //Adress High Byte
-    I2C_Master_Write(low_address);    //Adress Low Byte
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(high_address);    //Adress High Byte
+    I2CMasterWrite(low_address);    //Adress Low Byte
     while(*data){
-        I2C_Master_Write(*data);    //Data
+        I2CMasterWrite(*data);    //Data
         ++data;
     }
-    I2C_Master_Stop();          //Stop condition
-    __delay_ms(200);
+    I2CMasterStop();          //Stop condition
+    __delay_ms(300);
 }
 
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+    UBYTE address = addressEEPROM << 1;
+    //UINT Datasize = sizeof(data);
+    /**/
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    for (UINT i = 0; i< dataSize; i++){
+        I2CMasterWrite(*data);      //Data
+        ++data;
+    }
+    I2CMasterStop();                //Stop condition
+    __delay_ms(300);
+}
 //UBYTE *EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address, UINT DataSize){
 //    UBYTE Address = EEPROM_address << 1;
 //    UBYTE ReadAddress = Address | 0x01;

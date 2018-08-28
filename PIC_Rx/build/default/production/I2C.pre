@@ -1495,7 +1495,7 @@ void I2C_Master_Wait(){
 while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
 }
 
-void I2C_Master_Start(){
+void I2CMasterStart(){
 I2C_Master_Wait();
 SEN = 1;
 }
@@ -1505,12 +1505,12 @@ I2C_Master_Wait();
 RSEN = 1;
 }
 
-void I2C_Master_Stop(){
+void I2CMasterStop(){
 I2C_Master_Wait();
 PEN = 1;
 }
 
-void I2C_Master_Write(unsigned d){
+void I2CMasterWrite(unsigned d){
 I2C_Master_Wait();
 SSPBUF = d;
 }
@@ -1531,15 +1531,31 @@ void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYT
 UBYTE Address = EEPROM_address << 1;
 
 
-I2C_Master_Start();
-I2C_Master_Write(Address);
-I2C_Master_Write(high_address);
-I2C_Master_Write(low_address);
+I2CMasterStart();
+I2CMasterWrite(Address);
+I2CMasterWrite(high_address);
+I2CMasterWrite(low_address);
 while(*data){
-I2C_Master_Write(*data);
+I2CMasterWrite(*data);
 ++data;
 }
-I2C_Master_Stop();
-_delay((unsigned long)((200)*(10000000/4000.0)));
+I2CMasterStop();
+_delay((unsigned long)((300)*(10000000/4000.0)));
+}
+
+void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data, UBYTE dataSize){
+UBYTE address = addressEEPROM << 1;
+
+
+I2CMasterStart();
+I2CMasterWrite(address);
+I2CMasterWrite(addressHigh);
+I2CMasterWrite(addressLow);
+for (UINT i = 0; i< dataSize; i++){
+I2CMasterWrite(*data);
+++data;
+}
+I2CMasterStop();
+_delay((unsigned long)((300)*(10000000/4000.0)));
 }
 

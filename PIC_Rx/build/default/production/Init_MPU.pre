@@ -1624,10 +1624,10 @@ void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
 
-# 36 "decode_AX25.h"
+# 37 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
+# 45
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 

@@ -24,7 +24,7 @@ UINT eflag = 0;
 UINT efcsflag = 0;
 UINT estuff = 0;
 UBYTE efcslo, efcshi;
-UBYTE eDataField[] = "Hello! I'm OrigamiSat1!!";
+//UBYTE eDataField[] = "Hello! I'm OrigamiSat1!!";
 UBYTE ePacket[5];
 UINT ebitstatus = low;
 
@@ -95,11 +95,11 @@ void SendByte(UBYTE byte){
     UBYTE bt;
     for(UINT i=0;i<8;i++){
         bt = byte & bit_H;
-        //  eDataField ï¿½ï¿½ FCSCalculate
+        //  eDataField ?¿½?¿½ FCSCalculate
         if(efcsflag == 0 && eflag == 0){
             fcsbit(bt);
         }
-        //  eDataField, FCSField ï¿½ï¿½ bitestuffing
+        //  eDataField, FCSField ?¿½?¿½ bitestuffing
         if(bt == bit_L){
             flipout();
         }else{

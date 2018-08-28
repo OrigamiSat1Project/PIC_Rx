@@ -1132,9 +1132,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdlib.h: 101: extern char * ltoa(char * buf, long val, int base);
 [; ;stdlib.h: 102: extern char * ultoa(char * buf, unsigned long val, int base);
 [; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
-[; ;decode_AX25.h: 36: UINT getbit(void);
-[; ;decode_AX25.h: 44: void ReceivePacket(void);
-[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
+[; ;decode_AX25.h: 37: UINT getbit(void);
+[; ;decode_AX25.h: 45: void ReceivePacket(void);
+[; ;decode_AX25.h: 46: UBYTE *ReceivePacket_data(void);
 [; ;encode_AX25.h: 24: void SendPacket(void);
 [; ;decode_AX25.c: 10: void UART_TX(UINT,UINT);
 [; ;decode_AX25.c: 11: void waitByte(UINT,UINT);

@@ -1624,10 +1624,10 @@ extern char * ultoa(char * buf, unsigned long val, int base);
 
 extern char * ftoa(float f, int * status);
 
-# 36 "decode_AX25.h"
+# 37 "decode_AX25.h"
 UINT getbit(void);
 
-# 44
+# 45
 void ReceivePacket(void);
 UBYTE *ReceivePacket_data(void);
 
