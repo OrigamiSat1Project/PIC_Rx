@@ -1137,17 +1137,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdlib.h: 104: extern char * ftoa(float f, int * status);
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
+[; ;UART.h: 19: void putString(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
 [; ;UART.h: 21: void putcrlf(void);
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
-[; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-[; ;decode_AX25.h: 36: UINT getbit(void);
-[; ;decode_AX25.h: 44: void ReceivePacket(void);
-[; ;decode_AX25.h: 45: UBYTE *ReceivePacket_data(void);
-[; ;encode_AX25.h: 24: void SendPacket(void);
+[; ;UART.h: 25: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE,UBYTE,UBYTE);
+[; ;decode_AX25.h: 39: UINT getbit(void);
+[; ;decode_AX25.h: 47: void ReceivePacket(void);
+[; ;decode_AX25.h: 48: UBYTE *ReceivePacket_data(void);
 "8 Init_MPU.c
 [v _Init_MPU `(v ~T0 @X0 1 ef ]
 "9

@@ -319,27 +319,27 @@ void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX
  *  1. CWKEY端子を0�?1�?0と変化させ�?
  *  2. ※1.を計３回行う
  */
-void Morse_V(void){
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(150);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-}
+//void Morse_V(void){
+//    CWTX_KEY = 1;
+//    __delay_ms(50);
+//    CWTX_KEY = 0;
+//    __delay_ms(50);
+//
+//    CWTX_KEY = 1;
+//    __delay_ms(50);
+//    CWTX_KEY = 0;
+//    __delay_ms(50);
+//
+//    CWTX_KEY = 1;
+//    __delay_ms(50);
+//    CWTX_KEY = 0;
+//    __delay_ms(50);
+//
+//    CWTX_KEY = 1;
+//    __delay_ms(150);
+//    CWTX_KEY = 0;
+//    __delay_ms(50);
+//}
 
 
 /*

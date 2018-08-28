@@ -1733,29 +1733,6 @@ CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 }
 
-# 322
-void Morse_V(void){
-PORTDbits.RD3 = 1;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-PORTDbits.RD3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-PORTDbits.RD3 = 1;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-PORTDbits.RD3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-PORTDbits.RD3 = 1;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-PORTDbits.RD3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-
-PORTDbits.RD3 = 1;
-_delay((unsigned long)((150)*(10000000/4000.0)));
-PORTDbits.RD3 = 0;
-_delay((unsigned long)((50)*(10000000/4000.0)));
-}
-
 # 349
 void _NOP(void) {
 for(int i=0; i<5; i++){

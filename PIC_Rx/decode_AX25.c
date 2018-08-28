@@ -1,19 +1,19 @@
-#include <xc.h>
+//#include <xc.h>
 //#include <PIC16F887.h>
 #include "UART.h"
 #include "Init_MPU.h"
 #include "Type_define.h"
 #include "time.h"
 #include "decode_AX25.h"
-#include "encode_AX25.h"
+//#include "encode_AX25.h"
 
 void UART_TX(UINT,UINT);
 void waitByte(UINT,UINT);
 UINT getbit(void);
 void waitFlag(void);
 void getdata(void);
-void conv_DI_UARTRX(void);
-UBYTE reverse_bit8(UBYTE x);
+//void conv_DI_UARTRX(void);
+//UBYTE reverse_bit8(UBYTE x);
 const UINT commandSize = 32;
 
 
@@ -278,7 +278,7 @@ void waitFlag(void){
 void getdata(void){
     UBYTE buf = 0x00;
     UINT  dstuff = 0;
-    UBYTE dammy_data;
+//    UBYTE dammy_data;
     UINT  bufstore_counter = 0;
     UINT  dbitstatus = 0;
     
@@ -316,7 +316,7 @@ UINT fcscheck(void){
     while(rcv_state == 3){
         for(UINT i=0;i<dPacketnum-2;i++){      //dPacketnumはmycall,SSID,ucall,Control,PID,Data,FCSのbyte数．-2でFCS分を除く．
             byte = dPacket[i];
-            for(UINT i=0;i<8;i++){
+            for(UINT j=0;j<8;j++){
                 bt = byte & bit_H;
                 #asm
                     BCF 03,0
@@ -401,30 +401,30 @@ void putAX25(void){
 }
 
 //  デジタルインプットをUARTRXとして使えるプログラム
-void conv_DI_UARTRX(void){
-    UBYTE buf_dammy = 0x00;
-    UBYTE buf = 0x00;
-    
-    getbit();
-    while(FX614_RXD == 0){  //後々は割り込み処理．STARTbit待機
-        for(UINT i=0;i<8;i++){
-            getbit();
-            buf_dammy = buf_dammy << 1;
-            if(FX614_RXD == 0){
-                buf_dammy = buf_dammy | bit_L;
-            }else{
-                buf_dammy = buf_dammy | bit_H;
-            }
-        }
-        getbit();   //STOPbit用
-        buf = reverse_bit8(buf_dammy);
-        putch(buf);
-    }
-}
+//void conv_DI_UARTRX(void){
+//    UBYTE buf_dammy = 0x00;
+//    UBYTE buf = 0x00;
+//    
+//    getbit();
+//    while(FX614_RXD == 0){  //後々は割り込み処理．STARTbit待機
+//        for(UINT i=0;i<8;i++){
+//            getbit();
+//            buf_dammy = buf_dammy << 1;
+//            if(FX614_RXD == 0){
+//                buf_dammy = buf_dammy | bit_L;
+//            }else{
+//                buf_dammy = buf_dammy | bit_H;
+//            }
+//        }
+//        getbit();   //STOPbit用
+//        buf = reverse_bit8(buf_dammy);
+//        putch(buf);
+//    }
+//}
 
 //  MNB,LNBの逆転処理するプログラム
-UBYTE reverse_bit8(UBYTE x){
-	x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
-	x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
-	return (x << 4) | (x >> 4);
-}
+//UBYTE reverse_bit8(UBYTE x){
+//	x = ((x & 0x55) << 1) | ((x & 0xAA) >> 1);
+//	x = ((x & 0x33) << 2) | ((x & 0xCC) >> 2);
+//	return (x << 4) | (x >> 4);
+//}

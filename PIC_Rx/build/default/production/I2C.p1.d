@@ -2,4 +2,5 @@
  build/default/production/I2C.p1:  \
  I2C.c  \
 UART.h  \
-Type_define.h 
+Type_define.h  \
+time.h 

@@ -41,11 +41,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _PORTDbits `VS11 ~T0 @X0 0 e@8 ]
 "47 FMCW.h
 [v __NOP `(v ~T0 @X0 0 ef ]
-[v F1089 `(v ~T0 @X0 1 tf1`ul ]
-"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
-[v __delay `JF1089 ~T0 @X0 0 e ]
-[p i __delay ]
-"29
+"29 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
 [p i ___nop ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
@@ -1893,64 +1889,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "313
 [e :UE 146 ]
 }
-"322
-[v _Morse_V `(v ~T0 @X0 1 ef ]
-{
-[; ;FMCW.c: 322: void Morse_V(void){
-[e :U _Morse_V ]
-[f ]
-[; ;FMCW.c: 323: PORTDbits.RD3 = 1;
-"323
-[e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 324: _delay((unsigned long)((50)*(10000000/4000.0)));
-"324
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 325: PORTDbits.RD3 = 0;
-"325
-[e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 326: _delay((unsigned long)((50)*(10000000/4000.0)));
-"326
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 328: PORTDbits.RD3 = 1;
-"328
-[e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 329: _delay((unsigned long)((50)*(10000000/4000.0)));
-"329
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 330: PORTDbits.RD3 = 0;
-"330
-[e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 331: _delay((unsigned long)((50)*(10000000/4000.0)));
-"331
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 333: PORTDbits.RD3 = 1;
-"333
-[e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 334: _delay((unsigned long)((50)*(10000000/4000.0)));
-"334
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 335: PORTDbits.RD3 = 0;
-"335
-[e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 336: _delay((unsigned long)((50)*(10000000/4000.0)));
-"336
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 338: PORTDbits.RD3 = 1;
-"338
-[e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 339: _delay((unsigned long)((150)*(10000000/4000.0)));
-"339
-[e ( __delay (1 -> * -> -> 150 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 340: PORTDbits.RD3 = 0;
-"340
-[e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 341: _delay((unsigned long)((50)*(10000000/4000.0)));
-"341
-[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 342: }
-"342
-[e :UE 147 ]
-}
 "349
 [v __NOP `(v ~T0 @X0 1 ef ]
 {
@@ -1962,9 +1900,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 5 `i 149  ]
-[e $U 150  ]
-[e :U 149 ]
+[e $ < _i -> 5 `i 148  ]
+[e $U 149  ]
+[e :U 148 ]
 {
 [; ;FMCW.c: 351: __nop();
 "351
@@ -1973,12 +1911,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "350
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 5 `i 149  ]
-[e :U 150 ]
+[e $ < _i -> 5 `i 148  ]
+[e :U 149 ]
 "352
 }
 [; ;FMCW.c: 352: }
 [; ;FMCW.c: 353: }
 "353
-[e :UE 148 ]
+[e :UE 147 ]
 }

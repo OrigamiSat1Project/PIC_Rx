@@ -1,8 +1,9 @@
 #include <xc.h>
 #include "UART.h"
 #include "Type_define.h"
+#include "time.h"
 
-#define _XTAL_FREQ 10000000
+//#define _XTAL_FREQ 10000000
 //UBYTE EEPROMData[32];
 
 void Init_I2C_M(const UDWORD c){

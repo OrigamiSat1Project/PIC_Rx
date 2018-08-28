@@ -21,10 +21,13 @@
 //  AX25用のフラグ上位4bit(Mnib)と下位4bit(Lnib)
 #define Flag_Mnib 7
 #define Flag_Lnib 14
-#define Flag_AX25[] "01111110"
+//#define Flag_AX25[] "01111110"
 #define getbitloop 62//20MHz:130  10MHz:66  西無線周波数設定含めると60が適正値？
 #define Flag_AX25 0x7e
 #define flagcounter_max 9
+
+#define mycall "JS1YAX"
+#define ucall  "JQ1YCZ"
 // 1/25 
 // 0x7Eを判定できるgetbitloop
 // waitflag()        だと   91 -113
