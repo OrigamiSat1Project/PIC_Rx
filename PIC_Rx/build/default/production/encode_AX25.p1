@@ -1044,13 +1044,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
+[; ;UART.h: 19: void putString(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
 [; ;UART.h: 21: void putcrlf(void);
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
 [; ;Init_MPU.h: 25: void led_onoff(void);
 [; ;Init_MPU.h: 26: void debug_ledy(void);
@@ -1259,7 +1259,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 107  ]
 [e :U 106 ]
 {
-[; ;encode_AX25.c: 41: ePacket[i] = "JQ1YCZ"[i] << 1;
+[; ;encode_AX25.c: 41: ePacket[i] = "JS1YAX"[i] << 1;
 "41
 [e = *U + &U _ePacket * -> _i `ux -> -> # *U &U _ePacket `ui `ux -> << -> *U + :s 1C * -> _i `ux -> -> # *U :s 1C `ui `ux `i -> 1 `i `uc ]
 "42
@@ -1283,7 +1283,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 110  ]
 [e :U 109 ]
 {
-[; ;encode_AX25.c: 45: ePacket[i+7] = "JQ1ZHX"[i] << 1;
+[; ;encode_AX25.c: 45: ePacket[i+7] = "JQ1YCZ"[i] << 1;
 "45
 [e = *U + &U _ePacket * -> + _i -> -> 7 `i `ui `ux -> -> # *U &U _ePacket `ui `ux -> << -> *U + :s 2C * -> _i `ux -> -> # *U :s 2C `ui `ux `i -> 1 `i `uc ]
 "46
@@ -1625,5 +1625,5 @@ Version 3.2 HI-TECH Software Intermediate Code
 "141
 [e :UE 142 ]
 }
-[a 1C 74 81 49 89 67 90 0 ]
-[a 2C 74 81 49 90 72 88 0 ]
+[a 2C 74 81 49 89 67 90 0 ]
+[a 1C 74 83 49 89 65 88 0 ]

@@ -1474,14 +1474,14 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
+void putString(UBYTE *);
 UBYTE getch(void);
 void putcrlf(void);
 
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
-void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
 
 # 24 "Init_MPU.h"
 void Init_MPU(void);
@@ -1702,6 +1702,109 @@ buf = buf | 0x80;
 }
 }
 }
+if(buf == ("JS1YAX"[0] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JS1YAX"[1] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JS1YAX"[2] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JS1YAX"[3] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JS1YAX"[4] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+if(buf == ("JS1YAX"[5] << 1)){
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+rcv_state ++;
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+}else{
+dPacketnum = 0;
+}
+
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
+dPacket[dPacketnum] = buf;
+dPacketnum ++;
+for(UINT j=0;j<8;j++){
+flag_judge = getbit();
+buf = buf >> 1;
+if(flag_judge == 0){
+buf = buf | 0x00;
+}else{
+buf = buf | 0x80;
+}
+}
 if(buf == ("JQ1YCZ"[0] << 1)){
 dPacket[dPacketnum] = buf;
 dPacketnum ++;
@@ -1763,109 +1866,6 @@ buf = buf | 0x80;
 }
 }
 if(buf == ("JQ1YCZ"[5] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-rcv_state ++;
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-}else{
-dPacketnum = 0;
-}
-
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1ZHX"[0] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1ZHX"[1] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1ZHX"[2] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1ZHX"[3] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1ZHX"[4] << 1)){
-dPacket[dPacketnum] = buf;
-dPacketnum ++;
-for(UINT j=0;j<8;j++){
-flag_judge = getbit();
-buf = buf >> 1;
-if(flag_judge == 0){
-buf = buf | 0x00;
-}else{
-buf = buf | 0x80;
-}
-}
-if(buf == ("JQ1ZHX"[5] << 1)){
 dPacket[dPacketnum] = buf;
 dPacketnum ++;
 rcv_state ++;

@@ -1474,14 +1474,14 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
+void putString(UBYTE *);
 UBYTE getch(void);
 void putcrlf(void);
 
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
-void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
 
 # 24 "Init_MPU.h"
 void Init_MPU(void);
@@ -1660,11 +1660,11 @@ putch(ePacket[i]);
 
 UINT Packetmaker(void){
 for(UINT i=0;i<6;i++){
-ePacket[i] = "JQ1YCZ"[i] << 1;
+ePacket[i] = "JS1YAX"[i] << 1;
 }
 ePacket[6] = 0x60;
 for(UINT i=0;i<6;i++){
-ePacket[i+7] = "JQ1ZHX"[i] << 1;
+ePacket[i+7] = "JQ1YCZ"[i] << 1;
 }
 ePacket[13] = 0xe1;
 ePacket[14] = 0x03;

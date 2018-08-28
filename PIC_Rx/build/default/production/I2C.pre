@@ -1474,14 +1474,14 @@ typedef unsigned long UDWORD;
 # 17 "UART.h"
 void Init_SERIAL(void);
 void putch(UBYTE c);
-void putstr(UBYTE *);
+void putString(UBYTE *);
 UBYTE getch(void);
 void putcrlf(void);
 
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
-void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
 
 # 8 "I2C.c"
 void Init_I2C_M(const UDWORD c){

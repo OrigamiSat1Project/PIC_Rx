@@ -17,8 +17,8 @@
 #ifndef ENCODE_AX25_H
 #define	ENCODE_AX25_H
 
-#define mycall "JQ1YCZ"
-#define ucall  "JQ1ZHX"
+#define mycall "JS1YAX"
+#define ucall  "JQ1YCZ"
 #define txd RB2
 
 void SendPacket(void);

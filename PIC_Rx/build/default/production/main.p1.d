@@ -3,6 +3,7 @@
  main.c  \
 I2C.h  \
 UART.h  \
+CRC16.h  \
 Type_define.h  \
 Init_MPU.h  \
 EPS.h  \

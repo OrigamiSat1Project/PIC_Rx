@@ -1040,13 +1040,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;Type_define.h: 23: typedef unsigned long UDWORD;
 [; ;UART.h: 17: void Init_SERIAL(void);
 [; ;UART.h: 18: void putch(UBYTE c);
-[; ;UART.h: 19: void putstr(UBYTE *);
+[; ;UART.h: 19: void putString(UBYTE *);
 [; ;UART.h: 20: UBYTE getch(void);
 [; ;UART.h: 21: void putcrlf(void);
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
 [; ;Init_MPU.h: 25: void led_onoff(void);
 [; ;Init_MPU.h: 26: void debug_ledy(void);
@@ -1184,11 +1184,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _getbit ]
 [f ]
 "41
-[v F1355 `ui ~T0 @X0 1 s oldbit ]
+[v F1358 `ui ~T0 @X0 1 s oldbit ]
 [; ;decode_AX25.c: 41: static UINT oldbit;
 [; ;decode_AX25.c: 42: oldbit = RB5;
 "42
-[e = F1355 -> -> _RB5 `i `ui ]
+[e = F1358 -> -> _RB5 `i `ui ]
 [; ;decode_AX25.c: 43: for(UINT i=0;i<62;i++){
 "43
 {
@@ -1200,7 +1200,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;decode_AX25.c: 44: if(RB5 != oldbit){
 "44
-[e $ ! != -> -> _RB5 `i `ui F1355 104  ]
+[e $ ! != -> -> _RB5 `i `ui F1358 104  ]
 {
 [; ;decode_AX25.c: 45: _delay((unsigned long)((400)*(10000000/4000000.0)));
 "45
@@ -1348,7 +1348,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;decode_AX25.c: 79: }
 [; ;decode_AX25.c: 80: }
 [; ;decode_AX25.c: 81: }
-[; ;decode_AX25.c: 82: if(buf == ("JQ1YCZ"[0] << 1)){
+[; ;decode_AX25.c: 82: if(buf == ("JS1YAX"[0] << 1)){
 "82
 [e $ ! == -> _buf `i << -> *U + :s 1C * -> -> 0 `i `x -> -> # *U :s 1C `i `x `i -> 1 `i 122  ]
 {
@@ -1402,7 +1402,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 92: }
 [; ;decode_AX25.c: 93: }
-[; ;decode_AX25.c: 94: if(buf == ("JQ1YCZ"[1] << 1)){
+[; ;decode_AX25.c: 94: if(buf == ("JS1YAX"[1] << 1)){
 "94
 [e $ ! == -> _buf `i << -> *U + :s 2C * -> -> 1 `i `x -> -> # *U :s 2C `i `x `i -> 1 `i 128  ]
 {
@@ -1456,7 +1456,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 104: }
 [; ;decode_AX25.c: 105: }
-[; ;decode_AX25.c: 106: if(buf == ("JQ1YCZ"[2] << 1)){
+[; ;decode_AX25.c: 106: if(buf == ("JS1YAX"[2] << 1)){
 "106
 [e $ ! == -> _buf `i << -> *U + :s 3C * -> -> 2 `i `x -> -> # *U :s 3C `i `x `i -> 1 `i 134  ]
 {
@@ -1510,7 +1510,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 116: }
 [; ;decode_AX25.c: 117: }
-[; ;decode_AX25.c: 118: if(buf == ("JQ1YCZ"[3] << 1)){
+[; ;decode_AX25.c: 118: if(buf == ("JS1YAX"[3] << 1)){
 "118
 [e $ ! == -> _buf `i << -> *U + :s 4C * -> -> 3 `i `x -> -> # *U :s 4C `i `x `i -> 1 `i 140  ]
 {
@@ -1564,7 +1564,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 128: }
 [; ;decode_AX25.c: 129: }
-[; ;decode_AX25.c: 130: if(buf == ("JQ1YCZ"[4] << 1)){
+[; ;decode_AX25.c: 130: if(buf == ("JS1YAX"[4] << 1)){
 "130
 [e $ ! == -> _buf `i << -> *U + :s 5C * -> -> 4 `i `x -> -> # *U :s 5C `i `x `i -> 1 `i 146  ]
 {
@@ -1618,7 +1618,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 140: }
 [; ;decode_AX25.c: 141: }
-[; ;decode_AX25.c: 142: if(buf == ("JQ1YCZ"[5] << 1)){
+[; ;decode_AX25.c: 142: if(buf == ("JS1YAX"[5] << 1)){
 "142
 [e $ ! == -> _buf `i << -> *U + :s 6C * -> -> 5 `i `x -> -> # *U :s 6C `i `x `i -> 1 `i 152  ]
 {
@@ -1803,7 +1803,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 183: }
 [; ;decode_AX25.c: 184: }
-[; ;decode_AX25.c: 185: if(buf == ("JQ1ZHX"[0] << 1)){
+[; ;decode_AX25.c: 185: if(buf == ("JQ1YCZ"[0] << 1)){
 "185
 [e $ ! == -> _buf `i << -> *U + :s 7C * -> -> 0 `i `x -> -> # *U :s 7C `i `x `i -> 1 `i 169  ]
 {
@@ -1857,7 +1857,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 195: }
 [; ;decode_AX25.c: 196: }
-[; ;decode_AX25.c: 197: if(buf == ("JQ1ZHX"[1] << 1)){
+[; ;decode_AX25.c: 197: if(buf == ("JQ1YCZ"[1] << 1)){
 "197
 [e $ ! == -> _buf `i << -> *U + :s 8C * -> -> 1 `i `x -> -> # *U :s 8C `i `x `i -> 1 `i 175  ]
 {
@@ -1911,7 +1911,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 207: }
 [; ;decode_AX25.c: 208: }
-[; ;decode_AX25.c: 209: if(buf == ("JQ1ZHX"[2] << 1)){
+[; ;decode_AX25.c: 209: if(buf == ("JQ1YCZ"[2] << 1)){
 "209
 [e $ ! == -> _buf `i << -> *U + :s 9C * -> -> 2 `i `x -> -> # *U :s 9C `i `x `i -> 1 `i 181  ]
 {
@@ -1965,7 +1965,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 219: }
 [; ;decode_AX25.c: 220: }
-[; ;decode_AX25.c: 221: if(buf == ("JQ1ZHX"[3] << 1)){
+[; ;decode_AX25.c: 221: if(buf == ("JQ1YCZ"[3] << 1)){
 "221
 [e $ ! == -> _buf `i << -> *U + :s 10C * -> -> 3 `i `x -> -> # *U :s 10C `i `x `i -> 1 `i 187  ]
 {
@@ -2019,7 +2019,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 231: }
 [; ;decode_AX25.c: 232: }
-[; ;decode_AX25.c: 233: if(buf == ("JQ1ZHX"[4] << 1)){
+[; ;decode_AX25.c: 233: if(buf == ("JQ1YCZ"[4] << 1)){
 "233
 [e $ ! == -> _buf `i << -> *U + :s 11C * -> -> 4 `i `x -> -> # *U :s 11C `i `x `i -> 1 `i 193  ]
 {
@@ -2073,7 +2073,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [; ;decode_AX25.c: 243: }
 [; ;decode_AX25.c: 244: }
-[; ;decode_AX25.c: 245: if(buf == ("JQ1ZHX"[5] << 1)){
+[; ;decode_AX25.c: 245: if(buf == ("JQ1YCZ"[5] << 1)){
 "245
 [e $ ! == -> _buf `i << -> *U + :s 12C * -> -> 5 `i `x -> -> # *U :s 12C `i `x `i -> 1 `i 199  ]
 {
@@ -2754,15 +2754,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 "430
 [e :UE 261 ]
 }
-[a 1C 74 81 49 89 67 90 0 ]
-[a 2C 74 81 49 89 67 90 0 ]
-[a 3C 74 81 49 89 67 90 0 ]
-[a 4C 74 81 49 89 67 90 0 ]
-[a 5C 74 81 49 89 67 90 0 ]
-[a 6C 74 81 49 89 67 90 0 ]
-[a 7C 74 81 49 90 72 88 0 ]
-[a 8C 74 81 49 90 72 88 0 ]
-[a 9C 74 81 49 90 72 88 0 ]
-[a 10C 74 81 49 90 72 88 0 ]
-[a 11C 74 81 49 90 72 88 0 ]
-[a 12C 74 81 49 90 72 88 0 ]
+[a 7C 74 81 49 89 67 90 0 ]
+[a 8C 74 81 49 89 67 90 0 ]
+[a 9C 74 81 49 89 67 90 0 ]
+[a 10C 74 81 49 89 67 90 0 ]
+[a 11C 74 81 49 89 67 90 0 ]
+[a 12C 74 81 49 89 67 90 0 ]
+[a 1C 74 83 49 89 65 88 0 ]
+[a 2C 74 83 49 89 65 88 0 ]
+[a 3C 74 83 49 89 65 88 0 ]
+[a 4C 74 83 49 89 65 88 0 ]
+[a 5C 74 83 49 89 65 88 0 ]
+[a 6C 74 83 49 89 65 88 0 ]

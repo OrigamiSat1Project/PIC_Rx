@@ -14,6 +14,7 @@
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "EPS.h"
+#include "CRC16.h"
 
 // PIC16F887 Configuration Bit Settings
 
@@ -95,21 +96,43 @@ void main(void) {
         /**/
         //Receive command data
 //        RA1 = 0;
-        UBYTE *dData;
-        dData = ReceivePacket_data();
+        UBYTE *commandData;
+        //for information on EEPROM see data sheet: 24LC1025        
+        UBYTE B0select;             //control byte B0 of EEPROM
+        UBYTE wHighAddress;         //address high byte of EEPROM
+        UBYTE wLowAddress;          //address low byte of EEPROM
+        UBYTE mainControlByte;      //control byte of main EEPROM
+        UBYTE subControlByte;       //control byte of sub EEPROM
+        
+        
+        UBYTE downlinkTimes;       //downlink times of received command
+        commandData = ReceivePacket_data();
         led_white = 1;
         __delay_ms(500);
         led_white = 0;
+        
+        B0select = commandData[19];
+        wHighAddress = commandData[20];
+        wLowAddress = commandData[21];
+        downlinkTimes = commandData[22];
+        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
+        subControlByte = SUB_EEPROM_ADDRESS | B0select;
+        
+        
         //Write uplink command in EEPROM
-        EEPROM_Write(EEPROM_address,whigh_address,wlow_address,dData);
+        EEPROM_Write(mainControlByte,wHighAddress,wLowAddress,commandData);
+        EEPROM_Write(subControlByte,wHighAddress,wLowAddress,commandData);
         __delay_ms(100);
         
         //inform TXPIC RXDATA(PIN43 = 1)
         
-        UBYTE TXOBC_wad_header = 0x74;
-        TXOBC_waddress(TXOBC_wad_header, whigh_address, wlow_address);
+//        UBYTE TXOBC_wad_header = 0x74;
+//        sendCommand(TXOBC_wad_header, whigh_address, wlow_address);
+        /*---Send address using UART to OBC and TXCOBC---*/
+        /*------------------------------------------------------------------*/
+        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes);
         
-        printf("%s\r\n", dData);
+        printf("%s\r\n", commandData);
 //        for (UINT i = 0;i < 32;i++){
 //            printf("%c", dData[i]);
 //            dData[i] = 0x00;
@@ -120,22 +143,22 @@ void main(void) {
         
         //printf("\r\n");
         // Command target
-        if(dData[0]=='n'){      //NanoMind
+        if(commandData[0]=='n'){      //NanoMind
             //Send address to NanoMind
             UBYTE NM_wad_header = 0x72;
-            NM_waddress(NM_wad_header, whigh_address, wlow_address);
+//            NM_waddress(NM_wad_header, whigh_address, wlow_address);
             
-        }else if(dData[0]=='p'){        //PIC_RX
+        }else if(commandData[0]=='p'){        //PIC_RX
             //Task target
 //            led_white = 1;
 //            __delay_ms(500);
 //            led_white = 0;
-            if(dData[2] == 'r'){        // PIC_RX
+            if(commandData[2] == 'r'){        // PIC_RX
                 // Command type
 //                led_white = 1;
 //        __delay_ms(500);
 //        led_white = 0;
-                switch(dData[3]){
+                switch(commandData[3]){
                 case 'E':
 //                    led_white = 1;
 //                    __delay_ms(500);
@@ -173,7 +196,7 @@ void main(void) {
                     break;
                 }
                 
-            }else if(dData[2] == 't'){      // PIC_TX
+            }else if(commandData[2] == 't'){      // PIC_TX
 
             }
         }else{
