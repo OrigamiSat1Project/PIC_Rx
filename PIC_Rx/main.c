@@ -70,7 +70,7 @@ void main(void) {
     /*----------------------------------------------------------------------*/
     InitSerial();
     InitMPU();
-    InitI2CMaster(I2Cbps_def);
+    InitI2CMaster(I2C_baud_rate_def);
     //InitI2CMaster(I2Cbps);
     //InitWDT();
     

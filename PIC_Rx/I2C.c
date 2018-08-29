@@ -6,9 +6,6 @@
 
 //UBYTE EEPROMData[32];                                         
 
-//Global Data
-UBYTE I2C_baud_rate = I2Cbps_def;
-
 void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
   SSPCON = 0b00101000;          //MSSP Control Register: Synchronous Serial Port Enabled;I2C Master mode, clock = FOSC/(4 * (SSPADD + 1))
   SSPCON2 = 0;                  //MSSP Control Register 2:
@@ -108,17 +105,17 @@ void I2CBufferClear(void){
 }
 
 //TODO:check
-//TODO:2‘ð‚Å‚æ‚¢‚Ì‚©H
-//change I2C baud rate
 //default 400000bps
-//h -> I2Cbps_high(400000bps) / l -> I2Cbps_low(100000bps)
+//datasheet p81-p82
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     switch (I2C_baud_rate_type){
-        case 'h':
-            I2C_baud_rate = I2Cbps_high;
+        case 'h':     //high-speed mode (400 kHz)
+            SMP = 0;  //Slew Rate Control bit
+            SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_high))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
             break;
-        case 'l':
-            I2C_baud_rate = I2Cbps_low;
+        case 'l':     //standard speed mode (100 kHz)
+            SMP = 1;  //Slew Rate Control bit
+            SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_low))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
             break;
     }
 }
@@ -154,7 +151,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             I2CBufferClear();
             break;
         case 'b': //change I2C baud rate
-            //TODO: write method for change I2C baud rate
+            //TODO: write method for change I2C baud rate---finish
             ChangeI2CBaudRate( slaveAdress );
             break;
         default:

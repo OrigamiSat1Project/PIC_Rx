@@ -13,9 +13,9 @@
 
 #include "typeDefine.h"
 
-#define I2Cbps_high 400000
-#define I2Cbps_low  100000
-#define I2Cbps_def  I2Cbps_high
+#define I2C_baud_rate_high 400000
+#define I2C_baud_rate_low  100000
+#define I2C_baud_rate_def  I2C_baud_rate_high
 
 void I2CMasterWait(void);                                               
 void I2CMasterStart(void);                                              
