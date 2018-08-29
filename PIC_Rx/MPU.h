@@ -25,6 +25,8 @@ void debugLEDyellow(void);
 UINT invertState(UINT);
 void switchPowerSpply1pin(UINT, UBYTE, UBYTE, UBYTE);
 void switchPowerSpply2pin(UINT, UINT, UBYTE, UBYTE, UBYTE);
+void changeInOut(UINT, UBYTE);
+void changeHighLow(UINT, UBYTE);
 void changeXtalFrequency(UBYTE);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);

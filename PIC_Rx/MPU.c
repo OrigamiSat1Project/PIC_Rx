@@ -103,6 +103,46 @@ void switchPowerSpply2pin(UINT POWER_PIN_1, UINT POWER_PIN_2, UBYTE onOff, UBYTE
     }
 }
 
+void changeInOut(UINT pin_select_command, UBYTE inOut){
+    switch (pin_select_command){
+        case 0x0a:
+            TRISA = inOut;
+            break;
+        case 0x0b:
+            TRISB = inOut;
+            break;
+        case 0x0c:
+            TRISC = inOut;
+            break;
+        case 0x0d:
+            TRISD = inOut;
+            break;
+        case 0x0e:
+            TRISE = inOut;
+            break;
+    }
+}
+
+void changeHighLow(UINT pin_select_command, UBYTE highLow){
+    switch (pin_select_command){
+        case 0x0a:
+            PORTA = highLow;
+            break;
+        case 0x0b:
+            PORTB = highLow;
+            break;
+        case 0x0c:
+            PORTC = highLow;
+            break;
+        case 0x0d:
+            PORTD = highLow;
+            break;
+        case 0x0e:
+            PORTE = highLow;
+            break;
+    }
+}
+
 //TODO:コメントアウトとったときのエラー改善
 //time.cとtime.hもいじった
 void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
@@ -170,13 +210,15 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
 void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){ 
     switch(command){    
         case 'i': //change in/out
-            //TODO: write method for change in/out
+            //TODO: write method for change in/out---finish
+            changeInOut(data1, data2);
             break;
         case 'h': //change high/low
-            //TODO: write method for change high/low
+            //TODO: write method for change high/low---finish
+            changeHighLow(data1, data2);     
             break;
         case 'o': //change frequency
-            //TODO: write method for change frequency
+            //TODO: write method for change frequency---not finish
             changeXtalFrequency(data1);
             break;
         default:
