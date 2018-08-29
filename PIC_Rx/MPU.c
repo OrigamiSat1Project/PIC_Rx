@@ -57,6 +57,52 @@ UINT invertState(UINT pinState){
     }
 }
 
+//TODO:check
+/*---switchPowerSpply---*/
+//5.8, OBC, WDT --- switchPowerSpply1pin
+//EPS --- switchPowerSpply2pin
+void switchPowerSpply1pin(UINT POWER_PIN, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
+    if ( onOff == 0x00 ){        //switch off
+            POWER_PIN = LOW;
+    } else {                     //switch on
+            POWER_PIN = HIGH;
+    }
+  
+    if(timeHigh == 0x00 && timeLow == 0x00){      //1. not chage until next Uplink
+    }else if(timeLow == 0x00){                    //2. wait time is short ( 1byte:1~255[ms])
+        __delay_ms(timeHigh);                     
+        POWER_PIN =invertState(POWER_PIN);
+    }else {                                       //3. wait time is long ( 2byte:266~65535[ms)
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        __delay_ms(wait_time);
+        POWER_PIN =invertState(POWER_PIN);
+    }
+}
+
+void switchPowerSpply2pin(UINT POWER_PIN_1, UINT POWER_PIN_2, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
+    if ( onOff == 0x00 ){        //switch off
+            POWER_PIN_1 = LOW;   //TODO:ピン1ピン2は同じ値でよいのか？
+            POWER_PIN_2 = LOW;
+    } else {                     //switch on
+            POWER_PIN_1 = HIGH;
+            POWER_PIN_2 = HIGH;
+    }
+  
+    if(timeHigh == 0x00 && timeLow == 0x00){      //1. not chage until next Uplink
+    }else if(timeLow == 0x00){                    //2. wait time is short ( 1byte:1~255[ms])
+        __delay_ms(timeHigh);                     
+        POWER_PIN_1 =invertState(POWER_PIN_1);
+        POWER_PIN_2 =invertState(POWER_PIN_2);
+    }else {                                       //3. wait time is long ( 2byte:266~65535[ms)
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        __delay_ms(wait_time);
+        POWER_PIN_1 =invertState(POWER_PIN_1);
+        POWER_PIN_2 =invertState(POWER_PIN_2);
+    }
+}
+
 //TODO:コメントアウトとったときのエラー改善
 //time.cとtime.hもいじった
 void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
@@ -100,22 +146,19 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
 void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
     switch(command){    
         case '5': //5R8G
-            if(timeLow = 0x00){
-                POWER_5R8G =invertState(POWER_5R8G);
-            }else{
-                POWER_5R8G =invertState(POWER_5R8G);
-                        //insert wait function
-                POWER_5R8G =invertState(POWER_5R8G);
-            }
+            switchPowerSpply1pin(POWER_5R8G, onOff, timeHigh, timeLow);
             break;
         case 'e': //EPS
-            //TODO: write method for EPS using pins: SEP_SW and RBF_SW
+            //TODO: write method for EPS using pins: SEP_SW and RBF_SW---finish
+            switchPowerSpply2pin(SEP_SW, RBF_SW, onOff, timeHigh, timeLow);
             break;
         case 'o': //OBC
-            //TODO: write method for OBC using pin: POWER_OBC
+            //TODO: write method for OBC using pin: POWER_OBC ---finish
+            switchPowerSpply1pin(POWER_OBC, onOff, timeHigh, timeLow);
             break;
         case 'w': //WDT
-            //TODO: write method for WDT using pin: POWER_WDT
+            //TODO: write method for WDT using pin: POWER_WDT---finish
+            switchPowerSpply1pin(POWER_WDT, onOff, timeHigh, timeLow);
             break;
         default:
             //TODO: error message
