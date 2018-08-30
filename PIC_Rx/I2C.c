@@ -90,7 +90,7 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     __delay_ms(200);  //TODO:delay時間は大丈夫か？
 }
 
-
+/*
 void TestI2C(void){
     UBYTE I2C_test[4];
     I2C_test[0]='T';
@@ -98,6 +98,7 @@ void TestI2C(void){
     I2C_test[2]='S';
     I2C_test[3]='T';
 }
+*/
 
 //TODO:check
 void I2CBufferClear(void){
@@ -109,11 +110,11 @@ void I2CBufferClear(void){
 //datasheet p81-p82
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     switch (I2C_baud_rate_type){
-        case 'h':     //high-speed mode (400 kHz)
+        case 0x00:     //high-speed mode (400 kHz)
             SMP = 0;  //Slew Rate Control bit
             SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_high))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
             break;
-        case 'l':     //standard speed mode (100 kHz)
+        case 0x01:     //standard speed mode (100 kHz)
             SMP = 1;  //Slew Rate Control bit
             SSPADD = (_XTAL_FREQ/(4*I2C_baud_rate_low))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
             break;
@@ -124,6 +125,8 @@ void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
         case 'w': //I2C write
+            //TODO：相手（ナノマインドとかEEPROMとか）を考えてフォーマット形式を考える
+            //今のはEEPROMにしか対応できていないから、他でも対応できるか。
             I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
             I2CMasterWrite(dataHigh);
             I2CMasterWrite(dataLow);
@@ -139,9 +142,8 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             //TODO: write test data to EEPROM
             //TODO: read EEPRON---finish
             //TODO: send EEPROM address to TXCOBC
-            TestI2C();
-            //TODO:コメントアウト外すとエラー発生
-            //WriteToEEPROM(slaveAdress, dataHigh, dataLow, I2C_test);
+            //TODO: EEPROMonlyのテストではよくない気がする
+            WriteToEEPROM(slaveAdress, dataHigh, dataLow, 'T');       //testdata is 'T'
             UBYTE EEPROMData;
             EEPROMData = ReadEEPROM(slaveAdress, dataHigh, dataLow);
             break;
