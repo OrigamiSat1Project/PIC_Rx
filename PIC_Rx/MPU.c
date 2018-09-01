@@ -3,6 +3,7 @@
 #include "pinDefine.h"
 #include "time.h"
 #include "typeDefine.h"
+#include "UART.h"
 
 
 void InitMPU(void)
@@ -55,6 +56,11 @@ UINT invertState(UINT pinState){
     }else{
         return HIGH;
     }
+}
+
+void killEPS(void){
+    SEP_SW = HIGH;  //Short Separation switch 1&2 //High--->EPS OFF
+    RBF_SW = HIGH;  //Short Remove before flight switch 1&2  //High--->EPS OFF
 }
 
 //TODO:check
@@ -170,6 +176,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             //TODO: first kill EPS (this also kills Rx/Tx/OBC)
             //TODO: send command to TXCOBC to turn back on RX and TX
             //TODO: RXCOBC reset PLL data
+            killEPS();
             break;
         case 0xFF: //Survival mode //ON: CIB //OFF: EPS, OBC, Tx(CW), Rx
             //only enter if time in survival mode is specified //set automatical revival time
