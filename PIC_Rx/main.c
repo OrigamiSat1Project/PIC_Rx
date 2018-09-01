@@ -69,7 +69,7 @@ void main(void) {
     /**/
 //    RB1 = 1;
     led_white = 1;
-    __delay_ms(1000);
+    __delay_ms(2000);
     
     FMTX(FMTX_Nref, FMTX_Nprg);
     CWTX(CWTX_Nref, CWTX_Nprg);
