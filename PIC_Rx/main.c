@@ -80,7 +80,7 @@ void main(void) {
     RB3 = 1;
 //    RC5 = 1;
 //    printf("start\r\n");
-    putch(0x00);
+//    putch(0x00);
 //    RA1 = 0;
     while(1){
         /*
@@ -131,7 +131,7 @@ void main(void) {
 //        sendCommand(TXOBC_wad_header, whigh_address, wlow_address);
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
-        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes);
+        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes,0x00,0x00);
         
 //        printf("%s\r\n", commandData);
 //        for(int i = 0; i< 32;i++){
