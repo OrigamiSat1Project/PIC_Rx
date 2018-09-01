@@ -15,9 +15,9 @@
 #include "pinDefine.h"
 #include "CRC16.h"
 
-void interrupt InterReceiver( void );
+void interrupt InterReceiver(void);
 
-//UBYTE COMMAND_SIZE = 10;
+#define COMMAND_SIZE 10;
 
 
 // PIC16F887 Configuration Bit Settings
@@ -41,15 +41,15 @@ void interrupt InterReceiver( void );
 
 //test_interrupt
 //pc-->pic-->pc 
-void interrupt InterReceiver( void ){
-    UBYTE RXDATA[32];
-    if (RCIF == 1) {
-        RXDATA[0] = getChar();
-        RXDATA[0]++;
-        putChar('S');
-        RCIF = 0;
-    }
-}
+//void interrupt interReceiverTest( void ){
+//    UBYTE RXDATA;
+//    if (RCIF == 1) {
+//        RXDATA = getChar();
+//        RXDATA++;
+//        putChar('S');
+//        RCIF = 0;
+//    }
+//}
 
 /**/
 //test_get EEPROM address
@@ -61,7 +61,7 @@ void interrupt InterReceiver( void ){
 //    if (RCIF == 1) {
 //        for(UINT i=0; i<COMMAND_SIZE; i++){
 //            RXDATA[i] =getChar();
-//            putChar(i);
+//            putChar(RXDATA[i]);
 //            NOP();
 //        }
 //        putChar('s');
@@ -69,14 +69,22 @@ void interrupt InterReceiver( void ){
 //    }
 //}
 
-/*
-void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
-    volatile static int intr_counter;
+
+void interrupt InterReceiver(void){
+    int commandSize;
+    commandSize = 10;
+    UBYTE RXDATA[10];
+//    UBYTE RXDATA[COMMAND_SIZE];
+//    volatile static int intr_counter;
     if (RCIF == 1) {
-        for (int i = 0; i < COMMAND_SIZE; i++){
-            RXDATA[i] = getch();
-            putChar(RXDATA[i]);
+        for (int i = 0; i < 10; i++){
+            RXDATA[i] = getChar();
+//            putChar(RXDATA[i]);
             NOP();
+        }
+        for (int i = 0; i < 10; i++){
+            putChar(RXDATA[i]);
+//            NOP();
         }
        //TODO add case RXDATA[0]!=t
         if(crc16(0,RXDATA,6) == CRC_check(RXDATA,6)){
@@ -97,9 +105,10 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
         }else{
             ///コマンドCRCダメだった時の処理
         }
+        RCIF = 0;
     }
 }
-*/
+
 
 void main(void) {
     __delay_ms(1000);
