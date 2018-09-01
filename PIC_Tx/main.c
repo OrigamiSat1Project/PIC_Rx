@@ -41,7 +41,7 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
     if (RCIF == 1) {
         for (int i = 0; i < COMMAND_SIZE; i++){
             RXDATA[i] = getch();
-            putch(RXDATA[i]);
+            putChar(RXDATA[i]);
             NOP();
         }
        //TODO add case RXDATA[0]!=t
@@ -74,7 +74,7 @@ void main(void) {
     InitI2CMaster(I2Cbps);
 //    Init_WDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
-    putch('A');
+    putChar('A');
     
 //    FMPTT = 1;
     
