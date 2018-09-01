@@ -136,7 +136,6 @@ void main(void) {
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
     putChar('G');
     
-//    FMPTT = 1;
     
     while(1){
         /*
@@ -147,7 +146,10 @@ void main(void) {
             __delay_ms(500);
         }*/
         putChar('H');
-        __delay_ms(1000);
+        __delay_ms(2000);
+        FMPTT = 1;
+        __delay_ms(2000);
+        FMPTT = 0;
         //TODO check AD value
         //TODO send CW command
         //TODO send pulse to WDT
