@@ -26,7 +26,7 @@ void _NOP(void) {
 }
 
 
-void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes){
+void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlkTimes){
     UBYTE mainAddress;
     UBYTE subAddress;
     mainAddress = EEPROM_address | B0Select;
@@ -45,7 +45,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     WriteCheckByteToEEPROMs(B0Select,addressHigh,addressLow, commandData[31]);
     __delay_ms(200);
     FMPTT = 1;
-    for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+    for(int sendCounter = 0; sendCounter < downlinlkTimes; sendCounter++){
         SendPacket(commandData,EEPROM_COMMAND_DATA_SIZE);
         __delay_ms(300);
     }
