@@ -49,6 +49,17 @@ void putChar(UBYTE byte){
 	TXREG = byte;
 }
 
+UBYTE get3byte(void){                //TODO: add time out feature
+    /**/
+	if(FERR || OERR) // If over run error, then reset the receiver
+	{
+        CREN = 0;
+        NOP();
+        CREN = 1;
+    }
+	while(RCIF != 0);
+    return RCREG;
+}
 
 
 

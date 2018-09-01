@@ -15,7 +15,9 @@
 #include "pinDefine.h"
 #include "CRC16.h"
 
-UBYTE COMMAND_SIZE = 10;
+void interrupt InterReceiver( void );
+
+//UBYTE COMMAND_SIZE = 10;
 
 
 // PIC16F887 Configuration Bit Settings
@@ -36,6 +38,38 @@ UBYTE COMMAND_SIZE = 10;
 #pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
 #pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
+
+//test_interrupt
+//pc-->pic-->pc 
+void interrupt InterReceiver( void ){
+    UBYTE RXDATA[32];
+    if (RCIF == 1) {
+        RXDATA[0] = getChar();
+        RXDATA[0]++;
+        putChar('S');
+        RCIF = 0;
+    }
+}
+
+/**/
+//test_get EEPROM address
+//pc-->pic-->pc 
+//void interrupt InterReceiver( void ){
+//    UBYTE RXDATA[3];
+//    UINT COMMAND_SIZE;
+//    COMMAND_SIZE =3;
+//    if (RCIF == 1) {
+//        for(UINT i=0; i<COMMAND_SIZE; i++){
+//            RXDATA[i] =getChar();
+//            putChar(i);
+//            NOP();
+//        }
+//        putChar('s');
+//        RCIF = 0;
+//    }
+//}
+
+/*
 void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
     volatile static int intr_counter;
     if (RCIF == 1) {
@@ -65,6 +99,7 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
         }
     }
 }
+*/
 
 void main(void) {
     __delay_ms(1000);
@@ -74,7 +109,7 @@ void main(void) {
     InitI2CMaster(I2Cbps);
 //    Init_WDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
-    putChar('A');
+    putChar('G');
     
 //    FMPTT = 1;
     
@@ -86,6 +121,7 @@ void main(void) {
             putch('O');
             __delay_ms(500);
         }*/
+        putChar('H');
         __delay_ms(1000);
         //TODO check AD value
         //TODO send CW command
