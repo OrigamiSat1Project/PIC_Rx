@@ -44,7 +44,15 @@ void L_OUT(int fmcwtxrx);
 void H_OUT(int fmcwtxrx);
 void STBOUT(int fmcwtxrx);
 void Morse_V(void);*/
+
+void RFDOUT_FMTX(void);
+void OUTFQ_FMTX(void);
+void RFDOUT_CWTX(void);
+void OUTFQ_CWTX(void);
+
+
 void _NOP(void);
+void _NOP2(void);
 //void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg);
 
 #endif	/* FMCW_H */

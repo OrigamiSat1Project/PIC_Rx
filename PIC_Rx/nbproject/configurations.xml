@@ -10,7 +10,6 @@
       <itemPath>Init_MPU.h</itemPath>
       <itemPath>decode_AX25.h</itemPath>
       <itemPath>memo.h</itemPath>
-      <itemPath>encode_AX25.h</itemPath>
       <itemPath>I2C.h</itemPath>
       <itemPath>EEPROM.h</itemPath>
       <itemPath>FMCW.h</itemPath>
@@ -29,7 +28,6 @@
       <itemPath>UART.c</itemPath>
       <itemPath>Init_MPU.c</itemPath>
       <itemPath>decode_AX25.c</itemPath>
-      <itemPath>encode_AX25.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
       <itemPath>FMCW.c</itemPath>
@@ -90,6 +88,7 @@
         <property key="extra-include-directories" value=""/>
         <property key="favor-optimization-for" value="-speed,+space"/>
         <property key="identifier-length" value="255"/>
+        <property key="local-generation" value="false"/>
         <property key="operation-mode" value="free"/>
         <property key="opt-xc8-compiler-strict_ansi" value="false"/>
         <property key="optimization-assembler" value="true"/>
@@ -158,7 +157,6 @@
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>
@@ -188,7 +186,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="3.25"/>
+        <property key="voltagevalue" value="3.375"/>
       </ICD3PlatformTool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>

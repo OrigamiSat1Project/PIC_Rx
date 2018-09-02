@@ -1475,8 +1475,15 @@ void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
 
-# 47
+# 48
+void RFDOUT_FMTX(void);
+void OUTFQ_FMTX(void);
+void RFDOUT_CWTX(void);
+void OUTFQ_CWTX(void);
+
+
 void _NOP(void);
+void _NOP2(void);
 
 # 15 "Type_define.h"
 typedef signed char SBYTE;
@@ -1509,63 +1516,63 @@ PORTDbits.RD0 = 0;
 PORTDbits.RD3 = 0;
 }
 
-# 40
+# 68
 void L_OUT(int fmcwtxrx){
 if(fmcwtxrx == 1)
 {
+PORTEbits.RE2 = 1;
+
+PORTEbits.RE2 = 0;
 PORTEbits.RE1 = 0;
 _NOP();
-PORTEbits.RE2 = 1;
-_NOP();
-PORTEbits.RE2 = 0;
 }
 if(fmcwtxrx == 2)
 {
+PORTDbits.RD2 = 1;
+
+PORTDbits.RD2 = 0;
 PORTDbits.RD1 = 0;
 _NOP();
-PORTDbits.RD2 = 1;
-_NOP();
-PORTDbits.RD2 = 0;
 }
 if(fmcwtxrx == 3)
 {
+PORTAbits.RA2 = 1;
+
+PORTAbits.RA2 = 0;
 PORTAbits.RA3 = 0;
 _NOP();
-PORTAbits.RA2 = 1;
-_NOP();
-PORTAbits.RA2 = 0;
 }
 }
 
-# 74
+# 128
 void H_OUT(int fmcwtxrx){
 if(fmcwtxrx == 1)
 {
+PORTEbits.RE2 = 1;
+
+PORTEbits.RE2 = 0;
 PORTEbits.RE1 = 1;
 _NOP();
-PORTEbits.RE2 = 1;
-_NOP();
-PORTEbits.RE2 = 0;
 }
 if(fmcwtxrx == 2)
 {
+PORTDbits.RD2 = 1;
+
+PORTDbits.RD2 = 0;
 PORTDbits.RD1 = 1;
 _NOP();
-PORTDbits.RD2 = 1;
-_NOP();
-PORTDbits.RD2 = 0;
 }
 if(fmcwtxrx == 3)
 {
+PORTAbits.RA2 = 1;
+
+PORTAbits.RA2 = 0;
 PORTAbits.RA3 = 1;
 _NOP();
-PORTAbits.RA2 = 1;
-_NOP();
-PORTAbits.RA2 = 0;
 }
 }
 
-# 107
+# 161
 void STBOUT(int fmcwtxrx){
 if(fmcwtxrx == 1)
 {
@@ -1587,7 +1594,7 @@ PORTBbits.RB0 = 0;
 }
 }
 
-# 136
+# 190
 void OUTFQ(int fmcwtxrx, int *Nprg){
 int count = 0;
 int Nprg_b[17];
@@ -1644,7 +1651,7 @@ L_OUT(fmcwtxrx);
 STBOUT(fmcwtxrx);
 }
 
-# 200
+# 254
 void RFDOUT(int fmcwtxrx, int Nref){
 int Nref_b[12];
 
@@ -1679,7 +1686,115 @@ H_OUT(fmcwtxrx);
 STBOUT(fmcwtxrx);
 }
 
-# 241
+void RFDOUT_FMTX(void){
+int fmcwtxrx;
+fmcwtxrx = 1;
+
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+
+H_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+
+STBOUT(fmcwtxrx);
+}
+
+void OUTFQ_FMTX(void){
+int fmcwtxrx;
+fmcwtxrx = 1;
+
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+
+STBOUT(fmcwtxrx);
+}
+
+
+void RFDOUT_CWTX(void){
+int fmcwtxrx;
+fmcwtxrx = 2;
+
+H_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+
+STBOUT(fmcwtxrx);
+}
+
+void OUTFQ_CWTX(void){
+int fmcwtxrx;
+fmcwtxrx = 2;
+
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+H_OUT(fmcwtxrx);
+
+H_OUT(fmcwtxrx);
+L_OUT(fmcwtxrx);
+
+STBOUT(fmcwtxrx);
+}
+
+# 403
 void OPINIT(int fmcwtxrx){
 
 L_OUT(fmcwtxrx);
@@ -1702,23 +1817,23 @@ L_OUT(fmcwtxrx);
 STBOUT(fmcwtxrx);
 }
 
-# 270
+# 440
 void FMTX(int Nref, int *Nprg){
 int fmtx = 1;
 OPINIT(fmtx);
-RFDOUT(fmtx, Nref);
-OUTFQ(fmtx, Nprg);
+RFDOUT_FMTX();
+OUTFQ_FMTX();
 }
 
-# 284
+# 460
 void CWTX(int Nref, int *Nprg){
 int cwtx = 2;
 OPINIT(cwtx);
-RFDOUT(cwtx, Nref);
-OUTFQ(cwtx, Nprg);
+RFDOUT_CWTX();
+OUTFQ_CWTX();
 }
 
-# 298
+# 474
 void FMRX(int Nref, int *Nprg){
 int fmrx = 3;
 OPINIT(fmrx);
@@ -1726,14 +1841,14 @@ RFDOUT(fmrx, Nref);
 OUTFQ(fmrx, Nprg);
 }
 
-# 309
+# 485
 void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
 FMTX(FMTX_Nref, FMTX_Nprg);
 CWTX(CWTX_Nref, CWTX_Nprg);
 FMRX(FMRX_Nref, FMRX_Nprg);
 }
 
-# 322
+# 498
 void Morse_V(void){
 PORTDbits.RD3 = 1;
 _delay((unsigned long)((50)*(10000000/4000.0)));
@@ -1756,9 +1871,16 @@ PORTDbits.RD3 = 0;
 _delay((unsigned long)((50)*(10000000/4000.0)));
 }
 
-# 349
+# 532
 void _NOP(void) {
 for(int i=0; i<5; i++){
+__nop();
+}
+}
+
+
+void _NOP2(void) {
+for(int i=0; i<1; i++){
 __nop();
 }
 }

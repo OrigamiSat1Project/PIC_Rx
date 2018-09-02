@@ -37,33 +37,60 @@ void Init_FMCW(void){
  *  2. DAT端子をLowにする
  *  3. CLK端子を0�?1�?0と変化させ�?
  */
+//void L_OUT(int fmcwtxrx){
+//    if(fmcwtxrx == FMTX_)
+//    {
+//        FMTX_DAT = 0;
+//        _NOP();
+//        FMTX_CLK = 1;
+//        _NOP();
+//        FMTX_CLK = 0;
+//    }
+//    if(fmcwtxrx == CWTX_)
+//    {
+//        CWTX_DAT = 0;
+//        _NOP();
+//        CWRX_CLK = 1;
+//        _NOP();
+//        CWRX_CLK = 0;
+//    }
+//    if(fmcwtxrx == FMRX_)
+//    {
+//        FMRX_DAT = 0;
+//        _NOP();
+//        FMRX_CLK = 1;
+//        _NOP();
+//        FMRX_CLK = 0;
+//    }
+//}
+
+//clk->dat->clk
 void L_OUT(int fmcwtxrx){
     if(fmcwtxrx == FMTX_)
     {
+        FMTX_CLK = 1;
+        //_NOP2();
+        FMTX_CLK = 0;
         FMTX_DAT = 0;
         _NOP();
-        FMTX_CLK = 1;
-        _NOP();
-        FMTX_CLK = 0;
     }
     if(fmcwtxrx == CWTX_)
     {
+        CWRX_CLK = 1;
+        //_NOP2();
+        CWRX_CLK = 0;
         CWTX_DAT = 0;
         _NOP();
-        CWRX_CLK = 1;
-        _NOP();
-        CWRX_CLK = 0;
     }
     if(fmcwtxrx == FMRX_)
     {
+        FMRX_CLK = 1;
+        //_NOP2();
+        FMRX_CLK = 0;
         FMRX_DAT = 0;
         _NOP();
-        FMRX_CLK = 1;
-        _NOP();
-        FMRX_CLK = 0;
     }
 }
-
 
 /*
  * 【無線機に'High'を�?�る�?
@@ -71,30 +98,57 @@ void L_OUT(int fmcwtxrx){
  *  2. DAT端子をHighにする
  *  3. CLK端子を0�?1�?0と変化させ�? 
  */
+//void H_OUT(int fmcwtxrx){
+//    if(fmcwtxrx == FMTX_)
+//    {
+//        FMTX_DAT = 1;
+//        _NOP();
+//        FMTX_CLK = 1;
+//        _NOP();
+//        FMTX_CLK = 0;
+//    }
+//    if(fmcwtxrx == CWTX_)
+//    {
+//        CWTX_DAT = 1;
+//        _NOP();
+//        CWRX_CLK = 1;
+//        _NOP();
+//        CWRX_CLK = 0;
+//    }
+//    if(fmcwtxrx == FMRX_)
+//    {
+//        FMRX_DAT = 1;
+//        _NOP();
+//        FMRX_CLK = 1;
+//        _NOP();
+//        FMRX_CLK = 0;
+//    }
+//}
+
 void H_OUT(int fmcwtxrx){
     if(fmcwtxrx == FMTX_)
     {
+        FMTX_CLK = 1;
+        //_NOP2();
+        FMTX_CLK = 0;
         FMTX_DAT = 1;
         _NOP();
-        FMTX_CLK = 1;
-        _NOP();
-        FMTX_CLK = 0;
     }
     if(fmcwtxrx == CWTX_)
     {
+        CWRX_CLK = 1;
+        //_NOP2();
+        CWRX_CLK = 0;
         CWTX_DAT = 1;
         _NOP();
-        CWRX_CLK = 1;
-        _NOP();
-        CWRX_CLK = 0;
     }
     if(fmcwtxrx == FMRX_)
     {
+        FMRX_CLK = 1;
+        //_NOP2();
+        FMRX_CLK = 0;
         FMRX_DAT = 1;
         _NOP();
-        FMRX_CLK = 1;
-        _NOP();
-        FMRX_CLK = 0;
     }
 }
 
@@ -231,6 +285,114 @@ void RFDOUT(int fmcwtxrx, int Nref){
     STBOUT(fmcwtxrx);
 }
 
+void RFDOUT_FMTX(void){
+    int fmcwtxrx;
+    fmcwtxrx = FMTX_;
+    
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    
+    H_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    
+    STBOUT(fmcwtxrx);
+}
+
+void OUTFQ_FMTX(void){
+    int fmcwtxrx;
+    fmcwtxrx = FMTX_;
+    
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    
+    STBOUT(fmcwtxrx);
+}
+
+
+void RFDOUT_CWTX(void){
+    int fmcwtxrx;
+    fmcwtxrx = CWTX_;
+    
+    H_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+
+    STBOUT(fmcwtxrx);
+}
+
+void OUTFQ_CWTX(void){
+    int fmcwtxrx;
+    fmcwtxrx = CWTX_;
+    
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    H_OUT(fmcwtxrx);
+    
+    H_OUT(fmcwtxrx);
+    L_OUT(fmcwtxrx);
+    
+    STBOUT(fmcwtxrx);
+}
+
 
 /*
  * 【無線機�?�オプションレジスタを設定する（�?�通PLL設定）�??
@@ -267,13 +429,20 @@ void OPINIT(int fmcwtxrx){
  *  2. リファレンスカウンタの設�?
  *  3. プログラマブルカウンタの設�?
  */
+//void FMTX(int Nref, int *Nprg){
+//    int fmtx = FMTX_;
+//    OPINIT(fmtx);
+//    RFDOUT(fmtx, Nref);
+//    OUTFQ(fmtx, Nprg);
+//}
+
+
 void FMTX(int Nref, int *Nprg){
     int fmtx = FMTX_;
     OPINIT(fmtx);
-    RFDOUT(fmtx, Nref);
-    OUTFQ(fmtx, Nprg);
+    RFDOUT_FMTX();
+    OUTFQ_FMTX();
 }
-
 
 /*
  * 【CWTXのPLL設定を行う�?
@@ -281,11 +450,18 @@ void FMTX(int Nref, int *Nprg){
  *  2. リファレンスカウンタの設�?
  *  3. プログラマブルカウンタの設�?
  */
+//void CWTX(int Nref, int *Nprg){
+//    int cwtx = CWTX_;
+//    OPINIT(cwtx);
+//    RFDOUT(cwtx, Nref);
+//    OUTFQ(cwtx, Nprg);
+//}
+
 void CWTX(int Nref, int *Nprg){
     int cwtx = CWTX_;
     OPINIT(cwtx);
-    RFDOUT(cwtx, Nref);
-    OUTFQ(cwtx, Nprg);
+    RFDOUT_CWTX();
+    OUTFQ_CWTX();
 }
 
 
@@ -346,8 +522,22 @@ void Morse_V(void){
  * 【何も処�?を行わな�?���?機）�??
  *  5処�?�?�?機す�?
  */
+//void _NOP(void) {
+//    for(int i=0; i<5; i++){
+//        NOP();
+//    }
+//}
+
+//count 5
 void _NOP(void) {
     for(int i=0; i<5; i++){
+        NOP();
+    }
+}
+
+//count 2
+void _NOP2(void) {
+    for(int i=0; i<1; i++){
         NOP();
     }
 }

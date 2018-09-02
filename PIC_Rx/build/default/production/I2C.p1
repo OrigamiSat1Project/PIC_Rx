@@ -1058,7 +1058,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 "8 I2C.c
 [v _Init_I2C_M `(v ~T0 @X0 1 ef1`Cul ]
 {

@@ -39,7 +39,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S11 . . ]
 "355
 [v _PORTDbits `VS11 ~T0 @X0 0 e@8 ]
-"47 FMCW.h
+"54 FMCW.h
 [v __NOP `(v ~T0 @X0 0 ef ]
 [v F1089 `(v ~T0 @X0 1 tf1`ul ]
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
@@ -1122,7 +1122,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
 [; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
 [; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
-[; ;FMCW.h: 47: void _NOP(void);
+[; ;FMCW.h: 48: void RFDOUT_FMTX(void);
+[; ;FMCW.h: 49: void OUTFQ_FMTX(void);
+[; ;FMCW.h: 50: void RFDOUT_CWTX(void);
+[; ;FMCW.h: 51: void OUTFQ_CWTX(void);
+[; ;FMCW.h: 54: void _NOP(void);
+[; ;FMCW.h: 55: void _NOP2(void);
 [; ;Type_define.h: 15: typedef signed char SBYTE;
 [; ;Type_define.h: 16: typedef unsigned char UBYTE;
 [; ;Type_define.h: 17: typedef signed short SWORD;
@@ -1177,263 +1182,245 @@ Version 3.2 HI-TECH Software Intermediate Code
 "31
 [e :UE 95 ]
 }
-"40
+"68
 [v _L_OUT `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;FMCW.c: 40: void L_OUT(int fmcwtxrx){
+[; ;FMCW.c: 68: void L_OUT(int fmcwtxrx){
 [e :U _L_OUT ]
 [v _fmcwtxrx `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 41: if(fmcwtxrx == 1)
-"41
+[; ;FMCW.c: 69: if(fmcwtxrx == 1)
+"69
 [e $ ! == _fmcwtxrx -> 1 `i 97  ]
-[; ;FMCW.c: 42: {
-"42
+[; ;FMCW.c: 70: {
+"70
 {
-[; ;FMCW.c: 43: PORTEbits.RE1 = 0;
-"43
-[e = . . _PORTEbits 0 1 -> -> 0 `i `uc ]
-[; ;FMCW.c: 44: _NOP();
-"44
-[e ( __NOP ..  ]
-[; ;FMCW.c: 45: PORTEbits.RE2 = 1;
-"45
+[; ;FMCW.c: 71: PORTEbits.RE2 = 1;
+"71
 [e = . . _PORTEbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 46: _NOP();
-"46
-[e ( __NOP ..  ]
-[; ;FMCW.c: 47: PORTEbits.RE2 = 0;
-"47
+[; ;FMCW.c: 73: PORTEbits.RE2 = 0;
+"73
 [e = . . _PORTEbits 0 2 -> -> 0 `i `uc ]
-"48
+[; ;FMCW.c: 74: PORTEbits.RE1 = 0;
+"74
+[e = . . _PORTEbits 0 1 -> -> 0 `i `uc ]
+[; ;FMCW.c: 75: _NOP();
+"75
+[e ( __NOP ..  ]
+"76
 }
 [e :U 97 ]
-[; ;FMCW.c: 48: }
-[; ;FMCW.c: 49: if(fmcwtxrx == 2)
-"49
+[; ;FMCW.c: 76: }
+[; ;FMCW.c: 77: if(fmcwtxrx == 2)
+"77
 [e $ ! == _fmcwtxrx -> 2 `i 98  ]
-[; ;FMCW.c: 50: {
-"50
+[; ;FMCW.c: 78: {
+"78
 {
-[; ;FMCW.c: 51: PORTDbits.RD1 = 0;
-"51
-[e = . . _PORTDbits 0 1 -> -> 0 `i `uc ]
-[; ;FMCW.c: 52: _NOP();
-"52
-[e ( __NOP ..  ]
-[; ;FMCW.c: 53: PORTDbits.RD2 = 1;
-"53
+[; ;FMCW.c: 79: PORTDbits.RD2 = 1;
+"79
 [e = . . _PORTDbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 54: _NOP();
-"54
-[e ( __NOP ..  ]
-[; ;FMCW.c: 55: PORTDbits.RD2 = 0;
-"55
+[; ;FMCW.c: 81: PORTDbits.RD2 = 0;
+"81
 [e = . . _PORTDbits 0 2 -> -> 0 `i `uc ]
-"56
+[; ;FMCW.c: 82: PORTDbits.RD1 = 0;
+"82
+[e = . . _PORTDbits 0 1 -> -> 0 `i `uc ]
+[; ;FMCW.c: 83: _NOP();
+"83
+[e ( __NOP ..  ]
+"84
 }
 [e :U 98 ]
-[; ;FMCW.c: 56: }
-[; ;FMCW.c: 57: if(fmcwtxrx == 3)
-"57
+[; ;FMCW.c: 84: }
+[; ;FMCW.c: 85: if(fmcwtxrx == 3)
+"85
 [e $ ! == _fmcwtxrx -> 3 `i 99  ]
-[; ;FMCW.c: 58: {
-"58
+[; ;FMCW.c: 86: {
+"86
 {
-[; ;FMCW.c: 59: PORTAbits.RA3 = 0;
-"59
-[e = . . _PORTAbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 60: _NOP();
-"60
-[e ( __NOP ..  ]
-[; ;FMCW.c: 61: PORTAbits.RA2 = 1;
-"61
+[; ;FMCW.c: 87: PORTAbits.RA2 = 1;
+"87
 [e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 62: _NOP();
-"62
-[e ( __NOP ..  ]
-[; ;FMCW.c: 63: PORTAbits.RA2 = 0;
-"63
+[; ;FMCW.c: 89: PORTAbits.RA2 = 0;
+"89
 [e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
-"64
+[; ;FMCW.c: 90: PORTAbits.RA3 = 0;
+"90
+[e = . . _PORTAbits 0 3 -> -> 0 `i `uc ]
+[; ;FMCW.c: 91: _NOP();
+"91
+[e ( __NOP ..  ]
+"92
 }
 [e :U 99 ]
-[; ;FMCW.c: 64: }
-[; ;FMCW.c: 65: }
-"65
+[; ;FMCW.c: 92: }
+[; ;FMCW.c: 93: }
+"93
 [e :UE 96 ]
 }
-"74
+"128
 [v _H_OUT `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;FMCW.c: 74: void H_OUT(int fmcwtxrx){
+[; ;FMCW.c: 128: void H_OUT(int fmcwtxrx){
 [e :U _H_OUT ]
 [v _fmcwtxrx `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 75: if(fmcwtxrx == 1)
-"75
+[; ;FMCW.c: 129: if(fmcwtxrx == 1)
+"129
 [e $ ! == _fmcwtxrx -> 1 `i 101  ]
-[; ;FMCW.c: 76: {
-"76
+[; ;FMCW.c: 130: {
+"130
 {
-[; ;FMCW.c: 77: PORTEbits.RE1 = 1;
-"77
-[e = . . _PORTEbits 0 1 -> -> 1 `i `uc ]
-[; ;FMCW.c: 78: _NOP();
-"78
-[e ( __NOP ..  ]
-[; ;FMCW.c: 79: PORTEbits.RE2 = 1;
-"79
+[; ;FMCW.c: 131: PORTEbits.RE2 = 1;
+"131
 [e = . . _PORTEbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 80: _NOP();
-"80
-[e ( __NOP ..  ]
-[; ;FMCW.c: 81: PORTEbits.RE2 = 0;
-"81
+[; ;FMCW.c: 133: PORTEbits.RE2 = 0;
+"133
 [e = . . _PORTEbits 0 2 -> -> 0 `i `uc ]
-"82
+[; ;FMCW.c: 134: PORTEbits.RE1 = 1;
+"134
+[e = . . _PORTEbits 0 1 -> -> 1 `i `uc ]
+[; ;FMCW.c: 135: _NOP();
+"135
+[e ( __NOP ..  ]
+"136
 }
 [e :U 101 ]
-[; ;FMCW.c: 82: }
-[; ;FMCW.c: 83: if(fmcwtxrx == 2)
-"83
+[; ;FMCW.c: 136: }
+[; ;FMCW.c: 137: if(fmcwtxrx == 2)
+"137
 [e $ ! == _fmcwtxrx -> 2 `i 102  ]
-[; ;FMCW.c: 84: {
-"84
+[; ;FMCW.c: 138: {
+"138
 {
-[; ;FMCW.c: 85: PORTDbits.RD1 = 1;
-"85
-[e = . . _PORTDbits 0 1 -> -> 1 `i `uc ]
-[; ;FMCW.c: 86: _NOP();
-"86
-[e ( __NOP ..  ]
-[; ;FMCW.c: 87: PORTDbits.RD2 = 1;
-"87
+[; ;FMCW.c: 139: PORTDbits.RD2 = 1;
+"139
 [e = . . _PORTDbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 88: _NOP();
-"88
-[e ( __NOP ..  ]
-[; ;FMCW.c: 89: PORTDbits.RD2 = 0;
-"89
+[; ;FMCW.c: 141: PORTDbits.RD2 = 0;
+"141
 [e = . . _PORTDbits 0 2 -> -> 0 `i `uc ]
-"90
+[; ;FMCW.c: 142: PORTDbits.RD1 = 1;
+"142
+[e = . . _PORTDbits 0 1 -> -> 1 `i `uc ]
+[; ;FMCW.c: 143: _NOP();
+"143
+[e ( __NOP ..  ]
+"144
 }
 [e :U 102 ]
-[; ;FMCW.c: 90: }
-[; ;FMCW.c: 91: if(fmcwtxrx == 3)
-"91
+[; ;FMCW.c: 144: }
+[; ;FMCW.c: 145: if(fmcwtxrx == 3)
+"145
 [e $ ! == _fmcwtxrx -> 3 `i 103  ]
-[; ;FMCW.c: 92: {
-"92
+[; ;FMCW.c: 146: {
+"146
 {
-[; ;FMCW.c: 93: PORTAbits.RA3 = 1;
-"93
-[e = . . _PORTAbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 94: _NOP();
-"94
-[e ( __NOP ..  ]
-[; ;FMCW.c: 95: PORTAbits.RA2 = 1;
-"95
+[; ;FMCW.c: 147: PORTAbits.RA2 = 1;
+"147
 [e = . . _PORTAbits 0 2 -> -> 1 `i `uc ]
-[; ;FMCW.c: 96: _NOP();
-"96
-[e ( __NOP ..  ]
-[; ;FMCW.c: 97: PORTAbits.RA2 = 0;
-"97
+[; ;FMCW.c: 149: PORTAbits.RA2 = 0;
+"149
 [e = . . _PORTAbits 0 2 -> -> 0 `i `uc ]
-"98
+[; ;FMCW.c: 150: PORTAbits.RA3 = 1;
+"150
+[e = . . _PORTAbits 0 3 -> -> 1 `i `uc ]
+[; ;FMCW.c: 151: _NOP();
+"151
+[e ( __NOP ..  ]
+"152
 }
 [e :U 103 ]
-[; ;FMCW.c: 98: }
-[; ;FMCW.c: 99: }
-"99
+[; ;FMCW.c: 152: }
+[; ;FMCW.c: 153: }
+"153
 [e :UE 100 ]
 }
-"107
+"161
 [v _STBOUT `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;FMCW.c: 107: void STBOUT(int fmcwtxrx){
+[; ;FMCW.c: 161: void STBOUT(int fmcwtxrx){
 [e :U _STBOUT ]
 [v _fmcwtxrx `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 108: if(fmcwtxrx == 1)
-"108
+[; ;FMCW.c: 162: if(fmcwtxrx == 1)
+"162
 [e $ ! == _fmcwtxrx -> 1 `i 105  ]
-[; ;FMCW.c: 109: {
-"109
+[; ;FMCW.c: 163: {
+"163
 {
-[; ;FMCW.c: 110: PORTEbits.RE0 = 1;
-"110
+[; ;FMCW.c: 164: PORTEbits.RE0 = 1;
+"164
 [e = . . _PORTEbits 0 0 -> -> 1 `i `uc ]
-[; ;FMCW.c: 111: _NOP();
-"111
+[; ;FMCW.c: 165: _NOP();
+"165
 [e ( __NOP ..  ]
-[; ;FMCW.c: 112: PORTEbits.RE0 = 0;
-"112
+[; ;FMCW.c: 166: PORTEbits.RE0 = 0;
+"166
 [e = . . _PORTEbits 0 0 -> -> 0 `i `uc ]
-"113
+"167
 }
 [e :U 105 ]
-[; ;FMCW.c: 113: }
-[; ;FMCW.c: 114: if(fmcwtxrx == 2)
-"114
+[; ;FMCW.c: 167: }
+[; ;FMCW.c: 168: if(fmcwtxrx == 2)
+"168
 [e $ ! == _fmcwtxrx -> 2 `i 106  ]
-[; ;FMCW.c: 115: {
-"115
+[; ;FMCW.c: 169: {
+"169
 {
-[; ;FMCW.c: 116: PORTDbits.RD0 = 1;
-"116
+[; ;FMCW.c: 170: PORTDbits.RD0 = 1;
+"170
 [e = . . _PORTDbits 0 0 -> -> 1 `i `uc ]
-[; ;FMCW.c: 117: _NOP();
-"117
+[; ;FMCW.c: 171: _NOP();
+"171
 [e ( __NOP ..  ]
-[; ;FMCW.c: 118: PORTDbits.RD0 = 0;
-"118
+[; ;FMCW.c: 172: PORTDbits.RD0 = 0;
+"172
 [e = . . _PORTDbits 0 0 -> -> 0 `i `uc ]
-"119
+"173
 }
 [e :U 106 ]
-[; ;FMCW.c: 119: }
-[; ;FMCW.c: 120: if(fmcwtxrx == 3)
-"120
+[; ;FMCW.c: 173: }
+[; ;FMCW.c: 174: if(fmcwtxrx == 3)
+"174
 [e $ ! == _fmcwtxrx -> 3 `i 107  ]
-[; ;FMCW.c: 121: {
-"121
+[; ;FMCW.c: 175: {
+"175
 {
-[; ;FMCW.c: 122: PORTBbits.RB0 = 1;
-"122
+[; ;FMCW.c: 176: PORTBbits.RB0 = 1;
+"176
 [e = . . _PORTBbits 0 0 -> -> 1 `i `uc ]
-[; ;FMCW.c: 123: _NOP();
-"123
+[; ;FMCW.c: 177: _NOP();
+"177
 [e ( __NOP ..  ]
-[; ;FMCW.c: 124: PORTBbits.RB0 = 0;
-"124
+[; ;FMCW.c: 178: PORTBbits.RB0 = 0;
+"178
 [e = . . _PORTBbits 0 0 -> -> 0 `i `uc ]
-"125
+"179
 }
 [e :U 107 ]
-[; ;FMCW.c: 125: }
-[; ;FMCW.c: 126: }
-"126
+[; ;FMCW.c: 179: }
+[; ;FMCW.c: 180: }
+"180
 [e :UE 104 ]
 }
-"136
+"190
 [v _OUTFQ `(v ~T0 @X0 1 ef2`i`*i ]
 {
-[; ;FMCW.c: 136: void OUTFQ(int fmcwtxrx, int *Nprg){
+[; ;FMCW.c: 190: void OUTFQ(int fmcwtxrx, int *Nprg){
 [e :U _OUTFQ ]
 [v _fmcwtxrx `i ~T0 @X0 1 r1 ]
 [v _Nprg `*i ~T0 @X0 1 r2 ]
 [f ]
-"137
+"191
 [v _count `i ~T0 @X0 1 a ]
-[; ;FMCW.c: 137: int count = 0;
+[; ;FMCW.c: 191: int count = 0;
 [e = _count -> 0 `i ]
-"138
+"192
 [v _Nprg_b `i ~T0 @X0 -> 17 `i a ]
-[; ;FMCW.c: 138: int Nprg_b[17];
-[; ;FMCW.c: 140: for(int i=0; i<17; i++){
-"140
+[; ;FMCW.c: 192: int Nprg_b[17];
+[; ;FMCW.c: 194: for(int i=0; i<17; i++){
+"194
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
@@ -1441,20 +1428,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 110  ]
 [e :U 109 ]
 {
-[; ;FMCW.c: 141: Nprg_b[i] = 0;
-"141
+[; ;FMCW.c: 195: Nprg_b[i] = 0;
+"195
 [e = *U + &U _Nprg_b * -> -> _i `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> 0 `i ]
-"142
+"196
 }
-"140
+"194
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 17 `i 109  ]
 [e :U 110 ]
-"142
+"196
 }
-[; ;FMCW.c: 142: }
-[; ;FMCW.c: 145: for(int i = 0; i < 17; i++){
-"145
+[; ;FMCW.c: 196: }
+[; ;FMCW.c: 199: for(int i = 0; i < 17; i++){
+"199
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
@@ -1462,8 +1449,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 113  ]
 [e :U 112 ]
 {
-[; ;FMCW.c: 146: for(int j = 0; j<5; j++){
-"146
+[; ;FMCW.c: 200: for(int j = 0; j<5; j++){
+"200
 {
 [v _j `i ~T0 @X0 1 a ]
 [e = _j -> 0 `i ]
@@ -1471,173 +1458,173 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 116  ]
 [e :U 115 ]
 {
-[; ;FMCW.c: 147: if(Nprg[j] % 2 == 0) {
-"147
+[; ;FMCW.c: 201: if(Nprg[j] % 2 == 0) {
+"201
 [e $ ! == % *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x -> 2 `i -> 0 `i 118  ]
 {
-[; ;FMCW.c: 148: if(j == 4){
-"148
+[; ;FMCW.c: 202: if(j == 4){
+"202
 [e $ ! == _j -> 4 `i 119  ]
 {
-[; ;FMCW.c: 149: Nprg[j] = Nprg[j] / 2;
-"149
+[; ;FMCW.c: 203: Nprg[j] = Nprg[j] / 2;
+"203
 [e = *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x / *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x -> 2 `i ]
-[; ;FMCW.c: 150: Nprg_b[count] = 0;
-"150
+[; ;FMCW.c: 204: Nprg_b[count] = 0;
+"204
 [e = *U + &U _Nprg_b * -> -> _count `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> 0 `i ]
-[; ;FMCW.c: 151: count++;
-"151
+[; ;FMCW.c: 205: count++;
+"205
 [e ++ _count -> 1 `i ]
-"152
+"206
 }
-[; ;FMCW.c: 152: }
+[; ;FMCW.c: 206: }
 [e $U 120  ]
-"153
+"207
 [e :U 119 ]
-[; ;FMCW.c: 153: else{
+[; ;FMCW.c: 207: else{
 {
-[; ;FMCW.c: 154: Nprg[j] = Nprg[j] / 2;
-"154
+[; ;FMCW.c: 208: Nprg[j] = Nprg[j] / 2;
+"208
 [e = *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x / *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x -> 2 `i ]
-"155
+"209
 }
 [e :U 120 ]
-"156
+"210
 }
-[; ;FMCW.c: 155: }
-[; ;FMCW.c: 156: }
+[; ;FMCW.c: 209: }
+[; ;FMCW.c: 210: }
 [e $U 121  ]
-"157
+"211
 [e :U 118 ]
-[; ;FMCW.c: 157: else if(Nprg[j] % 2 == 1) {
+[; ;FMCW.c: 211: else if(Nprg[j] % 2 == 1) {
 [e $ ! == % *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x -> 2 `i -> 1 `i 122  ]
 {
-[; ;FMCW.c: 158: if(j == 4){
-"158
+[; ;FMCW.c: 212: if(j == 4){
+"212
 [e $ ! == _j -> 4 `i 123  ]
 {
-[; ;FMCW.c: 159: Nprg[j] = Nprg[j] / 2;
-"159
+[; ;FMCW.c: 213: Nprg[j] = Nprg[j] / 2;
+"213
 [e = *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x / *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x -> 2 `i ]
-[; ;FMCW.c: 160: Nprg_b[count] = 1;
-"160
+[; ;FMCW.c: 214: Nprg_b[count] = 1;
+"214
 [e = *U + &U _Nprg_b * -> -> _count `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> 1 `i ]
-[; ;FMCW.c: 161: count++;
-"161
+[; ;FMCW.c: 215: count++;
+"215
 [e ++ _count -> 1 `i ]
-"162
+"216
 }
-[; ;FMCW.c: 162: }
+[; ;FMCW.c: 216: }
 [e $U 124  ]
-"163
+"217
 [e :U 123 ]
-[; ;FMCW.c: 163: else{
+[; ;FMCW.c: 217: else{
 {
-[; ;FMCW.c: 164: Nprg[j] = Nprg[j] / 2;
-"164
+[; ;FMCW.c: 218: Nprg[j] = Nprg[j] / 2;
+"218
 [e = *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x / *U + _Nprg * -> _j `x -> -> # *U _Nprg `i `x -> 2 `i ]
-[; ;FMCW.c: 165: Nprg[j+1] = Nprg[j+1] + 10;
-"165
+[; ;FMCW.c: 219: Nprg[j+1] = Nprg[j+1] + 10;
+"219
 [e = *U + _Nprg * -> + _j -> 1 `i `x -> -> # *U _Nprg `i `x + *U + _Nprg * -> + _j -> 1 `i `x -> -> # *U _Nprg `i `x -> 10 `i ]
-"166
+"220
 }
 [e :U 124 ]
-"167
+"221
 }
 [e :U 122 ]
-"168
+"222
 [e :U 121 ]
 }
-"146
+"200
 [e ++ _j -> 1 `i ]
 [e $ < _j -> 5 `i 115  ]
 [e :U 116 ]
-"168
+"222
 }
-"169
+"223
 }
-"145
+"199
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 17 `i 112  ]
 [e :U 113 ]
-"169
+"223
 }
-[; ;FMCW.c: 166: }
-[; ;FMCW.c: 167: }
-[; ;FMCW.c: 168: }
-[; ;FMCW.c: 169: }
-[; ;FMCW.c: 172: for (int i=0; i<17; i++)
-"172
+[; ;FMCW.c: 220: }
+[; ;FMCW.c: 221: }
+[; ;FMCW.c: 222: }
+[; ;FMCW.c: 223: }
+[; ;FMCW.c: 226: for (int i=0; i<17; i++)
+"226
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
 [e $ < _i -> 17 `i 125  ]
 [e $U 126  ]
-"173
+"227
 [e :U 125 ]
-[; ;FMCW.c: 173: {
+[; ;FMCW.c: 227: {
 {
-[; ;FMCW.c: 174: if(Nprg_b[i] == 0)
-"174
+[; ;FMCW.c: 228: if(Nprg_b[i] == 0)
+"228
 [e $ ! == *U + &U _Nprg_b * -> -> _i `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> 0 `i 128  ]
-[; ;FMCW.c: 175: {
-"175
+[; ;FMCW.c: 229: {
+"229
 {
-[; ;FMCW.c: 176: L_OUT(fmcwtxrx);
-"176
+[; ;FMCW.c: 230: L_OUT(fmcwtxrx);
+"230
 [e ( _L_OUT (1 _fmcwtxrx ]
-"177
+"231
 }
 [e :U 128 ]
-[; ;FMCW.c: 177: }
-[; ;FMCW.c: 178: if(Nprg_b[i] == 1)
-"178
+[; ;FMCW.c: 231: }
+[; ;FMCW.c: 232: if(Nprg_b[i] == 1)
+"232
 [e $ ! == *U + &U _Nprg_b * -> -> _i `ui `ux -> -> # *U &U _Nprg_b `ui `ux -> 1 `i 129  ]
-[; ;FMCW.c: 179: {
-"179
+[; ;FMCW.c: 233: {
+"233
 {
-[; ;FMCW.c: 180: H_OUT(fmcwtxrx);
-"180
+[; ;FMCW.c: 234: H_OUT(fmcwtxrx);
+"234
 [e ( _H_OUT (1 _fmcwtxrx ]
-"181
+"235
 }
 [e :U 129 ]
-"182
+"236
 }
-"172
+"226
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 17 `i 125  ]
 [e :U 126 ]
-"182
+"236
 }
-[; ;FMCW.c: 181: }
-[; ;FMCW.c: 182: }
-[; ;FMCW.c: 185: H_OUT(fmcwtxrx);
-"185
+[; ;FMCW.c: 235: }
+[; ;FMCW.c: 236: }
+[; ;FMCW.c: 239: H_OUT(fmcwtxrx);
+"239
 [e ( _H_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 186: L_OUT(fmcwtxrx);
-"186
+[; ;FMCW.c: 240: L_OUT(fmcwtxrx);
+"240
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 189: STBOUT(fmcwtxrx);
-"189
+[; ;FMCW.c: 243: STBOUT(fmcwtxrx);
+"243
 [e ( _STBOUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 190: }
-"190
+[; ;FMCW.c: 244: }
+"244
 [e :UE 108 ]
 }
-"200
+"254
 [v _RFDOUT `(v ~T0 @X0 1 ef2`i`i ]
 {
-[; ;FMCW.c: 200: void RFDOUT(int fmcwtxrx, int Nref){
+[; ;FMCW.c: 254: void RFDOUT(int fmcwtxrx, int Nref){
 [e :U _RFDOUT ]
 [v _fmcwtxrx `i ~T0 @X0 1 r1 ]
 [v _Nref `i ~T0 @X0 1 r2 ]
 [f ]
-"201
+"255
 [v _Nref_b `i ~T0 @X0 -> 12 `i a ]
-[; ;FMCW.c: 201: int Nref_b[12];
-[; ;FMCW.c: 203: for(int i=0; i<12; i++){
-"203
+[; ;FMCW.c: 255: int Nref_b[12];
+[; ;FMCW.c: 257: for(int i=0; i<12; i++){
+"257
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
@@ -1645,20 +1632,20 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 132  ]
 [e :U 131 ]
 {
-[; ;FMCW.c: 204: Nref_b[i] = 0;
-"204
+[; ;FMCW.c: 258: Nref_b[i] = 0;
+"258
 [e = *U + &U _Nref_b * -> -> _i `ui `ux -> -> # *U &U _Nref_b `ui `ux -> 0 `i ]
-"205
+"259
 }
-"203
+"257
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 12 `i 131  ]
 [e :U 132 ]
-"205
+"259
 }
-[; ;FMCW.c: 205: }
-[; ;FMCW.c: 208: for(int i=0; Nref>0; i++){
-"208
+[; ;FMCW.c: 259: }
+[; ;FMCW.c: 262: for(int i=0; Nref>0; i++){
+"262
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
@@ -1666,212 +1653,501 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 135  ]
 [e :U 134 ]
 {
-[; ;FMCW.c: 209: Nref_b[i] = Nref % 2;
-"209
+[; ;FMCW.c: 263: Nref_b[i] = Nref % 2;
+"263
 [e = *U + &U _Nref_b * -> -> _i `ui `ux -> -> # *U &U _Nref_b `ui `ux % _Nref -> 2 `i ]
-[; ;FMCW.c: 210: Nref = Nref / 2;
-"210
+[; ;FMCW.c: 264: Nref = Nref / 2;
+"264
 [e = _Nref / _Nref -> 2 `i ]
-"211
+"265
 }
-"208
+"262
 [e ++ _i -> 1 `i ]
 [e $ > _Nref -> 0 `i 134  ]
 [e :U 135 ]
-"211
+"265
 }
-[; ;FMCW.c: 211: }
-[; ;FMCW.c: 214: for (int i=0; i<12; i++)
-"214
+[; ;FMCW.c: 265: }
+[; ;FMCW.c: 268: for (int i=0; i<12; i++)
+"268
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
 [e $ < _i -> 12 `i 137  ]
 [e $U 138  ]
-"215
+"269
 [e :U 137 ]
-[; ;FMCW.c: 215: {
+[; ;FMCW.c: 269: {
 {
-[; ;FMCW.c: 216: if(Nref_b[i] == 0)
-"216
+[; ;FMCW.c: 270: if(Nref_b[i] == 0)
+"270
 [e $ ! == *U + &U _Nref_b * -> -> _i `ui `ux -> -> # *U &U _Nref_b `ui `ux -> 0 `i 140  ]
-[; ;FMCW.c: 217: {
-"217
+[; ;FMCW.c: 271: {
+"271
 {
-[; ;FMCW.c: 218: L_OUT(fmcwtxrx);
-"218
+[; ;FMCW.c: 272: L_OUT(fmcwtxrx);
+"272
 [e ( _L_OUT (1 _fmcwtxrx ]
-"219
+"273
 }
 [e :U 140 ]
-[; ;FMCW.c: 219: }
-[; ;FMCW.c: 220: if(Nref_b[i] == 1)
-"220
+[; ;FMCW.c: 273: }
+[; ;FMCW.c: 274: if(Nref_b[i] == 1)
+"274
 [e $ ! == *U + &U _Nref_b * -> -> _i `ui `ux -> -> # *U &U _Nref_b `ui `ux -> 1 `i 141  ]
-[; ;FMCW.c: 221: {
-"221
+[; ;FMCW.c: 275: {
+"275
 {
-[; ;FMCW.c: 222: H_OUT(fmcwtxrx);
-"222
+[; ;FMCW.c: 276: H_OUT(fmcwtxrx);
+"276
 [e ( _H_OUT (1 _fmcwtxrx ]
-"223
+"277
 }
 [e :U 141 ]
-"224
+"278
 }
-"214
+"268
 [e ++ _i -> 1 `i ]
 [e $ < _i -> 12 `i 137  ]
 [e :U 138 ]
-"224
+"278
 }
-[; ;FMCW.c: 223: }
-[; ;FMCW.c: 224: }
-[; ;FMCW.c: 227: H_OUT(fmcwtxrx);
-"227
+[; ;FMCW.c: 277: }
+[; ;FMCW.c: 278: }
+[; ;FMCW.c: 281: H_OUT(fmcwtxrx);
+"281
 [e ( _H_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 228: H_OUT(fmcwtxrx);
-"228
+[; ;FMCW.c: 282: H_OUT(fmcwtxrx);
+"282
 [e ( _H_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 231: STBOUT(fmcwtxrx);
-"231
+[; ;FMCW.c: 285: STBOUT(fmcwtxrx);
+"285
 [e ( _STBOUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 232: }
-"232
+[; ;FMCW.c: 286: }
+"286
 [e :UE 130 ]
 }
-"241
+"288
+[v _RFDOUT_FMTX `(v ~T0 @X0 1 ef ]
+{
+[; ;FMCW.c: 288: void RFDOUT_FMTX(void){
+[e :U _RFDOUT_FMTX ]
+[f ]
+"289
+[v _fmcwtxrx `i ~T0 @X0 1 a ]
+[; ;FMCW.c: 289: int fmcwtxrx;
+[; ;FMCW.c: 290: fmcwtxrx = 1;
+"290
+[e = _fmcwtxrx -> 1 `i ]
+[; ;FMCW.c: 292: L_OUT(fmcwtxrx);
+"292
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 293: L_OUT(fmcwtxrx);
+"293
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 294: L_OUT(fmcwtxrx);
+"294
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 295: L_OUT(fmcwtxrx);
+"295
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 296: L_OUT(fmcwtxrx);
+"296
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 297: L_OUT(fmcwtxrx);
+"297
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 298: L_OUT(fmcwtxrx);
+"298
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 299: L_OUT(fmcwtxrx);
+"299
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 300: L_OUT(fmcwtxrx);
+"300
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 301: H_OUT(fmcwtxrx);
+"301
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 302: L_OUT(fmcwtxrx);
+"302
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 303: H_OUT(fmcwtxrx);
+"303
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 305: H_OUT(fmcwtxrx);
+"305
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 306: H_OUT(fmcwtxrx);
+"306
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 308: STBOUT(fmcwtxrx);
+"308
+[e ( _STBOUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 309: }
+"309
+[e :UE 142 ]
+}
+"311
+[v _OUTFQ_FMTX `(v ~T0 @X0 1 ef ]
+{
+[; ;FMCW.c: 311: void OUTFQ_FMTX(void){
+[e :U _OUTFQ_FMTX ]
+[f ]
+"312
+[v _fmcwtxrx `i ~T0 @X0 1 a ]
+[; ;FMCW.c: 312: int fmcwtxrx;
+[; ;FMCW.c: 313: fmcwtxrx = 1;
+"313
+[e = _fmcwtxrx -> 1 `i ]
+[; ;FMCW.c: 315: L_OUT(fmcwtxrx);
+"315
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 316: L_OUT(fmcwtxrx);
+"316
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 317: H_OUT(fmcwtxrx);
+"317
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 318: L_OUT(fmcwtxrx);
+"318
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 319: L_OUT(fmcwtxrx);
+"319
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 320: L_OUT(fmcwtxrx);
+"320
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 321: L_OUT(fmcwtxrx);
+"321
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 322: L_OUT(fmcwtxrx);
+"322
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 323: H_OUT(fmcwtxrx);
+"323
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 324: L_OUT(fmcwtxrx);
+"324
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 325: H_OUT(fmcwtxrx);
+"325
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 326: L_OUT(fmcwtxrx);
+"326
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 327: H_OUT(fmcwtxrx);
+"327
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 328: L_OUT(fmcwtxrx);
+"328
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 329: H_OUT(fmcwtxrx);
+"329
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 330: L_OUT(fmcwtxrx);
+"330
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 331: H_OUT(fmcwtxrx);
+"331
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 333: H_OUT(fmcwtxrx);
+"333
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 334: L_OUT(fmcwtxrx);
+"334
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 336: STBOUT(fmcwtxrx);
+"336
+[e ( _STBOUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 337: }
+"337
+[e :UE 143 ]
+}
+"340
+[v _RFDOUT_CWTX `(v ~T0 @X0 1 ef ]
+{
+[; ;FMCW.c: 340: void RFDOUT_CWTX(void){
+[e :U _RFDOUT_CWTX ]
+[f ]
+"341
+[v _fmcwtxrx `i ~T0 @X0 1 a ]
+[; ;FMCW.c: 341: int fmcwtxrx;
+[; ;FMCW.c: 342: fmcwtxrx = 2;
+"342
+[e = _fmcwtxrx -> 2 `i ]
+[; ;FMCW.c: 344: H_OUT(fmcwtxrx);
+"344
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 345: H_OUT(fmcwtxrx);
+"345
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 346: L_OUT(fmcwtxrx);
+"346
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 347: L_OUT(fmcwtxrx);
+"347
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 348: H_OUT(fmcwtxrx);
+"348
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 349: L_OUT(fmcwtxrx);
+"349
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 350: H_OUT(fmcwtxrx);
+"350
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 351: H_OUT(fmcwtxrx);
+"351
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 352: L_OUT(fmcwtxrx);
+"352
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 353: H_OUT(fmcwtxrx);
+"353
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 354: H_OUT(fmcwtxrx);
+"354
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 355: L_OUT(fmcwtxrx);
+"355
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 356: L_OUT(fmcwtxrx);
+"356
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 357: L_OUT(fmcwtxrx);
+"357
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 358: L_OUT(fmcwtxrx);
+"358
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 359: L_OUT(fmcwtxrx);
+"359
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 360: L_OUT(fmcwtxrx);
+"360
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 362: H_OUT(fmcwtxrx);
+"362
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 363: L_OUT(fmcwtxrx);
+"363
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 365: STBOUT(fmcwtxrx);
+"365
+[e ( _STBOUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 366: }
+"366
+[e :UE 144 ]
+}
+"368
+[v _OUTFQ_CWTX `(v ~T0 @X0 1 ef ]
+{
+[; ;FMCW.c: 368: void OUTFQ_CWTX(void){
+[e :U _OUTFQ_CWTX ]
+[f ]
+"369
+[v _fmcwtxrx `i ~T0 @X0 1 a ]
+[; ;FMCW.c: 369: int fmcwtxrx;
+[; ;FMCW.c: 370: fmcwtxrx = 2;
+"370
+[e = _fmcwtxrx -> 2 `i ]
+[; ;FMCW.c: 372: L_OUT(fmcwtxrx);
+"372
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 373: L_OUT(fmcwtxrx);
+"373
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 374: H_OUT(fmcwtxrx);
+"374
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 375: L_OUT(fmcwtxrx);
+"375
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 376: L_OUT(fmcwtxrx);
+"376
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 377: L_OUT(fmcwtxrx);
+"377
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 378: L_OUT(fmcwtxrx);
+"378
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 379: L_OUT(fmcwtxrx);
+"379
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 380: H_OUT(fmcwtxrx);
+"380
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 381: L_OUT(fmcwtxrx);
+"381
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 382: H_OUT(fmcwtxrx);
+"382
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 383: L_OUT(fmcwtxrx);
+"383
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 384: H_OUT(fmcwtxrx);
+"384
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 385: L_OUT(fmcwtxrx);
+"385
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 386: H_OUT(fmcwtxrx);
+"386
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 387: L_OUT(fmcwtxrx);
+"387
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 388: H_OUT(fmcwtxrx);
+"388
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 390: H_OUT(fmcwtxrx);
+"390
+[e ( _H_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 391: L_OUT(fmcwtxrx);
+"391
+[e ( _L_OUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 393: STBOUT(fmcwtxrx);
+"393
+[e ( _STBOUT (1 _fmcwtxrx ]
+[; ;FMCW.c: 394: }
+"394
+[e :UE 145 ]
+}
+"403
 [v _OPINIT `(v ~T0 @X0 1 ef1`i ]
 {
-[; ;FMCW.c: 241: void OPINIT(int fmcwtxrx){
+[; ;FMCW.c: 403: void OPINIT(int fmcwtxrx){
 [e :U _OPINIT ]
 [v _fmcwtxrx `i ~T0 @X0 1 r1 ]
 [f ]
-[; ;FMCW.c: 243: L_OUT(fmcwtxrx);
-"243
+[; ;FMCW.c: 405: L_OUT(fmcwtxrx);
+"405
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 244: L_OUT(fmcwtxrx);
-"244
+[; ;FMCW.c: 406: L_OUT(fmcwtxrx);
+"406
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 245: L_OUT(fmcwtxrx);
-"245
+[; ;FMCW.c: 407: L_OUT(fmcwtxrx);
+"407
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 246: H_OUT(fmcwtxrx);
-"246
+[; ;FMCW.c: 408: H_OUT(fmcwtxrx);
+"408
 [e ( _H_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 247: H_OUT(fmcwtxrx);
-"247
+[; ;FMCW.c: 409: H_OUT(fmcwtxrx);
+"409
 [e ( _H_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 248: L_OUT(fmcwtxrx);
-"248
+[; ;FMCW.c: 410: L_OUT(fmcwtxrx);
+"410
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 249: L_OUT(fmcwtxrx);
-"249
+[; ;FMCW.c: 411: L_OUT(fmcwtxrx);
+"411
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 250: L_OUT(fmcwtxrx);
-"250
+[; ;FMCW.c: 412: L_OUT(fmcwtxrx);
+"412
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 251: L_OUT(fmcwtxrx);
-"251
+[; ;FMCW.c: 413: L_OUT(fmcwtxrx);
+"413
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 252: L_OUT(fmcwtxrx);
-"252
+[; ;FMCW.c: 414: L_OUT(fmcwtxrx);
+"414
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 253: H_OUT(fmcwtxrx);
-"253
+[; ;FMCW.c: 415: H_OUT(fmcwtxrx);
+"415
 [e ( _H_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 256: L_OUT(fmcwtxrx);
-"256
+[; ;FMCW.c: 418: L_OUT(fmcwtxrx);
+"418
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 257: L_OUT(fmcwtxrx);
-"257
+[; ;FMCW.c: 419: L_OUT(fmcwtxrx);
+"419
 [e ( _L_OUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 260: STBOUT(fmcwtxrx);
-"260
+[; ;FMCW.c: 422: STBOUT(fmcwtxrx);
+"422
 [e ( _STBOUT (1 _fmcwtxrx ]
-[; ;FMCW.c: 261: }
-"261
-[e :UE 142 ]
+[; ;FMCW.c: 423: }
+"423
+[e :UE 146 ]
 }
-"270
+"440
 [v _FMTX `(v ~T0 @X0 1 ef2`i`*i ]
 {
-[; ;FMCW.c: 270: void FMTX(int Nref, int *Nprg){
+[; ;FMCW.c: 440: void FMTX(int Nref, int *Nprg){
 [e :U _FMTX ]
 [v _Nref `i ~T0 @X0 1 r1 ]
 [v _Nprg `*i ~T0 @X0 1 r2 ]
 [f ]
-"271
+"441
 [v _fmtx `i ~T0 @X0 1 a ]
-[; ;FMCW.c: 271: int fmtx = 1;
+[; ;FMCW.c: 441: int fmtx = 1;
 [e = _fmtx -> 1 `i ]
-[; ;FMCW.c: 272: OPINIT(fmtx);
-"272
+[; ;FMCW.c: 442: OPINIT(fmtx);
+"442
 [e ( _OPINIT (1 _fmtx ]
-[; ;FMCW.c: 273: RFDOUT(fmtx, Nref);
-"273
-[e ( _RFDOUT (2 , _fmtx _Nref ]
-[; ;FMCW.c: 274: OUTFQ(fmtx, Nprg);
-"274
-[e ( _OUTFQ (2 , _fmtx _Nprg ]
-[; ;FMCW.c: 275: }
-"275
-[e :UE 143 ]
+[; ;FMCW.c: 443: RFDOUT_FMTX();
+"443
+[e ( _RFDOUT_FMTX ..  ]
+[; ;FMCW.c: 444: OUTFQ_FMTX();
+"444
+[e ( _OUTFQ_FMTX ..  ]
+[; ;FMCW.c: 445: }
+"445
+[e :UE 147 ]
 }
-"284
+"460
 [v _CWTX `(v ~T0 @X0 1 ef2`i`*i ]
 {
-[; ;FMCW.c: 284: void CWTX(int Nref, int *Nprg){
+[; ;FMCW.c: 460: void CWTX(int Nref, int *Nprg){
 [e :U _CWTX ]
 [v _Nref `i ~T0 @X0 1 r1 ]
 [v _Nprg `*i ~T0 @X0 1 r2 ]
 [f ]
-"285
+"461
 [v _cwtx `i ~T0 @X0 1 a ]
-[; ;FMCW.c: 285: int cwtx = 2;
+[; ;FMCW.c: 461: int cwtx = 2;
 [e = _cwtx -> 2 `i ]
-[; ;FMCW.c: 286: OPINIT(cwtx);
-"286
+[; ;FMCW.c: 462: OPINIT(cwtx);
+"462
 [e ( _OPINIT (1 _cwtx ]
-[; ;FMCW.c: 287: RFDOUT(cwtx, Nref);
-"287
-[e ( _RFDOUT (2 , _cwtx _Nref ]
-[; ;FMCW.c: 288: OUTFQ(cwtx, Nprg);
-"288
-[e ( _OUTFQ (2 , _cwtx _Nprg ]
-[; ;FMCW.c: 289: }
-"289
-[e :UE 144 ]
+[; ;FMCW.c: 463: RFDOUT_CWTX();
+"463
+[e ( _RFDOUT_CWTX ..  ]
+[; ;FMCW.c: 464: OUTFQ_CWTX();
+"464
+[e ( _OUTFQ_CWTX ..  ]
+[; ;FMCW.c: 465: }
+"465
+[e :UE 148 ]
 }
-"298
+"474
 [v _FMRX `(v ~T0 @X0 1 ef2`i`*i ]
 {
-[; ;FMCW.c: 298: void FMRX(int Nref, int *Nprg){
+[; ;FMCW.c: 474: void FMRX(int Nref, int *Nprg){
 [e :U _FMRX ]
 [v _Nref `i ~T0 @X0 1 r1 ]
 [v _Nprg `*i ~T0 @X0 1 r2 ]
 [f ]
-"299
+"475
 [v _fmrx `i ~T0 @X0 1 a ]
-[; ;FMCW.c: 299: int fmrx = 3;
+[; ;FMCW.c: 475: int fmrx = 3;
 [e = _fmrx -> 3 `i ]
-[; ;FMCW.c: 300: OPINIT(fmrx);
-"300
+[; ;FMCW.c: 476: OPINIT(fmrx);
+"476
 [e ( _OPINIT (1 _fmrx ]
-[; ;FMCW.c: 301: RFDOUT(fmrx, Nref);
-"301
+[; ;FMCW.c: 477: RFDOUT(fmrx, Nref);
+"477
 [e ( _RFDOUT (2 , _fmrx _Nref ]
-[; ;FMCW.c: 302: OUTFQ(fmrx, Nprg);
-"302
+[; ;FMCW.c: 478: OUTFQ(fmrx, Nprg);
+"478
 [e ( _OUTFQ (2 , _fmrx _Nprg ]
-[; ;FMCW.c: 303: }
-"303
-[e :UE 145 ]
+[; ;FMCW.c: 479: }
+"479
+[e :UE 149 ]
 }
-"309
+"485
 [v _SetPLL `(v ~T0 @X0 1 ef6`i`i`i`i`i`i ]
 {
-[; ;FMCW.c: 309: void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
+[; ;FMCW.c: 485: void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
 [e :U _SetPLL ]
 [v _FMTX_Nref `i ~T0 @X0 1 r1 ]
 [v _FMTX_Nprg `i ~T0 @X0 1 r2 ]
@@ -1880,105 +2156,136 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _FMRX_Nref `i ~T0 @X0 1 r5 ]
 [v _FMRX_Nprg `i ~T0 @X0 1 r6 ]
 [f ]
-[; ;FMCW.c: 310: FMTX(FMTX_Nref, FMTX_Nprg);
-"310
+[; ;FMCW.c: 486: FMTX(FMTX_Nref, FMTX_Nprg);
+"486
 [e ( _FMTX (2 , _FMTX_Nref -> _FMTX_Nprg `*i ]
-[; ;FMCW.c: 311: CWTX(CWTX_Nref, CWTX_Nprg);
-"311
+[; ;FMCW.c: 487: CWTX(CWTX_Nref, CWTX_Nprg);
+"487
 [e ( _CWTX (2 , _CWTX_Nref -> _CWTX_Nprg `*i ]
-[; ;FMCW.c: 312: FMRX(FMRX_Nref, FMRX_Nprg);
-"312
+[; ;FMCW.c: 488: FMRX(FMRX_Nref, FMRX_Nprg);
+"488
 [e ( _FMRX (2 , _FMRX_Nref -> _FMRX_Nprg `*i ]
-[; ;FMCW.c: 313: }
-"313
-[e :UE 146 ]
+[; ;FMCW.c: 489: }
+"489
+[e :UE 150 ]
 }
-"322
+"498
 [v _Morse_V `(v ~T0 @X0 1 ef ]
 {
-[; ;FMCW.c: 322: void Morse_V(void){
+[; ;FMCW.c: 498: void Morse_V(void){
 [e :U _Morse_V ]
 [f ]
-[; ;FMCW.c: 323: PORTDbits.RD3 = 1;
-"323
+[; ;FMCW.c: 499: PORTDbits.RD3 = 1;
+"499
 [e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 324: _delay((unsigned long)((50)*(10000000/4000.0)));
-"324
+[; ;FMCW.c: 500: _delay((unsigned long)((50)*(10000000/4000.0)));
+"500
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 325: PORTDbits.RD3 = 0;
-"325
+[; ;FMCW.c: 501: PORTDbits.RD3 = 0;
+"501
 [e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 326: _delay((unsigned long)((50)*(10000000/4000.0)));
-"326
+[; ;FMCW.c: 502: _delay((unsigned long)((50)*(10000000/4000.0)));
+"502
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 328: PORTDbits.RD3 = 1;
-"328
+[; ;FMCW.c: 504: PORTDbits.RD3 = 1;
+"504
 [e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 329: _delay((unsigned long)((50)*(10000000/4000.0)));
-"329
+[; ;FMCW.c: 505: _delay((unsigned long)((50)*(10000000/4000.0)));
+"505
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 330: PORTDbits.RD3 = 0;
-"330
+[; ;FMCW.c: 506: PORTDbits.RD3 = 0;
+"506
 [e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 331: _delay((unsigned long)((50)*(10000000/4000.0)));
-"331
+[; ;FMCW.c: 507: _delay((unsigned long)((50)*(10000000/4000.0)));
+"507
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 333: PORTDbits.RD3 = 1;
-"333
+[; ;FMCW.c: 509: PORTDbits.RD3 = 1;
+"509
 [e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 334: _delay((unsigned long)((50)*(10000000/4000.0)));
-"334
+[; ;FMCW.c: 510: _delay((unsigned long)((50)*(10000000/4000.0)));
+"510
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 335: PORTDbits.RD3 = 0;
-"335
+[; ;FMCW.c: 511: PORTDbits.RD3 = 0;
+"511
 [e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 336: _delay((unsigned long)((50)*(10000000/4000.0)));
-"336
+[; ;FMCW.c: 512: _delay((unsigned long)((50)*(10000000/4000.0)));
+"512
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 338: PORTDbits.RD3 = 1;
-"338
+[; ;FMCW.c: 514: PORTDbits.RD3 = 1;
+"514
 [e = . . _PORTDbits 0 3 -> -> 1 `i `uc ]
-[; ;FMCW.c: 339: _delay((unsigned long)((150)*(10000000/4000.0)));
-"339
+[; ;FMCW.c: 515: _delay((unsigned long)((150)*(10000000/4000.0)));
+"515
 [e ( __delay (1 -> * -> -> 150 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 340: PORTDbits.RD3 = 0;
-"340
+[; ;FMCW.c: 516: PORTDbits.RD3 = 0;
+"516
 [e = . . _PORTDbits 0 3 -> -> 0 `i `uc ]
-[; ;FMCW.c: 341: _delay((unsigned long)((50)*(10000000/4000.0)));
-"341
+[; ;FMCW.c: 517: _delay((unsigned long)((50)*(10000000/4000.0)));
+"517
 [e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;FMCW.c: 342: }
-"342
-[e :UE 147 ]
+[; ;FMCW.c: 518: }
+"518
+[e :UE 151 ]
 }
-"349
+"532
 [v __NOP `(v ~T0 @X0 1 ef ]
 {
-[; ;FMCW.c: 349: void _NOP(void) {
+[; ;FMCW.c: 532: void _NOP(void) {
 [e :U __NOP ]
 [f ]
-[; ;FMCW.c: 350: for(int i=0; i<5; i++){
-"350
+[; ;FMCW.c: 533: for(int i=0; i<5; i++){
+"533
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 5 `i 149  ]
-[e $U 150  ]
-[e :U 149 ]
+[e $ < _i -> 5 `i 153  ]
+[e $U 154  ]
+[e :U 153 ]
 {
-[; ;FMCW.c: 351: __nop();
-"351
+[; ;FMCW.c: 534: __nop();
+"534
 [e ( ___nop ..  ]
-"352
+"535
 }
-"350
+"533
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 5 `i 149  ]
-[e :U 150 ]
-"352
+[e $ < _i -> 5 `i 153  ]
+[e :U 154 ]
+"535
 }
-[; ;FMCW.c: 352: }
-[; ;FMCW.c: 353: }
-"353
-[e :UE 148 ]
+[; ;FMCW.c: 535: }
+[; ;FMCW.c: 536: }
+"536
+[e :UE 152 ]
+}
+"539
+[v __NOP2 `(v ~T0 @X0 1 ef ]
+{
+[; ;FMCW.c: 539: void _NOP2(void) {
+[e :U __NOP2 ]
+[f ]
+[; ;FMCW.c: 540: for(int i=0; i<1; i++){
+"540
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 1 `i 157  ]
+[e $U 158  ]
+[e :U 157 ]
+{
+[; ;FMCW.c: 541: __nop();
+"541
+[e ( ___nop ..  ]
+"542
+}
+"540
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 1 `i 157  ]
+[e :U 158 ]
+"542
+}
+[; ;FMCW.c: 542: }
+[; ;FMCW.c: 543: }
+"543
+[e :UE 156 ]
 }
