@@ -1,9 +1,11 @@
 #include <xc.h>
+#include <__null.h>
 #include "MPU.h"
 #include "pinDefine.h"
 #include "time.h"
 #include "typeDefine.h"
 #include "UART.h"
+#include "FMCW.h"
 
 
 void InitMPU(void)
@@ -172,11 +174,20 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             //TODO: write method for nominal mode
             break;
         case 0x0F: //Power saving mode //ON: CIB, Tx(CW), Rx //OFF: EPS, OBC
-            //TODO: write method for power saving mode
-            //TODO: first kill EPS (this also kills Rx/Tx/OBC)
-            //TODO: send command to TXCOBC to turn back on RX and TX
-            //TODO: RXCOBC reset PLL data
+            /*----------------------------*/
+            /*method for power saving mode
+             * 1.first kill EPS (this also kills Rx/Tx/OBC)
+             * 2.send command to TXCOBC to turn back on RX and TX  (Radio Unit)
+             *      task target:t(TX COBC)
+             *      CommandType:m(change satellite mode)
+             *      Parameter1:0x0F(Power Saving) / 2:timeHigh / 3:timeLow
+             * 3.RXCOBC reset PLL data*/
+            /*----------------------------*/
             killEPS();
+            sendCommand('t', 'm', 0x0F, timeHigh, timeLow, NULL);
+            FMTX(FMTX_Nref, FMTX_Nprg);
+            CWTX(CWTX_Nref, CWTX_Nprg);
+            FMRX(FMRX_Nref, FMRX_Nprg);
             break;
         case 0xFF: //Survival mode //ON: CIB //OFF: EPS, OBC, Tx(CW), Rx
             //only enter if time in survival mode is specified //set automatical revival time

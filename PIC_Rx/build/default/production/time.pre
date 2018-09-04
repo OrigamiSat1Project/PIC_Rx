@@ -1471,7 +1471,7 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 22 "time.h"
+# 29 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
@@ -1479,7 +1479,7 @@ void delay_us(UWORD);
 void set_timer_counter_only_getChar(UINT);
 UINT get_timer_counter_only_getChar(void);
 
-# 8 "time.c"
+# 9 "time.c"
 static UINT timer_counter_only_getChar = 0;
 
 
