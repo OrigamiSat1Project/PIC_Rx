@@ -65,6 +65,11 @@ void killEPS(void){
     RBF_SW = HIGH;  //Short Remove before flight switch 1&2  //High--->EPS OFF
 }
 
+void EPSOn(void){
+    SEP_SW = LOW;  //Short Separation switch 1&2 //High--->EPS ON
+    RBF_SW = LOW;  //Short Remove before flight switch 1&2  //High--->EPS ON
+}
+
 //TODO:check
 /*---switchPowerSpply---*/
 //5.8, OBC, WDT --- switchPowerSpply1pin
@@ -171,7 +176,12 @@ void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
 void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
     switch(command){    
         case 0x00: //Nominal mode //ON: CIB, EPS, OBC, Tx(CW), Rx
-            //TODO: write method for nominal mode
+            /*---------------------------*/
+            /* method for nominal mode
+             * 1.EPS ON (-->Rx/Tx/OBC ON)
+             * TODO:how to turn on CIB? 
+            /*---------------------------*/
+            EPSOn();
             break;
         case 0x0F: //Power saving mode //ON: CIB, Tx(CW), Rx //OFF: EPS, OBC
             /*----------------------------*/

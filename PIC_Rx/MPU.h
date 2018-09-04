@@ -23,6 +23,8 @@ void InitMPU(void);
 void LEDOnOff(void);
 void debugLEDyellow(void);
 UINT invertState(UINT);
+void killEPS(void);
+void EPSOn(void);
 void switchPowerSpply1pin(UINT, UBYTE, UBYTE, UBYTE);
 void switchPowerSpply2pin(UINT, UINT, UBYTE, UBYTE, UBYTE);
 void changeInOut(UINT, UBYTE);
