@@ -1143,7 +1143,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;decode_AX25.h: 38: UINT getbit(void);
 [; ;decode_AX25.h: 46: void ReceivePacket(void);
 [; ;decode_AX25.h: 47: UBYTE *ReceivePacket_data(void);

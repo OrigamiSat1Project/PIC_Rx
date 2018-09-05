@@ -83,6 +83,7 @@ void main(void) {
 //    putch(0x00);
 //    RA1 = 0;
     while(1){
+        putch('m');
         /*
         while(1){
             //getbit();
@@ -126,12 +127,13 @@ void main(void) {
 //        __delay_ms(100);
         
         //inform TXPIC RXDATA(PIN43 = 1)
-        
+        putch('S');
 //        UBYTE TXOBC_wad_header = 0x74;
 //        sendCommand(TXOBC_wad_header, whigh_address, wlow_address);
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
         sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes,0x00,0x00);
+        putch('G');
         
 //        printf("%s\r\n", commandData);
 //        for(int i = 0; i< 32;i++){

@@ -1481,7 +1481,7 @@ void putcrlf(void);
 void put_error(void);
 void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
-void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
+void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 # 8 "I2C.c"
 void Init_I2C_M(const UDWORD c){

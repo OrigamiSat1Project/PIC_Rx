@@ -1046,7 +1046,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;Init_MPU.h: 24: void Init_MPU(void);
 [; ;Init_MPU.h: 25: void led_onoff(void);
 [; ;Init_MPU.h: 26: void debug_ledy(void);
@@ -1178,11 +1178,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _getbit ]
 [f ]
 "41
-[v F1357 `ui ~T0 @X0 1 s oldbit ]
+[v F1359 `ui ~T0 @X0 1 s oldbit ]
 [; ;decode_AX25.c: 41: static UINT oldbit;
 [; ;decode_AX25.c: 42: oldbit = RB5;
 "42
-[e = F1357 -> -> _RB5 `i `ui ]
+[e = F1359 -> -> _RB5 `i `ui ]
 [; ;decode_AX25.c: 43: for(UINT i=0;i<62;i++){
 "43
 {
@@ -1194,7 +1194,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 {
 [; ;decode_AX25.c: 44: if(RB5 != oldbit){
 "44
-[e $ ! != -> -> _RB5 `i `ui F1357 104  ]
+[e $ ! != -> -> _RB5 `i `ui F1359 104  ]
 {
 [; ;decode_AX25.c: 45: _delay((unsigned long)((400)*(10000000/4000000.0)));
 "45

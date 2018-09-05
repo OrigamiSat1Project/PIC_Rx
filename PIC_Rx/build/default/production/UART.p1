@@ -1071,7 +1071,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 23: void put_error(void);
 [; ;UART.h: 24: void put_ok(void);
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;time.h: 23: void delay_ms(UWORD);
 [; ;time.h: 24: void delay_us(UWORD);
 [; ;CRC16.h: 13: UWORD crc16(UWORD, UBYTE *, UINT);
@@ -1306,9 +1306,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 112 ]
 }
 "79
-[v _sendCommand `(v ~T0 @X0 1 ef6`uc`uc`uc`uc`uc`uc ]
+[v _sendCommand `(v ~T0 @X0 1 ef8`uc`uc`uc`uc`uc`uc`uc`uc ]
 {
-[; ;UART.c: 79: void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4){
+[; ;UART.c: 79: void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
 [e :U _sendCommand ]
 [v _TaskTarget `uc ~T0 @X0 1 r1 ]
 [v _CommandType `uc ~T0 @X0 1 r2 ]
@@ -1316,62 +1316,79 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _Parameter2 `uc ~T0 @X0 1 r4 ]
 [v _Parameter3 `uc ~T0 @X0 1 r5 ]
 [v _Parameter4 `uc ~T0 @X0 1 r6 ]
+[v _Parameter5 `uc ~T0 @X0 1 r7 ]
+[v _Parameter6 `uc ~T0 @X0 1 r8 ]
 [f ]
 "80
-[v _Command `uc ~T0 @X0 -> 8 `i a ]
+[v _Command `uc ~T0 @X0 -> 10 `i a ]
 "81
-[v _CRC `us ~T0 @X0 1 a ]
-[; ;UART.c: 80: UBYTE Command[8];
-[; ;UART.c: 81: UWORD CRC;
-[; ;UART.c: 82: Command[0] = TaskTarget;
+[v _UARTCommandSize `i ~T0 @X0 1 a ]
+[; ;UART.c: 80: UBYTE Command[10];
+[; ;UART.c: 81: int UARTCommandSize;
+[; ;UART.c: 82: UARTCommandSize = 10;
 "82
-[e = *U + &U _Command * -> -> -> 0 `i `ui `ux -> -> # *U &U _Command `ui `ux _TaskTarget ]
-[; ;UART.c: 83: Command[1] = CommandType;
+[e = _UARTCommandSize -> 10 `i ]
 "83
-[e = *U + &U _Command * -> -> -> 1 `i `ui `ux -> -> # *U &U _Command `ui `ux _CommandType ]
-[; ;UART.c: 84: Command[2] = Parameter1;
+[v _CRC `us ~T0 @X0 1 a ]
+[; ;UART.c: 83: UWORD CRC;
+[; ;UART.c: 84: Command[0] = TaskTarget;
 "84
-[e = *U + &U _Command * -> -> -> 2 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter1 ]
-[; ;UART.c: 85: Command[3] = Parameter2;
+[e = *U + &U _Command * -> -> -> 0 `i `ui `ux -> -> # *U &U _Command `ui `ux _TaskTarget ]
+[; ;UART.c: 85: Command[1] = CommandType;
 "85
-[e = *U + &U _Command * -> -> -> 3 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter2 ]
-[; ;UART.c: 86: Command[4] = Parameter3;
+[e = *U + &U _Command * -> -> -> 1 `i `ui `ux -> -> # *U &U _Command `ui `ux _CommandType ]
+[; ;UART.c: 86: Command[2] = Parameter1;
 "86
-[e = *U + &U _Command * -> -> -> 4 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter3 ]
-[; ;UART.c: 87: Command[5] = Parameter4;
+[e = *U + &U _Command * -> -> -> 2 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter1 ]
+[; ;UART.c: 87: Command[3] = Parameter2;
 "87
-[e = *U + &U _Command * -> -> -> 5 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter4 ]
-[; ;UART.c: 88: CRC = crc16(0, Command, 6);
+[e = *U + &U _Command * -> -> -> 3 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter2 ]
+[; ;UART.c: 88: Command[4] = Parameter3;
 "88
-[e = _CRC ( _crc16 (3 , , -> -> 0 `i `us &U _Command -> -> 6 `i `ui ]
-[; ;UART.c: 89: Command[6] = CRC >> 8;
+[e = *U + &U _Command * -> -> -> 4 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter3 ]
+[; ;UART.c: 89: Command[5] = Parameter4;
 "89
-[e = *U + &U _Command * -> -> -> 6 `i `ui `ux -> -> # *U &U _Command `ui `ux -> >> -> _CRC `ui -> 8 `i `uc ]
-[; ;UART.c: 90: Command[7] = CRC && 0x00FF;
+[e = *U + &U _Command * -> -> -> 5 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter4 ]
+[; ;UART.c: 90: Command[6] = Parameter5;
 "90
-[e = *U + &U _Command * -> -> -> 7 `i `ui `ux -> -> # *U &U _Command `ui `ux -> -> && != -> _CRC `ui -> -> -> 0 `i `us `ui != -> 255 `i -> 0 `i `i `uc ]
-[; ;UART.c: 92: for(int i = 0; i<8;i++){
+[e = *U + &U _Command * -> -> -> 6 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter5 ]
+[; ;UART.c: 91: Command[7] = Parameter6;
+"91
+[e = *U + &U _Command * -> -> -> 7 `i `ui `ux -> -> # *U &U _Command `ui `ux _Parameter6 ]
+[; ;UART.c: 92: CRC = crc16(0, Command, 8);
 "92
+[e = _CRC ( _crc16 (3 , , -> -> 0 `i `us &U _Command -> -> 8 `i `ui ]
+[; ;UART.c: 93: Command[8] = CRC >> 8;
+"93
+[e = *U + &U _Command * -> -> -> 8 `i `ui `ux -> -> # *U &U _Command `ui `ux -> >> -> _CRC `ui -> 8 `i `uc ]
+[; ;UART.c: 94: Command[9] = CRC & 0x00FF;
+"94
+[e = *U + &U _Command * -> -> -> 9 `i `ui `ux -> -> # *U &U _Command `ui `ux -> & -> _CRC `ui -> -> 255 `i `ui `uc ]
+[; ;UART.c: 96: for(int i = 0; i<UARTCommandSize;i++){
+"96
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 8 `i 114  ]
-[e $U 115  ]
+[e $U 117  ]
 [e :U 114 ]
 {
-[; ;UART.c: 93: putch(Command[i]);
-"93
+[; ;UART.c: 97: putch(Command[i]);
+"97
 [e ( _putch (1 *U + &U _Command * -> -> _i `ui `ux -> -> # *U &U _Command `ui `ux ]
-"94
+[; ;UART.c: 98: __nop();
+"98
+[e ( ___nop ..  ]
+"99
 }
-"92
+"96
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 8 `i 114  ]
+[e :U 117 ]
+[e $ < _i _UARTCommandSize 114  ]
 [e :U 115 ]
-"94
+"99
 }
-[; ;UART.c: 94: }
-[; ;UART.c: 95: }
-"95
+[; ;UART.c: 99: }
+[; ;UART.c: 100: }
+"100
 [e :UE 113 ]
 }

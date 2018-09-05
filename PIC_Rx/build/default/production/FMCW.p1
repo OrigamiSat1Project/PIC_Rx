@@ -39,7 +39,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S11 . . ]
 "355
 [v _PORTDbits `VS11 ~T0 @X0 0 e@8 ]
-"47 FMCW.h
+"56 FMCW.h
 [v __NOP `(v ~T0 @X0 0 ef ]
 [v F1089 `(v ~T0 @X0 1 tf1`ul ]
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
@@ -1064,65 +1064,65 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 193: extern __bank0 unsigned char __resetbits;
 [; ;pic.h: 194: extern __bank0 __bit __powerdown;
 [; ;pic.h: 195: extern __bank0 __bit __timeout;
-"13 FMCW.h
+"21 FMCW.h
 [v _FMTX_Nref `i ~T0 @X0 1 e ]
 [i _FMTX_Nref
 -> 2560 `i
 ]
-[; ;FMCW.h: 13: int FMTX_Nref = 2560;
-"14
+[; ;FMCW.h: 21: int FMTX_Nref = 2560;
+"22
 [v _FMTX_Nprg `i ~T0 @X0 -> 5 `i e ]
 [i _FMTX_Nprg
 :U ..
 -> 8 `i
 -> 7 `i
--> 3 `i
+-> 5 `i
 -> 0 `i
--> 0 `i
+-> 1 `i
 ..
 ]
-[; ;FMCW.h: 14: int FMTX_Nprg[5] = {8,7,3,0,0};
-"15
+[; ;FMCW.h: 22: int FMTX_Nprg[5] = {8,7,5,0,1};
+"23
 [v _CWTX_Nref `i ~T0 @X0 1 e ]
 [i _CWTX_Nref
--> 160 `i
+-> 128 `i
 ]
-[; ;FMCW.h: 15: int CWTX_Nref = 160;
-"16
+[; ;FMCW.h: 23: int CWTX_Nref = 128;
+"24
 [v _CWTX_Nprg `i ~T0 @X0 -> 5 `i e ]
 [i _CWTX_Nprg
 :U ..
 -> 0 `i
 -> 1 `i
--> 7 `i
 -> 4 `i
--> 7 `i
+-> 0 `i
+-> 0 `i
 ..
 ]
-[; ;FMCW.h: 16: int CWTX_Nprg[5] = {0,1,7,4,7};
-"17
+[; ;FMCW.h: 24: int CWTX_Nprg[5] = {0,1,4,0,0};
+"25
 [v _FMRX_Nref `i ~T0 @X0 1 e ]
 [i _FMRX_Nref
 -> 2560 `i
 ]
-[; ;FMCW.h: 17: int FMRX_Nref = 2560;
-"18
+[; ;FMCW.h: 25: int FMRX_Nref = 2560;
+"26
 [v _FMRX_Nprg `i ~T0 @X0 -> 5 `i e ]
 [i _FMRX_Nprg
 :U ..
 -> 2 `i
 -> 4 `i
--> 8 `i
--> 8 `i
--> 7 `i
+-> 9 `i
+-> 1 `i
+-> 6 `i
 ..
 ]
-[; ;FMCW.h: 18: int FMRX_Nprg[5] = {2,4,8,8,7};
-[; ;FMCW.h: 35: void Init_FMCW(void);
-[; ;FMCW.h: 37: void FMTX(int Nref, int *Nprg);
-[; ;FMCW.h: 38: void CWTX(int Nref, int *Nprg);
-[; ;FMCW.h: 39: void FMRX(int Nref, int *Nprg);
-[; ;FMCW.h: 47: void _NOP(void);
+[; ;FMCW.h: 26: int FMRX_Nprg[5] = {2,4,9,1,6};
+[; ;FMCW.h: 44: void Init_FMCW(void);
+[; ;FMCW.h: 46: void FMTX(int Nref, int *Nprg);
+[; ;FMCW.h: 47: void CWTX(int Nref, int *Nprg);
+[; ;FMCW.h: 48: void FMRX(int Nref, int *Nprg);
+[; ;FMCW.h: 56: void _NOP(void);
 [; ;Type_define.h: 15: typedef signed char SBYTE;
 [; ;Type_define.h: 16: typedef unsigned char UBYTE;
 [; ;Type_define.h: 17: typedef signed short SWORD;
