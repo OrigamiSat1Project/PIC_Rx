@@ -26,6 +26,28 @@ void _NOP(void) {
 }
 
 
+void Morse_V(void){
+    CWKEY = 1;
+    __delay_ms(50);
+    CWKEY = 0;
+    __delay_ms(50);
+
+    CWKEY = 1;
+    __delay_ms(50);
+    CWKEY = 0;
+    __delay_ms(50);
+
+    CWKEY = 1;
+    __delay_ms(50);
+    CWKEY = 0;
+    __delay_ms(50);
+
+    CWKEY = 1;
+    __delay_ms(150);
+    CWKEY = 0;
+    __delay_ms(50);
+}
+
 void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlkTimes){
     UBYTE mainAddress;
     UBYTE subAddress;

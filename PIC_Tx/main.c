@@ -69,62 +69,179 @@ void interrupt InterReceiver(void);
 //    }
 //}
 
-
-void interrupt InterReceiver(void){
-    int commandSize;
-    commandSize = 10;
-    UBYTE RXDATA[10];//array size = commandSize
-//    UBYTE RXDATA[COMMAND_SIZE];
-//    volatile static int intr_counter;
-    if (RCIF == 1) {
-        for (int i = 0; i < 10; i++){
-            RXDATA[i] = getChar();
+//
+//void interrupt InterReceiver(void){
+//    putChar('I');
+//    
+//    int commandSize;
+//    //commandSize = 10;
+//    commandSize = 1;
+//    
+//    //UBYTE RXDATA[10];//array size = commandSize
+//    UBYTE RXDATA[1];//array size = commandSize
+//
+//    //    UBYTE RXDATA[COMMAND_SIZE];
+////    volatile static int intr_counter;
+//    if (RCIF == 1) {
+//        for (int i = 0; i < 1; i++){
+//            RXDATA[i] = getChar();
+////            putChar(RXDATA[i]);
+//        }
+//        for (int i = 0; i < 1; i++){
 //            putChar(RXDATA[i]);
-        }
-        for (int i = 0; i < 10; i++){
-            putChar(RXDATA[i]);
-            NOP();
-        }
-       //TODO add case RXDATA[0]!=t or g
-        UWORD crcResult, crcValue;
-        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
-        crcResult = crc16(0,RXDATA,8);
-        crcValue =  CRC_check(RXDATA,8);
-        crcResultHigh = crcResult>>8;
-        crcResultLow = crcResult & 0x00FF;
-        crcValueHigh = crcValue>>8;
-        crcValueLow = crcValue & 0x00FF;
+//            NOP();
+//        }
+//       //TODO add case RXDATA[0]!=t or g
+////        UWORD crcResult, crcValue;
+////        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
+////        crcResult = crc16(0,RXDATA,8);
+////        crcValue =  CRC_check(RXDATA,8);
+////        crcResultHigh = crcResult>>8;
+////        crcResultLow = crcResult & 0x00FF;
+////        crcValueHigh = crcValue>>8;
+////        crcValueLow = crcValue & 0x00FF;
+////        
+////        putChar(crcResultHigh);
+////        putChar(crcResultLow);
+////        putChar(crcValueHigh);
+////        putChar(crcValueLow);
+//        
+////        if(crcResult == crcValue){
+//            putChar('C');
+//            switch(RXDATA[1]){
+//                case 0x75:
+//                    putChar('R');
+//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+//                    break;
+//                case 0x63:
+////                    CwDownLink(RXDATA);
+//                    putChar('C');
+//                    putChar('W');
+//                    CWKEY = 1;
+//                    __delay_ms(50);
+//                    CWKEY = 0;
+//                    __delay_ms(50);
+//
+//                    CWKEY = 1;
+//                    __delay_ms(50);
+//                    CWKEY = 0;
+//                    __delay_ms(50);
+//
+//                    CWKEY = 1;
+//                    __delay_ms(50);
+//                    CWKEY = 0;
+//                    __delay_ms(50);
+//
+//                    CWKEY = 1;
+//                    __delay_ms(150);
+//                    CWKEY = 0;
+//                    __delay_ms(50);
+//                    putChar('C');
+//                    putChar('W');
+//                    
+//                    break;
+//                case 0x66:
+//                    putChar('F');
+//                    putChar('M');
+//                    __delay_ms(2000);
+//                    FMPTT = 1;
+//                    __delay_ms(2000);
+//                    FMPTT = 0;
+//                    __delay_ms(2000);
+//                    FMPTT = 1;
+//                    __delay_ms(2000);
+//                    FMPTT = 0;
+//                    putChar('F');
+//                    putChar('M');
+//                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+//                    break;
+//                case 0x61:
+//                    cutWire(RXDATA[2],RXDATA[3]);
+//                    break;
+//            }
+////        }else{
+////            
+////            putChar('D');
+////            ///コマンドCRCダメだった時の処理
+////        }
+//        RCIF = 0;
+////    }
+//}
+
+void interrupt interReceiverTest( void ){
+    UBYTE RXDATA;
+    if (RCIF == 1) {
+        RXDATA = getChar();
+        //RXDATA++;
+        //putChar('G');
+        putChar(RXDATA);
         
-        putChar(crcResultHigh);
-        putChar(crcResultLow);
-        putChar(crcValueHigh);
-        putChar(crcValueLow);
-        
-        if(crcResult == crcValue){
+        switch (RXDATA){
+        case 'c':
             putChar('C');
-            switch(RXDATA[1]){
-                case 0x75:
-                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-                    break;
-                case 0x63:
-//                    CwDownLink(RXDATA);
-                    break;
-                case 0x66:
-                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-                    break;
-                case 0x61:
-                    cutWire(RXDATA[2],RXDATA[3]);
-                    break;
-            }
-        }else{
+            putChar('W');
             
-            putChar('D');
-            ///コマンドCRCダメだった時の処理
+            while(1){
+            CWKEY = 1;
+            __delay_ms(50);
+            CWKEY = 0;
+            __delay_ms(50);
+
+            CWKEY = 1;
+            __delay_ms(50);
+            CWKEY = 0;
+            __delay_ms(50);
+
+            CWKEY = 1;
+            __delay_ms(50);
+            CWKEY = 0;
+            __delay_ms(50);
+
+            CWKEY = 1;
+            __delay_ms(150);
+            CWKEY = 0;
+            __delay_ms(50);
+            }
+               
+                putChar('C');
+                putChar('W');
+                putChar('2');
+            break;
+        case 'f':
+            putChar('F');
+            putChar('M');
+            CWKEY = 0;
+            __delay_ms(2000);
+            FMPTT = 1;
+            __delay_ms(2000);
+            FMPTT = 0;
+            __delay_ms(2000);
+            FMPTT = 1;
+            __delay_ms(2000);
+            FMPTT = 0;
+            __delay_ms(2000);
+            FMPTT = 1;
+            __delay_ms(2000);
+            FMPTT = 0;
+            __delay_ms(2000);;
+            FMPTT = 1;
+            __delay_ms(2000);
+            FMPTT = 0;
+            __delay_ms(2000);
+            FMPTT = 1;
+            __delay_ms(2000);
+            FMPTT = 0;
+            putChar('F');
+            putChar('M');  
+            putChar('2');      
+
+            break;
         }
         RCIF = 0;
     }
 }
-
+    
+    
 
 void main(void) {
     __delay_ms(1000);
@@ -134,7 +251,7 @@ void main(void) {
     InitI2CMaster(I2Cbps);
 //    Init_WDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
-    putChar('G');
+    putChar('S');
     
     
     while(1){
@@ -145,11 +262,11 @@ void main(void) {
             putch('O');
             __delay_ms(500);
         }*/
-        putChar('H');
-        __delay_ms(2000);
-        FMPTT = 1;
-        __delay_ms(2000);
-        FMPTT = 0;
+        putChar('m');
+       __delay_ms(10000);
+//        FMPTT = 1;
+//        __delay_ms(2000);
+//        FMPTT = 0;
         //TODO check AD value
         //TODO send CW command
         //TODO send pulse to WDT
