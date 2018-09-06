@@ -16,7 +16,8 @@
 void SendByte(UBYTE);
 void flipout(void);
 void fcsbit(UBYTE);
-UINT Packetmaker(UBYTE *,UINT,UBYTE *);
+UINT makePacketWithDataSize(UBYTE *,UINT,UBYTE *);
+UINT makePacket(UBYTE *,UBYTE *);
 //void test_Packetmaker(UBYTE *, UBYTE *);
 
 UINT eflag = 0;
@@ -43,7 +44,7 @@ UINT ebitstatus = low;
 //    putcrlf();
 //}
 
-UINT Packetmaker(UBYTE *eDataField, UINT DataSize,UBYTE *ePacket){
+UINT makePacketWithDataSize(UBYTE *eDataField, UINT DataSize,UBYTE *ePacket){
 //    UINT Datanum;
 //    Datanum = 32;//TODO: change value of Datanum
 //    Datanum = sizeof();
@@ -66,11 +67,31 @@ UINT Packetmaker(UBYTE *eDataField, UINT DataSize,UBYTE *ePacket){
     return 16+DataSize;
 }
 
-void SendPacket(UBYTE *eDataField,UINT DataSize){
+UINT makePacket(UBYTE *eDataField,UBYTE *ePacket){
+    for(UINT i=0;i<6;i++){
+        ePacket[i] = UCALL[i] << 1;
+    }
+    ePacket[6] = 0x60;  //SSID
+    for(UINT i=0;i<6;i++){
+        ePacket[i+7] = MYCALL[i] << 1;
+    }
+    ePacket[13] = 0xe1; //SSID.e1?
+    ePacket[14] = 0x03; //Control.30?
+    ePacket[15] = 0xf0; //PID
+    UINT Datanum = 0;
+    for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
+    for(UINT i=0;i<Datanum;i++){
+        ePacket[16+i] = eDataField[i];
+    }
+    return 16+Datanum;
+}
+
+
+void SendPacketWithDataSize(UBYTE *eDataField,UINT DataSize){
     UBYTE ePacket[];
     UINT Packetnum;
     Packetnum = 0;
-    Packetnum = Packetmaker(eDataField,DataSize,ePacket);
+    Packetnum = makePacketWithDataSize(eDataField,DataSize,ePacket);
     ebitstatus = 1;
     efcslo = efcshi = 0xff;
     estuff = 0;
@@ -102,6 +123,41 @@ void SendPacket(UBYTE *eDataField,UINT DataSize){
     }
 }
 
+void SendPacket(UBYTE *eDataField){
+    UBYTE ePacket[];
+    UINT Packetnum;
+    Packetnum = 0;
+    Packetnum = makePacket(eDataField, ePacket);
+    ebitstatus = 1;
+    efcslo = efcshi = 0xff;
+    estuff = 0;
+    //  FlagField
+    eflag = 1;
+    efcsflag = 0;
+    for(UINT i=1;i<=NO_OF_START_FLAG;i++){
+        SendByte(0x7e);
+    }
+    eflag = 0;
+    //  eDataField
+    for(UINT i=0;i<Packetnum;i++){
+        SendByte(ePacket[i]);
+    }
+    
+    
+    //  FCSField
+    efcsflag = 1;
+    efcslo = efcslo ^ 0xff;
+    efcshi = efcshi ^ 0xff;
+    SendByte(efcslo);
+    SendByte(efcshi);
+    efcsflag = 0;
+    
+    //  FlagField
+    eflag = 1;
+    for(UINT i=1;i<=NO_OF_END_FLAG;i++){
+        SendByte(0x7e);
+    }
+}
 
 void SendByte(UBYTE byte){
     UBYTE bt;
