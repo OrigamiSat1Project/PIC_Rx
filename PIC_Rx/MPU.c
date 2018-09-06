@@ -60,32 +60,55 @@ UINT invertState(UINT pinState){
     }
 }
 
+/*
+ *	EPS Power OFF
+ *	arg      :   void
+ *	return   :   SEP_SW(Short Separation switch 1&2) & RBF_SW(Short Remove before flight switch 1&2) = HIGH  -> EPS Power OFF
+ *	TODO     :   need debug
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
 void killEPS(void){
-    SEP_SW = HIGH;  //Short Separation switch 1&2 //High--->EPS OFF
-    RBF_SW = HIGH;  //Short Remove before flight switch 1&2  //High--->EPS OFF
+    SEP_SW = HIGH;  
+    RBF_SW = HIGH;  
 }
 
-void EPSOn(void){
-    SEP_SW = LOW;  //Short Separation switch 1&2 //High--->EPS ON
-    RBF_SW = LOW;  //Short Remove before flight switch 1&2  //High--->EPS ON
+/*
+ *	EPS Power ON
+ *	arg      :   void
+ *	return   :   SEP_SW(Short Separation switch 1&2) & RBF_SW(Short Remove before flight switch 1&2) = LOW  -> EPS Power ON
+ *	TODO     :   need debug, Is this function need?
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+void onEPS(void){
+    SEP_SW = LOW;  
+    RBF_SW = LOW;  
 }
 
-//TODO:check
-/*---switchPowerSpply---*/
-//5.8, OBC, WDT --- switchPowerSpply1pin
-//EPS --- switchPowerSpply2pin
+/*
+ *	witch Power Spply for 1pin
+ *	arg      :   POWER_PIN, onOff, timeHigh, timeLow
+ *	return   :   0x00 -> LOW, 0x01 -> HIGH
+ *               timeHigh == 0x00 && timeLow == 0x00 -> not chage until next Uplink
+ *               timeHigh != 0x00 && timeLow == 0x00 -> wait time is short ( 1byte:1~255[ms])  -> invert state
+ *               timeHigh != 0x00 && timeLow != 0x00 -> wait time is long ( 2byte:266~65535[ms)  -> invert state
+ *	TODO     :   need debug
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
 void switchPowerSpply1pin(UINT POWER_PIN, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
-    if ( onOff == 0x00 ){        //switch off
+    if ( onOff == 0x00 ){        
             POWER_PIN = LOW;
-    } else {                     //switch on
+    } else {                     
             POWER_PIN = HIGH;
     }
   
-    if(timeHigh == 0x00 && timeLow == 0x00){      //1. not chage until next Uplink
-    }else if(timeLow == 0x00){                    //2. wait time is short ( 1byte:1~255[ms])
+    if(timeHigh == 0x00 && timeLow == 0x00){      
+    }else if(timeLow == 0x00){                    
         __delay_ms(timeHigh);                     
         POWER_PIN =invertState(POWER_PIN);
-    }else {                                       //3. wait time is long ( 2byte:266~65535[ms)
+    }else {                                       
         UWORD wait_time;
         wait_time = (timeHigh << 8 | timeLow);
         __delay_ms(wait_time);
@@ -93,26 +116,60 @@ void switchPowerSpply1pin(UINT POWER_PIN, UBYTE onOff, UBYTE timeHigh, UBYTE tim
     }
 }
 
+/*
+ *	witch Power Spply for 2pin
+ *	arg      :   POWER_PIN_1, POWER_PIN_2, onOff, timeHigh, timeLow
+ *	return   :   0x00 -> LOW, 0x01 -> HIGH
+ *               timeHigh == 0x00 && timeLow == 0x00 -> not chage until next Uplink
+ *               timeHigh != 0x00 && timeLow == 0x00 -> wait time is short ( 1byte:1~255[ms]) -> invert state
+ *               timeHigh != 0x00 && timeLow != 0x00 -> wait time is long ( 2byte:266~65535[ms) -> invert state
+ *	TODO     :   need debug
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
 void switchPowerSpply2pin(UINT POWER_PIN_1, UINT POWER_PIN_2, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
-    if ( onOff == 0x00 ){        //switch off
-            POWER_PIN_1 = LOW;   //TODO:ピン1ピン2は同じ値でよいのか？
+    if ( onOff == 0x00 ){        
+            POWER_PIN_1 = LOW;   
             POWER_PIN_2 = LOW;
-    } else {                     //switch on
+    } else {                     
             POWER_PIN_1 = HIGH;
             POWER_PIN_2 = HIGH;
     }
   
-    if(timeHigh == 0x00 && timeLow == 0x00){      //1. not chage until next Uplink
-    }else if(timeLow == 0x00){                    //2. wait time is short ( 1byte:1~255[ms])
+    if(timeHigh == 0x00 && timeLow == 0x00){     
+    }else if(timeLow == 0x00){                    
         __delay_ms(timeHigh);                     
         POWER_PIN_1 =invertState(POWER_PIN_1);
         POWER_PIN_2 =invertState(POWER_PIN_2);
-    }else {                                       //3. wait time is long ( 2byte:266~65535[ms)
+    }else {                                      
         UWORD wait_time;
         wait_time = (timeHigh << 8 | timeLow);
         __delay_ms(wait_time);
         POWER_PIN_1 =invertState(POWER_PIN_1);
         POWER_PIN_2 =invertState(POWER_PIN_2);
+    }
+}
+
+/*
+ *	reive EPS
+ *	arg      :   timeHigh, timeLow
+ *	return   :   timeHigh == 0x00 && timeLow == 0x00 -> not chage until next Uplink
+ *               timeHigh != 0x00 && timeLow == 0x00 -> wait time is short ( 1byte:1~255[ms]) -> revive EPS
+ *               timeHigh != 0x00 && timeLow != 0x00 -> wait time is long ( 2byte:266~65535[ms) -> revive EPS           
+ *	TODO     :   need debug
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+void reiveEPS(UBYTE timeHigh, UBYTE timeLow){
+    if(timeHigh == 0x00 && timeLow == 0x00){     
+    }else if(timeLow == 0x00){                    
+        __delay_ms(timeHigh);                     
+        onEPS();
+    }else {                                      
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        __delay_ms(wait_time);
+        onEPS();
     }
 }
 
@@ -172,37 +229,61 @@ void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
     }
 }
 
-//process command data if the command type is 'change satellite mode'
+/*
+ *	change satellite mode
+ *	arg      :   command, timeHigh, timeLow
+ *	return   :   0x00 -> Nominal mode (ON: CIB, EPS, OBC, Tx(CW), Rx)
+ *               0x0F -> Power saving mode (ON: CIB, Tx(CW), Rx / OFF: EPS, OBC)
+ *               0xFF -> Survival mode (ON: CIB / OFF: EPS, OBC, Tx(CW), Rx)             
+ *	TODO     :   need debug
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
 void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
     switch(command){    
-        case 0x00: //Nominal mode //ON: CIB, EPS, OBC, Tx(CW), Rx
+        case 0x00: 
             /*---------------------------*/
-            /* method for nominal mode
-             * 1.EPS ON (-->Rx/Tx/OBC ON)
-             * TODO:how to turn on CIB? 
+            /* method for nominal mode (ON: CIB, EPS, OBC, Tx(CW), Rx)
+             * 1.SEP_SW & RBF_SW = LOW -> EPS switch ON
+             * 2.then Rx/Tx/OBC switch  ON
+             * TODO:how to turn on CIB? */
             /*---------------------------*/
-            EPSOn();
+            switchPowerSpply2pin(SEP_SW, RBF_SW, 0x00, timeHigh, timeLow);
             break;
-        case 0x0F: //Power saving mode //ON: CIB, Tx(CW), Rx //OFF: EPS, OBC
+        case 0x0F: 
             /*----------------------------*/
-            /*method for power saving mode
+            /*method for power saving mode (ON: CIB, Tx(CW), Rx / OFF: EPS, OBC)
              * 1.first kill EPS (this also kills Rx/Tx/OBC)
              * 2.send command to TXCOBC to turn back on RX and TX  (Radio Unit)
              *      task target:t(TX COBC)
              *      CommandType:m(change satellite mode)
              *      Parameter1:0x0F(Power Saving) / 2:timeHigh / 3:timeLow
-             * 3.RXCOBC reset PLL data*/
+             * 3.RXCOBC reset PLL data
+             * 4.after setting time, revive EPS (this also revive OBC)
+             * TODO: which is correct for sendCommand? */
             /*----------------------------*/
             killEPS();
-            sendCommand('t', 'm', 0x0F, timeHigh, timeLow, NULL);
+            //sendCommand('t', 'm', 0x0F, timeHigh, timeLow, NULL);
+            sendCommand('t', 'm', NULL, NULL, NULL, NULL);
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
+            reiveEPS(timeHigh, timeLow);
             break;
-        case 0xFF: //Survival mode //ON: CIB //OFF: EPS, OBC, Tx(CW), Rx
-            //only enter if time in survival mode is specified //set automatical revival time
-            //if time has run out switch to power saving mode
-            //TODO: write method for survival mode
+        case 0xFF: 
+            /*---------------------------*/
+            /* method for nominal mode (ON: CIB / OFF: EPS, OBC, Tx(CW), Rx)
+             * only enter if time in survival mode is specified 
+             * set automatical revival time
+             * 1.SEP_SW & RBF_SW = HIGH -> EPS switch OFF
+             * 2.then Rx/Tx/OBC switch  OFF
+             * 3.if time has run out switch to power saving mode
+             * TODO:how to turn on CIB? */
+            /*---------------------------*/
+            switchPowerSpply2pin(SEP_SW, RBF_SW, 0x01, timeHigh, timeLow);
+            FMTX(FMTX_Nref, FMTX_Nprg);
+            CWTX(CWTX_Nref, CWTX_Nprg);
+            FMRX(FMRX_Nref, FMRX_Nprg);
             break;
         default:
             //TODO: error message
