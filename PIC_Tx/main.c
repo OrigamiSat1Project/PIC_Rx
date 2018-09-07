@@ -112,11 +112,11 @@ void interrupt InterReceiver(void){
             if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
             } else {
                 switch(RXDATA[1]){
-                    case 0x75:
-                        putChar('R');
+                    case 0x75:  //'u'
+                        putChar('R');                        
                         downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
                         break;
-                    case 0x63:
+                    case 0x63: //'c'
     //                    CwDownLink(RXDATA);
                         putChar('C');
                         putChar('W');
@@ -143,7 +143,7 @@ void interrupt InterReceiver(void){
                         putChar('W');
 
                         break;
-                    case 0x66:
+                    case 0x66:  //'f'
                         putChar('F');
                         putChar('M');
                         __delay_ms(2000);
@@ -158,7 +158,7 @@ void interrupt InterReceiver(void){
                         putChar('M');
                         downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                         break;
-                    case 0x61:
+                    case 0x61:  //'a'
                         cutWire(RXDATA[2],RXDATA[3]);
                         break;
                 }
@@ -166,7 +166,8 @@ void interrupt InterReceiver(void){
         }else{
             
             putChar('D');
-            ///コマンドCRCダメだった時の処理
+            //コマンドCRCダメだった時の処理
+            //add error messege
         }
         RCIF = 0;
     }
