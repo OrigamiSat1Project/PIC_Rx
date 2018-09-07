@@ -137,6 +137,15 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             //TODO: write data to EEPROM
             //TODO: send Address where it is written to TXCOBC
             break;
+        case 'e': //EEPROM read
+            /* EEPROM read
+             * this function for read any size of data from EEPROM
+             * 1.read data from EEPROM
+             * 2.get data size
+             * 3.read data from EEPROM (RX pic gets data size at step2)
+             * 4.get any size of data 
+             */
+            //TODO:write method  
         case 't': //I2C test
             //TODO: write method for I2C test
             //TODO: write test data to EEPROM
