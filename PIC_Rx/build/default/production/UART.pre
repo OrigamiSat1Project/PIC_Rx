@@ -1494,7 +1494,8 @@ UWORD checkCRC(UBYTE *, UINT);
 
 # 7 "UART.c"
 void Init_SERIAL(void){
-SPBRG = 10;
+
+SPBRG = 0;
 BRGH = 0;
 SYNC = 0;
 SPEN = 1;
@@ -1514,7 +1515,7 @@ UBYTE getch(void){
 if(FERR || OERR)
 {
 
-# 32
+# 33
 CREN = 0;
 __nop();
 CREN = 1;

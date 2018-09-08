@@ -12,11 +12,8 @@
       <itemPath>EPS.h</itemPath>
       <itemPath>WDT.h</itemPath>
       <itemPath>CRC16.h</itemPath>
-      <itemPath>Type_define.h</itemPath>
       <itemPath>Init_MPU.h</itemPath>
       <itemPath>decode_AX25.h</itemPath>
-      <itemPath>memo.h</itemPath>
-      <itemPath>encode_AX25.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -157,7 +154,6 @@
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>
@@ -187,7 +183,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="3.25"/>
+        <property key="voltagevalue" value="3.375"/>
       </ICD3PlatformTool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>

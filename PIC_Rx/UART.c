@@ -5,7 +5,8 @@
 #include "CRC16.h"
 
 void Init_SERIAL(void){
-    SPBRG  = 10;                   // boudrate is 14400 bps
+    //SPBRG  = 10;                   // boudrate is  14400 bps
+    SPBRG  = 0;                     // boudrate is  115200 bps
     BRGH   = 0;                   	// Fast baudrate
 	SYNC   = 0;						// Asynchronous
 	SPEN   = 1;						// Enable serial port pins
