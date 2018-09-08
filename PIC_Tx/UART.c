@@ -14,7 +14,8 @@ UINT B0_select;
 UINT DownlinkTimes;
 
 void Init_SERIAL(void){
-    SPBRG  = 10;                   // boudrate is 1200 bps
+    //SPBRG  = 10;                   // boudrate is  14400 bps
+    SPBRG  = 0;                      // boudrate is 115200 bps
     GIE    = 1;
     PEIE   = 1;
     BRGH   = 0;                   	// Fast baudrate
