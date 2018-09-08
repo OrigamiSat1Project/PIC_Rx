@@ -11,8 +11,9 @@
 #ifndef CW_H
 #define	CW_H
 
-#define Morse_Short 50
-#define Morse_Long 150
+#define Morse_Short     15  //80wpm
+#define Morse_Middle    45
+#define Morse_Long      105
 
 #endif	/* CW_H */
 

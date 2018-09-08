@@ -20,13 +20,19 @@
 // PINs that are already used in code
 //-----------------------------------
 //Original Source: encode_AX25.h
-#define txd RC5
-#define UHFstart RC2
-#define FMPTT RC0
-#define CWKEY RB2
+#define txd             RC5
+#define UHFstart        RC2
+#define FMPTT           RC0
+#define CWKEY           RB2
 //Original Source: Init_MPU.h
-#define led_yellow RB1
-#define FX614_RXD RB0
-#define WIRE_CUTTER RB3
+#define led_yellow      RB1
+//#define FX614_RXD       RB0
+
+#define WIRE_CUTTER     RB3
+#define HEATER          RC1
+#define NTRX            RB0
+#define SW_5R8G         RB5
+#define WDT_POWER       RA1
+
 #endif	/* NEWFILE_H */
 

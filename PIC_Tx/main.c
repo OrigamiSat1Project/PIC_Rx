@@ -82,6 +82,7 @@ void interrupt InterReceiver(void){
 
     //    UBYTE RXDATA[COMMAND_SIZE];
 //    volatile static int intr_counter;
+
     if (RCIF == 1) {
         for (int i = 0; i < 1; i++){
             RXDATA[i] = getChar();
@@ -171,7 +172,26 @@ void interrupt InterReceiver(void){
         }
         RCIF = 0;
     }
+    if ( PIR1bits.TMR1IF == 1 ) {
+        TMR1 = TIMER_INTERVAL;  // ?????????
+ 
+        intr_counter++;
+        if ( intr_counter >= 100 ) {
+            intr_counter = 0;
+        }
+         //0.5sec???RB0???????    
+        if ( intr_counter <= 50 || intr_counter > 51) {
+//            PORTAbits.RA0 = 1;
+        } else {
+//            PORTAbits.RA0 = 0;
+        }
+ 
+        PIR1bits.TMR1IF = 0;    // ???????????
+    }   
+ 
+    return;
 }
+
 
 
 ////test for interrupt
@@ -245,6 +265,46 @@ void interrupt InterReceiver(void){
 //}
     
     
+//void interrupt timer(void){
+    
+//    if(INTCONbits.TMR0IF){
+//        INTCONbits.TMR0IF = 0;
+//        TMR0L = 0x00;
+//        timer_counter++;
+//        constant_timer_counter++;
+//    }
+//    if(timer_counter >= 62){
+//        //  past 1 second
+//        increment_globalClock();
+//        timer_counter = 0;
+//        //sendCanData(&globalClock);
+//    }
+//    interruptI2C();
+//}
+
+//void interrupt intr(void){
+//    volatile static int intr_counter;
+//    if ( PIR1bits.TMR1IF == 1 ) {
+//        TMR1 = TIMER_INTERVAL;  // ?????????
+// 
+//        intr_counter++;
+//        if ( intr_counter >= 100 ) {
+//            intr_counter = 0;
+//        }
+// 
+//        // 0.5sec???RB0???????    
+//        if ( intr_counter <= 50 || intr_counter > 51) {
+//            PORTAbits.RA0 = 1;
+//        } else {
+//            PORTAbits.RA0 = 0;
+//        }
+// 
+//        PIR1bits.TMR1IF = 0;    // ???????????
+//    }   
+// 
+//    return;
+//}
+
 
 void main(void) {
     __delay_ms(1000);

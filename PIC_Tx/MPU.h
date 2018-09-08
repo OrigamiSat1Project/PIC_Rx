@@ -20,9 +20,12 @@
 
 
 void Init_MPU(void);
-void led_onoff(void);
-void debug_ledy(void);
+
+//void led_onoff(void);
+//void debug_ledy(void);
 void cutWire(UBYTE,UBYTE);
+void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE);
+
 
 
 #endif	/* INITMPU_H */
