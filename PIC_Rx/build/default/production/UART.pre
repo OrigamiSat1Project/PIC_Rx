@@ -1494,8 +1494,8 @@ UWORD checkCRC(UBYTE *, UINT);
 
 # 7 "UART.c"
 void Init_SERIAL(void){
+SPBRG = 10;
 
-SPBRG = 0;
 BRGH = 0;
 SYNC = 0;
 SPEN = 1;

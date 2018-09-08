@@ -1083,9 +1083,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.c: 7: void Init_SERIAL(void){
 [e :U _Init_SERIAL ]
 [f ]
-[; ;UART.c: 9: SPBRG = 0;
-"9
-[e = _SPBRG -> -> 0 `i `uc ]
+[; ;UART.c: 8: SPBRG = 10;
+"8
+[e = _SPBRG -> -> 10 `i `uc ]
 [; ;UART.c: 10: BRGH = 0;
 "10
 [e = _BRGH -> -> 0 `i `b ]
