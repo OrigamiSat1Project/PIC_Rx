@@ -60,7 +60,7 @@ void main(void) {
     
     Init_SERIAL();
     Init_MPU();
-    Init_I2C_M(I2Cbps);
+    InitI2CMaster(I2Cbps);
 //    Init_WDT();
     
     //PLL setting
@@ -108,23 +108,52 @@ void main(void) {
         
         
         UBYTE downlinkTimes;       //downlink times of received command
-        commandData = ReceivePacket_data();
+        //FIXME : for debug, input data in program
+        //commandData = ReceivePacket_data();
         led_white = 1;
         __delay_ms(500);
         led_white = 0;
         
-        B0select = commandData[19];
-        wHighAddress = commandData[20];
-        wLowAddress = commandData[21];
-        downlinkTimes = commandData[22];
+        //FIXME : for debug, input data in program
+//        B0select = commandData[19];
+//        wHighAddress = commandData[20];
+//        wLowAddress = commandData[21];
+//        downlinkTimes = commandData[22];
+//        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
+//        subControlByte = SUB_EEPROM_ADDRESS | B0select;
+    
+        //FIXME : for debug, input data in program
+        //Write uplink command in EEPROM
+//        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,commandSize);
+//        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,commandSize);
+//        __delay_ms(100);
+        
+        /*------------------------------*/
+        //check 
+        //FIXME : for debug, input data in program start
+        UBYTE n=1;
+        for (UBYTE i=0; i<datalength; i++){            
+            commandData[i] = n;
+            n++;
+        }
+        B0select = 0x00;
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
+        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,datalength);
+        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,datalength);
+        wHighAddress = 0xE0;
+        wLowAddress  = 0x00;
         
-        
-        //Write uplink command in EEPROM
-        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,commandSize);
-        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,commandSize);
-//        __delay_ms(100);
+        UBYTE ReadData1[datalength];
+        UBYTE ReadData2[datalength];
+        ReadDataFromEEPROM(mainControlByte,wHighAddress,wLowAddress,ReadData1, datalength);
+        ReadDataFromEEPROM(subControlByte,wHighAddress,wLowAddress,ReadData2,datalength);
+        for (UBYTE i=0; i<datalength; i++){       
+            putch(ReadData1[i]);
+            putch(ReadData2[i]);
+        } 
+        //FIXME : for debug, input data in program finish
+        /*------------------------------*/
         
         //inform TXPIC RXDATA(PIN43 = 1)
         putch('S');

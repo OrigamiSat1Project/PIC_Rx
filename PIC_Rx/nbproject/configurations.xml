@@ -6,14 +6,17 @@
                    projectFiles="true">
       <itemPath>time.h</itemPath>
       <itemPath>UART.h</itemPath>
+      <itemPath>Type_define.h</itemPath>
+      <itemPath>Init_MPU.h</itemPath>
+      <itemPath>decode_AX25.h</itemPath>
+      <itemPath>memo.h</itemPath>
       <itemPath>I2C.h</itemPath>
       <itemPath>EEPROM.h</itemPath>
       <itemPath>FMCW.h</itemPath>
       <itemPath>EPS.h</itemPath>
       <itemPath>WDT.h</itemPath>
       <itemPath>CRC16.h</itemPath>
-      <itemPath>Init_MPU.h</itemPath>
-      <itemPath>decode_AX25.h</itemPath>
+      <itemPath>encode_AX25.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -24,14 +27,14 @@
                    projectFiles="true">
       <itemPath>time.c</itemPath>
       <itemPath>UART.c</itemPath>
+      <itemPath>Init_MPU.c</itemPath>
+      <itemPath>decode_AX25.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
       <itemPath>FMCW.c</itemPath>
       <itemPath>EPS.c</itemPath>
       <itemPath>WDT.c</itemPath>
       <itemPath>CRC16.c</itemPath>
-      <itemPath>Init_MPU.c</itemPath>
-      <itemPath>decode_AX25.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -86,6 +89,7 @@
         <property key="extra-include-directories" value=""/>
         <property key="favor-optimization-for" value="-speed,+space"/>
         <property key="identifier-length" value="255"/>
+        <property key="local-generation" value="false"/>
         <property key="operation-mode" value="free"/>
         <property key="opt-xc8-compiler-strict_ansi" value="false"/>
         <property key="optimization-assembler" value="true"/>
@@ -168,7 +172,7 @@
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-1fff"/>
-        <property key="poweroptions.powerenable" value="true"/>
+        <property key="poweroptions.powerenable" value="false"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.preservedataflash" value="false"/>
@@ -183,7 +187,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="3.375"/>
+        <property key="voltagevalue" value="3.25"/>
       </ICD3PlatformTool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>

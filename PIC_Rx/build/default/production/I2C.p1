@@ -1060,10 +1060,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 25: void NM_waddress(UBYTE, UBYTE, UBYTE);
 [; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 "8 I2C.c
-[v _Init_I2C_M `(v ~T0 @X0 1 ef1`Cul ]
+[v _InitI2CMaster `(v ~T0 @X0 1 ef1`Cul ]
 {
-[; ;I2C.c: 8: void Init_I2C_M(const UDWORD c){
-[e :U _Init_I2C_M ]
+[; ;I2C.c: 8: void InitI2CMaster(const UDWORD c){
+[e :U _InitI2CMaster ]
 [v _c `Cul ~T0 @X0 1 r1 ]
 [f ]
 [; ;I2C.c: 9: SSPCON = 0b00101000;
@@ -1083,10 +1083,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 95 ]
 }
 "15
-[v _I2C_Master_Wait `(v ~T0 @X0 1 ef ]
+[v _I2CMasterWait `(v ~T0 @X0 1 ef ]
 {
-[; ;I2C.c: 15: void I2C_Master_Wait(){
-[e :U _I2C_Master_Wait ]
+[; ;I2C.c: 15: void I2CMasterWait(){
+[e :U _I2CMasterWait ]
 [f ]
 [; ;I2C.c: 16: while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
 "16
@@ -1105,9 +1105,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 19: void I2CMasterStart(){
 [e :U _I2CMasterStart ]
 [f ]
-[; ;I2C.c: 20: I2C_Master_Wait();
+[; ;I2C.c: 20: I2CMasterWait();
 "20
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 21: SEN = 1;
 "21
 [e = _SEN -> -> 1 `i `b ]
@@ -1116,14 +1116,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 100 ]
 }
 "24
-[v _I2C_Master_RepeatedStart `(v ~T0 @X0 1 ef ]
+[v _I2CMasterRepeatedStart `(v ~T0 @X0 1 ef ]
 {
-[; ;I2C.c: 24: void I2C_Master_RepeatedStart(){
-[e :U _I2C_Master_RepeatedStart ]
+[; ;I2C.c: 24: void I2CMasterRepeatedStart(){
+[e :U _I2CMasterRepeatedStart ]
 [f ]
-[; ;I2C.c: 25: I2C_Master_Wait();
+[; ;I2C.c: 25: I2CMasterWait();
 "25
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 26: RSEN = 1;
 "26
 [e = _RSEN -> -> 1 `i `b ]
@@ -1137,9 +1137,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 29: void I2CMasterStop(){
 [e :U _I2CMasterStop ]
 [f ]
-[; ;I2C.c: 30: I2C_Master_Wait();
+[; ;I2C.c: 30: I2CMasterWait();
 "30
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 31: PEN = 1;
 "31
 [e = _PEN -> -> 1 `i `b ]
@@ -1154,9 +1154,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _I2CMasterWrite ]
 [v _d `ui ~T0 @X0 1 r1 ]
 [f ]
-[; ;I2C.c: 35: I2C_Master_Wait();
+[; ;I2C.c: 35: I2CMasterWait();
 "35
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 36: SSPBUF = d;
 "36
 [e = _SSPBUF -> _d `uc ]
@@ -1165,30 +1165,30 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 103 ]
 }
 "39
-[v _I2C_Master_Read `(uc ~T0 @X0 1 ef1`uc ]
+[v _I2CMasterRead `(uc ~T0 @X0 1 ef1`uc ]
 {
-[; ;I2C.c: 39: UBYTE I2C_Master_Read(UBYTE a){
-[e :U _I2C_Master_Read ]
+[; ;I2C.c: 39: UBYTE I2CMasterRead(UBYTE a){
+[e :U _I2CMasterRead ]
 [v _a `uc ~T0 @X0 1 r1 ]
 [f ]
 "40
 [v _temp `uc ~T0 @X0 1 a ]
 [; ;I2C.c: 40: unsigned char temp;
-[; ;I2C.c: 41: I2C_Master_Wait();
+[; ;I2C.c: 41: I2CMasterWait();
 "41
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 42: RCEN = 1;
 "42
 [e = _RCEN -> -> 1 `i `b ]
-[; ;I2C.c: 43: I2C_Master_Wait();
+[; ;I2C.c: 43: I2CMasterWait();
 "43
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 44: temp = SSPBUF;
 "44
 [e = _temp _SSPBUF ]
-[; ;I2C.c: 45: I2C_Master_Wait();
+[; ;I2C.c: 45: I2CMasterWait();
 "45
-[e ( _I2C_Master_Wait ..  ]
+[e ( _I2CMasterWait ..  ]
 [; ;I2C.c: 46: ACKDT = (a)?0:1;
 "46
 [e = _ACKDT -> ? != -> _a `i -> -> -> 0 `i `uc `i : -> 0 `i -> 1 `i `b ]
@@ -1204,10 +1204,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 104 ]
 }
 "51
-[v _EEPROM_Write `(v ~T0 @X0 1 ef4`uc`uc`uc`*uc ]
+[v _WriteToEEPROM `(v ~T0 @X0 1 ef4`uc`uc`uc`*uc ]
 {
-[; ;I2C.c: 51: void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *data){
-[e :U _EEPROM_Write ]
+[; ;I2C.c: 51: void WriteToEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *data){
+[e :U _WriteToEEPROM ]
 [v _EEPROM_address `uc ~T0 @X0 1 r1 ]
 [v _high_address `uc ~T0 @X0 1 r2 ]
 [v _low_address `uc ~T0 @X0 1 r3 ]
@@ -1317,4 +1317,75 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;I2C.c: 81: }
 "81
 [e :UE 109 ]
+}
+"110
+[v _ReadDataFromEEPROM `(v ~T0 @X0 1 ef5`uc`uc`uc`*uc`ui ]
+{
+[; ;I2C.c: 110: void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+[e :U _ReadDataFromEEPROM ]
+[v _Address7Bytes `uc ~T0 @X0 1 r1 ]
+[v _high_address `uc ~T0 @X0 1 r2 ]
+[v _low_address `uc ~T0 @X0 1 r3 ]
+[v _ReadData `*uc ~T0 @X0 1 r4 ]
+[v _EEPROMDataLength `ui ~T0 @X0 1 r5 ]
+[f ]
+"111
+[v _Address `uc ~T0 @X0 1 a ]
+[; ;I2C.c: 111: UBYTE Address = Address7Bytes << 1;
+[e = _Address -> << -> _Address7Bytes `i -> 1 `i `uc ]
+"112
+[v _ReadAddress `uc ~T0 @X0 1 a ]
+[; ;I2C.c: 112: UBYTE ReadAddress = Address | 0x01;
+[e = _ReadAddress -> | -> _Address `i -> 1 `i `uc ]
+[; ;I2C.c: 113: I2CMasterStart();
+"113
+[e ( _I2CMasterStart ..  ]
+[; ;I2C.c: 114: I2CMasterWrite(Address);
+"114
+[e ( _I2CMasterWrite (1 -> _Address `ui ]
+[; ;I2C.c: 115: I2CMasterWrite(high_address);
+"115
+[e ( _I2CMasterWrite (1 -> _high_address `ui ]
+[; ;I2C.c: 116: I2CMasterWrite(low_address);
+"116
+[e ( _I2CMasterWrite (1 -> _low_address `ui ]
+[; ;I2C.c: 117: I2CMasterRepeatedStart();
+"117
+[e ( _I2CMasterRepeatedStart ..  ]
+[; ;I2C.c: 119: I2CMasterWrite(ReadAddress);
+"119
+[e ( _I2CMasterWrite (1 -> _ReadAddress `ui ]
+[; ;I2C.c: 120: for(UINT i = 0; i < EEPROMDataLength - 1; i++){
+"120
+{
+[v _i `ui ~T0 @X0 1 a ]
+[e = _i -> -> 0 `i `ui ]
+[e $U 118  ]
+[e :U 115 ]
+{
+[; ;I2C.c: 121: ReadData[i] = I2CMasterRead(1);
+"121
+[e = *U + _ReadData * -> _i `ux -> -> # *U _ReadData `ui `ux ( _I2CMasterRead (1 -> -> 1 `i `uc ]
+"122
+}
+"120
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 118 ]
+[e $ < _i - _EEPROMDataLength -> -> 1 `i `ui 115  ]
+[e :U 116 ]
+"122
+}
+[; ;I2C.c: 122: }
+[; ;I2C.c: 123: ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
+"123
+[e = *U + _ReadData * -> - _EEPROMDataLength -> -> 1 `i `ui `ux -> -> # *U _ReadData `ui `ux ( _I2CMasterRead (1 -> -> 0 `i `uc ]
+[; ;I2C.c: 124: I2CMasterStop();
+"124
+[e ( _I2CMasterStop ..  ]
+[; ;I2C.c: 134: _delay((unsigned long)((200)*(10000000/4000.0)));
+"134
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;I2C.c: 135: }
+"135
+[e :UE 114 ]
 }
