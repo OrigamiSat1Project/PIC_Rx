@@ -14,6 +14,12 @@
 #define I2Cbps 400000
 #define I2Cnull 0xFF
 
+//for measure battery voltage
+#define battery_slave_address 0x10
+#define battery_address_high  0xE2
+#define battery_address_low   0x20
+#define battery_data_size     2
+ 
 void InitI2CMaster(const UDWORD c);
 void I2CMasterWait(void);
 void I2CMasterStart(void);
@@ -26,6 +32,7 @@ void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
 void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
 void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void measureBatteryVoltage(UBYTE*);
 void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
 

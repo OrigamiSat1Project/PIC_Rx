@@ -148,6 +148,24 @@ void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE 
     __delay_ms(200);
 }
 
+void measureBatteryVoltage(UBYTE *ReadData){
+    UBYTE Address = battery_slave_address << 1;
+    UBYTE ReadAddress = Address | 0x01;
+    
+    I2CMasterStart();                       //Start condition
+    I2CMasterWrite(battery_slave_address);                //7 bit address + Write
+    I2CMasterWrite(battery_address_high);           //Adress High Byte
+    I2CMasterWrite(battery_address_low);            //Adress Low Byte
+    I2CMasterRepeatedStart();               //Restart condition
+
+    I2CMasterWrite(ReadAddress);            //7 bit address + Read
+    for(UINT i = 0; i < battery_data_size - 1; i++){
+        ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
+    }
+    ReadData[battery_data_size - 1] = I2CMasterRead(0);
+    I2CMasterStop();
+}
+
 //process command data if the command type is 'I2C'
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
@@ -174,6 +192,17 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             break;
         case 'b': //change I2C baud rate
             //TODO: write method for change I2C baud rate
+            break;
+        case 's': //set as a slave ic
+            //TODO: write method for set as a slave ic
+            break;
+        case 'i': //measure IMU
+            //TODO: write method for measure IMU
+            break;
+         case 'e': //measure battery voltage
+            //TODO: write method for measure battery voltage
+            UBYTE voltage
+            voltage = measureBatteryVoltage(); 
             break;
         default:
             //TODO: error message
