@@ -13,7 +13,7 @@
 
 #define I2Cbps 400000
 //XXX
-#define datalength 10
+#define datalength 4
 
 void InitI2CMaster(const UDWORD c);
 void I2CMasterWait(void);

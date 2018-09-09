@@ -98,7 +98,7 @@ void main(void) {
         /**/
         //Receive command data
 //        RA1 = 0;
-        UBYTE *commandData;
+        UBYTE commandData[];
         //for information on EEPROM see data sheet: 24LC1025        
         UBYTE B0select;             //control byte B0 of EEPROM
         UBYTE wHighAddress;         //address high byte of EEPROM
@@ -129,20 +129,30 @@ void main(void) {
 //        __delay_ms(100);
         
         /*------------------------------*/
-        //check 
+        //metthod for EEPROM read and write
+        //datalength is defined I2C.h
         //FIXME : for debug, input data in program start
-        UBYTE n=1;
-        for (UBYTE i=0; i<datalength; i++){            
-            commandData[i] = n;
-            n++;
-        }
+        UBYTE commandData[4];
+//        UBYTE n=1;
+//        for (UBYTE i=0; i<datalength; i++){            
+//            commandData[i] = n;
+//            n++;
+//        }
+        commandData[0] = 0x01;
+        commandData[1] = 0x02;
+        commandData[2] = 0x03;
+        commandData[3] = 0x04;
+        putch(0x11);
         B0select = 0x00;
-        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
-        subControlByte = SUB_EEPROM_ADDRESS | B0select;
-        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,datalength);
-        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,datalength);
         wHighAddress = 0xE0;
         wLowAddress  = 0x00;
+        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
+        subControlByte = SUB_EEPROM_ADDRESS | B0select;
+//        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,datalength);
+//        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,datalength);
+        
+        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
+        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
         
         UBYTE ReadData1[datalength];
         UBYTE ReadData2[datalength];
@@ -156,89 +166,89 @@ void main(void) {
         /*------------------------------*/
         
         //inform TXPIC RXDATA(PIN43 = 1)
-        putch('S');
-//        UBYTE TXOBC_wad_header = 0x74;
-//        sendCommand(TXOBC_wad_header, whigh_address, wlow_address);
-        /*---Send address using UART to OBC and TXCOBC---*/
-        /*------------------------------------------------------------------*/
-        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes,0x00,0x00);
-        putch('G');
-        
-//        printf("%s\r\n", commandData);
-//        for(int i = 0; i< 32;i++){
-//            putch(commandData[i]);
-//        }
-//        for (UINT i = 0;i < 32;i++){
-//            printf("%c", dData[i]);
-//            dData[i] = 0x00;
-//        }
-//        led_white = 1;
-        __delay_ms(7000);
-//        led_white = 0;
-        
-        //printf("\r\n");
-        // Command target
-        if(commandData[0]=='n'){      //NanoMind
-            //Send address to NanoMind
-            UBYTE NM_wad_header = 0x72;
-//            NM_waddress(NM_wad_header, whigh_address, wlow_address);
-            
-        }else if(commandData[0]=='p'){        //PIC_RX
-            //Task target
-//            led_white = 1;
-//            __delay_ms(500);
-//            led_white = 0;
-            if(commandData[2] == 'r'){        // PIC_RX
-                // Command type
-//                led_white = 1;
-//        __delay_ms(500);
-//        led_white = 0;
-                switch(commandData[3]){
-                case 'E':
-//                    led_white = 1;
-//                    __delay_ms(500);
-//                    led_white = 0;
-                    // EPS kill
-//                    
+//        putch('S');
+////        UBYTE TXOBC_wad_header = 0x74;
+////        sendCommand(TXOBC_wad_header, whigh_address, wlow_address);
+//        /*---Send address using UART to OBC and TXCOBC---*/
+//        /*------------------------------------------------------------------*/
+//        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes,0x00,0x00);
+//        putch('G');
+//        
+////        printf("%s\r\n", commandData);
+////        for(int i = 0; i< 32;i++){
+////            putch(commandData[i]);
+////        }
+////        for (UINT i = 0;i < 32;i++){
+////            printf("%c", dData[i]);
+////            dData[i] = 0x00;
+////        }
+////        led_white = 1;
+//        __delay_ms(7000);
+////        led_white = 0;
+//        
+//        //printf("\r\n");
+//        // Command target
+//        if(commandData[0]=='n'){      //NanoMind
+//            //Send address to NanoMind
+//            UBYTE NM_wad_header = 0x72;
+////            NM_waddress(NM_wad_header, whigh_address, wlow_address);
+//            
+//        }else if(commandData[0]=='p'){        //PIC_RX
+//            //Task target
+////            led_white = 1;
+////            __delay_ms(500);
+////            led_white = 0;
+//            if(commandData[2] == 'r'){        // PIC_RX
+//                // Command type
+////                led_white = 1;
+////        __delay_ms(500);
+////        led_white = 0;
+//                switch(commandData[3]){
+//                case 'E':
+////                    led_white = 1;
+////                    __delay_ms(500);
+////                    led_white = 0;
+//                    // EPS kill
+////                    
+////                    __delay_ms(5000);
+//                    Reset_EPS();
 //                    __delay_ms(5000);
-                    Reset_EPS();
-                    __delay_ms(5000);
-                    //以下�?�数字�?�初期設定時と変化して�?るためも�?�?度定義
-                    //本来なら変化する�?字�?�を他に用意したほ�?が良�?かもしれな�?
-                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
-                    
-                    FMTX(FMTX_Nref, FMTX_Nprg);
-                    CWTX(CWTX_Nref, CWTX_Nprg);
-                    FMRX(FMRX_Nref, FMRX_Nprg);
-                    __delay_ms(500);
-                    break;
-                case 'I':
-                    // I2C mode
-                    break;
-                case '3':
-                    // TX周波数設�?
-                    break;
-                case 'N':
-                    // NanoMind
-                    break;
-                case 'T':
-                    // send TXPIC by I2C
-                    break;
-                default:
-                    // error
-                    break;
-                }
-                
-            }else if(commandData[2] == 't'){      // PIC_TX
-
-            }
-        }else{
-            led_white = 1;
-            __delay_ms(1000);
-            led_white = 0;
-        }
+//                    //以下�?�数字�?�初期設定時と変化して�?るためも�?�?度定義
+//                    //本来なら変化する�?字�?�を他に用意したほ�?が良�?かもしれな�?
+//                    int FMTX_Nprg[5]     =   {8,7,3,0,0};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+//                    int CWTX_Nprg[5]     =   {0,1,7,4,7};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+//                    int FMRX_Nprg[5]     =   {2,4,8,8,7};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+//                    
+//                    FMTX(FMTX_Nref, FMTX_Nprg);
+//                    CWTX(CWTX_Nref, CWTX_Nprg);
+//                    FMRX(FMRX_Nref, FMRX_Nprg);
+//                    __delay_ms(500);
+//                    break;
+//                case 'I':
+//                    // I2C mode
+//                    break;
+//                case '3':
+//                    // TX周波数設�?
+//                    break;
+//                case 'N':
+//                    // NanoMind
+//                    break;
+//                case 'T':
+//                    // send TXPIC by I2C
+//                    break;
+//                default:
+//                    // error
+//                    break;
+//                }
+//                
+//            }else if(commandData[2] == 't'){      // PIC_TX
+//
+//            }
+//        }else{
+//            led_white = 1;
+//            __delay_ms(1000);
+//            led_white = 0;
+//        }
         
         
         /*
