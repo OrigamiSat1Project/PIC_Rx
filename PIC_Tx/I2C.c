@@ -201,8 +201,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             break;
          case 'e': //measure battery voltage
             //TODO: write method for measure battery voltage
-            UBYTE voltage
-            voltage = measureBatteryVoltage(); 
+            measureBatteryVoltage(dataHigh); 
             break;
         default:
             //TODO: error message
