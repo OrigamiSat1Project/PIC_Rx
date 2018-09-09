@@ -148,11 +148,12 @@ void main(void) {
         wLowAddress  = 0x00;
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
-//        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,datalength);
-//        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,datalength);
-        
-        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
-        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+        WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,datalength);
+        WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,datalength);
+           
+          //check for WriteToEEPROM   
+//        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
+//        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
         
         UBYTE ReadData1[datalength];
         UBYTE ReadData2[datalength];
