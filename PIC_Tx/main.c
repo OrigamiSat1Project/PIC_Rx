@@ -14,6 +14,7 @@
 #include "CW.h"
 #include "pinDefine.h"
 #include "CRC16.h"
+#include "ADC.h"
 
 void interrupt InterReceiver(void);
 
@@ -334,6 +335,16 @@ void main(void) {
         //TODO send CW command
         //TODO send pulse to WDT
         
+       /*----------------------------------------------------------*/
+       //FIXME : method for test to measure ADC start
+       putChar('A');
+       putChar('S');
+       ADC();
+       putChar('A');
+       putChar('F');
+       //method for test to measure ADC finish
+       /*----------------------------------------------------------*/
+       
     }
     //return;
 }
