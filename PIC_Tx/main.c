@@ -333,7 +333,21 @@ void main(void) {
         //TODO check AD value
         //TODO send CW command
         //TODO send pulse to WDT
-        
+       
+       /*---------------------------------------------------------------*/
+       //FIXME:test for measure battery boltage start
+       UBYTE battery_voltage_data[battery_data_size];
+       putChar('V');
+       putChar('S');
+       measureBatteryVoltage(battery_voltage_data);
+       for(UBYTE i=0; i<battery_data_size; i++){
+           putChar(battery_voltage_data[i]);
+       }
+       putChar('V');
+       putChar('F');
+       //FIXME:test for measure battery boltage finish
+       /*---------------------------------------------------------------*/
+       
     }
     //return;
 }
