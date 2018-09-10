@@ -17,6 +17,7 @@
 #include "Type_define.h"
 #include "UART.h"
 #include "time.h"
+#include "ADC.h"
 #include <xc.h>
 #include <stdio.h>
 /*******************************************************************************
@@ -81,7 +82,7 @@ void initADC(){
     ADRESH = 0;
 
 }
-int adc_read(){
+UWORD adc_read(){
     //Turn ADC on
     ADCON0bits.ADON = 1;
     //Sample Channel
@@ -89,13 +90,14 @@ int adc_read(){
     ADCON0bits.GO = 1;
     while (ADCON0bits.GO_nDONE);
     //give out ADC result
-    int value;
-    value = (ADRESH<<8)+ADRESL;
+    UWORD value;
+    //value = (ADRESH<<8)+ADRESL;
+    value = (ADRESH<<8) | ADRESL;
     return(value);
 }
-void adc_led_Test(int voltage){
+void adc_led_Test(UBYTE voltage){
     if(voltage<1000){//Blink two times
-        for(int i=0;i<2;i++){
+        for(UBYTE i=0;i<2;i++){
             PORTBbits.RB1 = 1;
             __delay_ms(300);
             PORTBbits.RB1 = 0;
@@ -103,7 +105,7 @@ void adc_led_Test(int voltage){
         }
     } 
     else if(voltage<3300){//Blink three times
-        for(int i=0;i<3;i++){
+        for(UBYTE i=0;i<3;i++){
             PORTBbits.RB1 = 1;
             __delay_ms(200);
             PORTBbits.RB1 = 0;
@@ -122,45 +124,64 @@ void adc_led_Test(int voltage){
 *
  * Description: Program entry point
 ******************************************************************************/
-void ADC(void) {
-initADC();
-Init_SERIAL();
-int adcValue_1;
-int adcValue_2;
-int adcValue_3;
-int adcValue_4;
-while(1){ 
-    //Set LED off
-    PORTBbits.RB1 = 0;
-    ADCON0bits.CHS = 0b0010;
-    adcValue_1 = adc_read();
-    ADCON0bits.CHS = 0b0011;
-    adcValue_2 = adc_read();
-    ADCON0bits.CHS = 0b0100;
-    adcValue_3 = adc_read();
-    ADCON0bits.CHS = 0b1010;
-    adcValue_4 = adc_read();
-    //Further instructions on what should be done with result
-    float adcVoltage_1;
-    float adcVoltage_2;
-    float adcVoltage_3;
-    float adcVoltage_4;
-//    adcVoltage = adcValue;
-    adcVoltage_1 = ((float)adcValue_1*3300) / 1024 ;
-    adcVoltage_2 = ((float)adcValue_2*3300) / 1024 ;
-    adcVoltage_3 = ((float)adcValue_3*3300) / 1024 ;
-    adcVoltage_4 = ((float)adcValue_4*3300) / 1024 ;
-//    printf("%f %f %f %f \r\n",adcVoltage_1,adcVoltage_2,adcVoltage_3,adcVoltage_4);
-    printf("%d %d %d %d \r\n",adcValue_1,adcValue_2,adcValue_3,adcValue_4);
-    //Test functionality of ADC
-//    adc_led_Test(adcVoltage);
+void ADC() {
     
-    //Update every second
-    __delay_ms(1000);
-    
-    //Set clears if necessary
-    
-}
+    putChar('1');
+    initADC();
+    //Init_SERIAL();
+    UWORD adcValue_1;
+    UWORD adcValue_2;
+    UWORD adcValue_3;
+    UWORD adcValue_4;
+    //while(1){ 
+        putChar('2');
+        //Set LED off
+        PORTBbits.RB1 = 0;
+        ADCON0bits.CHS = 0b0010;
+        adcValue_1 = adc_read();
+        ADCON0bits.CHS = 0b0011;
+        adcValue_2 = adc_read();
+        ADCON0bits.CHS = 0b0100;
+        adcValue_3 = adc_read();
+        ADCON0bits.CHS = 0b1010;
+        adcValue_4 = adc_read();
+        //Further instructions on what should be done with result
+//        float adcVoltage_1;
+//        float adcVoltage_2;
+//        float adcVoltage_3;
+//        float adcVoltage_4;
+        UWORD adcVoltage_1;
+        UWORD adcVoltage_2;
+        UWORD adcVoltage_3;
+        UWORD adcVoltage_4;
+        
+        
+        putChar('3');
+    //    adcVoltage = adcValue;
+//        adcVoltage_1 = ((float)adcValue_1*3300) / 1024 ;
+//        adcVoltage_2 = ((float)adcValue_2*3300) / 1024 ;
+//        adcVoltage_3 = ((float)adcValue_3*3300) / 1024 ;
+//        adcVoltage_4 = ((float)adcValue_4*3300) / 1024 ;
+        
+        //adcVoltage_1 = adcValue_1*0.064 + 0.0392 ;  TODO :maku siki
+        adcVoltage_2 = adcValue_2 * 0.064 + 0.0392 ;
+        adcVoltage_3 = adcValue_3 * 0.064 + 0.0392 ;
+        adcVoltage_4 = adcValue_4 * 0.064 + 0.0392 ;
+    //    printf("%f %f %f %f \r\n",adcVoltage_1,adcVoltage_2,adcVoltage_3,adcVoltage_4);
+    //    printf("%d %d %d %d \r\n",adcValue_1,adcValue_2,adcValue_3,adcValue_4);
+        putChar(adcVoltage_1);
+        putChar(adcVoltage_2);
+        putChar(adcVoltage_3);
+        putChar(adcVoltage_4);
+        //Test functionality of ADC
+    //    adc_led_Test(adcVoltage);
+
+        //Update every second
+        __delay_ms(1000);
+        putChar('4');
+        //Set clears if necessary
+
+    //}
 return;
 }
 

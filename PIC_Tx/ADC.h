@@ -9,6 +9,7 @@
 #define	ADC_H
 
 void initADC(void);
+UWORD adc_read();
 void ADC(void);
 
 #endif	/* ADC_H */
