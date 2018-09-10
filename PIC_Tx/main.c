@@ -337,11 +337,9 @@ void main(void) {
         
        /*----------------------------------------------------------*/
        //FIXME : method for test to measure ADC start
-       putChar('A');
-       putChar('S');
+       putChar(0x0a);
        ADC();
-       putChar('A');
-       putChar('F');
+       putChar(0x0b);
        //method for test to measure ADC finish
        /*----------------------------------------------------------*/
        
