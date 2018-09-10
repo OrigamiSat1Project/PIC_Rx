@@ -148,6 +148,8 @@ void main(void) {
         wLowAddress  = 0x00;
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
+        
+        //check for  WriteToEEPROMWithDataSize
         WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commandData,datalength);
         WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commandData,datalength);
            
@@ -163,6 +165,10 @@ void main(void) {
             putch(ReadData1[i]);
             putch(ReadData2[i]);
         } 
+        
+        //method for send command
+        downlinkTimes = 5;
+        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes,0x00,0x00);
         //FIXME : for debug, input data in program finish
         /*------------------------------*/
         
