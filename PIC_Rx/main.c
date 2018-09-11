@@ -147,7 +147,10 @@ void main(void) {
                     commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
                     break;
                 case 'i':/*I2C*/
-                    commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+                    break;
+                case 'e':
+                    commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
                     break;
                 case 'u':/*UART*/
                     commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);

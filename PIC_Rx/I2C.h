@@ -13,9 +13,9 @@
 
 #include "typeDefine.h"
 
-#define I2C_baud_rate_high 400000
-#define I2C_baud_rate_low  100000
-#define I2C_baud_rate_def  I2C_baud_rate_high
+#define I2C_baud_rate_high 400000  //400kbps
+#define I2C_baud_rate_low  100000  //100kbps
+#define I2C_baud_rate_def  I2C_baud_rate_low
 
 void InitI2CMaster(const UDWORD c);
 void I2CMasterWait(void);                                               
@@ -30,11 +30,13 @@ void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 
-void TestI2C(void);
 void I2CBufferClear(void);
 void ChangeI2CBaudRate(UBYTE);
 
-void commandSwitchI2C(UBYTE, UBYTE, UBYTE*, UBYTE*);
+void TestEEPROM(UBYTE);
+
+void commandSwitchI2C(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchEEPROM(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 #endif	/* I2C_H */
 

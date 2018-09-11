@@ -6,6 +6,9 @@
 
 //UBYTE EEPROMData[32];                                         
 
+UBYTE data_length;
+UBYTE *read_data;
+
 /*******************************************************************************
 *setting
 ******************************************************************************/
@@ -55,7 +58,7 @@ UBYTE I2CMasterRead(UBYTE address){
 }
 
 /*******************************************************************************
-*Method for Write 
+*Method for EEPROM Write 
 ******************************************************************************/
 /*
  *  Write To EEPROM
@@ -104,7 +107,7 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
 }
 
 /*******************************************************************************
-*Method for Read
+*Method for EEPROM Read
 ******************************************************************************/
 /*
  *  Read Data From EEPROM (the size od read data is only 1byte)
@@ -164,15 +167,6 @@ void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYT
 /*******************************************************************************
 *Method for various function
 ******************************************************************************/
-/*
-void TestI2C(void){
-    UBYTE I2C_test[4];
-    I2C_test[0]='T';
-    I2C_test[1]='E';
-    I2C_test[2]='S';
-    I2C_test[3]='T';
-}
-*/
 
 //TODO:check
 void I2CBufferClear(void){
@@ -180,7 +174,7 @@ void I2CBufferClear(void){
 }
 
 //TODO:check
-//default 400000bps
+//default 100000bps
 //datasheet p81-p82
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     switch (I2C_baud_rate_type){
@@ -195,10 +189,36 @@ void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     }
 }
 
+/* metthod for test EEPROM to read and write
+ * 1. write test data to EEPROM
+ * 2. read EEPROM
+ * 3. send EEPROM address to TXCOBC
+ */
+void TestEEPROM(UBYTE slaveaddress){
+        UBYTE commandData[datalength_for_test];
+        UBYTE ControlByte;                       //control byte of EEPROM
+        UBYTE ReadData[datalength_for_test];
+        
+        commandData[0] = 0x01;
+        commandData[1] = 0x02;
+        commandData[2] = 0x03;
+        commandData[3] = 0x04;
+
+        ControlByte = slaveaddress | B0select_for_testEEPROM;
+        
+        for (UBYTE i=0; i<datalength_for_test; i++){
+            WriteToEEPROM(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, commandData[i]);
+        }
+        
+        ReadDataFromEEPROMWithDataSize(ControlByte, HighAddress_for_testEEPROM, LowAddress_for_testEEPROM, ReadData, datalength_for_test);
+        
+        //TODO:where send to read data
+}
+
 /*******************************************************************************
 *process command data if the command type is 'I2C'
 ******************************************************************************/
-void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
+void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){ 
     switch(command){    
         case 'w': //I2C write
             //TODO：相手（ナノマインドとかEEPROMとか）を考えてフォーマット形式を考える
@@ -213,24 +233,11 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             //TODO: write data to EEPROM
             //TODO: send Address where it is written to TXCOBC
             break;
-        case 'e': //EEPROM read
-            /* EEPROM read
-             * this function for read any size of data from EEPROM
-             * 1.read data from EEPROM
-             * 2.get data size
-             * 3.read data from EEPROM (RX pic gets data size at step2)
-             * 4.get any size of data 
-             */
-            //TODO:write method  
         case 't': //I2C test
-            //TODO: write method for I2C test
+            //TODO: write method for I2C test (OBC and TXCOBC)
             //TODO: write test data to EEPROM
-            //TODO: read EEPRON---finish
+            //TODO: read EEPROM 
             //TODO: send EEPROM address to TXCOBC
-            //TODO: EEPROMonlyのテストではよくない気がする
-            WriteToEEPROM(slaveAdress, dataHigh, dataLow, 'T');       //testdata is 'T'
-            UBYTE EEPROMData;
-            EEPROMData = ReadEEPROM(slaveAdress, dataHigh, dataLow);
             break;
         case 'c': //I2C buffer clear
             //TODO: write method for I2C buffer clear---finish?
@@ -240,6 +247,39 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
         case 'b': //change I2C baud rate
             //TODO: write method for change I2C baud rate---finish
             ChangeI2CBaudRate( slaveAdress );
+            break;
+        default:
+            //TODO: error message
+            break;
+    }
+}
+
+/*******************************************************************************
+*process command data if the command type is 'EEPROM'
+******************************************************************************/
+void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){ 
+    switch(command){    
+        case 'w': //write data to EEPROM
+            //TODO:now send data is only 1byte. change data size
+            WriteToEEPROM(slaveAdress, dataHigh, dataLow, data1);  //data1 is the data to send
+            break;
+        case 'r': //read data from EEPROM
+            data_length = data1;
+            ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
+            //TODO: send data to TXCOBC or/and OBC by I2C or UART
+            break;
+        case 'e': //read any size of data from EEPROM 
+            /* this function for read any size of data from EEPROM
+             * 1.read data from EEPROM
+             * 2.get data size
+             * 3.read data from EEPROM (RX pic gets data size at step2)
+             * 4.get any size of data 
+             */
+            data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
+            ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
+            //TODO: send data to TXCOBC or/and OBC by I2C or UART
+        case 't': //EEPROM test
+            TestEEPROM(slaveAdress);
             break;
         default:
             //TODO: error message
