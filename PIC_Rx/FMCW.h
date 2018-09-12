@@ -25,6 +25,10 @@ int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24916 = (Frx - 21.4) / 0.05 [1
 void FMTX(int Nref, int *Nprg);
 void CWTX(int Nref, int *Nprg);
 void FMRX(int Nref, int *Nprg);
+
+int calculateNref(UBYTE, UBYTE);
+int calculateNprg(UBYTE, UBYTE, UBYTE);
+
 void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 /*unused function declaration*/

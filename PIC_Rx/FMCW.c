@@ -293,6 +293,25 @@ void FMRX(int Nref, int *Nprg){
 }
 
 
+int calculateNref(UBYTE Nref_high, UBYTE Nref_low){
+    int Nref;
+    Nref = Nref_high<<8 | Nref_low;
+    
+    //TODO:Nref16進数->10進数に変換
+    
+    return Nref;
+}
+
+int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
+    int Nprg;
+    Nprg = Nprg_high<<8 | Nprg_middle;
+    Nprg = Nprg<<8 | Nprg_low;
+    
+    //TODO:Nprg16進数->10進数->配列に入れる
+    
+    return Nprg;
+}
+
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
@@ -303,16 +322,20 @@ void FMRX(int Nref, int *Nprg){
 //}
 
 //process command data if the command type is 'radio unit'
-void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){ //TODO: specify which Nref and Nprg are which
+void commandSwitchFMCW(UBYTE command, UBYTE Nref_high, UBYTE Nref_low, UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){ //TODO: specify which Nref and Nprg are which    
+    int Nref;
+    int Nprg;
+    Nref = calculateNref(Nref_high, Nref_low);
+    Nprg = calculateNprg(Nprg_high, Nprg_middle, Nprg_low);
     switch(command){    
         case 't': //FM TX
-            //TODO: write method for FM TX
+            FMTX(Nref, Nprg);
             break;
         case 'c': //CW TX
-            //TODO: write method for CW TX
+            CWTX(Nref, Nprg);
             break;
         case 'f': //FM RX
-            //TODO: write method for FM RX
+            FMRX(Nref, Nprg);
             break;
         default:
             //TODO: error message
