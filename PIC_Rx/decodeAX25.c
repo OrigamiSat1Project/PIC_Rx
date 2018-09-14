@@ -23,12 +23,13 @@ UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
+
 //Methods
 void waitFlag(void);
 void getData(void);
 void putAX25(void);
 UINT fcsCheck(void);
-UBYTE readByte(void);
+//UBYTE readByte(void);
 
   
 // reads bit using NRZ (Non-return-to-zero space)
@@ -40,7 +41,7 @@ UINT getBit(void){
     for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
-            LED_YELLOW= 1- LED_YELLOW;       //for debugging  
+//            LED_YELLOW= 1- LED_YELLOW;       //for debugging  
             return 0;
         }
     }
@@ -70,6 +71,7 @@ UBYTE readByte(void){
 void waitFlag(void){
     UINT readBit;
     UBYTE buf = 0xff;
+    UINT callCounter = 0;
     rcvState = 0;
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
@@ -82,17 +84,13 @@ void waitFlag(void){
             }
         }
         
-        //TODO: while抜けた後のbufはフラグではなくucallの先頭1バイト分．やり方は違うほうが良い気がする．
-        //ビット詰めされたらその分間違えてバッファに格納してしまう
-        //TODO: buf after missing is not the flag but the first 1 byte of ucall. I feel that a different way is better.
-        // If it is bit-packed, it wrongly wrongly stores it in the buffer
+        /*Search for extra flags and skip them until different byte is read in*/
         while(buf == FLAG_AX25){
             buf = readByte();
         }
         /*check for call sign of Tokyo Tech (MYCALL) and store it if correct*/
-        UINT callCounter = 0;       //should not exceed length of Call array
-        UINT correctMYCALL = 0;     // 0 = correct byte, 1 = incorrect byte
-        while(callCounter<6 && correctMYCALL == 0){
+        callCounter = 0;       //should not exceed length of Call array
+        while((callCounter<6)){
             if(buf == (MYCALL[callCounter] << 1)){
                 if(callCounter < 5){
                     dPacket[dPacketCounter] = buf;
@@ -102,12 +100,12 @@ void waitFlag(void){
                 }else{      //if last MYCALL byte is correct as well change receive state to 1 and don't read in new byte
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
+                    callCounter++;
                     rcvState ++;                
                 }  
             }else{                                                  //if byte is incorrect reset counter and return to waiting for flag
-                correctMYCALL = 1;
                 dPacketCounter = 0;
-                callCounter = 0;
+                callCounter = 6;
             }
         }
         
@@ -118,8 +116,8 @@ void waitFlag(void){
         
         /*if MyCall was correct: check for call sign of OrigamiSat-1 (UCALL) and store it if correct*/
         buf = readByte();
-        UINT correctUCALL = 0;     // 0 = correct byte, 1 = incorrect byte
-        while(callCounter<6 && correctMYCALL == 0 && correctUCALL == 0){
+        callCounter = 0;
+        while((callCounter<6)){
             if(buf == (UCALL[callCounter] << 1)){
                 if(callCounter < 5){
                     dPacket[dPacketCounter] = buf;
@@ -129,17 +127,17 @@ void waitFlag(void){
                 }else{      //if last UCALL byte is correct as well change receive state to 2 and don't read in new byte
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
+                    callCounter++;
                     rcvState ++;                
                 } 
             }else{                                                  //if byte is incorrect reset counter and return to waiting for flag
-                correctUCALL = 1;
                 dPacketCounter = 0;
-                callCounter = 0;
+                callCounter = 6;
+                rcvState = 0;
             }
         }
     }
 }
-
 
 //function for storing data considering the dummy bit X after 11111X 
 void getData(void){
@@ -209,26 +207,29 @@ UINT fcsCheck(void){
     }
 }
 
-UBYTE *receiveDataPacket(void){
+//UBYTE *receiveDataPacket(void){
+void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
+    putChar('w');
     getData();
+    putChar('d');
     fcschecker = fcsCheck();
-    
+    putChar('f');
 
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
-            dData[i] = dPacket[i+22];   //20: size of address+SSID+PID+"ori1"
+            cdData[i] = dPacket[i+22];   //20: size of address+SSID+PID+"ori1"
         }
         dPacketCounter = 0;
         rcvState = 0;
         
-        return dData;
+//        return cdData;
     }else{                  //the data is invalid everything gets reset and data ignored //TODO check this function by test
         dPacketCounter = 0;
         rcvState = 0;
-        return 0x00;
+//        return 0x00;
     }
 }
 

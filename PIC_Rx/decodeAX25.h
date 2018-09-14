@@ -22,6 +22,6 @@
 
 
 UINT getBit(void);
-UBYTE *receiveDataPacket(void);
+void receiveDataPacket(UBYTE*);
 
 #endif	/* DECODE_AX25_H */
