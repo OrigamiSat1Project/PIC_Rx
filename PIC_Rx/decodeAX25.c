@@ -16,12 +16,10 @@
 #define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
 #define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
 
-//Global Data
-//const UINT PACKET_SIZE = 50;
-//const UINT DATA_SIZE = 32;       
+//Global Data   
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
-//UBYTE commandData[DATA_SIZE];             //only information byte of uplink command
+UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
@@ -30,7 +28,7 @@ void waitFlag(void);
 void getData(void);
 void putAX25(void);
 UINT fcsCheck(void);
-
+UBYTE readByte(void);
 
   
 // reads bit using NRZ (Non-return-to-zero space)
@@ -42,7 +40,7 @@ UINT getBit(void){
     for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
-            //LED_YELLOW= 1- LED_YELLOW;       //for debugging  
+            LED_YELLOW= 1- LED_YELLOW;       //for debugging  
             return 0;
         }
     }
@@ -101,7 +99,7 @@ void waitFlag(void){
                     dPacketCounter ++;
                     buf = readByte();
                     callCounter++;
-                }else{      //if last MYCALL byte is correct as well change receive state to 1 and don' read in new byte
+                }else{      //if last MYCALL byte is correct as well change receive state to 1 and don't read in new byte
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
                     rcvState ++;                
@@ -128,7 +126,7 @@ void waitFlag(void){
                     dPacketCounter ++;
                     buf = readByte();
                     callCounter++;
-                }else{      //if last UCALL byte is correct as well change receive state to 1 and don' read in new byte
+                }else{      //if last UCALL byte is correct as well change receive state to 2 and don't read in new byte
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
                     rcvState ++;                
@@ -211,33 +209,26 @@ UINT fcsCheck(void){
     }
 }
 
-void receiveDataPacket(void){
+UBYTE *receiveDataPacket(void){
     UINT fcschecker;
     
     waitFlag();
     getData();
     fcschecker = fcsCheck();
     
-    for(int i = 0; i<PACKET_SIZE;i++){
-        putChar(dPacket[i]);
-    }
-    for(int i = 0; i<PACKET_SIZE;i++){
-        printf("%c",dPacket[i]);
-    }
+
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
-            commandData[i] = dPacket[i+20];   //20: size of address+SSID+PID+"ori1"
+            dData[i] = dPacket[i+22];   //20: size of address+SSID+PID+"ori1"
         }
         dPacketCounter = 0;
         rcvState = 0;
-        for(UINT j=0; j<DATA_SIZE;j++){
-            putChar(commandData[j]);
-        }
-//        return dData;
+        
+        return dData;
     }else{                  //the data is invalid everything gets reset and data ignored //TODO check this function by test
         dPacketCounter = 0;
         rcvState = 0;
-//        return 0x00;
+        return 0x00;
     }
 }
 

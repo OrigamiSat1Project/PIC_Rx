@@ -52,6 +52,7 @@ void main(void) {
     //define command ID
     UBYTE lastCommandID;        //ID of last uplink command
     
+    WDT = 1; // kick watchdog
     putChar('A');
     
     while(1){
@@ -67,8 +68,8 @@ void main(void) {
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
-//        UBYTE *commandData;         //data of uplink command
-        UBYTE commandID;            //ID of uplink command
+        UBYTE *commandData;         //data of uplink command
+//        UBYTE commandID;            //ID of uplink command
         //for information on EEPROM see data sheet: 24LC1025        
         UBYTE B0select;             //control byte B0 of EEPROM
         UBYTE wHighAddress;         //address high byte of EEPROM
@@ -78,29 +79,31 @@ void main(void) {
         
         
         UBYTE downlinkTimes;       //downlink times of received command
-        receiveDataPacket();
-//        commandData = receiveDataPacket();
+//        receiveDataPacket();
+        commandData = receiveDataPacket();
         
 //        putString(commandData);
-        putChar('C');
+//        putChar('C');
         
-        commandID = commandData[1];
+//        commandID = commandData[1];
+//        
+//        putChar(commandID);
+//        putCrLf();
+//        putChar(lastCommandID);
+//        putCrLf();
+////        if (commandID == lastCommandID) continue;       //same uplink command
+//        lastCommandID = commandID;                      //update command ID
         
-        putChar(commandID);
-        putCrLf();
-        putChar(lastCommandID);
-        putCrLf();
-//        if (commandID == lastCommandID) continue;       //same uplink command
-        lastCommandID = commandID;                      //update command ID
-        
-        for (int i = 0; i<5;i++){
-            LED_WHITE = 1;
-            __delay_ms(2000);
-            LED_WHITE = 0;
-            __delay_ms(1000);
-        }
-        putChar('D');
-        
+//        for (int i = 0; i<5;i++){
+//            LED_WHITE = 1;
+//            __delay_ms(2000);
+//            LED_WHITE = 0;
+//            __delay_ms(1000);
+//        }
+//        putChar('D');
+        LED_WHITE = 1;
+        __delay_ms(500);
+        LED_WHITE = 0;
         
         B0select = commandData[19];
         wHighAddress = commandData[20];
@@ -111,22 +114,26 @@ void main(void) {
         
         //printf("%s\r\n", commandData); //used for debugging with computer
                 
-        LED_WHITE = 1; //debugging receive command from ground station
-        __delay_ms(100);
-        LED_WHITE = 0;
+//        LED_WHITE = 1; //debugging receive command from ground station
+//        __delay_ms(100);
+//        LED_WHITE = 0;
 
         
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
         WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
         WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
-        
+        putChar('S');
         
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
         sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes);
+        putChar('G');
         
-        
+        for(int i=0; i<DATA_SIZE; i++){
+            putChar(commandData[i]);
+        }
+        putChar('H');
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0]=='R'){                //command target = PIC_RX
