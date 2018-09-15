@@ -105,6 +105,50 @@ void main(void) {
         UBYTE mainControlByte;      //control byte of main EEPROM
         UBYTE subControlByte;       //control byte of sub EEPROM
         
+        /*------------------------------------------------------------------*/
+        //FIXME:debug for test to change I2C speed start        
+        UBYTE commanddata[];
+        commanddata[0] = 0x01;
+        commanddata[1] = 0x02;
+        commanddata[2] = 0x03;
+        commanddata[3] = 0x04;
+        B0select = 0x00;
+        wHighAddress = 0xE0;
+        wLowAddress  = 0x00;
+        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
+        subControlByte = SUB_EEPROM_ADDRESS | B0select;
+        
+        for(UBYTE i=0; i<2; i++){   
+            ChangeI2CBaudRate(i);
+            
+            //check for  WriteToEEPROMWithDataSize
+            WriteToEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,commanddata,datalength_for_test);
+            //WriteToEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,commanddata,datalength_for_test);
+            
+              //check for WriteToEEPROM   
+    //        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
+    //        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+
+            UBYTE ReadData1[datalength_for_test];
+            UBYTE ReadData2[datalength_for_test];
+            
+            //check for ReadDataFromEEPROMWithDataSize
+            ReadDataFromEEPROMWithDataSize(mainControlByte,wHighAddress,wLowAddress,ReadData1, datalength_for_test);
+            //ReadDataFromEEPROMWithDataSize(subControlByte,wHighAddress,wLowAddress,ReadData2,datalength_for_test);
+            
+            //check for ReadEEPROM
+//            ReadData1[0] = ReadEEPROM(mainControlByte,wHighAddress,wLowAddress);
+//            putChar(ReadData1[0]);
+            
+            for (UBYTE i=0; i<datalength_for_test; i++){       
+                ReadData1[i]++;
+                putChar(ReadData1[i]);
+                //putChar(ReadData2[i]);
+            } 
+        }
+        //FIXME:debug for test to change I2C speed finish
+        /*------------------------------------------------------------------*/
+        
         commandData = receiveDataPacket();
         B0select = commandData[20];
         wHighAddress = commandData[21];

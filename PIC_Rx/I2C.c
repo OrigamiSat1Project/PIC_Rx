@@ -113,7 +113,7 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
  *  Read Data From EEPROM (the size od read data is only 1byte)
  *	arg      :   EEPROM_address, high_address, low_address
  *	return   :   EEPROM_address, high_address, low_address -> ReadData
- *	TODO     :   delayŽžŠÔ‚Í‘åä•v‚©H   debug
+ *	TODO     :   debug  ---> finish
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
@@ -173,9 +173,15 @@ void I2CBufferClear(void){
    SSPBUF = 0;   //Serial Receive/Transmit Buffer Register
 }
 
-//TODO:check
-//default 100000bps
-//datasheet p81-p82
+/*
+ *  Change I2C Baud Rate
+ *	arg      :   I2C_baud_rate_type (0x00/0x01)
+ *	return   :   0x00->high-speed mode (400 kHz) / 0x01->standard speed mode (100 kHz)
+ *	TODO     :   debug ---> finish
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ *  default 100000bps / datasheet p81-p82
+ */
 void ChangeI2CBaudRate( UBYTE I2C_baud_rate_type ){
     switch (I2C_baud_rate_type){
         case 0x00:     //high-speed mode (400 kHz)
