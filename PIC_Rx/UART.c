@@ -99,7 +99,7 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
     Command[5] = Parameter4;
     CRC = crc16(0, Command, 6);
     Command[6] = CRC >> 8;
-    Command[7] = CRC && 0x00FF;
+    Command[7] = CRC & 0x00FF;
     putString(Command);
 }
 
