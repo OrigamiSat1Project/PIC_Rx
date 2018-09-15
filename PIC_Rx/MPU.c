@@ -117,7 +117,7 @@ void switchPowerSpply1pin(UINT POWER_PIN, UBYTE onOff, UBYTE timeHigh, UBYTE tim
 }
 
 /*
- *	witch Power Spply for 2pin
+ *	switch Power EPS
  *	arg      :   POWER_PIN_1, POWER_PIN_2, onOff, timeHigh, timeLow
  *	return   :   0x00 -> LOW, 0x01 -> HIGH
  *               timeHigh == 0x00 && timeLow == 0x00 -> not chage until next Uplink
@@ -125,29 +125,60 @@ void switchPowerSpply1pin(UINT POWER_PIN, UBYTE onOff, UBYTE timeHigh, UBYTE tim
  *               timeHigh != 0x00 && timeLow != 0x00 -> wait time is long ( 2byte:266~65535[ms) -> invert state
  *	TODO     :   need debug
  *	FIXME    :   not yet
- *	XXX      :   not yet
+ *	XXX      :   add function to change OnOff time
  */
-void switchPowerSpply2pin(UINT POWER_PIN_1, UINT POWER_PIN_2, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
+void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
+    /*-------------------------------------------------------*/
+    //FIXME:for debug to test switch start
     if ( onOff == 0x00 ){        
-            POWER_PIN_1 = LOW;   
-            POWER_PIN_2 = LOW;
+            putChar(0x00);
+            SEP_SW = LOW;
+            RBF_SW = LOW;
+            putChar(0x00);
     } else {                     
-            POWER_PIN_1 = HIGH;
-            POWER_PIN_2 = HIGH;
+            putChar(0x01);
+            SEP_SW = HIGH;
+            RBF_SW = HIGH;
+            putChar(0x01);
     }
-  
+    
     if(timeHigh == 0x00 && timeLow == 0x00){     
+        putChar(0x02);
     }else if(timeLow == 0x00){                    
         __delay_ms(timeHigh);                     
-        POWER_PIN_1 =invertState(POWER_PIN_1);
-        POWER_PIN_2 =invertState(POWER_PIN_2);
+        SEP_SW =invertState(onOff);
+        RBF_SW =invertState(onOff);
+        putChar(0x03);
     }else {                                      
         UWORD wait_time;
         wait_time = (timeHigh << 8 | timeLow);
         __delay_ms(wait_time);
-        POWER_PIN_1 =invertState(POWER_PIN_1);
-        POWER_PIN_2 =invertState(POWER_PIN_2);
+        SEP_SW =invertState(onOff);
+        RBF_SW =invertState(onOff);
+        putChar(0x04);
     }
+    //FIXME:for debug to test switch finish
+    /*-------------------------------------------------------*/
+//    if ( onOff == 0x00 ){        
+//            SEP_SW = LOW;
+//            RBF_SW = LOW;
+//    } else {                     
+//            SEP_SW = HIGH;
+//            RBF_SW = HIGH;
+//    }
+//    
+//    if(timeHigh == 0x00 && timeLow == 0x00){     
+//    }else if(timeLow == 0x00){                    
+//        __delay_ms(timeHigh);                     
+//        POWER_PIN_1 =invertState(POWER_PIN_1);
+//        POWER_PIN_2 =invertState(POWER_PIN_2);
+//    }else {                                      
+//        UWORD wait_time;
+//        wait_time = (timeHigh << 8 | timeLow);
+//        __delay_ms(wait_time);
+//        POWER_PIN_1 =invertState(POWER_PIN_1);
+//        POWER_PIN_2 =invertState(POWER_PIN_2);
+//    }
 }
 
 /*
@@ -160,7 +191,7 @@ void switchPowerSpply2pin(UINT POWER_PIN_1, UINT POWER_PIN_2, UBYTE onOff, UBYTE
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
-void reiveEPS(UBYTE timeHigh, UBYTE timeLow){
+void reviveEPS(UBYTE timeHigh, UBYTE timeLow){
     if(timeHigh == 0x00 && timeLow == 0x00){     
     }else if(timeLow == 0x00){                    
         __delay_ms(timeHigh);                     
@@ -248,7 +279,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * 2.then Rx/Tx/OBC switch  ON
              * TODO:how to turn on CIB? */
             /*---------------------------*/
-            switchPowerSpply2pin(SEP_SW, RBF_SW, 0x00, timeHigh, timeLow);
+            switchPowerEPS(0x00, timeHigh, timeLow);
             break;
         case 0x0F: 
             /*----------------------------*/
@@ -268,7 +299,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
-            reiveEPS(timeHigh, timeLow);
+            reviveEPS(timeHigh, timeLow);
             break;
         case 0xFF: 
             /*---------------------------*/
@@ -280,7 +311,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * 3.if time has run out switch to power saving mode
              * TODO:how to turn on CIB? */
             /*---------------------------*/
-            switchPowerSpply2pin(SEP_SW, RBF_SW, 0x01, timeHigh, timeLow);
+            switchPowerEPS(0x01, timeHigh, timeLow);
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
@@ -299,7 +330,7 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             break;
         case 'e': //EPS
             //TODO: write method for EPS using pins: SEP_SW and RBF_SW---finish
-            switchPowerSpply2pin(SEP_SW, RBF_SW, onOff, timeHigh, timeLow);
+            switchPowerEPS(onOff, timeHigh, timeLow);
             break;
         case 'o': //OBC
             //TODO: write method for OBC using pin: POWER_OBC ---finish

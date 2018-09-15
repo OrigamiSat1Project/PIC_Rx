@@ -92,6 +92,35 @@ void main(void) {
             //getbit();
             //debugLEDyellow();   //6us
         //}
+     
+        
+        /*-------------------------------------------------------------------*/
+        //FIXME:for debug to test switch power supply start
+        UBYTE onOff =0x01;
+        UBYTE timeHigh = 0x00;
+        UBYTE timeLow = 0x00;
+        putChar(0xaa);
+//        for(UBYTE i=1; i<10; i++){
+//            SEP_SW = HIGH;
+//            RBF_SW = HIGH;
+//            putChar(0x11);
+//            __delay_ms(2000); 
+//            SEP_SW = LOW;
+//            RBF_SW = LOW;
+//            putChar(0x22);
+//            __delay_ms(2000); 
+//        }
+        for(UBYTE i=1; i<5; i++){
+            onOff = 0x01;
+            switchPowerEPS(onOff, timeHigh, timeLow);
+            __delay_ms(1000);
+            onOff = 0x00;
+            switchPowerEPS(onOff, timeHigh, timeLow);
+            __delay_ms(1000);            
+        }    
+        putChar(0xbb);
+        //FIXME:for debug to test switch power supply finish
+        /*-------------------------------------------------------------------*/
         
         
         /*---Receive command data---*/ 
@@ -128,7 +157,7 @@ void main(void) {
         /*------------------------------------------------------------------*/
         sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, 0x00);
         
-        
+          
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
         /*------------------------------------------------------------------*/
         if(commandData[0]=='R'){                //command target = PIC_RX
