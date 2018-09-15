@@ -92,7 +92,19 @@ void main(void) {
             //getbit();
             //debugLEDyellow();   //6us
         //}
+       
         
+        /*-------------------------------------------------------------------*/
+        //FIME:debug for test to change UART baud rate start 
+//        UBYTE c;
+//        c = getChar();
+//        c++;
+//        putChar(c);
+        for(UBYTE i=1; i<20; i++){
+        putChar(i);
+        }
+        //FIME:debug for test to change UART baud rate finish 
+        /*-------------------------------------------------------------------*/
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
