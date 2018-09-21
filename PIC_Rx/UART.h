@@ -34,6 +34,7 @@ void WriteUART( UBYTE* );
 void UART_buffer_clear(void);
 int  change_baud_rate( UBYTE );
 void calculate_SPBRG(int, UBYTE, UBYTE);
+void changeInterruptPermission(UBYTE, UBYTE);
 void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 #endif	/* UART_H */

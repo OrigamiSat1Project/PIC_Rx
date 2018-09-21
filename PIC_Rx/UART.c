@@ -164,6 +164,30 @@ void calculate_SPBRG(int baud_rate, UBYTE UART_speed, UBYTE UART_type){
     }
 }
 
+/*
+ *	change Interrupt Permission
+ *	arg      :   GIE_status, PEIE_status
+ *               GIE: Global Interrupt Enable bit / PEIE: Peripheral Interrupt Enable bit
+ *	return   :   GIE_status : 1 -> Enables all unmasked interrupts, 0 -> Disables all interrupts
+ *               PEIE_status : 1 -> Enables all unmasked peripheral interrupts, 0 -> Disables all peripheral interrupts
+ *	TODO     :   debug
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
+    if (GIE_status == 0x01){
+        INTCONbits.GIE  = 1;
+    } else {
+        INTCONbits.GIE  = 0;
+    }
+    
+    if (PEIE_status == 0x01){
+        INTCONbits.PEIE  = 1;
+    } else {
+        INTCONbits.PEIE  = 0;
+    }
+}
+
 //process command data if the command type is UART
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){ //TODO: different format for writedataUART
     
@@ -186,6 +210,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
             break;
         case 'i': //interrupt permission
             //TODO: write method for interrupt permission
+            changeInterruptPermission(data1,data2);
             break;
         default:
             //TODO: error message
