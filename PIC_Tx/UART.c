@@ -8,7 +8,7 @@
 #include "WDT.h"
 #include "pinDefine.h"
 #include "CRC16.h"
-
+#include "time.h"
 
 UINT B0_select;
 UINT DownlinkTimes;
@@ -42,7 +42,10 @@ UBYTE getChar(void){                //TODO: add time out feature
         NOP();
         CREN = 1;
     }
-	while(!RCIF);
+    set_timer_counter_only_getChar(0);
+	while(!RCIF){                   //USART Receive Interrupt Flag bit
+        if(get_timer_counter_only_getChar() > 1000) break;
+    }
     return RCREG;
 }
 
