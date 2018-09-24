@@ -157,7 +157,7 @@ void interrupt InterReceiver(void){
                         FMPTT = 0;
                         putChar('F');
                         putChar('M');
-                        downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+                        downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6], RXDATA[7]);
                         break;
                     case 0x61:  //'a'
                         cutWire(RXDATA[2],RXDATA[3]);

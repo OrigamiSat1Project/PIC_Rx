@@ -14,7 +14,7 @@
 void _NOP(void);
 
 void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
-void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
+void downlinkFMSignal(UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
 void Morse_V(void);
 
 #endif	/* FMCW_H */

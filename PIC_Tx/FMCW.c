@@ -79,42 +79,52 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         if(commandData[2] == 't'){          //task target =  PIC_TX
         // Command type
             switch(commandData[3]){         //Process command type
-            case 'p': /*power supply*/
-            case 'n': /*radio unit*/
-                commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
-//                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                break;
-            case 'i':/*I2C*/
-                //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
-                break;
-            case 'u':/*UART*/
-//                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                break;
-            case 'w':/*WDT (watch dog timer)*/
-//                commandWDT(commandData[4], commandData[5], commandData[6]);
-                break;
-            case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-                //TODO: write function directly here or in MPU.c
-                break;
-            case 'r':/*internal processing*/
-//                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                break;
-            case 'f':/*downlink FM Signal*/
-                downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8]);
-                break;
-            default:
-                //TODO: error message
-                break;
+                case 'm':/*get satellite mode*/
+                    downlinkFMSignal(commandData[4], deviceOnOff_EEPROMAndB0Select, deviceOnOff_addressHigh, deviceOnOff_addressLow, commandData[5], deviceOnOff_DataSize);
+                    break;               
+                case 'p': /*power supply*/
+                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    break;
+                case 'n': /*radio unit*/
+    //                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    break;
+                case 'i':/*I2C*/
+                    //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    break;
+                case 'u':/*UART*/
+    //                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    break;
+                case 'w':/*WDT (watch dog timer)*/
+    //                commandWDT(commandData[4], commandData[5], commandData[6]);
+                    break;
+                case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+                    //TODO: write function directly here or in MPU.c
+                    break;
+                case 'r':/*internal processing*/
+    //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+                    break;
+                case 'f':/*downlink FM Signal*/
+                    downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9]);
+                    break;
+                default:
+                    //TODO: error message
+                    break;
             }
         }
         
     }
 }
 
-void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
+void downlinkFMSignal(UBYTE EEPROM_select, UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
     UBYTE readAddress;
-    readAddress = EEPROM_address | EEPROMAndB0Select;
+    switch(EEPROM_select){
+        case 0x00: //main EEPROM
+            readAddress = EEPROM_address | EEPROMAndB0Select;
+            break;
+        case 0x01: //sub EEPROM
+            readAddress = EEPROM_subaddress | EEPROMAndB0Select;
+            break;
+    }
     UBYTE readData[];
     ReadDataFromEEPROM(readAddress,addressHigh,addressLow, readData,DataSize);
     FMPTT = 1;
