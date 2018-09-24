@@ -207,9 +207,14 @@ void interrupt interReceiverTest( void ){
             case 'h':
                 putChar('H');
                 HEATER = 1;
-                for(int i=0;i<60;i++) delay_ms(1000);
+                for(int i=0;i<300;i++) delay_ms(1000);
                 HEATER = 0;
                 break;
+           case 'i':
+               HEATER = 1;
+               for(int i=0;i<60;i++) delay_ms(1000);
+               HEATER = 0;
+               break;
             case 'c':
                 putChar('C');
                 putChar('W');
