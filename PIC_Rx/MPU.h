@@ -25,7 +25,7 @@ void debugLEDyellow(void);
 UINT invertState(UINT);
 void killEPS(void);
 void onEPS(void);
-void switchPowerSpply1pin(UINT, UBYTE, UBYTE, UBYTE);
+void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
 void switchPowerEPS(UBYTE, UBYTE, UBYTE);
 void reviveEPS(UBYTE, UBYTE);
 void changeInOut(UINT, UBYTE);

@@ -73,6 +73,41 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
     __delay_ms(200);
 }
 
+void Write1byteDataToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE Address = addressEEPROM << 1;
+
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);    //Adress Low Byte
+    
+    I2CMasterWrite(data);    //Data
+
+    I2CMasterStop();         //Stop condition
+    __delay_ms(200);
+}
+
+UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
+    UBYTE Address = EEPROM_address << 1;
+    UBYTE ReadAddress = Address | 0x01;
+    UBYTE ReadData;
+   
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(high_address);    //Adress High Byte
+    I2CMasterWrite(low_address);    //Adress Low Byte
+    I2CMasterRepeatedStart();         //Restart condition
+    
+    I2CMasterWrite(ReadAddress);     //7 bit address + Read
+    
+    ReadData = I2CMasterRead(0); //Read + Acknowledge
+    
+    I2CMasterStop();          //Stop condition
+    return ReadData;
+    __delay_ms(200);  
+}
+
+
 //process command data if the command type is 'I2C'
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
