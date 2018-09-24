@@ -53,6 +53,8 @@ void main(void) {
     //UBYTE lastCommandID;        //ID of last uplink command
     
     //WDT = 1; // kick watchdog
+
+    RC5 = 1;    //5R8G on
     putChar('A');
     
     while(1){
@@ -146,8 +148,8 @@ void main(void) {
                 case 'E': /*EPS kill*/
                     Reset_EPS();
                     __delay_ms(5000);
-                    //ˆÈ‰º‚Ì”š‚Í‰Šúİ’è‚Æ•Ï‰»‚µ‚Ä‚¢‚é‚½‚ß‚à‚¤ˆê“x’è‹`
-                    //–{—ˆ‚È‚ç•Ï‰»‚·‚é•¶š—ñ‚ğ‘¼‚É—pˆÓ‚µ‚½‚Ù‚¤‚ª—Ç‚¢‚©‚à‚µ‚ê‚È‚¢
+                    //ï¿½È‰ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Íï¿½ï¿½ï¿½ï¿½İ’èï¿½Æ•Ï‰ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚½ï¿½ß‚ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½`
+                    //ï¿½{ï¿½ï¿½ï¿½È‚ï¿½Ï‰ï¿½ï¿½ï¿½ï¿½é•¶ï¿½ï¿½ï¿½ï¿½ğ‘¼‚É—pï¿½Ó‚ï¿½ï¿½ï¿½ï¿½Ù‚ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
                     // values for Nprg are changed in setNprg function so they have to be reset
                     //TODO: make seperate function for set-up
                     int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
