@@ -20,17 +20,25 @@
 
 
 void InitMPU(void);
+
 void LEDOnOff(void);
 void debugLEDyellow(void);
 UINT invertState(UINT);
+
+void onOff5R8G(UBYTE);
+void onOffOBC(UBYTE);
+void onOffWDT(UBYTE);
+void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
+
 void killEPS(void);
 void onEPS(void);
-void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
 void switchPowerEPS(UBYTE, UBYTE, UBYTE);
 void reviveEPS(UBYTE, UBYTE);
+
 void changeInOut(UINT, UBYTE);
 void changeHighLow(UINT, UBYTE);
 void changeXtalFrequency(UBYTE);
+
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
