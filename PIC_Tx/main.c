@@ -167,7 +167,7 @@ void interrupt InterReceiver(void);
 //         }else{
             
 //             putChar('D');
-//             //ï¿½Rï¿½}ï¿½ï¿½ï¿½hCRCï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
+//             //?¿½R?¿½}?¿½?¿½?¿½hCRC?¿½_?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½Ìï¿½?¿½?¿½
 //             //add error messege
 //         }
 //         RCIF = 0;
@@ -207,9 +207,7 @@ void interrupt interReceiverTest( void ){
             case 'h':
                 putChar('H');
                 HEATER = 1;
-                break;
-            case 'e':
-                putChar('E');
+                for(int i=0;i<60;i++) delay_ms(1000);
                 HEATER = 0;
                 break;
             case 'c':
@@ -316,7 +314,7 @@ void interrupt interReceiverTest( void ){
 
 void main(void) {
     __delay_ms(1000);
-    /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+    /*?¿½?¿½?¿½?¿½?¿½?¿½*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
