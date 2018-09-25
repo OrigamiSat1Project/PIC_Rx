@@ -92,14 +92,84 @@ void main(void) {
             //getbit();
             //debugLEDyellow();   //6us
         //}
-     
+        
+        /*-------------------------------------------------------------------*/
+        //FIXME:[start]for debug to test to change h/l and i/o
+//        UBYTE m;
+//        UBYTE s; 
+//        putChar(0xaa);
+//         changeInOut(0x0a, 0b00011001);
+//         putChar(TRISA);
+//         m = ReadEEPROM(MAIN_EEPROM_ADDRESS, TRISA_addressHigh, TRISA_addressLow);
+//         m++;
+//         putChar(m);
+//         s = ReadEEPROM(SUB_EEPROM_ADDRESS, TRISA_addressHigh, TRISA_addressLow);
+//         s++;
+//         putChar(s);
+//         __delay_ms(1000);
+//         
+//         putChar(0xbb);
+//         changeInOut(0x0b, 0b00100001);
+//         putChar(TRISB);
+//         __delay_ms(1000); 
+//         
+//         putChar(0xcc);
+//         changeInOut(0x0c, 0b10011001);
+//         putChar(TRISC);
+//         __delay_ms(1000);   
+//         
+//         putChar(0xdd);
+//         changeInOut(0x0d, 0b00001101);
+//         putChar(TRISD);
+//         __delay_ms(1000);   
+//         
+//         putChar(0xee);
+//         changeInOut(0x0e, 0b00000111);
+//         putChar(TRISE);
+//         __delay_ms(1000); 
+        //FIXME:[finish]for debug to test to change h/l and i/o
+        /*-------------------------------------------------------------------*/
+         
+         /*-------------------------------------------------------------------*/
+        //FIXME:[start]for debug to test to change h/l and i/o
+//         putChar(0xaa);
+//         changeHighLow(0x0a, 0b00000001);
+//         //changeHighLow(0x0a, 0b00000010);
+//         putChar(RA0);      
+//         __delay_ms(1000);
+//         
+//         putChar(0xbb);
+//        // changeHighLow(0x0b, 0b00010000);
+//         changeHighLow(0x0b, 0b00000001);
+//         putChar(RB0);      
+//         __delay_ms(1000);
+//         
+//         putChar(0xcc);
+//         changeHighLow(0x0c, 0x01);
+//         //putChar(PORTC);
+//         putChar(RC0);
+//         __delay_ms(1000);
+//         
+//         putChar(0xdd);
+//         changeHighLow(0x0d, 0x01);
+//         //putChar(PORTD); 
+//         putChar(RD0);
+//         __delay_ms(1000);   
+//         
+//         putChar(0xee);
+//         changeHighLow(0x0e, 0x01);
+//         //putChar(PORTE);
+//         putChar(RE0);
+//         __delay_ms(1000); 
+        //FIXME:[finish]for debug to test to change h/l and i/o
+        /*-------------------------------------------------------------------*/
         
         /*-------------------------------------------------------------------*/
         //FIXME:for debug to test switch power supply start
-        UBYTE onOff =0x01;
-        UBYTE timeHigh = 0x00;
-        UBYTE timeLow = 0x00;
-        putChar(0xaa);
+//        UBYTE onOff =0x01;
+//        UBYTE timeHigh = 0x00;
+//        UBYTE timeLow = 0x00;
+//        putChar(0xaa);
 //        for(UBYTE i=1; i<10; i++){
 //            SEP_SW = HIGH;
 //            RBF_SW = HIGH;
@@ -110,15 +180,15 @@ void main(void) {
 //            putChar(0x22);
 //            __delay_ms(2000); 
 //        }
-        for(UBYTE i=1; i<5; i++){
-            onOff = 0x01;
-            switchPowerEPS(onOff, timeHigh, timeLow);
-            __delay_ms(1000);
-            onOff = 0x00;
-            switchPowerEPS(onOff, timeHigh, timeLow);
-            __delay_ms(1000);            
-        }    
-        putChar(0xbb);
+//        for(UBYTE i=1; i<5; i++){
+//            onOff = 0x01;
+//            switchPowerEPS(onOff, timeHigh, timeLow);
+//            __delay_ms(1000);
+//            onOff = 0x00;
+//            switchPowerEPS(onOff, timeHigh, timeLow);
+//            __delay_ms(1000);            
+//        }    
+//        putChar(0xbb);
         //FIXME:for debug to test switch power supply finish
         /*-------------------------------------------------------------------*/
         
