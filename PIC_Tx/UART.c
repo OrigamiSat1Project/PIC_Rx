@@ -67,6 +67,29 @@ UBYTE get3byte(void){                //TODO: add time out feature
 }
 
 
+/*
+ *	change Interrupt Permission
+ *	arg      :   GIE_status, PEIE_status
+ *               GIE: Global Interrupt Enable bit / PEIE: Peripheral Interrupt Enable bit
+ *	return   :   GIE_status : 1 -> Enables all unmasked interrupts, 0 -> Disables all interrupts
+ *               PEIE_status : 1 -> Enables all unmasked peripheral interrupts, 0 -> Disables all peripheral interrupts
+ *	TODO     :   debug--->finish
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
+    if (GIE_status == 0x01){
+        INTCONbits.GIE  = 1;
+    } else {
+        INTCONbits.GIE  = 0;
+    }
+    
+    if (PEIE_status == 0x01){
+        INTCONbits.PEIE  = 1;
+    } else {
+        INTCONbits.PEIE  = 0;
+    }
+}
 
 //void putstr(UBYTE *x)
 //{
