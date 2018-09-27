@@ -15,6 +15,7 @@
 void sendLow(int unitID);
 void sendHigh(int unitID);
 void sendSTB(int unitID);
+int binaryToDecimal(int n);
 void setNprg(int unitID, int *Nprg);
 void setNref(int unitID, int Nref);
 void setOptionRegister(int unitID);
@@ -293,11 +294,32 @@ void FMRX(int Nref, int *Nprg){
 }
 
 
+int binaryToDecimal(int n){
+    int num = n; 
+    int dec_value = 0;
+    
+    // Initializing count value to 1, i.e 2^0 
+    int count = 1; 
+      
+    int temp = num; 
+    while (temp) 
+    { 
+        int last_digit = temp % 10; 
+        temp = temp/10; 
+          
+        dec_value += last_digit*count; 
+          
+        count = count*2; 
+    } 
+      
+    return dec_value; 
+}
+
 int calculateNref(UBYTE Nref_high, UBYTE Nref_low){
     int Nref;
     Nref = Nref_high<<8 | Nref_low;
     
-    //TODO:Nref16進数->10進数に変換
+    Nref = binaryToDecimal(Nref);
     
     return Nref;
 }
@@ -307,6 +329,7 @@ int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
     Nprg = Nprg_high<<8 | Nprg_middle;
     Nprg = Nprg<<8 | Nprg_low;
     
+    Nprg = binaryToDecimal(Nprg);
     //TODO:Nprg16進数->10進数->配列に入れる
     
     return Nprg;
