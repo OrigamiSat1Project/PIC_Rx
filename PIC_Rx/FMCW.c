@@ -125,41 +125,47 @@ void sendSTB(int unitID){
  * 4. Send STB signal
  */
 void setNprg(int unitID, int *Nprg){
-    int count = 0;
     int Nprg_b[17];
     
     for(int i=0; i<17; i++){
         Nprg_b[i] = 0;
     }
-    
-    //Nprg transforms decimal to binary
-    for(int i = 0; i < 17; i++){
-        for(int j = 0; j<5; j++){
-            if(Nprg[j] % 2 == 0) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 0;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                }
-            }
-            else if(Nprg[j] % 2 == 1) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 1;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg[j+1] = Nprg[j+1] + 10;
-                }
-            }
-        }
+    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
+    for(int i=0; Nprg>0; i++){
+        Nprg_b[i] = Nprg % 2;
+        Nprg = Nprg / 2;
     }
     
+//    //OLD METHOD!! delete if new one works ! //Nprg transforms decimal to binary
+//    int count = 0;
+//    for(int i = 0; i < 17; i++){
+//        for(int j = 0; j<5; j++){
+//            if(Nprg[j] % 2 == 0) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 0;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                }
+//            }
+//            else if(Nprg[j] % 2 == 1) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 1;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg[j+1] = Nprg[j+1] + 10;
+//                }
+//            }
+//        }
+//    }
+    
     //Send Nprg data(binary) to communication module
+    
     for (int i=0; i<17; i++)
     {
         if(Nprg_b[i] == 0)
@@ -330,7 +336,6 @@ int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
     Nprg = Nprg<<8 | Nprg_low;
     
     Nprg = binaryToDecimal(Nprg);
-    //TODO:Nprg16i”->10i”->”z—ñ‚É“ü‚ê‚é
     
     return Nprg;
 }

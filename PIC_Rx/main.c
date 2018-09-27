@@ -187,9 +187,9 @@ void main(void) {
 //                    //–{—ˆ‚È‚ç•Ï‰»‚·‚é•¶Žš—ñ‚ð‘¼‚É—pˆÓ‚µ‚½‚Ù‚¤‚ª—Ç‚¢‚©‚à‚µ‚ê‚È‚¢
 //                    // values for Nprg are changed in setNprg function so they have to be reset
 //                    //TODO: make seperate function for set-up
-//                    int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-//                    int CWTX_Nprg[5]     =   {0,1,4,0,0};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-//                    int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+//                    int FMTX_Nprg     =   87501;   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+//                    int CWTX_Nprg     =   1400;   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+//                    int FMRX_Nprg     =   24916;   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
 //                    //reset PLL setting (because it gets lost during shutdown)
 //                    FMTX(FMTX_Nref, FMTX_Nprg);
 //                    CWTX(CWTX_Nref, CWTX_Nprg);
