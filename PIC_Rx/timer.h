@@ -9,7 +9,10 @@
 #define __delay_us(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000000.0)))
 #define __delay_ms(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000.0)))
 
+int timer_counter = 0;
+
 void initTimer(void);
-void interrupt TimerReset(void);
+//void interrupt TimerReset(void);
+void interrupt TimerCheck(void);
 
 #endif	/* TIME_H */
