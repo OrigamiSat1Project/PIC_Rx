@@ -10,6 +10,14 @@
  * Created on 2018/05/08, 16:54
  */
 
+/* 
+* ch1 AN2  BAT temperature
+* ch2 AN3  5VBUS voltage(EPS 5V)
+* ch3 AN4  3V3BUS voltage(EPS 3.3V) 
+* ch4 AN10 5V voltage
+* 
+*/
+
 /*******************************************************************************
 *Includes and defines
 ******************************************************************************/
@@ -18,8 +26,22 @@
 #include "UART.h"
 #include "time.h"
 #include "ADC.h"
+#include "EEPROM.h"
+#include "I2C.h"
 #include <xc.h>
 #include <stdio.h>
+
+/*******************************************************************************
+*method
+******************************************************************************/
+void setAddressEEPROM(void);
+
+UWORD adcValue[CHANEL_SIZE];
+UBYTE adcValue_dataHigh_addressHigh[CHANEL_SIZE];
+UBYTE adcValue_dataHigh_addressLow[CHANEL_SIZE];
+UBYTE adcValue_dataLow_addressHigh[CHANEL_SIZE];
+UBYTE adcValue_dataLow_addressLow[CHANEL_SIZE];
+
 /*******************************************************************************
 * Function: void initMain()
 *
@@ -116,6 +138,28 @@ void adc_led_Test(UBYTE voltage){
         __delay_ms(1000);
     }
 }
+
+void setAddressEEPROM(){
+    
+    //set EEPROM address
+    adcValue_dataHigh_addressHigh[0] = adcValue_CH1_DATAHIGH_addressHigh;
+    adcValue_dataHigh_addressLow[0]  = adcValue_CH1_DATAHIGH_addressLow;
+    adcValue_dataLow_addressHigh[0] = adcValue_CH1_DATALOW_addressHigh;
+    adcValue_dataLow_addressLow[0]  = adcValue_CH1_DATALOW_addressLow;
+    adcValue_dataHigh_addressHigh[1] = adcValue_CH2_DATAHIGH_addressHigh;
+    adcValue_dataHigh_addressLow[1]  = adcValue_CH2_DATAHIGH_addressLow;
+    adcValue_dataLow_addressHigh[1] = adcValue_CH2_DATALOW_addressHigh;
+    adcValue_dataLow_addressLow[1]  = adcValue_CH2_DATALOW_addressLow;
+    adcValue_dataHigh_addressHigh[2] = adcValue_CH3_DATAHIGH_addressHigh;
+    adcValue_dataHigh_addressLow[2]  = adcValue_CH3_DATAHIGH_addressLow;
+    adcValue_dataLow_addressHigh[2] = adcValue_CH3_DATALOW_addressHigh;
+    adcValue_dataLow_addressLow[2]  = adcValue_CH3_DATALOW_addressLow;
+    adcValue_dataHigh_addressHigh[3] = adcValue_CH4_DATAHIGH_addressHigh;
+    adcValue_dataHigh_addressLow[3]  = adcValue_CH4_DATAHIGH_addressLow;
+    adcValue_dataLow_addressHigh[3] = adcValue_CH4_DATALOW_addressHigh;
+    adcValue_dataLow_addressLow[3]  = adcValue_CH4_DATALOW_addressLow; 
+    
+}
 /*******************************************************************************
 * Function: Main
 *
@@ -123,53 +167,129 @@ void adc_led_Test(UBYTE voltage){
 *
  * Description: Program entry point
 ******************************************************************************/
-void ADC() {
+void measureAllChanelADC(){
     
-    putChar(0x01);
-    initADC();
-    UBYTE chanel = 4;
-    UWORD adcValue[];
-   
-        //Set LED off
-        PORTBbits.RB1 = 0;
-        ADCON0bits.CHS = 0b0010;
-        adcValue[0] = adc_read();
-        ADCON0bits.CHS = 0b0011;
-        adcValue[1] = adc_read();
-        ADCON0bits.CHS = 0b0100;
-        adcValue[2] = adc_read();
-        ADCON0bits.CHS = 0b1010;
-        adcValue[3] = adc_read();
+    initADC();    
+    setAddressEEPROM();
         
-        //Further instructions on what should be done with result
-//        float adcVoltage_1;
-//        float adcVoltage_2;
-//        float adcVoltage_3;
-//        float adcVoltage_4;
-        
-    //    adcVoltage = adcValue;
-//        adcVoltage_1 = ((float)adcValue_1*3300) / 1024 ;
-//        adcVoltage_2 = ((float)adcValue_2*3300) / 1024 ;
-//        adcVoltage_3 = ((float)adcValue_3*3300) / 1024 ;
-//        adcVoltage_4 = ((float)adcValue_4*3300) / 1024 ;
-        
-    //    printf("%f %f %f %f \r\n",adcVoltage_1,adcVoltage_2,adcVoltage_3,adcVoltage_4);
-    //    printf("%d %d %d %d \r\n",adcValue_1,adcValue_2,adcValue_3,adcValue_4);
-        
-        for (UBYTE i=0; i<chanel; i++){
-            putChar(i);
-            putChar((UBYTE)(adcValue[i] >> 8));
-            putChar((UBYTE)(adcValue[i] & 0xff));
-        }
-        //Test functionality of ADC
-    //    adc_led_Test(adcVoltage);
+    //Set LED off
+    PORTBbits.RB1 = 0;
+    ADCON0bits.CHS = 0b0010;
+    adcValue[0] = adc_read();
+    ADCON0bits.CHS = 0b0011;
+    adcValue[1] = adc_read();
+    ADCON0bits.CHS = 0b0100;
+    adcValue[2] = adc_read();
+    ADCON0bits.CHS = 0b1010;
+    adcValue[3] = adc_read();
+    
+    //write data to main and sub EEPROM
+    for (UBYTE i=0; i<CHANEL_SIZE; i++){
+        //data High
+        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
+        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
+        //data Low
+        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
+        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
+    }
+    
+    /*----------------------------------------------*/
+    //FIXME:[start]debug for check the adcValue--->success 
+//    for (UBYTE i=0; i<CHANEL_SIZE; i++){
+//        putChar(i);
+//        putChar(i);
+//        putChar(i);
+//        putChar((UBYTE)(adcValue[i] >> 8));
+//        putChar((UBYTE)(adcValue[i] & 0xff));
+//    }
+    //FIXME:[finish]debug for check the adcValue 
+    /*------------------------------------------------*
 
-        //Update every second
-        __delay_ms(1000);
-        //Set clears if necessary
+    /*-------------------------------------------------*/
+    //FIXME:[start]debug for write/read adc value--->success
+//    for (UBYTE i=0; i<4; i++){    
+//        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] >> 8));
+//        putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
+//        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] & 0xff));
+//        putChar(ReadEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow));
+//    }
+    //FIXME:[finish]debug for write/read adc value
+    /*--------------------------------------------------*/
+    
+    /*--------------------------------------------------*/
+    //FIXME:[start]debug for change address--->success
+//    putChar(adcValue_addressLow);
+//    UBYTE address;
+//    address = adcValue_addressLow+0x08;
+//    putChar(address);
+    //FIXME:[finish]debug for change address
+    /*--------------------------------------------------*/
+    
+    /*--------------------------------------------------*/
+    //FIXME:[start]debug for write adc value--->successs
+    //write data to main and sub EEPROM
+//    for (UBYTE i=0; i<CHANEL_SIZE; i++){
+//        putChar(adcValue_dataHigh_addressHigh[i]);
+//        putChar(adcValue_dataHigh_addressLow[i]);
+//        putChar(adcValue_dataLow_addressHigh[i]);
+//        putChar(adcValue_dataLow_addressLow[i]);
+//        //data High
+//        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
+//        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
+//        //data Low
+//        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
+//        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
+//        //data High
+//        putChar(ReadEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
+//        putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i]));
+//        //data Low
+//        putChar(ReadEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
+//        putChar(ReadEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i]));
+//    }
+    //FIXME:[finish]debug for write adc value
+    /*--------------------------------------------------*/
+    
+    //Update every second
+    __delay_ms(1000);
+    //Set clears if necessary
 
 return;
 }
 
+void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
+    
+    initADC();    
+        
+    //Set LED off
+    PORTBbits.RB1 = 0;
+    ADCON0bits.CHS = 0b0010;
+    adcValue[0] = adc_read();
+    
+    /*write data to EEPROM*/
+    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     //data High
+    
+    high_address = high_address + 0x08;
+    low_address = low_address + 0x08;
 
-
+    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));   //data Low
+    
+    /*--------------------------------------------------*/
+    //FIXME:[start]debug for write adc value--->successs
+    //write data to EEPROM
+//    putChar((UBYTE)(adcValue[0] >> 8));
+//    putChar((UBYTE)(adcValue[0] & 0xff));
+//    
+//    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));  //data high
+//    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
+//    
+//    high_address = high_address + 0x08;
+//    low_address = low_address + 0x08;
+//    
+//    putChar(high_address);
+//    putChar(low_address);
+//
+//    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff)); //data low
+//    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
+    //FIXME:[finish]debug for write adc value
+    /*--------------------------------------------------*/
+}

@@ -163,6 +163,10 @@ void interrupt InterReceiver(void){
                     case 0x61:  //'a'
                         cutWire(RXDATA[2],RXDATA[3]);
                         break;
+                    case 0x68: //'h'
+                        measure1ChanelADC(RXDATA[3], RXDATA[4], RXDATA[5]);
+                        break;
+                        
                 }
             }
         }else{
@@ -327,19 +331,25 @@ void main(void) {
             __delay_ms(500);
         }*/
         putChar('m');
-       __delay_ms(1000);
+       __delay_ms(3000);
 //        FMPTT = 1;
 //        __delay_ms(2000);
 //        FMPTT = 0;
         //TODO check AD value
+//        ADC();
         //TODO send CW command
         //TODO send pulse to WDT
         
        /*----------------------------------------------------------*/
        //FIXME : method for test to measure ADC start
-       putChar(0x0a);
-       ADC();
-       putChar(0x0b);
+//       putChar(0xaa);
+//       putChar(0xaa);
+//       putChar(0xaa);
+//       measureAllChanelADC();
+//       measure1ChanelADC(EEPROM_address, adcValue_CH1_DATAHIGH_addressHigh, adcValue_CH1_DATAHIGH_addressLow);
+//       putChar(0xbb);
+//       putChar(0xbb);
+//       putChar(0xbb);
        //method for test to measure ADC finish
        /*----------------------------------------------------------*/
        

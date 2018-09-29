@@ -120,6 +120,34 @@ void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address
     __delay_ms(200);
 }
 
+/*
+ *  Read Data From EEPROM (the size od read data is only 1byte)
+ *	arg      :   EEPROM_address, high_address, low_address
+ *	return   :   EEPROM_address, high_address, low_address -> ReadData
+ *	TODO     :   debug  ---> finish
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
+    UBYTE Address = Address7Bytes << 1;
+    UBYTE ReadAddress = Address | 0x01;
+    UBYTE ReadData;
+   
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(high_address);    //Adress High Byte
+    I2CMasterWrite(low_address);    //Adress Low Byte
+    I2CMasterRepeatedStart();         //Restart condition
+    
+    I2CMasterWrite(ReadAddress);     //7 bit address + Read
+    
+    ReadData = I2CMasterRead(0); //Read + Acknowledge
+    
+    I2CMasterStop();          //Stop condition
+    return ReadData;
+    __delay_ms(200);  
+}
+
 void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
     UBYTE Address = Address7Bytes << 1;
     UBYTE ReadAddress = Address | 0x01;
