@@ -167,7 +167,7 @@ void interrupt InterReceiver(void){
         }else{
             
             putChar('D');
-            //ƒRƒ}ƒ“ƒhCRCƒ_ƒ‚¾‚Á‚½‚Ìˆ—
+            //?ï¿½ï¿½R?ï¿½ï¿½}?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½hCRC?ï¿½ï¿½_?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½
             //add error messege
         }
         RCIF = 0;
@@ -308,7 +308,7 @@ void interrupt InterReceiver(void){
 
 void main(void) {
     __delay_ms(1000);
-    /*‰Šú‰»*/
+    /*?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
@@ -331,7 +331,77 @@ void main(void) {
 //        __delay_ms(2000);
 //        FMPTT = 0;
         //TODO check AD value
+        
         //TODO send CW command
+        /*---------------------------------------------------------------*/
+        //FIXME:[start]debug for downlink CW signal
+        //debug:send morse 'V' 5 times
+        putChar(0xaa);
+        putChar(0xaa);
+        putChar(0xaa);
+        for(UBYTE i; i<5; i++){
+            Morse_V();
+            __delay_ms(1000);
+        }
+
+        //debug:translate binary to char
+        putChar(0xbb);
+        putChar(0xbb);
+        putChar(0xbb);
+        UBYTE _binary;
+        _binary = 0x05;
+        putChar(changeBinaryToChar(_binary));
+        _binary = 0xFF;
+        putChar(changeBinaryToChar(_binary));  //for check to defalt / X -> success
+        __delay_ms(1000);
+
+        //debug:DevideDataAndChangeBinaryToChar
+        putChar(0xcc);
+        putChar(0xcc);
+        putChar(0xcc);
+        UBYTE binary_data = 0x5A;
+        UBYTE char_data_highLow[2]; 
+        DevideDataAndChangeBinaryToChar (binary_data, char_data_highLow);
+        putChar(char_data_highLow[0]);  //'5'->success
+        putChar(char_data_highLow[1]);  //'A'->success
+        __delay_ms(1000);
+
+        //debug:send morse
+        putChar(0xdd);
+        putChar(0xdd);
+        putChar(0xdd);
+        for(UBYTE i; i<5; i++){
+            sendMorse(char_data_highLow); //morse signal '5'->delay(150ms)->'A'->success
+            __delay_ms(1000);
+        } 
+
+        //debug:send ReadOneByteDataFromEEPROMandSendMorse
+        putChar(0xee);
+        putChar(0xee);
+        putChar(0xee);
+        UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};
+        WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+        ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
+        __delay_ms(1000);
+        
+        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
+        putChar(0xff);
+        putChar(0xff);
+        putChar(0xff);
+        UBYTE ReadData[];
+        ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
+        __delay_ms(1000);
+        
+        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+        putChar(0x11);
+        putChar(0x11);
+        putChar(0x11);
+        ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
+        __delay_ms(1000);
+        
+        //FIXME:[finish]debug for downlink CW signal
+        /*---------------------------------------------------------------*/
+
         //TODO send pulse to WDT
         
     }

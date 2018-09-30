@@ -10,12 +10,32 @@
 
 #include "Type_define.h"
 
+//***Read Me!!!
+//***comentout methods are defined in FMCW.c
 
+/*Downlink Command*/
+void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
+
+/*Function : FM and CW downkink */
 void _NOP(void);
 
-void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
+/*FM*/
 void downlinkFMSignal(UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
+
+/*Function : CW downlink*/
 void Morse_V(void);
+ int changeCharMorse (char);
+ char changeBinaryToChar(UBYTE);
+ void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
+ void sendMorse(char*);
+void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
+// void CwDownlinkFR0(void);
+// void CwDownlinkFR1(void);
+// void CwDownlinkFR2(void);
+// void CwDownlinkFRXXX(void);
+void downlinkCWSignal(void);
 
 #endif	/* FMCW_H */
 
