@@ -30,22 +30,6 @@
 // Use project enums instead of #define for ON and OFF.
 
 //extern UBYTE commandData[DATA_SIZE];
-//void interrupt TimerReset(void){
-//    if(INTCONbits.TMR0IF){
-//        INTCONbits.TMR0IF = 0;
-//        TMR0 = 0x00;
-//        timer_counter++;
-//    }
-//    if(timer_counter >= 9766){
-//        timer_counter = 0;
-//        putChar('r');
-//    }
-//}
-//
-//void interrupt TimerCheck(void){
-////    putChar('r');
-//    delay_ms(1000);
-//}
 
 void main(void) {
     
@@ -167,8 +151,8 @@ void main(void) {
                 case 'E': /*EPS kill*/
                     Reset_EPS();
                     __delay_ms(5000);
-                    //?¿½È‰ï¿½?¿½Ìï¿½?¿½?¿½?¿½Íï¿½?¿½?¿½?¿½Ý’èŽž?¿½Æ•Ï‰ï¿½?¿½?¿½?¿½Ä‚ï¿½?¿½é‚½?¿½ß‚ï¿½?¿½?¿½?¿½x?¿½?¿½`
-                    //?¿½{?¿½?¿½?¿½È‚ï¿½Ï‰ï¿½?¿½?¿½?¿½é•¶?¿½?¿½?¿½?¿½?‘¼‚É—p?¿½Ó‚ï¿½?¿½?¿½?¿½Ù‚ï¿½?¿½?¿½?¿½Ç‚ï¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½È‚ï¿½
+                    //?ï¿½ï¿½È‰ï¿½?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Íï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ý’èŽž?ï¿½ï¿½Æ•Ï‰ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ä‚ï¿½?ï¿½ï¿½é‚½?ï¿½ï¿½ß‚ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½x?ï¿½ï¿½?ï¿½ï¿½`
+                    //?ï¿½ï¿½{?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½È‚ï¿½Ï‰ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½é•¶?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½É—p?ï¿½ï¿½Ó‚ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ù‚ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ç‚ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½È‚ï¿½
                     // values for Nprg are changed in setNprg function so they have to be reset
                     //TODO: make seperate function for set-up
                     int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
