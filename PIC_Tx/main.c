@@ -167,7 +167,7 @@ void interrupt InterReceiver(void);
 //         }else{
             
 //             putChar('D');
-//             //?¿½R?¿½}?¿½?¿½?¿½hCRC?¿½_?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½Ìï¿½?¿½?¿½
+//             //?ï¿½ï¿½R?ï¿½ï¿½}?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½hCRC?ï¿½ï¿½_?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½
 //             //add error messege
 //         }
 //         RCIF = 0;
@@ -270,6 +270,18 @@ void interrupt interReceiverTest( void ){
                 putChar('2');      
 
                 break;
+            case 'm':
+                putChar('F');
+                putChar('m');
+                CWKEY = 0;
+        //            __delay_ms(2000);
+                FMPTT = 1;
+                UBYTE EEPROMTestData[36];
+                for(i=0;i<36;i++) EEPROMTestData[i] = 'A';
+                SendPacket(EEPROMTestData);
+                __delay_ms(300);
+                
+
        }
        RCIF = 0;
    }
@@ -319,7 +331,7 @@ void interrupt interReceiverTest( void ){
 
 void main(void) {
     __delay_ms(1000);
-    /*?¿½?¿½?¿½?¿½?¿½?¿½*/
+    /*?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
