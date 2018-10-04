@@ -83,7 +83,12 @@ void main(void) {
 //    putch(0x00);
 //    RA1 = 0;
     while(1){
-        putch('m');
+//        putch('m');
+        while(1){
+            if(PORTDbits.RD4 == 0) putch(0x00);
+            else if(PORTDbits.RD4 == 1) putch(0x01);
+            else putch(0x02);
+        }
         /*
         while(1){
             //getbit();
