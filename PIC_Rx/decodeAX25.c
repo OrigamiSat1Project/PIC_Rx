@@ -212,15 +212,15 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
-    putChar('w');
+    //putChar('w');
     getData();
-    putChar('d');
+    //putChar('d');
     fcschecker = fcsCheck();
-    putChar('f');
-
+    //putChar('f');
+    
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
-            cdData[i] = dPacket[i+22];   //20: size of address+SSID+PID+"ori1"
+            cdData[i] = dPacket[i+20];     //[dPacket]0-5:UCALL / 6:SSID / 7-12:MYCALL / 13:SSID / 14:control / 15:PID / 16-19:'ori1' / 20-52:command data(=cdData) / 53,54:FCS 
         }
         dPacketCounter = 0;
         rcvState = 0;
