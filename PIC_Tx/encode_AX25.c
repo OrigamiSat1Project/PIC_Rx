@@ -80,10 +80,10 @@ UINT makePacket(UBYTE *eDataField,UBYTE *ePacket){
     ePacket[15] = 0xf0; //PID
     UINT Datanum = 0;
     for(Datanum=0;eDataField[Datanum] != '\0';Datanum++);
-    for(UINT i=0;i<Datanum;i++){
+    for(UINT i=0;i<36;i++){
         ePacket[16+i] = eDataField[i];
     }
-    return 16+Datanum;
+    return 16+36;
 }
 
 

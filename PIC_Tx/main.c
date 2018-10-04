@@ -167,7 +167,7 @@ void interrupt InterReceiver(void);
 //         }else{
             
 //             putChar('D');
-//             //?ï¿½ï¿½R?ï¿½ï¿½}?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½hCRC?ï¿½ï¿½_?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½
+//             //??¿½?¿½R??¿½?¿½}??¿½?¿½??¿½?¿½??¿½?¿½hCRC??¿½?¿½_??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½Ìï¿½??¿½?¿½??¿½?¿½
 //             //add error messege
 //         }
 //         RCIF = 0;
@@ -276,10 +276,18 @@ void interrupt interReceiverTest( void ){
                 CWKEY = 0;
         //            __delay_ms(2000);
                 FMPTT = 1;
+                __delay_ms(300);
                 UBYTE EEPROMTestData[36];
-                for(i=0;i<36;i++) EEPROMTestData[i] = 'A';
+                EEPROMTestData[0] = 'o';
+                EEPROMTestData[1] = 'r';
+                EEPROMTestData[2] = 'i';
+                EEPROMTestData[3] = '1';
+                for(int i=4;i<36;i++) EEPROMTestData[i] = 'A';
+                __delay_ms(300);
                 SendPacket(EEPROMTestData);
                 __delay_ms(300);
+                FMPTT = 0;
+                break;
                 
 
        }
@@ -331,7 +339,7 @@ void interrupt interReceiverTest( void ){
 
 void main(void) {
     __delay_ms(1000);
-    /*?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½*/
+    /*??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);

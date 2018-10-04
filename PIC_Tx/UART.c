@@ -14,12 +14,12 @@ UINT B0_select;
 UINT DownlinkTimes;
 
 void Init_SERIAL(void){
-    //SPBRG  = 10;                   // boudrate is  14400 bps
-    SPBRG  = 4;                      // boudrate is 115200 bps
+    SPBRG  = 10;                   // boudrate is  14400 bps
+//    SPBRG  = 4;                      // boudrate is 115200 bps
     GIE    = 1;
     PEIE   = 1;
-//    BRGH   = 0;                   	// Fast baudrate
-    BRGH   = 1;                     // slow baudrate
+    BRGH   = 0;                   	// Fast baudrate
+//    BRGH   = 1;                     // slow baudrate
 	SYNC   = 0;						// Asynchronous
 	SPEN   = 1;						// Enable serial port pins
 	CREN   = 1;						// Enable reception
