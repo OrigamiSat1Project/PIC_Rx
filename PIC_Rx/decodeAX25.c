@@ -13,8 +13,8 @@
 #define BIT_LOW 0x00                
 #define BIT_D_H 0x80                
 #define BIT_D_L 0x00                
-#define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
-#define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
+#define MYCALL "JQ1YCZ"             //call sign of Tokyo Tech
+#define UCALL  "JS1YAX"           //call sign of OrigamiSat-1
 
 //Global Data   
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
@@ -212,11 +212,11 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
-    //putChar('w');
+    putChar('w');
     getData();
-    //putChar('d');
+    putChar('d');
     fcschecker = fcsCheck();
-    //putChar('f');
+    putChar('f');
     
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
