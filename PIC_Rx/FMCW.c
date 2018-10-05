@@ -16,7 +16,7 @@ void sendLow(int unitID);
 void sendHigh(int unitID);
 void sendSTB(int unitID);
 int binaryToDecimal(int n);
-void setNprg(int unitID, int *Nprg);
+void setNprg(int unitID, int Nprg);
 void setNref(int unitID, int Nref);
 void setOptionRegister(int unitID);
 void _NOP(void);
@@ -124,7 +124,7 @@ void sendSTB(int unitID){
  * 3. Send group code '10'
  * 4. Send STB signal
  */
-void setNprg(int unitID, int *Nprg){
+void setNprg(int unitID, int Nprg){
     int Nprg_b[17];
     
     for(int i=0; i<17; i++){
@@ -264,7 +264,7 @@ void setOptionRegister(int unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMTX(int Nref, int *Nprg){
+void FMTX(int Nref, int Nprg){
     int fmtx = FMTX_ID;
     setOptionRegister(fmtx);
     setNref(fmtx, Nref);
@@ -278,7 +278,7 @@ void FMTX(int Nref, int *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void CWTX(int Nref, int *Nprg){
+void CWTX(int Nref, int Nprg){
     int cwtx = CWTX_ID;
     setOptionRegister(cwtx);
     setNref(cwtx, Nref);
@@ -292,7 +292,7 @@ void CWTX(int Nref, int *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMRX(int Nref, int *Nprg){
+void FMRX(int Nref, int Nprg){
     int fmrx = FMRX_ID;
     setOptionRegister(fmrx);
     setNref(fmrx, Nref);
@@ -343,7 +343,7 @@ int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
-//void SetPLL(int FMTX_Nref, int *FMTX_Nprg, int CWTX_Nref, int *CWTX_Nprg, int FMRX_Nref, int *FMRX_Nprg){
+//void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
 //    FMTX(FMTX_Nref, FMTX_Nprg);
 //    CWTX(CWTX_Nref, CWTX_Nprg);
 //    FMRX(FMRX_Nref, FMRX_Nprg);

@@ -22,9 +22,9 @@ int FMRX_Nref        =   2560;          // Nref = 2560 (const)
 int FMRX_Nprg        =   24916;         // Nprg = 24916 = (Frx - 21.4) / 0.05 [145.980MHz]
 
 //function declarations:
-void FMTX(int Nref, int *Nprg);
-void CWTX(int Nref, int *Nprg);
-void FMRX(int Nref, int *Nprg);
+void FMTX(int Nref, int Nprg);
+void CWTX(int Nref, int Nprg);
+void FMRX(int Nref, int Nprg);
 
 int calculateNref(UBYTE, UBYTE);
 int calculateNprg(UBYTE, UBYTE, UBYTE);
