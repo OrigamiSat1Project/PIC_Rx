@@ -166,10 +166,28 @@ void main(void) {
         
         /*-------------------------------------------------------------------*/
         //FIXME:for debug to test switch power supply start
-//        UBYTE onOff =0x01;
-//        UBYTE timeHigh = 0x00;
-//        UBYTE timeLow = 0x00;
-//        putChar(0xaa);
+        UBYTE onOff = 0x01;
+        UBYTE timeHigh = 0x02;
+        UBYTE timeLow = 0x00;
+        UBYTE Abyte = 2;
+        UINT aint = 2;
+        UWORD along = 2;
+        UWORD blong = 2000;
+        UWORD clong = 2000000;
+        
+        //__delay_s(2);succeed
+        //__delay_s(0x02);succeed
+        //_delay(((2)*(_XTAL_FREQ/4.0)));succeed
+        //_delay(((0x02)*(_XTAL_FREQ/4.0)));succeed
+        //_delay(((2.0)*(_XTAL_FREQ/4.0)));succeed
+        putChar(0xaa);
+        delay_s(timeHigh);
+        putChar(0xBC);  
+        delay_ms(blong);
+        putChar(0xDC);
+        delay_us(clong);
+        putChar(0xEC);
+        
 //        for(UBYTE i=1; i<10; i++){
 //            SEP_SW = HIGH;
 //            RBF_SW = HIGH;
@@ -181,14 +199,24 @@ void main(void) {
 //            __delay_ms(2000); 
 //        }
 //        for(UBYTE i=1; i<5; i++){
+//            putChar(i);
 //            onOff = 0x01;
 //            switchPowerEPS(onOff, timeHigh, timeLow);
 //            __delay_ms(1000);
 //            onOff = 0x00;
 //            switchPowerEPS(onOff, timeHigh, timeLow);
 //            __delay_ms(1000);            
-//        }    
-//        putChar(0xbb);
+//        }   
+        for(UBYTE i=1; i<5; i++){
+            putChar(i);
+            onOff = 0x01;
+            timeHigh = 0x02;
+            timeLow = 0x00;
+            switchPowerEPS(onOff, timeHigh, timeLow);
+            putChar(0xCA);
+            __delay_ms(2000);
+        }   
+        putChar(0xbb);
         //FIXME:for debug to test switch power supply finish
         /*-------------------------------------------------------------------*/
         

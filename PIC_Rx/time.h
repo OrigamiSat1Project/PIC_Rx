@@ -21,11 +21,13 @@
 
 #define __delay_us(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000000.0)))
 #define __delay_ms(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000.0)))
+#define __delay_s(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4.0)))
 
 #define HALF_INTERVAL   400   // half the time interval of one bit //decided by measurement
      
 
 //functions to wait [ms] or [us]
+void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 

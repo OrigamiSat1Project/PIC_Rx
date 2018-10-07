@@ -8,6 +8,16 @@
 //Global
 static UINT timer_counter_only_getChar = 0;
 
+void delay_s(UWORD sec)
+{
+	while(sec)
+	{
+		__delay_s(1);
+		sec--;
+	}	
+}
+
+
 //wait [ms] function
 void delay_ms(UWORD msec)
 {

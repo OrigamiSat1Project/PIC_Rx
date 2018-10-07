@@ -1028,80 +1028,81 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;typeDefine.h: 17: typedef unsigned short long USLONG;
 [; ;typeDefine.h: 18: typedef signed long SDWORD;
 [; ;typeDefine.h: 19: typedef unsigned long UDWORD;
-[; ;time.h: 29: void delay_ms(UWORD);
-[; ;time.h: 30: void delay_us(UWORD);
-[; ;time.h: 33: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 34: UINT get_timer_counter_only_getChar(void);
+[; ;time.h: 30: void delay_s(UWORD);
+[; ;time.h: 31: void delay_ms(UWORD);
+[; ;time.h: 32: void delay_us(UWORD);
+[; ;time.h: 35: void set_timer_counter_only_getChar(UINT);
+[; ;time.h: 36: UINT get_timer_counter_only_getChar(void);
 "9 time.c
 [v _timer_counter_only_getChar `ui ~T0 @X0 1 s ]
 [i _timer_counter_only_getChar
 -> -> 0 `i `ui
 ]
 [; ;time.c: 9: static UINT timer_counter_only_getChar = 0;
+"11
+[v _delay_s `(v ~T0 @X0 1 ef1`us ]
 "12
-[v _delay_ms `(v ~T0 @X0 1 ef1`us ]
-"13
 {
-[; ;time.c: 12: void delay_ms(UWORD msec)
-[; ;time.c: 13: {
-[e :U _delay_ms ]
+[; ;time.c: 11: void delay_s(UWORD sec)
+[; ;time.c: 12: {
+[e :U _delay_s ]
+"11
+[v _sec `us ~T0 @X0 1 r1 ]
 "12
-[v _msec `us ~T0 @X0 1 r1 ]
-"13
 [f ]
-[; ;time.c: 14: while(msec)
-"14
+[; ;time.c: 13: while(sec)
+"13
 [e $U 96  ]
 [e :U 97 ]
-[; ;time.c: 15: {
-"15
+[; ;time.c: 14: {
+"14
 {
-[; ;time.c: 16: _delay((unsigned long)((1)*(10000000/4000.0)));
+[; ;time.c: 15: _delay((unsigned long)((1)*(10000000/4.0)));
+"15
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4.0 `ul ]
+[; ;time.c: 16: sec--;
 "16
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;time.c: 17: msec--;
+[e -- _sec -> -> 1 `i `us ]
 "17
-[e -- _msec -> -> 1 `i `us ]
-"18
 }
 [e :U 96 ]
-"14
-[e $ != -> _msec `ui -> -> -> 0 `i `us `ui 97  ]
+"13
+[e $ != -> _sec `ui -> -> -> 0 `i `us `ui 97  ]
 [e :U 98 ]
+[; ;time.c: 17: }
 [; ;time.c: 18: }
-[; ;time.c: 19: }
-"19
+"18
 [e :UE 95 ]
 }
 "22
-[v _delay_us `(v ~T0 @X0 1 ef1`us ]
+[v _delay_ms `(v ~T0 @X0 1 ef1`us ]
 "23
 {
-[; ;time.c: 22: void delay_us(UWORD usec)
+[; ;time.c: 22: void delay_ms(UWORD msec)
 [; ;time.c: 23: {
-[e :U _delay_us ]
+[e :U _delay_ms ]
 "22
-[v _usec `us ~T0 @X0 1 r1 ]
+[v _msec `us ~T0 @X0 1 r1 ]
 "23
 [f ]
-[; ;time.c: 24: while(usec)
+[; ;time.c: 24: while(msec)
 "24
 [e $U 100  ]
 [e :U 101 ]
 [; ;time.c: 25: {
 "25
 {
-[; ;time.c: 26: _delay((unsigned long)((1)*(10000000/4000000.0)));
+[; ;time.c: 26: _delay((unsigned long)((1)*(10000000/4000.0)));
 "26
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;time.c: 27: usec--;
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;time.c: 27: msec--;
 "27
-[e -- _usec -> -> 1 `i `us ]
+[e -- _msec -> -> 1 `i `us ]
 "28
 }
 [e :U 100 ]
 "24
-[e $ != -> _usec `ui -> -> -> 0 `i `us `ui 101  ]
+[e $ != -> _msec `ui -> -> -> 0 `i `us `ui 101  ]
 [e :U 102 ]
 [; ;time.c: 28: }
 [; ;time.c: 29: }
@@ -1109,30 +1110,65 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 99 ]
 }
 "32
+[v _delay_us `(v ~T0 @X0 1 ef1`us ]
+"33
+{
+[; ;time.c: 32: void delay_us(UWORD usec)
+[; ;time.c: 33: {
+[e :U _delay_us ]
+"32
+[v _usec `us ~T0 @X0 1 r1 ]
+"33
+[f ]
+[; ;time.c: 34: while(usec)
+"34
+[e $U 104  ]
+[e :U 105 ]
+[; ;time.c: 35: {
+"35
+{
+[; ;time.c: 36: _delay((unsigned long)((1)*(10000000/4000000.0)));
+"36
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
+[; ;time.c: 37: usec--;
+"37
+[e -- _usec -> -> 1 `i `us ]
+"38
+}
+[e :U 104 ]
+"34
+[e $ != -> _usec `ui -> -> -> 0 `i `us `ui 105  ]
+[e :U 106 ]
+[; ;time.c: 38: }
+[; ;time.c: 39: }
+"39
+[e :UE 103 ]
+}
+"42
 [v _set_timer_counter_only_getChar `(v ~T0 @X0 1 ef1`ui ]
 {
-[; ;time.c: 32: void set_timer_counter_only_getChar(UINT time){
+[; ;time.c: 42: void set_timer_counter_only_getChar(UINT time){
 [e :U _set_timer_counter_only_getChar ]
 [v _time `ui ~T0 @X0 1 r1 ]
 [f ]
-[; ;time.c: 33: timer_counter_only_getChar = time;
-"33
+[; ;time.c: 43: timer_counter_only_getChar = time;
+"43
 [e = _timer_counter_only_getChar _time ]
-[; ;time.c: 34: }
-"34
-[e :UE 103 ]
+[; ;time.c: 44: }
+"44
+[e :UE 107 ]
 }
-"36
+"46
 [v _get_timer_counter_only_getChar `(ui ~T0 @X0 1 ef ]
 {
-[; ;time.c: 36: UINT get_timer_counter_only_getChar(void){
+[; ;time.c: 46: UINT get_timer_counter_only_getChar(void){
 [e :U _get_timer_counter_only_getChar ]
 [f ]
-[; ;time.c: 37: return timer_counter_only_getChar;
-"37
+[; ;time.c: 47: return timer_counter_only_getChar;
+"47
 [e ) _timer_counter_only_getChar ]
-[e $UE 104  ]
-[; ;time.c: 38: }
-"38
-[e :UE 104 ]
+[e $UE 108  ]
+[; ;time.c: 48: }
+"48
+[e :UE 108 ]
 }

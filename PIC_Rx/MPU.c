@@ -63,8 +63,10 @@ void debugLEDyellow(void){
 //bit invertState(bit pinState){
 UINT invertState(UINT pinState){
     if(pinState==HIGH){
+        putChar('L');
         return LOW;
     }else{
+        putChar('H');
         return HIGH;
     }
 }
@@ -164,42 +166,44 @@ void onEPS(void){
 void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
     /*-------------------------------------------------------*/
     //FIXME:for debug to test switch start
-//    if ( onOff == 0x00 ){        
-//            putChar(0x00);
-//            SEP_SW = LOW;
-//            RBF_SW = LOW;
-//            putChar(0x00);
-//    } else {                     
-//            putChar(0x01);
-//            SEP_SW = HIGH;
-//            RBF_SW = HIGH;
-//            putChar(0x01);
-//    }
-//    
-//    if(timeHigh == 0x00 && timeLow == 0x00){     
-//        putChar(0x02);
-//    }else if(timeLow == 0x00){                    
-//        __delay_ms(timeHigh);                     
-//        SEP_SW =invertState(onOff);
-//        RBF_SW =invertState(onOff);
-//        putChar(0x03);
-//    }else {                                      
-//        UWORD wait_time;
-//        wait_time = (timeHigh << 8 | timeLow);
-//        __delay_ms(wait_time);
-//        SEP_SW =invertState(onOff);
-//        RBF_SW =invertState(onOff);
-//        putChar(0x04);
-//    }
-    //FIXME:for debug to test switch finish
-    /*-------------------------------------------------------*/
-    if ( onOff == 0x00 ){   //low->ON     
+    if ( onOff == 0x00 ){        
+            putChar(0x00);
             SEP_SW = LOW;
             RBF_SW = LOW;
+            putChar(0x0a);
     } else {                     
+            putChar(0x01);
             SEP_SW = HIGH;
             RBF_SW = HIGH;
+            putChar(0x0b);
     }
+    
+    if(timeHigh == 0x00 && timeLow == 0x00){     
+        putChar(0x02);
+    }else if(timeLow == 0x00){                    
+        __delay_s(timeHigh);                     
+        SEP_SW =invertState(onOff);
+        RBF_SW =invertState(onOff);
+        putChar(0xFF);
+        putChar(timeHigh);
+        putChar(0x0c);
+    }else {                                      
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        __delay_s(wait_time);
+        SEP_SW =invertState(onOff);
+        RBF_SW =invertState(onOff);
+        putChar(0x0d);
+    }
+    //FIXME:for debug to test switch finish
+    /*-------------------------------------------------------*/
+//    if ( onOff == 0x00 ){   //low->ON     
+//            SEP_SW = LOW;
+//            RBF_SW = LOW;
+//    } else {                     
+//            SEP_SW = HIGH;
+//            RBF_SW = HIGH;
+//    }
 //    
 //    if(timeHigh == 0x00 && timeLow == 0x00){     
 //    }else if(timeLow == 0x00){                    
