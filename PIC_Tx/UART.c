@@ -8,17 +8,19 @@
 #include "WDT.h"
 #include "pinDefine.h"
 #include "CRC16.h"
-
+#include "time.h"
 
 UINT B0_select;
 UINT DownlinkTimes;
 
 void Init_SERIAL(void){
-    SPBRG  = 10;                   // boudrate is  14400 bps
-    //SPBRG  = 0;                      // boudrate is 115200 bps
+    //SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
+    //SPBRG  = 0;                      // boudrate is 115200 bps at BRGH = 0
+    SPBRG  = 4;                    // boudrate is 115200 bps at BRGH = 1
     GIE    = 1;
     PEIE   = 1;
-    BRGH   = 0;                   	// Fast baudrate
+    //BRGH   = 0;                   	// Fast baudrate
+    BRGH   = 1;                   	// slow baudrate
 	SYNC   = 0;						// Asynchronous
 	SPEN   = 1;						// Enable serial port pins
 	CREN   = 1;						// Enable reception
@@ -40,7 +42,10 @@ UBYTE getChar(void){                //TODO: add time out feature
         NOP();
         CREN = 1;
     }
-	while(!RCIF);
+    set_timer_counter_only_getChar(0);
+	while(!RCIF){                   //USART Receive Interrupt Flag bit
+        if(get_timer_counter_only_getChar() > 1000) break;
+    }
     return RCREG;
 }
 
@@ -62,6 +67,29 @@ UBYTE get3byte(void){                //TODO: add time out feature
 }
 
 
+/*
+ *	change Interrupt Permission
+ *	arg      :   GIE_status, PEIE_status
+ *               GIE: Global Interrupt Enable bit / PEIE: Peripheral Interrupt Enable bit
+ *	return   :   GIE_status : 1 -> Enables all unmasked interrupts, 0 -> Disables all interrupts
+ *               PEIE_status : 1 -> Enables all unmasked peripheral interrupts, 0 -> Disables all peripheral interrupts
+ *	TODO     :   debug--->finish
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
+    if (GIE_status == 0x01){
+        INTCONbits.GIE  = 1;
+    } else {
+        INTCONbits.GIE  = 0;
+    }
+    
+    if (PEIE_status == 0x01){
+        INTCONbits.PEIE  = 1;
+    } else {
+        INTCONbits.PEIE  = 0;
+    }
+}
 
 //void putstr(UBYTE *x)
 //{

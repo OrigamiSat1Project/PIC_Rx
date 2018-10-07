@@ -11,7 +11,8 @@
 #ifndef I2C_H
 #define	I2C_H
 
-#define I2Cbps 400000
+//#define I2Cbps 400000 //400kbps
+#define I2Cbps 100000 //100kbps
 #define I2Cnull 0xFF
 
 //for measure battery voltage

@@ -22,10 +22,14 @@
 #define TURN_ON_WAIT_TIME 2
 
 //ïsê≥ämÇ»delayä÷êî
+//functions to wait [ms] or [us]
 void delay_ms(UWORD);
 void delay_us(UWORD);
 void delay_s(UWORD);
 
+//timer counter only getChar
+void set_timer_counter_only_getChar(UINT);
+UINT get_timer_counter_only_getChar(void);
 
 #endif	/* TIME_H */
 

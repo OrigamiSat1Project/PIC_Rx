@@ -172,7 +172,7 @@ void interrupt InterReceiver(void){
         }else{
             
             putChar('D');
-            //ƒRƒ}ƒ“ƒhCRCƒ_ƒ‚¾‚Á‚½‚Ìˆ—
+            //ï¿½Rï¿½}ï¿½ï¿½ï¿½hCRCï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
             //add error messege
         }
         RCIF = 0;
@@ -313,7 +313,7 @@ void interrupt InterReceiver(void){
 
 void main(void) {
     __delay_ms(1000);
-    /*‰Šú‰»*/
+    /*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
@@ -352,6 +352,20 @@ void main(void) {
 //       putChar(0xbb);
        //method for test to measure ADC finish
        /*----------------------------------------------------------*/
+       
+       /*---------------------------------------------------------------*/
+       //FIXME:test for measure battery boltage start
+       UBYTE battery_voltage_data[battery_data_size];
+       putChar('V');
+       putChar('S');
+       measureBatteryVoltage(battery_voltage_data);
+       for(UBYTE i=0; i<battery_data_size; i++){
+           putChar(battery_voltage_data[i]);
+       }
+       putChar('V');
+       putChar('F');
+       //FIXME:test for measure battery boltage finish
+       /*---------------------------------------------------------------*/
        
     }
     //return;

@@ -28,6 +28,7 @@ void putChar(UBYTE c);                  // Writes a character to the serial port
 //void CwDownlink(UBYTE RXDATA[]);
 //void Antenna(UBYTE RXDATA[]);
 UBYTE getChar(void);
+void changeInterruptPermission(UBYTE, UBYTE);
 //void interrupt InterReceiver(void);
 #ifdef	__cplusplus
 }

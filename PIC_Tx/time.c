@@ -4,7 +4,10 @@
 #include "Type_define.h"
 #include "time.h"
 /**/
-//msウェイト関数
+
+static UINT timer_counter_only_getChar = 0;
+
+//wait [ms] function
 void delay_ms(UWORD msec)
 {
 	while(msec)
@@ -14,7 +17,7 @@ void delay_ms(UWORD msec)
 	}	
 }
 
-//usウェイト関数
+//wait [us] function
 void delay_us(UWORD usec)
 {
 	while(usec)
@@ -24,7 +27,7 @@ void delay_us(UWORD usec)
 	}	
 }
 
-//sウェイト関数
+//wait [s] function
 void delay_s(UWORD sec)
 {
 	while(sec)
@@ -32,4 +35,13 @@ void delay_s(UWORD sec)
 		__delay_s(1);
 		sec--;
 	}	
+}
+
+//timer counter only getChar
+void set_timer_counter_only_getChar(UINT time){
+    timer_counter_only_getChar = time;
+}
+
+UINT get_timer_counter_only_getChar(void){
+    return timer_counter_only_getChar;
 }
