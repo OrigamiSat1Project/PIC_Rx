@@ -148,6 +148,7 @@ UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
     __delay_ms(200);  
 }
 
+//TODO:need debug
 void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
     UBYTE Address = Address7Bytes << 1;
     UBYTE ReadAddress = Address | 0x01;
