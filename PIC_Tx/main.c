@@ -76,23 +76,24 @@ void interrupt InterReceiver(void){
     
     int commandSize;
     commandSize = 10;
-    //commandSize = 1;
     
     UBYTE RXDATA[10];//array size = commandSize
-    //UBYTE RXDATA[1];//array size = commandSize
-
-    //    UBYTE RXDATA[COMMAND_SIZE];
 //    volatile static int intr_counter;
 
     if (RCIF == 1) {
-        for (int i = 0; i < 1; i++){
+        for (int i = 0; i < commandSize; i++){
             RXDATA[i] = getChar();
-//            putChar(RXDATA[i]);
         }
-        for (int i = 0; i < 1; i++){
+        
+        /*----------------------------------------------*/
+        //FIXME:[start]debug for test to getChar
+        for (int i = 0; i < commandSize; i++){
             putChar(RXDATA[i]);
             NOP();
         }
+        //FIXME:[finish]debug for test to getChar
+        /*----------------------------------------------*/
+        
        //TODO add case RXDATA[0]!=t or g
         UWORD crcResult, crcValue;
         UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
@@ -103,15 +104,21 @@ void interrupt InterReceiver(void){
         crcValueHigh = crcValue>>8;
         crcValueLow = crcValue & 0x00FF;
         
+        /*----------------------------------------------*/
+        //FIXME:[start]debug for test to CRCcheck
         putChar(crcResultHigh);
         putChar(crcResultLow);
         putChar(crcValueHigh);
         putChar(crcValueLow);
+        //FIXME:[finish]debug for test to CRCcheck
+        /*----------------------------------------------*/
         
         if(crcResult == crcValue){
             putChar('C');
             
             if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
+                //RXDATA[0]Ç™tÇ‚gÇ≈Ç»Ç©Ç¡ÇΩéûÇÃèàóù
+                //TODO:add error messege
             } else {
                 switch(RXDATA[1]){
                     case 0x75:  //'u'
@@ -120,44 +127,8 @@ void interrupt InterReceiver(void){
                         break;
                     case 0x63: //'c'
     //                    CwDownLink(RXDATA);
-                        putChar('C');
-                        putChar('W');
-                        CWKEY = 1;
-                        __delay_ms(50);
-                        CWKEY = 0;
-                        __delay_ms(50);
-
-                        CWKEY = 1;
-                        __delay_ms(50);
-                        CWKEY = 0;
-                        __delay_ms(50);
-
-                        CWKEY = 1;
-                        __delay_ms(50);
-                        CWKEY = 0;
-                        __delay_ms(50);
-
-                        CWKEY = 1;
-                        __delay_ms(150);
-                        CWKEY = 0;
-                        __delay_ms(50);
-                        putChar('C');
-                        putChar('W');
-
                         break;
                     case 0x66:  //'f'
-                        putChar('F');
-                        putChar('M');
-                        __delay_ms(2000);
-                        FMPTT = 1;
-                        __delay_ms(2000);
-                        FMPTT = 0;
-                        __delay_ms(2000);
-                        FMPTT = 1;
-                        __delay_ms(2000);
-                        FMPTT = 0;
-                        putChar('F');
-                        putChar('M');
                         downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                         break;
                     case 0x61:  //'a'
