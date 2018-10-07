@@ -24,10 +24,11 @@ void downlinkFMSignal(UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
 
 /*Function : CW downlink*/
 void Morse_V(void);
- int changeCharMorse (char);
- char changeBinaryToChar(UBYTE);
- void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
- void sendMorse(char*);
+int changeCharMorse (char);
+char changeBinaryToChar(UBYTE);
+void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
+void sendMorse(char*);
+void sendMorsenew(char*,size_t);
 void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
 void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
 void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);

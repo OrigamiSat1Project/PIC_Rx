@@ -70,108 +70,108 @@ void interrupt InterReceiver(void);
 //}
 
 
-void interrupt InterReceiver(void){
-    putChar('I');
-    
-    int commandSize;
-    commandSize = 10;
-    //commandSize = 1;
-    
-    UBYTE RXDATA[10];//array size = commandSize
-    //UBYTE RXDATA[1];//array size = commandSize
-
-    //    UBYTE RXDATA[COMMAND_SIZE];
-//    volatile static int intr_counter;
-
-    if (RCIF == 1) {
-        for (int i = 0; i < 1; i++){
-            RXDATA[i] = getChar();
+//void interrupt InterReceiver(void){
+//    putChar('I');
+//    
+//    int commandSize;
+//    commandSize = 10;
+//    //commandSize = 1;
+//    
+//    UBYTE RXDATA[10];//array size = commandSize
+//    //UBYTE RXDATA[1];//array size = commandSize
+//
+//    //    UBYTE RXDATA[COMMAND_SIZE];
+////    volatile static int intr_counter;
+//
+//    if (RCIF == 1) {
+//        for (int i = 0; i < 1; i++){
+//            RXDATA[i] = getChar();
+////            putChar(RXDATA[i]);
+//        }
+//        for (int i = 0; i < 1; i++){
 //            putChar(RXDATA[i]);
-        }
-        for (int i = 0; i < 1; i++){
-            putChar(RXDATA[i]);
-            NOP();
-        }
-       //TODO add case RXDATA[0]!=t or g
-        UWORD crcResult, crcValue;
-        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
-        crcResult = crc16(0,RXDATA,8);
-        crcValue =  CRC_check(RXDATA,8);
-        crcResultHigh = crcResult>>8;
-        crcResultLow = crcResult & 0x00FF;
-        crcValueHigh = crcValue>>8;
-        crcValueLow = crcValue & 0x00FF;
-        
-        putChar(crcResultHigh);
-        putChar(crcResultLow);
-        putChar(crcValueHigh);
-        putChar(crcValueLow);
-        
-        if(crcResult == crcValue){
-            putChar('C');
-            
-            if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
-            } else {
-                switch(RXDATA[1]){
-                    case 0x75:  //'u'
-                        putChar('R');                        
-                        downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-                        break;
-                    case 0x63: //'c'
-    //                    CwDownLink(RXDATA);
-                        putChar('C');
-                        putChar('W');
-                        CWKEY = 1;
-                        __delay_ms(50);
-                        CWKEY = 0;
-                        __delay_ms(50);
-
-                        CWKEY = 1;
-                        __delay_ms(50);
-                        CWKEY = 0;
-                        __delay_ms(50);
-
-                        CWKEY = 1;
-                        __delay_ms(50);
-                        CWKEY = 0;
-                        __delay_ms(50);
-
-                        CWKEY = 1;
-                        __delay_ms(150);
-                        CWKEY = 0;
-                        __delay_ms(50);
-                        putChar('C');
-                        putChar('W');
-
-                        break;
-                    case 0x66:  //'f'
-                        putChar('F');
-                        putChar('M');
-                        __delay_ms(2000);
-                        FMPTT = 1;
-                        __delay_ms(2000);
-                        FMPTT = 0;
-                        __delay_ms(2000);
-                        FMPTT = 1;
-                        __delay_ms(2000);
-                        FMPTT = 0;
-                        putChar('F');
-                        putChar('M');
-                        downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6], RXDATA[7]);
-                        break;
-                    case 0x61:  //'a'
-                        cutWire(RXDATA[2],RXDATA[3]);
-                        break;
-                }
-            }
-        }else{
-            
-            putChar('D');
-            //?ÔøΩÔøΩR?ÔøΩÔøΩ}?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩhCRC?ÔøΩÔøΩ_?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩÃèÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ
-            //add error messege
-        }
-        RCIF = 0;
-    }
+//            NOP();
+//        }
+//       //TODO add case RXDATA[0]!=t or g
+//        UWORD crcResult, crcValue;
+//        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
+//        crcResult = crc16(0,RXDATA,8);
+//        crcValue =  CRC_check(RXDATA,8);
+//        crcResultHigh = crcResult>>8;
+//        crcResultLow = crcResult & 0x00FF;
+//        crcValueHigh = crcValue>>8;
+//        crcValueLow = crcValue & 0x00FF;
+//        
+//        putChar(crcResultHigh);
+//        putChar(crcResultLow);
+//        putChar(crcValueHigh);
+//        putChar(crcValueLow);
+//        
+//        if(crcResult == crcValue){
+//            putChar('C');
+//            
+//            if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
+//            } else {
+//                switch(RXDATA[1]){
+//                    case 0x75:  //'u'
+//                        putChar('R');                        
+//                        downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+//                        break;
+//                    case 0x63: //'c'
+//    //                    CwDownLink(RXDATA);
+//                        putChar('C');
+//                        putChar('W');
+//                        CWKEY = 1;
+//                        __delay_ms(50);
+//                        CWKEY = 0;
+//                        __delay_ms(50);
+//
+//                        CWKEY = 1;
+//                        __delay_ms(50);
+//                        CWKEY = 0;
+//                        __delay_ms(50);
+//
+//                        CWKEY = 1;
+//                        __delay_ms(50);
+//                        CWKEY = 0;
+//                        __delay_ms(50);
+//
+//                        CWKEY = 1;
+//                        __delay_ms(150);
+//                        CWKEY = 0;
+//                        __delay_ms(50);
+//                        putChar('C');
+//                        putChar('W');
+//
+//                        break;
+//                    case 0x66:  //'f'
+//                        putChar('F');
+//                        putChar('M');
+//                        __delay_ms(2000);
+//                        FMPTT = 1;
+//                        __delay_ms(2000);
+//                        FMPTT = 0;
+//                        __delay_ms(2000);
+//                        FMPTT = 1;
+//                        __delay_ms(2000);
+//                        FMPTT = 0;
+//                        putChar('F');
+//                        putChar('M');
+//                        downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6], RXDATA[7]);
+//                        break;
+//                    case 0x61:  //'a'
+//                        cutWire(RXDATA[2],RXDATA[3]);
+//                        break;
+//                }
+//            }
+//        }else{
+//            
+//            putChar('D');
+//            //??øΩ?øΩR??øΩ?øΩ}??øΩ?øΩ??øΩ?øΩ??øΩ?øΩhCRC??øΩ?øΩ_??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩÃèÔøΩ??øΩ?øΩ??øΩ?øΩ
+//            //add error messege
+//        }
+//        RCIF = 0;
+//    }
 //    if ( PIR1bits.TMR1IF == 1 ) {
 //        TMR1 = TIMER_INTERVAL;  // ?????????
 // 
@@ -190,7 +190,7 @@ void interrupt InterReceiver(void){
 //    }   
 // 
 //    return;
-}
+//}
 
 
 
@@ -308,7 +308,7 @@ void interrupt InterReceiver(void){
 
 void main(void) {
     __delay_ms(1000);
-    /*?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ?ÔøΩÔøΩ*/
+    /*??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ??øΩ?øΩ*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
@@ -324,80 +324,144 @@ void main(void) {
             //debug_ledy();   //6us
             putch('O');
             __delay_ms(500);
-        }*/
-        putChar('m');
-       __delay_ms(10000);
+//        }*/
+//        putChar('m');
+//       __delay_ms(1000);
 //        FMPTT = 1;
+//        UBYTE eDataField[36];
+//        for(UBYTE i=0; i<36; i++){
+//            eDataField[i] = i;
+//        }
+//        SendPacket(eDataField);
 //        __delay_ms(2000);
-//        FMPTT = 0;
+        FMPTT = 0;
+        
+//       __delay_ms(1000);
+//        CWKEY = 1;
+//        __delay_ms(2000);
+//        CWKEY =0;
         //TODO check AD value
         
         //TODO send CW command
         /*---------------------------------------------------------------*/
         //FIXME:[start]debug for downlink CW signal
+//        FMPTT = 0; 
+//        CWKEY = 1;
+
         //debug:send morse 'V' 5 times
-        putChar(0xaa);
-        putChar(0xaa);
-        putChar(0xaa);
-        for(UBYTE i; i<5; i++){
-            Morse_V();
-            __delay_ms(1000);
+        for(UBYTE i=0; i<5; i++){
+////            Morse_V();
+            CWKEY = 1;
+            __delay_us(197400);
+            CWKEY = 0;
+            __delay_us(65800);
+
+            CWKEY = 1;
+            __delay_us(65800);
+            CWKEY = 0;
+            __delay_us(65800);
+
+            CWKEY = 1;
+            __delay_us(197400);
+            CWKEY = 0;
+            __delay_us(65800);
+
+            CWKEY = 1;
+            __delay_us(197400);
+            CWKEY = 0;
+            __delay_us(460600);
+            
+            
+            
+            CWKEY = 1;
+            __delay_us(65800);
+            CWKEY = 0;
+            __delay_us(65800);
+
+            CWKEY = 1;
+            __delay_us(197400);
+            CWKEY = 0;
+            __delay_us(65800);
+
+            CWKEY = 1;
+            __delay_us(197400);
+            CWKEY = 0;
+            __delay_us(65800);
+
+            CWKEY = 1;
+            __delay_us(197400);
+            CWKEY = 0;
+            __delay_us(460600);            
         }
-
-        //debug:translate binary to char
-        putChar(0xbb);
-        putChar(0xbb);
-        putChar(0xbb);
-        UBYTE _binary;
-        _binary = 0x05;
-        putChar(changeBinaryToChar(_binary));
-        _binary = 0xFF;
-        putChar(changeBinaryToChar(_binary));  //for check to defalt / X -> success
-        __delay_ms(1000);
-
-        //debug:DevideDataAndChangeBinaryToChar
-        putChar(0xcc);
-        putChar(0xcc);
-        putChar(0xcc);
-        UBYTE binary_data = 0x5A;
+        
+        //debug send morse char
+        UBYTE test_morse[4];
+        test_morse[0] = 'O';
+        test_morse[1] = 'r';
+        test_morse[2] = 'i';
+        test_morse[3] = '1';
+        sendMorsenew(test_morse,sizeof(test_morse)/sizeof(test_morse[0]));
+        
+        putChar(0xDD);
+        putChar(sizeof(test_morse));
+        putChar(sizeof(test_morse[0]));
+        int data_size = sizeof(test_morse)/sizeof(test_morse[0]);
+        putChar(data_size);
+//        
+//        //debug:translate binary to char
+////        putChar(0xbb);
+//        putChar(0xbb);
+//        putChar(0xbb);
+//        UBYTE _binary;
+//        _binary = 0x05;
+//        putChar(changeBinaryToChar(_binary));
+//        _binary = 0xFF;
+//        putChar(changeBinaryToChar(_binary));  //for check to defalt / X -> success
+//        __delay_ms(1000);
+//
+//        //debug:DevideDataAndChangeBinaryToChar
+////        putChar(0xcc);
+////        putChar(0xcc);
+////        putChar(0xcc);
+        UBYTE binary_data = 0xF3;
         UBYTE char_data_highLow[2]; 
         DevideDataAndChangeBinaryToChar (binary_data, char_data_highLow);
-        putChar(char_data_highLow[0]);  //'5'->success
-        putChar(char_data_highLow[1]);  //'A'->success
-        __delay_ms(1000);
-
-        //debug:send morse
-        putChar(0xdd);
-        putChar(0xdd);
-        putChar(0xdd);
-        for(UBYTE i; i<5; i++){
-            sendMorse(char_data_highLow); //morse signal '5'->delay(150ms)->'A'->success
-            __delay_ms(1000);
+//        putChar(char_data_highLow[0]);  //'5'->success
+//        putChar(char_data_highLow[1]);  //'A'->success
+////        __delay_ms(1000);
+////
+////        //debug:send morse
+//////        putChar(0xdd);
+//////        putChar(0xdd);
+//////        putChar(0xdd);
+        for(UBYTE i=0; i<5; i++){
+            sendMorsenew(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0])); //morse signal '5'->delay(150ms)->'A'->success
+//            __delay_ms(1000);
         } 
-
-        //debug:send ReadOneByteDataFromEEPROMandSendMorse
-        putChar(0xee);
-        putChar(0xee);
-        putChar(0xee);
-        UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};
-        WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
-        ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
-        __delay_ms(1000);
-        
-        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
-        putChar(0xff);
-        putChar(0xff);
-        putChar(0xff);
-        UBYTE ReadData[];
-        ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
-        __delay_ms(1000);
-        
-        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
-        putChar(0x11);
-        putChar(0x11);
-        putChar(0x11);
-        ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
-        __delay_ms(1000);
+////
+////        //debug:send ReadOneByteDataFromEEPROMandSendMorse
+////        putChar(0xee);
+////        putChar(0xee);
+////        putChar(0xee);
+//        UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};  //'T'=0x54 / 0b10100111 = 0xA7
+//        WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+//        ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
+////       __delay_ms(1000);
+////        
+////        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
+////        putChar(0xff);
+////        putChar(0xff);
+////        putChar(0xff);
+//        UBYTE ReadData[];
+//        ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
+//        __delay_ms(1000);
+//        
+//        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+//        putChar(0x11);
+//        putChar(0x11);
+//        putChar(0x11);
+//        ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
+//        __delay_ms(1000);
         
         //FIXME:[finish]debug for downlink CW signal
         /*---------------------------------------------------------------*/

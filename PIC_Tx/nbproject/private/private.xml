@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/encode_AX25.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/I2C.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/FMCW.h</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/main.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/IMU.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/Type_define.h</file>
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/FMCW.c</file>
-            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/EEPROM.h</file>
         </group>
     </open-files>
 </project-private>
