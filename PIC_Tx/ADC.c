@@ -34,6 +34,8 @@
 /*******************************************************************************
 *method
 ******************************************************************************/
+void initADC(void);
+UWORD adc_read();
 void setAddressEEPROM(void);
 
 UWORD adcValue[CHANEL_SIZE];
@@ -250,13 +252,23 @@ void measureAllChanelADC(){
     /*--------------------------------------------------*/
     
     //Update every second
-    __delay_ms(1000);
+    // __delay_ms(1000);
     //Set clears if necessary
 
 return;
 }
 
-void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
+/**
+ * measure 1Chanel (DC-DC temperature)
+ * 1. select chanel
+ * 2. read ADC data (**the size of data is 2byte)
+ * 3. write to main and sub EEPROM 
+ * arg     : slaveaddress, high_address, low_address
+ * return  : ---
+ * TODO    : debug 
+ * 
+*/
+void measureDcDcTemperature(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
     
     initADC();    
         
@@ -266,12 +278,16 @@ void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address
     adcValue[0] = adc_read();
     
     /*write data to EEPROM*/
-    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     //data High
+    //data high
+    WriteOneByteToEEPROM(EEPROM_address, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     
+    WriteOneByteToEEPROM(EEPROM_subaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     
     
     high_address = high_address + 0x08;
     low_address = low_address + 0x08;
 
-    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));   //data Low
+    //data low
+    WriteOneByteToEEPROM(EEPROM_address, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));  
     
     /*--------------------------------------------------*/
     //FIXME:[start]debug for write adc value--->successs
@@ -292,4 +308,41 @@ void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address
 //    putChar(ReadEEPROM(slaveaddress, high_address, low_address));
     //FIXME:[finish]debug for write adc value
     /*--------------------------------------------------*/
+}
+
+/**
+ * measure 1 channle and downlinl the data 
+ * 1. select chanel
+ * 2. read ADC data (**the size of data is 2byte)
+ * 3. write to EEPROM
+ * 4. downlink the data 
+ * arg     : slaveaddress, high_address, low_address
+ * return  : ---
+ * TODO    : debug 
+ * 
+*/
+void measureValueAndDownlink(UBYTE channel_select, UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
+    measureAllChanelADC();
+    //TODO:add data downlink
+}
+
+//process command data if the command type is 'HKdata'
+void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE data3){ 
+   switch(type_sellect){    
+        case 'd': //measure DC-DC temperature
+            measureDcDcTemperature(data1, data2, data3);
+            break;
+        case '5': //5VBUS 
+            break;
+        case '3': //3VBUS
+            break;
+        case 'C': //5V CIB
+            break;
+        case 'u': //update all HK data
+            measureAllChanelADC();
+            break;
+        default:
+            //TODO: error message
+            break;
+   }
 }

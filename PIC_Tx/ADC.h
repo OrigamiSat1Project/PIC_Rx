@@ -10,10 +10,9 @@
 
 #define CHANEL_SIZE 4
 
-void initADC(void);
-UWORD adc_read();
 void measureAllChanelADC(void);
-void measure1ChanelADC(UBYTE, UBYTE, UBYTE);
+void measureDcDcTemperature(UBYTE, UBYTE, UBYTE); 
+void commandSwitchHKdata(UBYTE, UBYTE, UBYTE, UBYTE);
 
 #endif	/* ADC_H */
 

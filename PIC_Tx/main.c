@@ -164,7 +164,7 @@ void interrupt InterReceiver(void){
                         cutWire(RXDATA[2],RXDATA[3]);
                         break;
                     case 0x68: //'h'
-                        measure1ChanelADC(RXDATA[3], RXDATA[4], RXDATA[5]);
+                        measureDcDcTemperature(RXDATA[3], RXDATA[4], RXDATA[5]);
                         break;
                         
                 }
@@ -346,7 +346,6 @@ void main(void) {
 //       putChar(0xaa);
 //       putChar(0xaa);
 //       measureAllChanelADC();
-//       measure1ChanelADC(EEPROM_address, adcValue_CH1_DATAHIGH_addressHigh, adcValue_CH1_DATAHIGH_addressLow);
 //       putChar(0xbb);
 //       putChar(0xbb);
 //       putChar(0xbb);
