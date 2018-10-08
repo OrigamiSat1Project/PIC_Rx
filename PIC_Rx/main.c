@@ -59,7 +59,7 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
             }
             */
         }else{
-            ///TODO:ƒRƒ}ƒ“ƒhCRCƒ_ƒ‚¾‚Á‚½‚Ìˆ—
+            ///TODO:ï¿½Rï¿½}ï¿½ï¿½ï¿½hCRCï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
         }
     }
 }
@@ -94,6 +94,17 @@ void main(void) {
             //debugLEDyellow();   //6us
         //}
         
+        /*-------------------------------------------------------------------*/
+        //FIME:debug for test to change UART baud rate start 
+//        UBYTE c;
+//        c = getChar();
+//        c++;
+//        putChar(c);
+        // for(UBYTE i=1; i<20; i++){
+        // putChar(i);
+        // }
+        //FIME:debug for test to change UART baud rate finish 
+        /*-------------------------------------------------------------------*/
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
@@ -231,8 +242,8 @@ void main(void) {
 //                case 'E': /*EPS kill*/
 //                    Reset_EPS();
 //                    __delay_ms(5000);
-//                    //ˆÈ‰º‚Ì”š‚Í‰Šúİ’è‚Æ•Ï‰»‚µ‚Ä‚¢‚é‚½‚ß‚à‚¤ˆê“x’è‹`
-//                    //–{—ˆ‚È‚ç•Ï‰»‚·‚é•¶š—ñ‚ğ‘¼‚É—pˆÓ‚µ‚½‚Ù‚¤‚ª—Ç‚¢‚©‚à‚µ‚ê‚È‚¢
+//                    //ï¿½È‰ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Íï¿½ï¿½ï¿½ï¿½İ’èï¿½Æ•Ï‰ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚½ï¿½ß‚ï¿½ï¿½ï¿½xï¿½ï¿½`
+//                    //ï¿½{ï¿½ï¿½ï¿½È‚ï¿½Ï‰ï¿½ï¿½ï¿½ï¿½é•¶ï¿½ï¿½ï¿½ï¿½ğ‘¼‚É—pï¿½Ó‚ï¿½ï¿½ï¿½ï¿½Ù‚ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
 //                    // values for Nprg are changed in setNprg function so they have to be reset
 //                    //TODO: make seperate function for set-up
 //                    int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
