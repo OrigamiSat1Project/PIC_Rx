@@ -1,4 +1,5 @@
 #include <xc.h>
+#include	<stdio.h>
 //#include <PIC16F887.h>
 #include "UART.h"
 //#include "InitMPU.h"
@@ -14,24 +15,21 @@
 #define BIT_D_L 0x00                
 #define UCALL "JQ1YCZ"             //call sign of Tokyo Tech
 #define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
-#define PACKET_SIZE 52
-#define DATA_SIZE 32
 
-//Global Data
-//const UINT PACKET_SIZE = 52;
-//const UINT DATA_SIZE = 32;       
+//Global Data   
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
 UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
+
 //Methods
 void waitFlag(void);
 void getData(void);
 void putAX25(void);
 UINT fcsCheck(void);
-
+//UBYTE readByte(void);
 
   
 // reads bit using NRZ (Non-return-to-zero space)
@@ -43,7 +41,7 @@ UINT getBit(void){
     for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
-            //LED_YELLOW= 1- LED_YELLOW;       //for debugging  
+//            LED_YELLOW= 1- LED_YELLOW;       //for debugging  
             return 0;
         }
     }
@@ -73,6 +71,7 @@ UBYTE readByte(void){
 void waitFlag(void){
     UINT readBit;
     UBYTE buf = 0xff;
+    UINT callCounter = 0;
     rcvState = 0;
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
@@ -85,32 +84,28 @@ void waitFlag(void){
             }
         }
         
-        //TODO: while抜けた後のbufはフラグではなくucallの先頭1バイト分．やり方は違うほうが良い気がする．
-        //ビット詰めされたらその分間違えてバッファに格納してしまう
-        //TODO: buf after missing is not the flag but the first 1 byte of ucall. I feel that a different way is better.
-        // If it is bit-packed, it wrongly wrongly stores it in the buffer
+        /*Search for extra flags and skip them until different byte is read in*/
         while(buf == FLAG_AX25){
             buf = readByte();
         }
         /*check for call sign of Tokyo Tech (MYCALL) and store it if correct*/
-        UINT callCounter = 0;       //should not exceed length of Call array
-        UINT correctMYCALL = 0;     // 0 = correct byte, 1 = incorrect byte
-        while(callCounter<6 && correctMYCALL == 0){
+        callCounter = 0;       //should not exceed length of Call array
+        while((callCounter<6)){
             if(buf == (MYCALL[callCounter] << 1)){
                 if(callCounter < 5){
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
                     buf = readByte();
                     callCounter++;
-                }else{      //if last MYCALL byte is correct as well change receive state to 1 and don' read in new byte
+                }else{      //if last MYCALL byte is correct as well change receive state to 1 and don't read in new byte
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
+                    callCounter++;
                     rcvState ++;                
                 }  
             }else{                                                  //if byte is incorrect reset counter and return to waiting for flag
-                correctMYCALL = 1;
                 dPacketCounter = 0;
-                callCounter = 0;
+                callCounter = 6;
             }
         }
         
@@ -121,28 +116,28 @@ void waitFlag(void){
         
         /*if MyCall was correct: check for call sign of OrigamiSat-1 (UCALL) and store it if correct*/
         buf = readByte();
-        UINT correctUCALL = 0;     // 0 = correct byte, 1 = incorrect byte
-        while(callCounter<6 && correctMYCALL == 0 && correctUCALL == 0){
+        callCounter = 0;
+        while((callCounter<6)){
             if(buf == (UCALL[callCounter] << 1)){
                 if(callCounter < 5){
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
                     buf = readByte();
                     callCounter++;
-                }else{      //if last UCALL byte is correct as well change receive state to 1 and don' read in new byte
+                }else{      //if last UCALL byte is correct as well change receive state to 2 and don't read in new byte
                     dPacket[dPacketCounter] = buf;
                     dPacketCounter ++;
+                    callCounter++;
                     rcvState ++;                
                 } 
             }else{                                                  //if byte is incorrect reset counter and return to waiting for flag
-                correctUCALL = 1;
                 dPacketCounter = 0;
-                callCounter = 0;
+                callCounter = 6;
+                rcvState = 0;
             }
         }
     }
 }
-
 
 //function for storing data considering the dummy bit X after 11111X 
 void getData(void){
@@ -212,24 +207,29 @@ UINT fcsCheck(void){
     }
 }
 
-UBYTE *receiveDataPacket(void){
+//UBYTE *receiveDataPacket(void){
+void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
+    //putChar('w');
     getData();
+    //putChar('d');
     fcschecker = fcsCheck();
+    //putChar('f');
     
     if(fcschecker == 1){    //valid data is stored in dData
         for(UINT i=0; i<DATA_SIZE; i++){
-            dData[i] = dPacket[i+(PACKET_SIZE-DATA_SIZE)];                                     
+            cdData[i] = dPacket[i+20];     //[dPacket]0-5:UCALL / 6:SSID / 7-12:MYCALL / 13:SSID / 14:control / 15:PID / 16-19:'ori1' / 20-52:command data(=cdData) / 53,54:FCS 
         }
         dPacketCounter = 0;
         rcvState = 0;
-        return dData;
-    }else{                  //the data is invalid everything gets reset and data ignored
+        
+//        return cdData;
+    }else{                  //the data is invalid everything gets reset and data ignored //TODO check this function by test
         dPacketCounter = 0;
         rcvState = 0;
-        return 0x00;
+//        return 0x00;
     }
 }
 
