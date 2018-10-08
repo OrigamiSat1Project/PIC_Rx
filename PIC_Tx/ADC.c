@@ -256,6 +256,16 @@ void measureAllChanelADC(){
 return;
 }
 
+/**
+ * measure 1Chanel (DC-DC temperature)
+ * 1. select chanel
+ * 2. read ADC data (**the size of data is 2byte)
+ * 3. write to EEPROM 
+ * arg     : slaveaddress, high_address, low_address
+ * return  : ---
+ * TODO    : debug ---> finish
+ * 
+*/
 void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
     
     initADC();    
@@ -293,3 +303,22 @@ void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address
     //FIXME:[finish]debug for write adc value
     /*--------------------------------------------------*/
 }
+
+//process command data if the command type is 'HKdata'
+//void commandSwitchHKdata(UBYTE type_sellect, commandData[5], commandData[6], commandData[7]){ 
+//    switch(command){    
+//        case 'd': //measure DC-DC temperature
+//            break;
+//        case '5': //5VBUS 
+//            break;
+//        case '3': //3VBUS
+//            break;
+//        case 'C': //5V CIB
+//            break;
+//        case 'u': //update all HK data
+//            break;
+//        default:
+//            //TODO: error message
+//            break;
+//    }
+//}

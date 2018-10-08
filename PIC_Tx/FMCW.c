@@ -7,7 +7,7 @@
 #include "I2C.h"
 #include "CRC16.h"
 #include "encode_AX25.h"
-
+#include "Type_define.h"
 #include "time.h"
 
 /*******************************************************************************
@@ -16,19 +16,18 @@
 #define EEPROM_COMMAND_DATA_SIZE 32
 #define MAX_DOWNLINK_DATA_SIZE 32
 
-// #define SHORT_DELAYTIMES_FOR_MORSE     15  //80wpm
-// #define MIDDLE_DELAYTIMES_FOR_MORSE    45
-// #define LONG_DELAYTIMES_FOR_MORSE      105
-#define SHORT_DELAYTIMES_FOR_MORSE     65800  //80wpm
-#define MIDDLE_DELAYTIMES_FOR_MORSE    197400
-#define LONG_DELAYTIMES_FOR_MORSE      460600
-
 UBYTE commandData[EEPROM_COMMAND_DATA_SIZE];
 
+void Morse_V(void);
+void Morse_Y(void);
+void Morse_J(void);
 int changeCharMorse (char);
 char changeBinaryToChar(UBYTE);
 void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
-//void sendMorse(char*);
+void sendMorse(char*,size_t);
+void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
 void CwDownlinkFR0(void);
 void CwDownlinkFR1(void);
 void CwDownlinkFR2(void);
@@ -88,6 +87,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     break;
                 case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
                     //TODO: write function directly here or in MPU.c
+//                   commandSwitchHKdata(commandData[4], commandData[5], commandData[6], commandData[7]);
                     break;
                 case 't':/*internal processing*/
     //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
@@ -150,9 +150,9 @@ void downlinkFMSignal(UBYTE EEPROM_select, UBYTE EEPROMAndB0Select, UBYTE addres
  * tu = 3ton
  * [ton] CWKEY = 1; -> SHORT_DELAYTIMES_FOR_MORSE -> CWKEY = 0; -> SHORT_DELAYTIMES_FOR_MORSE
  * [tu ] CWKEY = 1; -> MIDDLE_DELAYTIMES_FOR_MORSE -> CWKEY = 0; -> SHORT_DELAYTIMES_FOR_MORSE
- * [Interval between ton-tu / ton-ton / tu-tu] SHORT_DELAYTIMES_FOR_MORSE
- * [Interval between moji]                     MIDDLE_DELAYTIMES_FOR_MORSE
- * [Interval between tango]                    LONG_DELAYTIMES_FOR_MORSE
+ * [Interval between ton-tu / ton-ton / tu-tu] SHORT_DELAYTIMES_FOR_MORSE (=1ton)
+ * [Interval between moji]                     MIDDLE_DELAYTIMES_FOR_MORSE (=3ton)
+ * [Interval between tango]                    LONG_DELAYTIMES_FOR_MORSE (=7ton)
 ******************************************************************************/
 /*
  *  send morse 'V' for test
@@ -178,8 +178,63 @@ void Morse_V(void){
     CWKEY = 1;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
     CWKEY = 0;
-    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
 }
+
+/*
+ *  send morse 'Y' for test
+ *  arg     : void
+ *  return  : send morse singnal 'Y' (tu-ton-tu-tu)
+ */
+void Morse_Y(void){
+    CWKEY = 1;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = 1;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = 1;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = 1;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+}
+
+/*
+ *  send morse 'J' for test
+ *  arg     : void
+ *  return  : send morse singnal 'J' (ton-tu-tu-tu)
+ */
+void Morse_J(void){
+    CWKEY = 1;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = 1;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = 1;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = 1;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = 0;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE); 
+}
+
 
 /*
  *  translate char to morse signal
@@ -309,41 +364,7 @@ void DevideDataAndChangeBinaryToChar (UBYTE binary_data, UBYTE *char_data_highLo
     putChar(char_data_highLow[1]);
 }
 
-/*
- *  send morse
- *  arg     : char *
- *  return  : N/A
- *  TODO    : need debug
- */
-void sendMorse(char *HK_Data){
-    int data_size = sizeof(HK_Data)/sizeof(HK_Data[0]);
-    putChar(0xAA);
-    putChar(sizeof(HK_Data));
-    putChar(0xBB);
-    putChar(sizeof(HK_Data[0]));
-    //int data_size = 4;
-    for (int i = 0;i<data_size;i++){
-        putChar(0xCC);
-        putChar(i);
-        int mo = changeCharMorse(HK_Data[i]);
-        for (int n=0;n<19;n++){
-            if(mo==0){
-                break;
-            } else if((mo&1)==1){
-                CWKEY = 1;
-                __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-            } else {
-                CWKEY = 0;
-                __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-            }
-            mo=mo>>1;
-        }
-        CWKEY = 0;
-        __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    }
-}
-
-void sendMorsenew(char *HK_Data,size_t data_size){
+void sendMorse(char *HK_Data,size_t data_size){
     for (int i = 0;i<data_size;i++){
         int mo = changeCharMorse(HK_Data[i]);
         for (int n=0;n<19;n++){
@@ -378,7 +399,7 @@ void ReadOneByteDataFromEEPROMandSendMorse(UBYTE Address7Bytes, UBYTE high_addre
     UBYTE char_data_highLow[2];
     read_data = ReadEEPROM(Address7Bytes, high_address, low_address); 
     DevideDataAndChangeBinaryToChar (read_data, char_data_highLow);
-    sendMorsenew(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+    sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
 }
 
 /*
@@ -402,11 +423,6 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE Address7Bytes, UBYTE high
     putChar('1');
     putChar('1');
     putChar('1');
-    //***READ ME : if debug of this function is not success, please revive comment out!!!
-//     for(UBYTE i=0; i<EEPROMDataLength; i++){
-//         DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
-//         sendMorse(char_data_highLow);
-//     }
   
     for(UBYTE i=0; i<EEPROMDataLength; i++){
         putChar(i);
@@ -414,9 +430,8 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE Address7Bytes, UBYTE high
         putChar(i);
         putChar(i);
         DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
-        sendMorsenew(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
-//        send_data[i] = char_data_highLow[0];
-//        send_data[i+1] = char_data_highLow[1];
+        sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+        delay_us(ADD_BLANK_FOR_MORSE);
     }
 }
 
@@ -434,22 +449,12 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE Address7
     UBYTE send_data[];
     ReadDataFromEEPROM(Address7Bytes, high_address, low_address, ReadData, EEPROMDataLength); 
     
-    //***READ ME : if debug of this function is not success, please revive comment out!!! and You need to change the place of  send morse
-    // for(UBYTE i=0; i<EEPROMDataLength; i++){
-    //     DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
-    //     sendMorse(char_data_highLow);
-    // }
-
-    for(UBYTE i=0; i<(2*EEPROMDataLength); i++){
-        DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
-        char_data_highLow[0] = send_data[i];
-        char_data_highLow[1] = send_data[i+1];
-        i++;
-    }
-    
     for(UBYTE downlink_counter =0; downlink_counter<downlink_times; downlink_counter++){
-        sendMorse(send_data);
-        __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+        for(UBYTE i=0; i<EEPROMDataLength; i++){
+            DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
+            sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+            delay_us(ADD_BLANK_FOR_MORSE);
+        }
     }
 }
 
@@ -458,7 +463,7 @@ Frame
 ******************************************************************************/
 void CwDownlinkFR0(void){
     UBYTE satellite_call_sign[6] = {'J', 'S', '1', 'Y', 'A', 'X'};
-    sendMorse(satellite_call_sign);
+    sendMorse(satellite_call_sign,sizeof(satellite_call_sign)/sizeof(satellite_call_sign[0]));
 }
 
 void CwDownlinkFR1(void){
@@ -471,7 +476,7 @@ void CwDownlinkFR2(void){
 
 void CwDownlinkFRXXX(void){
     UBYTE end_sign[3] = {'E', 'N', 'D'};
-    sendMorse(end_sign);
+    sendMorse(end_sign,sizeof(end_sign)/sizeof(end_sign[0]));
 }
 
 /*******************************************************************************
@@ -495,4 +500,85 @@ void downlinkCWSignal(void){
     //TODO:add frame
     CwDownlinkFRXXX();
     delay_s(10);
+}
+
+/*******************************************************************************
+for debug
+******************************************************************************/
+void testForCwFunctions(void){
+//        FMPTT = 0; 
+//        CWKEY = 1;
+
+    //debug:send morse 'V'->'Y'->'J' 3 times
+     for(UBYTE i=0; i<3; i++){
+           Morse_V();
+           Morse_Y();
+           Morse_J();
+           delay_us(ADD_BLANK_FOR_MORSE);
+        }
+        
+        //debug send morse char
+        UBYTE test_morse[4];
+        test_morse[0] = 'O';
+        test_morse[1] = 'r';
+        test_morse[2] = 'i';
+        test_morse[3] = '1';
+        sendMorse(test_morse,sizeof(test_morse)/sizeof(test_morse[0]));
+        
+//        
+//        //debug:translate binary to char
+////        putChar(0xbb);
+//        putChar(0xbb);
+//        putChar(0xbb);
+//        UBYTE _binary;
+//        _binary = 0x05;
+//        putChar(changeBinaryToChar(_binary));
+//        _binary = 0xFF;
+//        putChar(changeBinaryToChar(_binary));  //for check to defalt / X -> success
+//        __delay_ms(1000);
+//
+//        //debug:DevideDataAndChangeBinaryToChar
+////        putChar(0xcc);
+////        putChar(0xcc);
+////        putChar(0xcc);
+        UBYTE binary_data = 0xF3;
+        UBYTE char_data_highLow[2]; 
+        DevideDataAndChangeBinaryToChar (binary_data, char_data_highLow);
+//        putChar(char_data_highLow[0]);  //'5'->success
+//        putChar(char_data_highLow[1]);  //'A'->success
+////        __delay_ms(1000);
+////
+////        //debug:send morse
+//////        putChar(0xdd);
+//////        putChar(0xdd);
+//////        putChar(0xdd);
+        for(UBYTE i=0; i<5; i++){
+            sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0])); //morse signal '5'->delay(150ms)->'A'->success
+            delay_us(ADD_BLANK_FOR_MORSE);
+        } 
+////
+////        //debug:send ReadOneByteDataFromEEPROMandSendMorse
+////        putChar(0xee);
+////        putChar(0xee);
+////        putChar(0xee);
+        UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};  //'T'=0x54 / 0b10100111 = 0xA7
+        WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+        ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
+        delay_us(ADD_BLANK_FOR_MORSE);
+////        
+////        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
+////        putChar(0xff);
+////        putChar(0xff);
+////        putChar(0xff);
+        UBYTE ReadData[];
+        ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
+//        
+//        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+//        putChar(0x11);
+//        putChar(0x11);
+//        putChar(0x11);
+       ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
+        
+        //FIXME:[finish]debug for downlink CW signal
+        /*---------------------------------------------------------------*/
 }

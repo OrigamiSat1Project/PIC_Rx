@@ -13,6 +13,14 @@
 //***Read Me!!!
 //***comentout methods are defined in FMCW.c
 
+// #define SHORT_DELAYTIMES_FOR_MORSE     15  //80wpm
+// #define MIDDLE_DELAYTIMES_FOR_MORSE    45
+// #define LONG_DELAYTIMES_FOR_MORSE      105
+#define SHORT_DELAYTIMES_FOR_MORSE     65800  //80wpm
+#define MIDDLE_DELAYTIMES_FOR_MORSE    197400
+#define LONG_DELAYTIMES_FOR_MORSE      460600
+#define ADD_BLANK_FOR_MORSE            LONG_DELAYTIMES_FOR_MORSE-MIDDLE_DELAYTIMES_FOR_MORSE
+
 /*Downlink Command*/
 void downlinkReceivedCommand(UBYTE, UBYTE, UBYTE, UBYTE);
 
@@ -23,20 +31,10 @@ void _NOP(void);
 void downlinkFMSignal(UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
 
 /*Function : CW downlink*/
-void Morse_V(void);
-int changeCharMorse (char);
-char changeBinaryToChar(UBYTE);
-void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
-void sendMorse(char*);
-void sendMorsenew(char*,size_t);
-void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
-void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
-void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
-// void CwDownlinkFR0(void);
-// void CwDownlinkFR1(void);
-// void CwDownlinkFR2(void);
-// void CwDownlinkFRXXX(void);
 void downlinkCWSignal(void);
+
+/*for debug*/
+void testForCwFunctions(void);
 
 #endif	/* FMCW_H */
 
