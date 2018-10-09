@@ -247,35 +247,9 @@ void interrupt interReceiverTest( void ){
                 break;
             case 'f':
                 putChar('F');
-                putChar('M');
-                for(int i=0;i<10;i++){
-                CWKEY = 0;
-        //            __delay_ms(2000);
-                FMPTT = 1;
-                UBYTE EEPROMTestData[5];
-                EEPROMTestData[0] = 'H';
-                EEPROMTestData[1] = 'e';
-                EEPROMTestData[2] = 'l';
-                EEPROMTestData[3] = 'l';
-                EEPROMTestData[4] = 'o';
-                for (UINT i = 0; i< 10; i++){
-                    SendPacket(EEPROMTestData);
-                    __delay_ms(300);
-                }
-                }                
-                
-                FMPTT = 0;
-                putChar('F');
-                putChar('M');  
-                putChar('2');      
-
-                break;
-            case 'm':
-                putChar('F');
                 putChar('m');
                 CWKEY = 0;
         //            __delay_ms(2000);
-                FMPTT = 1;
                 __delay_ms(300);
                 UBYTE EEPROMTestData[36];
                 EEPROMTestData[0] = 'o';
@@ -284,9 +258,10 @@ void interrupt interReceiverTest( void ){
                 EEPROMTestData[3] = '1';
                 for(int i=4;i<36;i++) EEPROMTestData[i] = 'A';
                 __delay_ms(300);
+                FMPTT = 1;
                 SendPacket(EEPROMTestData);
-                __delay_ms(300);
                 FMPTT = 0;
+                __delay_ms(300);
                 break;
                 
 
