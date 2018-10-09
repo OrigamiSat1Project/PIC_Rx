@@ -9,10 +9,12 @@
 #define	WDT_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
+#include "typeDefine.h"
 
 #define TIMER_INTERVAL (0xffff - 62500) // TMR1 // 10MHz, 1/4 100msec // TODO: useful comment
 
 void InitWDT(void);
+void commandWDT(UBYTE, UBYTE, UBYTE);
 
 #endif	/* WDT_H */
 

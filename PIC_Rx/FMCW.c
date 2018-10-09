@@ -3,6 +3,7 @@
 #include "FMCW.h"
 #include "pinDefine.h"
 #include "time.h"
+#include "typeDefine.h"
 
 /*Identifiers for the radio units (called unitID if given to a functions)*/
 /* Do not change!! */
@@ -14,7 +15,8 @@
 void sendLow(int unitID);
 void sendHigh(int unitID);
 void sendSTB(int unitID);
-void setNprg(int unitID, int *Nprg);
+int binaryToDecimal(int n);
+void setNprg(int unitID, int Nprg);
 void setNref(int unitID, int Nref);
 void setOptionRegister(int unitID);
 void _NOP(void);
@@ -122,42 +124,48 @@ void sendSTB(int unitID){
  * 3. Send group code '10'
  * 4. Send STB signal
  */
-void setNprg(int unitID, int *Nprg){
-    int count = 0;
+void setNprg(int unitID, int Nprg){
     int Nprg_b[17];
     
     for(int i=0; i<17; i++){
         Nprg_b[i] = 0;
     }
-    
-    //Nprg transforms decimal to binary
-    for(int i = 0; i < 17; i++){
-        for(int j = 0; j<5; j++){
-            if(Nprg[j] % 2 == 0) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 0;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                }
-            }
-            else if(Nprg[j] % 2 == 1) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 1;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg[j+1] = Nprg[j+1] + 10;
-                }
-            }
-        }
+    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
+    for(int i=0; Nprg>0; i++){
+        Nprg_b[i] = Nprg % 2;
+        Nprg = Nprg / 2;
     }
     
+//    //OLD METHOD!! delete if new one works ! //Nprg transforms decimal to binary
+//    int count = 0;
+//    for(int i = 0; i < 17; i++){
+//        for(int j = 0; j<5; j++){
+//            if(Nprg[j] % 2 == 0) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 0;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                }
+//            }
+//            else if(Nprg[j] % 2 == 1) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 1;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg[j+1] = Nprg[j+1] + 10;
+//                }
+//            }
+//        }
+//    }
+    
     //Send Nprg data(binary) to communication module
+    
     for (int i=0; i<17; i++)
     {
         if(Nprg_b[i] == 0)
@@ -256,7 +264,7 @@ void setOptionRegister(int unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMTX(int Nref, int *Nprg){
+void FMTX(int Nref, int Nprg){
     int fmtx = FMTX_ID;
     setOptionRegister(fmtx);
     setNref(fmtx, Nref);
@@ -270,7 +278,7 @@ void FMTX(int Nref, int *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void CWTX(int Nref, int *Nprg){
+void CWTX(int Nref, int Nprg){
     int cwtx = CWTX_ID;
     setOptionRegister(cwtx);
     setNref(cwtx, Nref);
@@ -284,13 +292,53 @@ void CWTX(int Nref, int *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMRX(int Nref, int *Nprg){
+void FMRX(int Nref, int Nprg){
     int fmrx = FMRX_ID;
     setOptionRegister(fmrx);
     setNref(fmrx, Nref);
     setNprg(fmrx, Nprg);
 }
 
+
+int binaryToDecimal(int n){
+    int num = n; 
+    int dec_value = 0;
+    
+    // Initializing count value to 1, i.e 2^0 
+    int count = 1; 
+      
+    int temp = num; 
+    while (temp) 
+    { 
+        int last_digit = temp % 10; 
+        temp = temp/10; 
+          
+        dec_value += last_digit*count; 
+          
+        count = count*2; 
+    } 
+      
+    return dec_value; 
+}
+
+int calculateNref(UBYTE Nref_high, UBYTE Nref_low){
+    int Nref;
+    Nref = Nref_high<<8 | Nref_low;
+    
+    Nref = binaryToDecimal(Nref);
+    
+    return Nref;
+}
+
+int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
+    int Nprg;
+    Nprg = Nprg_high<<8 | Nprg_middle;
+    Nprg = Nprg<<8 | Nprg_low;
+    
+    Nprg = binaryToDecimal(Nprg);
+    
+    return Nprg;
+}
 
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
@@ -301,7 +349,27 @@ void FMRX(int Nref, int *Nprg){
 //    FMRX(FMRX_Nref, FMRX_Nprg);
 //}
 
-
+//process command data if the command type is 'radio unit'
+void commandSwitchFMCW(UBYTE command, UBYTE Nref_high, UBYTE Nref_low, UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){ //TODO: specify which Nref and Nprg are which    
+    int Nref;
+    int Nprg;
+    Nref = calculateNref(Nref_high, Nref_low);
+    Nprg = calculateNprg(Nprg_high, Nprg_middle, Nprg_low);
+    switch(command){    
+        case 't': //FM TX
+            FMTX(Nref, Nprg);
+            break;
+        case 'c': //CW TX
+            CWTX(Nref, Nprg);
+            break;
+        case 'f': //FM RX
+            FMRX(Nref, Nprg);
+            break;
+        default:
+            //TODO: error message
+            break;
+    }
+}
 
 /*
  * [Do not process anything (standby)]

@@ -22,6 +22,9 @@
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
+//timer counter only getChar
+void set_timer_counter_only_getChar(UINT);
+UINT get_timer_counter_only_getChar(void);
 
 #endif	/* TIME_H */
 
