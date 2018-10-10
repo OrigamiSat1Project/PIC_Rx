@@ -34,6 +34,8 @@
 /*******************************************************************************
 *method
 ******************************************************************************/
+void initADC(void);
+UWORD adc_read();
 void setAddressEEPROM(void);
 
 UWORD adcValue[CHANEL_SIZE];
@@ -65,10 +67,21 @@ void initADC(){
 //    IRCF2 = 1;
     //-----------------------
     
-    // Set PIN B2 as output
-//    TRISBbits.TRISB1 = 0;
-    
-    
+    /*ADCON0: A/N CONTROL REGISTER 0*/
+    // Set ADC conversion clock source, conversion time is 3.2us (Fosc/32)
+    ADCON0bits.ADCS1 = 1;
+    ADCON0bits.ADCS0 = 0;
+
+    /*ADCON1: A/N CONTROL REGISTER 1*/
+    // Set result formatting to right justified
+    ADCON1bits.ADFM = 1;
+
+    // Set ADC reference Voltage
+    ADCON1bits.VCFG1 = 0;   //Vref- = Vss
+    ADCON1bits.VCFG0 = 0;   //Vref+ = Vdd
+
+    /*Set Port Configuration*/
+    //TRIS:1->input / ANSEL:1->analog                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
     // Set PIN A2 as analog input
     TRISAbits.TRISA2 = 1;
     ANSELbits.ANS2 = 1;
@@ -81,23 +94,10 @@ void initADC(){
     // Set PIN B1 as analog input
     TRISBbits.TRISB1 = 1;
     ANSELHbits.ANS10 = 1;
-    // Set channel select to AN3
-//    ADCON0bits.CHS = 0b0011;
-//    ADCON0bits.CHS3 = 0;
-//    ADCON0bits.CHS2 = 0;
-//    ADCON0bits.CHS1 = 1;
-//    ADCON0bits.CHS0 = 1;
-    // Set ADC reference Voltage
-    ADCON1bits.VCFG1 = 0;   //Vref- = Vss
-    ADCON1bits.VCFG0 = 0;   //Vref+ = Vdd
-    // Set ADC conversion clock source, conversion time is 4us
-    ADCON0bits.ADCS1 = 1;
-    ADCON0bits.ADCS1 = 0;
-    //Set interrupt control /// ? Is this really needed???
-    PIE1bits.ADIE = 0;  //disable ADC interrupt
-    PIR1bits.ADIF = 0;  //ADC has not completed or has not been started 
-    // Set result formatting to right justified
-    ADCON1bits.ADFM = 1;
+
+    //Set interrupt control 
+    // PIE1bits.ADIE = 0;  //disable ADC interrupt
+    // PIR1bits.ADIF = 0;  //ADC has not completed or has not been started    
     
     // Zero ADRESL and ADRESH
     ADRESL = 0;
@@ -172,8 +172,7 @@ void measureAllChanelADC(){
     initADC();    
     setAddressEEPROM();
         
-    //Set LED off
-    PORTBbits.RB1 = 0;
+    PORTBbits.RB1 = 0;        //Set LED off
     ADCON0bits.CHS = 0b0010;
     adcValue[0] = adc_read();
     ADCON0bits.CHS = 0b0011;
@@ -250,7 +249,7 @@ void measureAllChanelADC(){
     /*--------------------------------------------------*/
     
     //Update every second
-    __delay_ms(1000);
+    // __delay_ms(1000);
     //Set clears if necessary
 
 return;
@@ -260,13 +259,13 @@ return;
  * measure 1Chanel (DC-DC temperature)
  * 1. select chanel
  * 2. read ADC data (**the size of data is 2byte)
- * 3. write to EEPROM 
+ * 3. write to main and sub EEPROM 
  * arg     : slaveaddress, high_address, low_address
  * return  : ---
- * TODO    : debug ---> finish
+ * TODO    : debug 
  * 
 */
-void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
+void measureDcDcTemperature(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
     
     initADC();    
         
@@ -276,12 +275,16 @@ void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address
     adcValue[0] = adc_read();
     
     /*write data to EEPROM*/
-    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     //data High
+    //data high
+    WriteOneByteToEEPROM(EEPROM_address, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     
+    WriteOneByteToEEPROM(EEPROM_subaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     
     
     high_address = high_address + 0x08;
     low_address = low_address + 0x08;
 
-    WriteOneByteToEEPROM(slaveaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));   //data Low
+    //data low
+    WriteOneByteToEEPROM(EEPROM_address, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));  
     
     /*--------------------------------------------------*/
     //FIXME:[start]debug for write adc value--->successs
@@ -304,21 +307,39 @@ void measure1ChanelADC(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address
     /*--------------------------------------------------*/
 }
 
+/**
+ * measure 1 channle and downlinl the data 
+ * 1. select chanel
+ * 2. read ADC data (**the size of data is 2byte)
+ * 3. write to EEPROM
+ * 4. downlink the data 
+ * arg     : slaveaddress, high_address, low_address
+ * return  : ---
+ * TODO    : debug 
+ * 
+*/
+void measureValueAndDownlink(UBYTE channel_select, UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
+    measureAllChanelADC();
+    //TODO:add data downlink
+}
+
 //process command data if the command type is 'HKdata'
-//void commandSwitchHKdata(UBYTE type_sellect, commandData[5], commandData[6], commandData[7]){ 
-//    switch(command){    
-//        case 'd': //measure DC-DC temperature
-//            break;
-//        case '5': //5VBUS 
-//            break;
-//        case '3': //3VBUS
-//            break;
-//        case 'C': //5V CIB
-//            break;
-//        case 'u': //update all HK data
-//            break;
-//        default:
-//            //TODO: error message
-//            break;
-//    }
-//}
+void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE data3){ 
+   switch(type_sellect){    
+        case 'd': //measure DC-DC temperature
+            measureDcDcTemperature(data1, data2, data3);
+            break;
+        case '5': //5VBUS 
+            break;
+        case '3': //3VBUS
+            break;
+        case 'C': //5V CIB
+            break;
+        case 'u': //update all HK data
+            measureAllChanelADC();
+            break;
+        default:
+            //TODO: error message
+            break;
+   }
+}
