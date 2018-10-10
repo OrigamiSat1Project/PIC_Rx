@@ -15,6 +15,7 @@
 #include "EPS.h"
 #include "WDT.h"
 #include "CRC16.h"
+#include "ADC.h"
 
 // PIC16F887 Configuration Bit Settings
 #pragma config FOSC     = HS        // Oscillator Selection bits (HS oscillator)
@@ -29,40 +30,40 @@
 // Use project enums instead of #define for ON and OFF.
 
 //Receive command from TX_PIC
-void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
-    //volatile static int intr_counter;
-    if (RCIF == 1) {                              //The USART receive buffer is full
-        for (int i = 0; i < COMMAND_SIZE; i++){
-            RXDATA[i] = getChar();
-            NOP();
-        }
-        
-        RCIF = 0;  //USART Receive Interrupt Flag is reset
-        
-       //TODO add case RXDATA[0]!=t
-        if(crc16(0,RXDATA,6) == checkCRC(RXDATA,6)){
-            //TODO:change commands from TX_PIC
-            /*
-            switch(RXDATA[1]){
-                case 0x75:
-                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-                    break;
-                case 0x63:
-//                    CwDownLink(RXDATA);
-                    break;
-                case 0x66:
-                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-                    break;
-                case 0x61:
-                    cutWire(RXDATA[2],RXDATA[3]);
-                    break;
-            }
-            */
-        }else{
-            ///TODO:コマンドCRCダメだった時の処理
-        }
-    }
-}
+//void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
+//    //volatile static int intr_counter;
+//    if (RCIF == 1) {                              //The USART receive buffer is full
+//        for (int i = 0; i < COMMAND_SIZE; i++){
+//            RXDATA[i] = getChar();
+//            NOP();
+//        }
+//        
+//        RCIF = 0;  //USART Receive Interrupt Flag is reset
+//        
+//       //TODO add case RXDATA[0]!=t
+//        if(crc16(0,RXDATA,6) == checkCRC(RXDATA,6)){
+//            //TODO:change commands from TX_PIC
+//            /*
+//            switch(RXDATA[1]){
+//                case 0x75:
+//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+//                    break;
+//                case 0x63:
+////                    CwDownLink(RXDATA);
+//                    break;
+//                case 0x66:
+//                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+//                    break;
+//                case 0x61:
+//                    cutWire(RXDATA[2],RXDATA[3]);
+//                    break;
+//            }
+//            */
+//        }else{
+//            ///TODO:?ｿｽR?ｿｽ}?ｿｽ?ｿｽ?ｿｽhCRC?ｿｽ_?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽﾌ擾ｿｽ?ｿｽ?ｿｽ
+//        }
+//    }
+//}
 
 void main(void) {
     
@@ -86,6 +87,13 @@ void main(void) {
     
     while(1){
         
+        /*--------------------------------------------*/
+        //FIXME: [start]for debug ADC
+        ADC();
+        //FIXME: [finish]for debug ADC
+        /*--------------------------------------------*/
+
+
         /*measure the runtime of the getBitLoop*/    //for normal run not needed
         /*------------------------------------------------------------------*/
         //while(1){
@@ -183,8 +191,8 @@ void main(void) {
 //                case 'E': /*EPS kill*/
 //                    Reset_EPS();
 //                    __delay_ms(5000);
-//                    //以下の数字は初期設定時と変化しているためもう一度定義
-//                    //本来なら変化する文字列を他に用意したほうが良いかもしれない
+//                    //?ｿｽﾈ会ｿｽ?ｿｽﾌ撰ｿｽ?ｿｽ?ｿｽ?ｿｽﾍ擾ｿｽ?ｿｽ?ｿｽ?ｿｽﾝ定時?ｿｽﾆ変会ｿｽ?ｿｽ?ｿｽ?ｿｽﾄゑｿｽ?ｿｽ驍ｽ?ｿｽﾟゑｿｽ?ｿｽ?ｿｽx?ｿｽ?ｿｽ`
+//                    //?ｿｽ{?ｿｽ?ｿｽ?ｿｽﾈゑｿｽﾏ会ｿｽ?ｿｽ?ｿｽ?ｿｽ髟ｶ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?他に用?ｿｽﾓゑｿｽ?ｿｽ?ｿｽ?ｿｽﾙゑｿｽ?ｿｽ?ｿｽ?ｿｽﾇゑｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽﾈゑｿｽ
 //                    // values for Nprg are changed in setNprg function so they have to be reset
 //                    //TODO: make seperate function for set-up
 //                    int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]

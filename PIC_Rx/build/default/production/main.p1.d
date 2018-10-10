@@ -12,4 +12,5 @@ WDT.h  \
 EEPROM.h  \
 FMCW.h  \
 time.h  \
+ADC.h  \
 MPU.h 

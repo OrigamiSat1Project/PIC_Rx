@@ -30,44 +30,45 @@
 * Usage: initMain()
 ******************************************************************************/
 void initADC(){
-    ANSEL = 0x00;
-    ANSELH = 0x00;
+//    ANSEL = 0x00;
+//    ANSELH = 0x00;
     
     //----------------------
     // Run at 8 MHz //if this value is changed, ADC clock frequency must be adjusted accordingly
     //Clock determined by FOSC in configuration bits
-    SCS = 0;
+//    SCS = 0;
     //Frequency select bits
 //    IRCF0 = 1;
 //    IRCF1 = 1;
 //    IRCF2 = 1;
     //-----------------------
     
-    // Set PIN B2 as output
-//    TRISBbits.TRISB1 = 0;
-    
-    
-    // Set PIN A0 as analog input
-    TRISAbits.TRISA0 = 1;
-    ANSELbits.ANS0 = 1;
-    
-    // Set channel select to AN3
-//    ADCON0bits.CHS = 0b0011;
-//    ADCON0bits.CHS3 = 0;
-//    ADCON0bits.CHS2 = 0;
-//    ADCON0bits.CHS1 = 1;
-//    ADCON0bits.CHS0 = 1;
-    // Set ADC reference Voltage
-    ADCON1bits.VCFG1 = 0;   //Vref- = Vss
-    ADCON1bits.VCFG0 = 0;   //Vref+ = Vdd
-    // Set ADC conversion clock source, conversion time is 4us
+
+    /*ADCON0: A/N CONTROL REGISTER 0*/
+    // Set ADC conversion clock source, conversion time is 3.2us (Fosc/32)
     ADCON0bits.ADCS1 = 1;
-    ADCON0bits.ADCS1 = 0;
-    //Set interrupt control /// ? Is this really needed???
-    PIE1bits.ADIE = 0;  //disable ADC interrupt
-    PIR1bits.ADIF = 0;  //ADC has not completed or has not been started 
+    ADCON0bits.ADCS0 = 0;
+
+    /*ADCON1: A/N CONTROL REGISTER 1*/
     // Set result formatting to right justified
     ADCON1bits.ADFM = 1;
+
+    // Set ADC conversion clock source, conversion time is 3.2us (Fosc/32)
+    ADCON1bits.ADCS2 = 0;
+
+    // Set Port Configuration and ADC reference Voltage
+    //AN7-AN1 Digital I/O / Vref- = Vss / Vref+ = Vdd
+    ADCON1bits.PCFG3 = 1;
+    ADCON1bits.PCFG2 = 1;
+    ADCON1bits.PCFG1 = 1;
+    ADCON1bits.PCFG0 = 0;
+
+    // Set PIN A0 as analog input
+    TRISAbits.TRISA0 = 1;
+
+    //Set interrupt control 
+    // PIE1bits.ADIE = 0;  //disable ADC interrupt
+    // PIR1bits.ADIF = 0;  //ADC has not completed or has not been started
     
     // Zero ADRESL and ADRESH
     ADRESL = 0;
@@ -86,28 +87,28 @@ UWORD adc_read(){
     value = (ADRESH<<8) | ADRESL;
     return(value);              
 }
-void adc_led_Test(UBYTE voltage){
-    if(voltage<1000){//Blink two times
-        for(UBYTE i=0;i<2;i++){
-            PORTBbits.RB1 = 1;
-            __delay_ms(300);
-            PORTBbits.RB1 = 0;
-            __delay_ms(300);
-        }
-    } 
-    else if(voltage<3300){//Blink three times
-        for(UBYTE i=0;i<3;i++){
-            PORTBbits.RB1 = 1;
-            __delay_ms(200);
-            PORTBbits.RB1 = 0;
-            __delay_ms(200);
-        }
-    }
-    else {
-        PORTBbits.RB1 = 1;
-        __delay_ms(1000);
-    }
-}
+// void adc_led_Test(UBYTE voltage){
+//     if(voltage<1000){//Blink two times
+//         for(UBYTE i=0;i<2;i++){
+//             PORTBbits.RB1 = 1;
+//             __delay_ms(300);
+//             PORTBbits.RB1 = 0;
+//             __delay_ms(300);
+//         }
+//     } 
+//     else if(voltage<3300){//Blink three times
+//         for(UBYTE i=0;i<3;i++){
+//             PORTBbits.RB1 = 1;
+//             __delay_ms(200);
+//             PORTBbits.RB1 = 0;
+//             __delay_ms(200);
+//         }
+//     }
+//     else {
+//         PORTBbits.RB1 = 1;
+//         __delay_ms(1000);
+//     }
+// }
 /*******************************************************************************
 * Function: Main
 *
@@ -119,19 +120,11 @@ void ADC() {
     
     putChar(0x01);
     initADC();
-    UBYTE chanel = 4;
+    UBYTE chanel = 1;
     UWORD adcValue[];
    
-        //Set LED off
-        PORTBbits.RB1 = 0;
-        ADCON0bits.CHS = 0b0010;
-        adcValue[0] = adc_read();
-        ADCON0bits.CHS = 0b0011;
-        adcValue[1] = adc_read();
-        ADCON0bits.CHS = 0b0100;
-        adcValue[2] = adc_read();
-        ADCON0bits.CHS = 0b1010;
-        adcValue[3] = adc_read();
+    ADCON0bits.CHS = 0b00;
+    adcValue[0] = adc_read();
         
         //Further instructions on what should be done with result
 //        float adcVoltage_1;
@@ -149,7 +142,8 @@ void ADC() {
     //    printf("%d %d %d %d \r\n",adcValue_1,adcValue_2,adcValue_3,adcValue_4);
         
         for (UBYTE i=0; i<chanel; i++){
-            putChar(i);
+            putChar('A');
+            putChar('N');
             putChar((UBYTE)(adcValue[i] >> 8));
             putChar((UBYTE)(adcValue[i] & 0xff));
         }
