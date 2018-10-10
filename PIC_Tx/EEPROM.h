@@ -32,5 +32,23 @@
 #define deviceOnOff_addressLow        0x00
 #define deviceOnOff_DataSize          1
 
+/*******************************************************************************
+*CW downlink
+******************************************************************************/
+//TODO:change address
+#define batteryStatus_addressHigh       0x00
+#define batteryStatus_addressLow        0x00
+#define satelliteBusStatus_addressHigh  0x00
+#define satelliteBusStatus_addressLow   0x00
+#define satelliteMode_addressHigh       0x00
+#define satelliteMode_addressLow        0x00
+//TODO:change address
+#define OBC_LastCommand_addressHigh     0x00
+#define OBC_LastCommand_addressLow      0x00
+#define RXCOBC_LastCommand_addressHigh  0x00
+#define RXCOBC_LastCommand_addressLow   0x00
+#define TXCOBC_LastCommand_addressHigh  0x00
+#define TXCOBC_LastCommand_addressLow   0x00
+
 #endif	/* EEPROM_H */
 
