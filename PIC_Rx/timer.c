@@ -30,12 +30,16 @@ void interrupt TimerCheck(void){
             if(minute_counter >= 3){
                 Reset_EPS();
                 delay_ms(5000);
-
-
+//                int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
+//                int CWTX_Nprg[5]     =   {0,1,4,0,0};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
+//                int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
+                FMTX_Nprg[0] = 8; FMTX_Nprg[1] = 7; FMTX_Nprg[2] = 5; FMTX_Nprg[3] = 0; FMTX_Nprg[4] = 1;
+                CWTX_Nprg[0] = 0; CWTX_Nprg[1] = 1; CWTX_Nprg[2] = 4; CWTX_Nprg[3] = 0; CWTX_Nprg[4] = 0;
+                FMTX_Nprg[0] = 2; FMTX_Nprg[1] = 4; FMTX_Nprg[2] = 9; FMTX_Nprg[3] = 1; FMTX_Nprg[4] = 6;
                 //reset PLL setting (because it gets lost during shutdown)
-//                FMTX(FMTX_Nref, FMTX_Nprg);
-//                CWTX(CWTX_Nref, CWTX_Nprg);
-//                FMRX(FMRX_Nref, FMRX_Nprg);
+                FMTX(FMTX_Nref, FMTX_Nprg);
+                CWTX(CWTX_Nref, CWTX_Nprg);
+                FMRX(FMRX_Nref, FMRX_Nprg);
                 __delay_ms(500);
             }
         }

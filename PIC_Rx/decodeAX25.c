@@ -19,7 +19,6 @@
 //Global Data   
 static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
-UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
@@ -183,11 +182,14 @@ UINT fcsCheck(void){
             byte = dPacket[i];
             for(UINT j=0;j<8;j++){
                 bt = byte & BIT_HIGH;
-                #asm                                //embedded assembly language route to do a 16 bit rotate
-                    BCF 03,0
-                    RRF _dfcsHighByte,F
-                    RRF _dfcsLowByte,F
-                #endasm
+//                #asm                                //embedded assembly language route to do a 16 bit rotate
+//                    BCF 03,0
+//                    RRF _dfcsHighByte,F
+//                    RRF _dfcsLowByte,F
+//                #endasm
+                STATUS &= ~0x01;
+                dfcsHighByte = dfcsHighByte >> 1;
+                dfcsLowByte = dfcsLowByte >> 1;
                 if(((STATUS & BIT_HIGH)^bt) == BIT_HIGH){
                     dfcsHighByte = dfcsHighByte ^ 0x84;
                     dfcsLowByte = dfcsLowByte ^ 0x08;
