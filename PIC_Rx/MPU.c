@@ -167,33 +167,44 @@ void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){
     /*-------------------------------------------------------*/
     //FIXME:for debug to test switch start
     if ( onOff == 0x00 ){        
-            putChar(0x00);
+            putChar(0xA0);
             SEP_SW = LOW;
             RBF_SW = LOW;
-            putChar(0x0a);
+            putChar(0xA0);
     } else {                     
-            putChar(0x01);
+            putChar(0xA1);
             SEP_SW = HIGH;
             RBF_SW = HIGH;
-            putChar(0x0b);
+            putChar(0xA1);
     }
     
     if(timeHigh == 0x00 && timeLow == 0x00){     
-        putChar(0x02);
-    }else if(timeLow == 0x00){                    
-        __delay_s(timeHigh);                     
-        SEP_SW =invertState(onOff);
-        RBF_SW =invertState(onOff);
-        putChar(0xFF);
-        putChar(timeHigh);
-        putChar(0x0c);
-    }else {                                      
+        putChar(0xB0);
+        putChar(0xB0);
+//    }else if(timeLow == 0x00){                    
+//        __delay_s(timeHigh);                     
+//        SEP_SW =invertState(onOff);
+//        RBF_SW =invertState(onOff);
+//        putChar(0xFF);
+//        putChar(timeHigh);
+//        putChar(0x0c);
+    }else {        
+        putChar(0xB1);
+        putChar(0xB1);
         UWORD wait_time;
         wait_time = (timeHigh << 8 | timeLow);
-        __delay_s(wait_time);
+        delay_s(wait_time);
+        putChar(0xB2);
+        putChar(0xB2);
+        delay_ms(1500);
         SEP_SW =invertState(onOff);
         RBF_SW =invertState(onOff);
-        putChar(0x0d);
+        putChar(0xB3);
+        putChar(0xB3);
+        delay_ms(100);
+        putChar(0xB4);
+        putChar(0xB4);
+        delay_ms(100);
     }
     //FIXME:for debug to test switch finish
     /*-------------------------------------------------------*/
