@@ -67,10 +67,21 @@ void initADC(){
 //    IRCF2 = 1;
     //-----------------------
     
-    // Set PIN B2 as output
-//    TRISBbits.TRISB1 = 0;
-    
-    
+    /*ADCON0: A/N CONTROL REGISTER 0*/
+    // Set ADC conversion clock source, conversion time is 3.2us (Fosc/32)
+    ADCON0bits.ADCS1 = 1;
+    ADCON0bits.ADCS0 = 0;
+
+    /*ADCON1: A/N CONTROL REGISTER 1*/
+    // Set result formatting to right justified
+    ADCON1bits.ADFM = 1;
+
+    // Set ADC reference Voltage
+    ADCON1bits.VCFG1 = 0;   //Vref- = Vss
+    ADCON1bits.VCFG0 = 0;   //Vref+ = Vdd
+
+    /*Set Port Configuration*/
+    //TRIS:1->input / ANSEL:1->analog                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
     // Set PIN A2 as analog input
     TRISAbits.TRISA2 = 1;
     ANSELbits.ANS2 = 1;
@@ -83,23 +94,10 @@ void initADC(){
     // Set PIN B1 as analog input
     TRISBbits.TRISB1 = 1;
     ANSELHbits.ANS10 = 1;
-    // Set channel select to AN3
-//    ADCON0bits.CHS = 0b0011;
-//    ADCON0bits.CHS3 = 0;
-//    ADCON0bits.CHS2 = 0;
-//    ADCON0bits.CHS1 = 1;
-//    ADCON0bits.CHS0 = 1;
-    // Set ADC reference Voltage
-    ADCON1bits.VCFG1 = 0;   //Vref- = Vss
-    ADCON1bits.VCFG0 = 0;   //Vref+ = Vdd
-    // Set ADC conversion clock source, conversion time is 4us
-    ADCON0bits.ADCS1 = 1;
-    ADCON0bits.ADCS1 = 0;
-    //Set interrupt control /// ? Is this really needed???
-    PIE1bits.ADIE = 0;  //disable ADC interrupt
-    PIR1bits.ADIF = 0;  //ADC has not completed or has not been started 
-    // Set result formatting to right justified
-    ADCON1bits.ADFM = 1;
+
+    //Set interrupt control 
+    // PIE1bits.ADIE = 0;  //disable ADC interrupt
+    // PIR1bits.ADIF = 0;  //ADC has not completed or has not been started    
     
     // Zero ADRESL and ADRESH
     ADRESL = 0;
@@ -174,8 +172,7 @@ void measureAllChanelADC(){
     initADC();    
     setAddressEEPROM();
         
-    //Set LED off
-    PORTBbits.RB1 = 0;
+    PORTBbits.RB1 = 0;        //Set LED off
     ADCON0bits.CHS = 0b0010;
     adcValue[0] = adc_read();
     ADCON0bits.CHS = 0b0011;
