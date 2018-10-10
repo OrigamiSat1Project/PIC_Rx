@@ -29,9 +29,12 @@
 #define FMRX_DAT        PORTAbits.RA3 //data
 #define FMRX_STB        PORTBbits.RB0 //strobe signal
     /* PIN assignment for FMTX */
-#define FMTX_CLK        PORTEbits.RE2
+// #define FMTX_CLK        PORTEbits.RE2
 #define FMTX_DAT        PORTEbits.RE1
-#define FMTX_STB        PORTEbits.RE0
+// #define FMTX_STB        PORTEbits.RE0
+//for debug TXPIC
+#define FMPTT           PORTEbits.RE2
+#define CWKEY           PORTEbits.RE0
     /* PIN assignment for CWTX */
 #define CWTX_CLK        PORTDbits.RD2
 #define CWTX_DAT        PORTDbits.RD1
