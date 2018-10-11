@@ -106,6 +106,32 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
     __delay_ms(300);
 }
 
+void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE address;
+    address= addressEEPROM << 1;
+    //UINT Datasize = sizeof(data);
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    I2CMasterWrite(data);      //Data
+    I2CMasterStop();                //Stop condition
+    __delay_ms(200);
+}
+
+void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = MAIN_EEPROM_ADDRESS | B0Select;
+    subAddress = SUB_EEPROM_ADDRESS | B0Select;
+    WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
+}
+
+void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
+    WriteCheckByteToEEPROMs(B0select_for_RXCOBCLastCommand, HighAddress_for_RXCOBCLastCommand, LowAddress_for_RXCOBCLastCommand, last_command_ID);
+}
+
 /*******************************************************************************
 *Method for EEPROM Read
 ******************************************************************************/
@@ -227,8 +253,8 @@ void TestEEPROM(UBYTE slaveaddress){
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){ 
     switch(command){    
         case 'w': //I2C write
-            //TODO：相手（ナノマインドとかEEPROMとか）を考えてフォーマット形式を考える
-            //今のはEEPROMにしか対応できていないから、他でも対応できるか。
+            //TODO?ｿｽF?ｿｽ?ｿｽ?ｿｽ?ｿｽi?ｿｽi?ｿｽm?ｿｽ}?ｿｽC?ｿｽ?ｿｽ?ｿｽh?ｿｽﾆゑｿｽEEPROM?ｿｽﾆゑｿｽ?ｿｽj?ｿｽ?ｿｽl?ｿｽ?ｿｽ?ｿｽﾄフ?ｿｽH?ｿｽ[?ｿｽ}?ｿｽb?ｿｽg?ｿｽ`?ｿｽ?ｿｽ?ｿｽ?ｿｽl?ｿｽ?ｿｽ?ｿｽ?ｿｽ
+            //?ｿｽ?ｿｽ?ｿｽﾌゑｿｽEEPROM?ｿｽﾉゑｿｽ?ｿｽ?ｿｽ?ｿｽﾎ会ｿｽ?ｿｽﾅゑｿｽ?ｿｽﾄゑｿｽ?ｿｽﾈゑｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽA?ｿｽ?ｿｽ?ｿｽﾅゑｿｽﾎ会ｿｽ?ｿｽﾅゑｿｽ?ｿｽ驍ｩ?ｿｽB
             I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
             I2CMasterWrite(dataHigh);
             I2CMasterWrite(dataLow);

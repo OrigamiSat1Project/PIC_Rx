@@ -29,7 +29,7 @@ void putError(void);
 void putOk(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void WriteUART( UBYTE* );
 void UART_buffer_clear(void);
 int  change_baud_rate( UBYTE );

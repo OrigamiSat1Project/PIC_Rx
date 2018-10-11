@@ -88,8 +88,8 @@ void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_addr
     __delay_ms(50);
 }
 
-void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4){
-    UBYTE Command[8];
+void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
+    UBYTE Command[10];
     UWORD CRC;
     Command[0] = TaskTarget;
     Command[1] = CommandType;
@@ -97,9 +97,11 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
     Command[3] = Parameter2;
     Command[4] = Parameter3;
     Command[5] = Parameter4;
-    CRC = crc16(0, Command, 6);
-    Command[6] = CRC >> 8;
-    Command[7] = CRC & 0x00FF;
+    Command[6] = Parameter5;
+    Command[7] = Parameter6;
+    CRC = crc16(0, Command, 8);
+    Command[8] = CRC >> 8;
+    Command[9] = CRC & 0x00FF;
     putString(Command);
 }
 
