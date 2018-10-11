@@ -26,7 +26,7 @@ void downlinkFMSignal(UBYTE, UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
 void Morse_V(void);
 void Morse_Y(void);
 void Morse_J(void);
-int changeCharMorse (char);
+long changeCharMorse (char);
 char changeBinaryToChar(UBYTE);
 void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
 void sendMorse(char*,size_t);
