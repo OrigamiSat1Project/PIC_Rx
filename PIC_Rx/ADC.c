@@ -75,40 +75,7 @@ void initADC(){
     ADRESH = 0;
 
 }
-UWORD adc_read(){
-    //Turn ADC on
-    ADCON0bits.ADON = 1;
-    //Sample Channel
-    __delay_us(100);
-    ADCON0bits.GO = 1;
-    while (ADCON0bits.GO_nDONE);
-    //give out ADC result
-    UWORD value;
-    value = (ADRESH<<8) | ADRESL;
-    return(value);              
-}
-// void adc_led_Test(UBYTE voltage){
-//     if(voltage<1000){//Blink two times
-//         for(UBYTE i=0;i<2;i++){
-//             PORTBbits.RB1 = 1;
-//             __delay_ms(300);
-//             PORTBbits.RB1 = 0;
-//             __delay_ms(300);
-//         }
-//     } 
-//     else if(voltage<3300){//Blink three times
-//         for(UBYTE i=0;i<3;i++){
-//             PORTBbits.RB1 = 1;
-//             __delay_ms(200);
-//             PORTBbits.RB1 = 0;
-//             __delay_ms(200);
-//         }
-//     }
-//     else {
-//         PORTBbits.RB1 = 1;
-//         __delay_ms(1000);
-//     }
-// }
+
 /*******************************************************************************
 * Function: Main
 *
@@ -116,37 +83,31 @@ UWORD adc_read(){
 *
  * Description: Program entry point
 ******************************************************************************/
-void ADC() {
+void SendBatVoltage() {
     
-    putChar(0x01);
+    UBYTE adcH = 0x62;
+    UBYTE adcL = 0x62;
+//    putChar(0x01);
     initADC();
-    UBYTE chanel = 1;
-    UWORD adcValue[];
    
-    ADCON0bits.CHS = 0b00;
-    adcValue[0] = adc_read();
+    ADCON0bits.CHS0 = 0;
+    ADCON0bits.CHS1 = 0;
+    ADCON0bits.CHS2 = 0;
+    
+    //Turn ADC on
+    ADCON0bits.ADON = 1;
+    //Sample Channel
+    __delay_us(100);
+    ADCON0bits.GO = 1;
+    while (ADCON0bits.GO_nDONE);
+    adcH = ADRESH;
+    adcL = ADRESL;
         
-        //Further instructions on what should be done with result
-//        float adcVoltage_1;
-//        float adcVoltage_2;
-//        float adcVoltage_3;
-//        float adcVoltage_4;
+    putChar('A');
+    putChar('N');
+    putChar(adcH);
+    putChar(adcL);
         
-    //    adcVoltage = adcValue;
-//        adcVoltage_1 = ((float)adcValue_1*3300) / 1024 ;
-//        adcVoltage_2 = ((float)adcValue_2*3300) / 1024 ;
-//        adcVoltage_3 = ((float)adcValue_3*3300) / 1024 ;
-//        adcVoltage_4 = ((float)adcValue_4*3300) / 1024 ;
-        
-    //    printf("%f %f %f %f \r\n",adcVoltage_1,adcVoltage_2,adcVoltage_3,adcVoltage_4);
-    //    printf("%d %d %d %d \r\n",adcValue_1,adcValue_2,adcValue_3,adcValue_4);
-        
-        for (UBYTE i=0; i<chanel; i++){
-            putChar('A');
-            putChar('N');
-            putChar((UBYTE)(adcValue[i] >> 8));
-            putChar((UBYTE)(adcValue[i] & 0xff));
-        }
         //Test functionality of ADC
     //    adc_led_Test(adcVoltage);
 

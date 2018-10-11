@@ -9,8 +9,7 @@
 #define	ADC_H
 
 void initADC(void);
-UWORD adc_read();
-void ADC(void);
+void SendBatVoltage(void);
 
 #endif	/* ADC_H */
 
