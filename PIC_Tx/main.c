@@ -117,7 +117,7 @@ void interrupt InterReceiver(void){
             putChar('C');
             
             if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
-                //RXDATA[0]?ï¿½ï¿½?ï¿½ï¿½t?ï¿½ï¿½?ï¿½ï¿½g?ï¿½ï¿½Å‚È‚ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½
+                //RXDATA[0]??¿½?¿½??¿½?¿½t??¿½?¿½??¿½?¿½g??¿½?¿½Å‚È‚ï¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½Ìï¿½??¿½?¿½??¿½?¿½
                 //TODO:add error messege
             } else {
                 switch(RXDATA[1]){
@@ -143,7 +143,7 @@ void interrupt InterReceiver(void){
         }else{
             
             putChar('D');
-            //?ï¿½ï¿½R?ï¿½ï¿½}?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½hCRC?ï¿½ï¿½_?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Ìï¿½?ï¿½ï¿½?ï¿½ï¿½
+            //??¿½?¿½R??¿½?¿½}??¿½?¿½??¿½?¿½??¿½?¿½hCRC??¿½?¿½_??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½Ìï¿½??¿½?¿½??¿½?¿½
             //add error messege
         }
         RCIF = 0;
@@ -168,79 +168,88 @@ void interrupt InterReceiver(void){
 //    return;
 }
 
-
-
-////test for interrupt
-//void interrupt interReceiverTest( void ){
+/*******************************************************************************
+*test for interrupt
+******************************************************************************/
+//FIXME:[start]test for interrupt
+// void interrupt interReceiverTest( void ){
 //    UBYTE RXDATA;
 //    if (RCIF == 1) {
 //        RXDATA = getChar();
 //        //RXDATA++;
 //        //putChar('G');
 //        putChar(RXDATA);
-//        
+       
 //        switch (RXDATA){
-//        case 'c':
-//            putChar('C');
-//            putChar('W');
-//            
-//            while(1){
-//            CWKEY = 1;
-//            __delay_ms(50);
-//            CWKEY = 0;
-//            __delay_ms(50);
-//
-//            CWKEY = 1;
-//            __delay_ms(50);
-//            CWKEY = 0;
-//            __delay_ms(50);
-//
-//            CWKEY = 1;
-//            __delay_ms(50);
-//            CWKEY = 0;
-//            __delay_ms(50);
-//
-//            CWKEY = 1;
-//            __delay_ms(150);
-//            CWKEY = 0;
-//            __delay_ms(50);
-//            }
-//
-//            putChar('C');
-//            putChar('W');
-//            putChar('2');
-//            break;
-//        case 'f':
-//            putChar('F');
-//            putChar('M');
-//            CWKEY = 0;
-////            __delay_ms(2000);
-//            FMPTT = 1;
-//            UBYTE EEPROMTestData[5];
-//            EEPROMTestData[0] = 'H';
-//            EEPROMTestData[1] = 'e';
-//            EEPROMTestData[2] = 'l';
-//            EEPROMTestData[3] = 'l';
-//            EEPROMTestData[4] = 'o';
-//            for (UINT i = 0; i< 10; i++){
-//                SendPacket(EEPROMTestData);
-//                __delay_ms(300);
-//            }
-//            
-//            
-//            
-//            FMPTT = 0;
-//            putChar('F');
-//            putChar('M');  
-//            putChar('2');      
-//
-//            break;
+//             case 'h':
+//                 putChar('H');
+//                 HEATER = 1;
+//                 for(int i=0;i<300;i++) delay_ms(1000);
+//                 HEATER = 0;
+//                 break;
+//            case 'i':
+//                HEATER = 1;
+//                for(int i=0;i<60;i++) delay_ms(1000);
+//                HEATER = 0;
+//                break;
+//             case 'c':
+//                 putChar('C');
+//                 putChar('W');
+                
+//                 for(int i=0;i<120;i++){
+//                 CWKEY = 1;
+//                 __delay_ms(50);
+//                 CWKEY = 0;
+//                 __delay_ms(50);
+
+//                 CWKEY = 1;
+//                 __delay_ms(50);
+//                 CWKEY = 0;
+//                 __delay_ms(50);
+
+//                 CWKEY = 1;
+//                 __delay_ms(50);
+//                 CWKEY = 0;
+//                 __delay_ms(50);
+
+//                 CWKEY = 1;
+//                 __delay_ms(150);
+//                 CWKEY = 0;
+//                 __delay_ms(50);
+//                 }
+
+//                 putChar('C');
+//                 putChar('W');
+//                 putChar('2');
+//                 break;
+//             case 'f':
+//                 putChar('F');
+//                 putChar('m');
+//                 CWKEY = 0;
+//         //            __delay_ms(2000);
+//                 __delay_ms(300);
+//                 UBYTE EEPROMTestData[36];
+//                 EEPROMTestData[0] = 'o';
+//                 EEPROMTestData[1] = 'r';
+//                 EEPROMTestData[2] = 'i';
+//                 EEPROMTestData[3] = '1';
+//                 for(int i=4;i<36;i++) EEPROMTestData[i] = 'A';
+//                 __delay_ms(300);
+//                 FMPTT = 1;
+//                 SendPacket(EEPROMTestData);
+//                 FMPTT = 0;
+//                 __delay_ms(300);
+//                 break;
+                
+
 //        }
 //        RCIF = 0;
 //    }
-//}
-    
-    
+// }
+
+/*******************************************************************************
+*test for timer
+******************************************************************************/  
 //void interrupt timer(void){
     
 //    if(INTCONbits.TMR0IF){
@@ -285,7 +294,7 @@ void interrupt InterReceiver(void){
 void main(void) {
 
     __delay_ms(1000);
-    /*???ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½???ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½*/
+    /*???¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½???¿½?¿½??¿½?¿½*/
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
