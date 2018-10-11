@@ -464,44 +464,52 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE Address7
 Frame
 ******************************************************************************/
 void CwDownlinkFR0(void){
-    UBYTE satellite_call_sign[6] = {'J', 'S', '1', 'Y', 'A', 'X'};
-    sendMorse(satellite_call_sign,sizeof(satellite_call_sign)/sizeof(satellite_call_sign[0]));
+    UBYTE satellite_name[4] = {'o', 'r', 'i', '1'};
+    sendMorse(satellite_name,sizeof(satellite_name)/sizeof(satellite_name[0]));
 }
 
 void CwDownlinkFR1(void){
-    //TODO: add meessage 
+    UBYTE message[5] = {'H', 'E', 'L', 'L', 'O'};
+    sendMorse(message,sizeof(message)/sizeof(message[0]));
 }
 
 void CwDownlinkFR2(void){
-    //TODO : add function for send satellite status
+    //battery status (data from OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, batteryStatus_addressHigh, batteryStatus_addressLow);
+    //satellite bus status (data from OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, satelliteBusStatus_addressHigh, satelliteBusStatus_addressLow);
+    //satellite mode (data from COBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow);
 }
 
-void CwDownlinkFRXXX(void){
-    UBYTE end_sign[3] = {'E', 'N', 'D'};
-    sendMorse(end_sign,sizeof(end_sign)/sizeof(end_sign[0]));
+void CwDownlinkFR3(void){
+    //OBC last command
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, OBC_LastCommand_addressHigh, OBC_LastCommand_addressLow);
+    //RXCOBC last command
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, RXCOBC_LastCommand_addressHigh, RXCOBC_LastCommand_addressLow);
+    //TXCOBC last command
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, TXCOBC_LastCommand_addressHigh, TXCOBC_LastCommand_addressLow);
 }
 
 /*******************************************************************************
 /**Main : CW downlink
  * ---
- * FR0  :  satellite call sign 'JS1YAX'
- * FR1  :  message 'XXX'
- * FR2  :  satellite status
- * FR3  :  
- * FRXX :  END
+ * FR0  :  satellite name('ori') + satellite number('1')
+ * FR1  :  message('HELLO')
+ * FR2  :  satellite status(battery status + satellite bus status + satellite mode)
+ * FR3  :  command
  * ---
  * interval between frames is 10 seconds (normalmode)
 ******************************************************************************/
 void downlinkCWSignal(void){
     CwDownlinkFR0();
-    delay_s(10);
+    // delay_s(10);
     CwDownlinkFR1();
-    delay_s(10);
+    // delay_s(10);
     CwDownlinkFR2();
-    delay_s(10);
-    //TODO:add frame
-    CwDownlinkFRXXX();
-    delay_s(10);
+    // delay_s(10);
+    CwDownlinkFR3();
+    // delay_s(10);
 }
 
 /*******************************************************************************
