@@ -14,9 +14,10 @@
       <itemPath>pinDefine.h</itemPath>
       <itemPath>typeDefine.h</itemPath>
       <itemPath>decodeAX25.h</itemPath>
-      <itemPath>InitMPU.h</itemPath>
       <itemPath>timer.h</itemPath>
       <itemPath>FMCW.h</itemPath>
+      <itemPath>ADC.h</itemPath>
+      <itemPath>MPU.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -33,9 +34,10 @@
       <itemPath>WDT.c</itemPath>
       <itemPath>CRC16.c</itemPath>
       <itemPath>decodeAX25.c</itemPath>
-      <itemPath>InitMPU.c</itemPath>
       <itemPath>timer.c</itemPath>
       <itemPath>FMCW.c</itemPath>
+      <itemPath>ADC.c</itemPath>
+      <itemPath>MPU.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

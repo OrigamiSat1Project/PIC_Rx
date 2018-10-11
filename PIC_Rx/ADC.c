@@ -30,20 +30,6 @@
 * Usage: initMain()
 ******************************************************************************/
 void initADC(){
-//    ANSEL = 0x00;
-//    ANSELH = 0x00;
-    
-    //----------------------
-    // Run at 8 MHz //if this value is changed, ADC clock frequency must be adjusted accordingly
-    //Clock determined by FOSC in configuration bits
-//    SCS = 0;
-    //Frequency select bits
-//    IRCF0 = 1;
-//    IRCF1 = 1;
-//    IRCF2 = 1;
-    //-----------------------
-    
-
     /*ADCON0: A/N CONTROL REGISTER 0*/
     // Set ADC conversion clock source, conversion time is 3.2us (Fosc/32)
     ADCON0bits.ADCS1 = 1;
@@ -76,46 +62,36 @@ void initADC(){
 
 }
 
-/*******************************************************************************
-* Function: Main
-*
-* Returns: Nothing
-*
- * Description: Program entry point
-******************************************************************************/
-void SendBatVoltage() {
-    
-    UBYTE adcH = 0x62;
-    UBYTE adcL = 0x62;
-//    putChar(0x01);
+void ReadBatVoltage() {
     initADC();
    
-    ADCON0bits.CHS0 = 0;
-    ADCON0bits.CHS1 = 0;
-    ADCON0bits.CHS2 = 0;
+    ADCON0bits.CHS0 = 0; ADCON0bits.CHS1 = 0; ADCON0bits.CHS2 = 0;
     
     //Turn ADC on
     ADCON0bits.ADON = 1;
-    //Sample Channel
     __delay_us(100);
     ADCON0bits.GO = 1;
     while (ADCON0bits.GO_nDONE);
-    adcH = ADRESH;
-    adcL = ADRESL;
+    adcH = ADRESH; adcL = ADRESL;
+    return;
+}
+
+void SendBatVoltage() {
+    initADC();
+   
+    ADCON0bits.CHS0 = 0; ADCON0bits.CHS1 = 0; ADCON0bits.CHS2 = 0;
+    
+    //Turn ADC on
+    ADCON0bits.ADON = 1;
+    __delay_us(100);
+    ADCON0bits.GO = 1;
+    while (ADCON0bits.GO_nDONE);
+    adcH = ADRESH; adcL = ADRESL;
         
     putChar('A');
     putChar('N');
-    putChar(adcH);
-    putChar(adcL);
-        
-        //Test functionality of ADC
-    //    adc_led_Test(adcVoltage);
-
-        //Update every second
-        __delay_ms(1000);
-        //Set clears if necessary
-
-return;
+    putChar(adcH); putChar(adcL);
+    return;
 }
 
 
