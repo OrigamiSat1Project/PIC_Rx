@@ -17,6 +17,9 @@ UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
 void putChar(UBYTE c);                  // Writes a character to the serial port
+void putString(UBYTE *);
+
+void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 //void putstr(UBYTE *);
 
 //void putcrlf(void);

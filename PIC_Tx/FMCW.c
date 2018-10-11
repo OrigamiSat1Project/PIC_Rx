@@ -72,7 +72,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         // Command type
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
-                    downlinkFMSignal(sattelliteMode_EEPROMAndB0Select, sattelliteMode_addressHigh, sattelliteMode_addressLow, commandData[5], sattelliteMode_DataSize);
+                    downlinkFMSignal(sattelliteMode_EEPROMAndB0Select, sattelliteMode_addressHigh, sattelliteMode_addressLow, commandData[4], sattelliteMode_DataSize);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                 case 'C':/*downlink CW Signal*/
                     commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);

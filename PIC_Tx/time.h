@@ -20,7 +20,7 @@
 #define hspan 400   //20MHz:360(300?),415
 #define lspan 1250
 #define TURN_ON_WAIT_TIME  2
-#define CW_START_WAIT_TIME 200
+#define CW_START_WAIT_TIME 200000
 
 //�s���m��delay�֐�
 //functions to wait [ms] or [us]
