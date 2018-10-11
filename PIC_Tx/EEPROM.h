@@ -23,6 +23,20 @@
 #define rhigh_address 0x00
 #define rlow_address 0xE0
 
+/*******************************************************************************
+*OK and ERROR
+******************************************************************************/
+#define B0select_for_commandID     0x00
+#define HighAddress_for_commandID  0xE0
+#define LowAddress_for_commandID   0x00
+
+#define B0select_for_Ok       0x00
+#define HighAddress_for_Ok    0xE0
+#define LowAddress_for_Ok     0x00
+
+#define B0select_for_Error     0x00
+#define HighAddress_for_Error  0xE0
+#define LowAddress_for_Error   0x00
 
 /*******************************************************************************
 *Last Command ID

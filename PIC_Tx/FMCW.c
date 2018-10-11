@@ -64,7 +64,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         __delay_ms(300);
     }
     FMPTT = 0;
-    
+        
     /*-------------------------------------------------*/
     if(commandData[0]=='T'){                //command target = PIC_TX
         //Task target
@@ -111,9 +111,8 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
-                
                 default:
-                    //TODO: error message
+                    switchError(error_FMCW_downlinkReceivedCommand);
                     break;
             }
         }
@@ -146,9 +145,8 @@ void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressL
     UBYTE readData[];
     ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, readData,DataSize);
     
-    if (CHECK_EEPROM_READ != SUCCESS){
-        ReadDataFromEEPROM(subAddress,addressHigh,addressLow, readData,DataSize);
-    }
+    //TODO:eror->read sub EEPROM
+//    ReadDataFromEEPROM(subAddress,addressHigh,addressLow, readData,DataSize);
 
     FMPTT = 1;
     __delay_ms(100);//TODO check time
@@ -167,15 +165,18 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
     switch(type_select){
         case 's':   //start CW downlink
             CWdownlinkStart();
+            switchOk(ok_FMCW_commandSwitchCWDownlink_Start);
             break;
         case 0xaa:  //the size of data is specified by the command
             ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
+            switchOk(ok_FMCW_commandSwitchCWDownlink_aa);
             break;
         case 0xbb:  //the size of data is written in EEPROM
             //TODO:add function
+            switchOk(ok_FMCW_commandSwitchCWDownlink_bb);
             break;
         default:
-            //TODO: error message
+            switchError(error_FMCW_commandSwitchCWDownlink);
             break;
 
     }

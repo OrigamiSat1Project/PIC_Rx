@@ -109,7 +109,6 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 *Method for EEPROM Read
 ******************************************************************************/
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
-    CHECK_EEPROM_READ = RESET_STATUS;
 
     UBYTE Address = Address7Bytes << 1;
     UBYTE ReadAddress = Address | 0x01;
@@ -125,8 +124,6 @@ void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address
     }
     ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
     I2CMasterStop();                        //Stop condition
-    
-    CHECK_EEPROM_READ = SUCCESS;
 
     //for debugging
     /*
@@ -230,7 +227,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             //TODO: write method for measure IMU
             break;
         default:
-            //TODO: error message
+            switchError(error_I2C_commandSwitchI2C);
             break;
     }
 }

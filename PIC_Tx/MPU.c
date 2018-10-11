@@ -5,6 +5,7 @@
 //#include "decode_AX25.h"
 #include "encode_AX25.h"
 #include "pinDefine.h"
+#include "OkError.h"
 
 
 UINT invertStateWithTime(UINT,UBYTE,UBYTE);
@@ -19,8 +20,8 @@ void Init_MPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-	ANSEL  = 0x00;	//ADê›íË
-	ANSELH = 0x00;	//ADê›íË
+	ANSEL  = 0x00;	//AD?øΩ›íÔøΩ
+	ANSELH = 0x00;	//AD?øΩ›íÔøΩ
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -104,7 +105,7 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             HEATER = invertStateWithTIme(CWKEY,timeHigh, timeLow);
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchPowerSupply);
             break;
     }
 }

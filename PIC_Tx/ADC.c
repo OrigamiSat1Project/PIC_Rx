@@ -28,6 +28,7 @@
 #include "ADC.h"
 #include "EEPROM.h"
 #include "I2C.h"
+#include "OkError.h"
 #include <xc.h>
 #include <stdio.h>
 
@@ -328,18 +329,23 @@ void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE dat
    switch(type_sellect){    
         case 'd': //measure DC-DC temperature
             measureDcDcTemperature(data1, data2, data3);
+            switchOk(ok_ADC_downlinkReceivedCommand_DcDc);
             break;
         case '5': //5VBUS 
+            switchOk(ok_ADC_downlinkReceivedCommand_5VBus);
             break;
         case '3': //3VBUS
+            switchOk(ok_ADC_downlinkReceivedCommand_3VBus);
             break;
         case 'C': //5V CIB
+            switchOk(ok_ADC_downlinkReceivedCommand_5VCIB);
             break;
         case 'u': //update all HK data
             measureAllChanelADC();
+            switchOk(ok_ADC_downlinkReceivedCommand_All);
             break;
         default:
-            //TODO: error message
+            switchError(error_ADC_commandSwitchHKdata);
             break;
    }
 }

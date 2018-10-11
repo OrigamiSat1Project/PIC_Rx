@@ -24,8 +24,8 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 //void putcrlf(void);
 
-//void put_error(void);
-//void put_ok(void);
+void put_error(void);
+void put_ok(void);
 //void NM_waddress(UBYTE, UBYTE, UBYTE);
 //void interrupt InterReceiver(void);
 //void CwDownlink(UBYTE RXDATA[]);
