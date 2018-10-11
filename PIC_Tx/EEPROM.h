@@ -23,6 +23,15 @@
 #define rhigh_address 0x00
 #define rlow_address 0xE0
 
+
+/*******************************************************************************
+*Last Command ID
+******************************************************************************/
+#define B0select_for_TXCOBCLastCommand     0x00
+#define HighAddress_for_TXCOBCLastCommand  0xE0
+#define LowAddress_for_TXCOBCLastCommand   0x00
+
+
 /*******************************************************************************
 *ADC value
 ******************************************************************************/
@@ -55,10 +64,10 @@
 *address for satellite mode
 ******************************************************************************/
 //TODO:change address
-#define deviceOnOff_EEPROMAndB0Select 0x00
-#define deviceOnOff_addressHigh       0x00
-#define deviceOnOff_addressLow        0x00
-#define deviceOnOff_DataSize          1
+#define sattelliteMode_EEPROMAndB0Select 0x00
+#define sattelliteMode_addressHigh       0x00
+#define sattelliteMode_addressLow        0x00
+#define sattelliteMode_DataSize          1
 
 #endif	/* EEPROM_H */
 

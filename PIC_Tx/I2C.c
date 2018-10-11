@@ -3,12 +3,16 @@
 #include "I2C.h"
 #include "Type_define.h"
 #include "EEPROM.h"
-
+#include "OkError.h"
 
 #define _XTAL_FREQ 10000000
 //UBYTE EEPROMData[16];
 //UINT EEPROMDataLength;
 
+
+/*******************************************************************************
+*setting
+******************************************************************************/
 void InitI2CMaster(const UDWORD c){
   SSPCON = 0b00101000;
   SSPCON2 = 0;
@@ -54,6 +58,9 @@ UBYTE I2CMasterRead(UBYTE a){
   return temp;
 }
 
+/*******************************************************************************
+*Method for EEPROM Write 
+******************************************************************************/
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
     UBYTE address;
     address= addressEEPROM << 1;
@@ -92,8 +99,18 @@ void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,U
     WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
     WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
 }
-//
+
+void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
+    WriteCheckByteToEEPROMs(B0select_for_TXCOBCLastCommand, HighAddress_for_TXCOBCLastCommand, LowAddress_for_TXCOBCLastCommand, last_command_ID);
+}
+
+
+/*******************************************************************************
+*Method for EEPROM Read
+******************************************************************************/
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+    CHECK_EEPROM_READ = RESET_STATUS;
+
     UBYTE Address = Address7Bytes << 1;
     UBYTE ReadAddress = Address | 0x01;
     I2CMasterStart();                       //Start condition
@@ -109,6 +126,8 @@ void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address
     ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
     I2CMasterStop();                        //Stop condition
     
+    CHECK_EEPROM_READ = SUCCESS;
+
     //for debugging
     /*
     for(UINT j = 0; j < *EEPROMDataLength; j++){
@@ -177,24 +196,6 @@ void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE 
     __delay_ms(200);
 }
 
-void measureBatteryVoltage(UBYTE *ReadData){
-    UBYTE Address = battery_slave_address << 1;
-    UBYTE ReadAddress = Address | 0x01;
-    
-    I2CMasterStart();                       //Start condition
-    I2CMasterWrite(battery_slave_address);                //7 bit address + Write
-    I2CMasterWrite(battery_address_high);           //Adress High Byte
-    I2CMasterWrite(battery_address_low);            //Adress Low Byte
-    I2CMasterRepeatedStart();               //Restart condition
-
-    I2CMasterWrite(ReadAddress);            //7 bit address + Read
-    for(UINT i = 0; i < battery_data_size - 1; i++){
-        ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
-    }
-    ReadData[battery_data_size - 1] = I2CMasterRead(0);
-    I2CMasterStop();
-}
-
 //process command data if the command type is 'I2C'
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
     switch(command){    
@@ -227,10 +228,6 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *
             break;
         case 'i': //measure IMU
             //TODO: write method for measure IMU
-            break;
-         case 'e': //measure battery voltage
-            //TODO: write method for measure battery voltage
-            measureBatteryVoltage(dataHigh); 
             break;
         default:
             //TODO: error message
