@@ -25,8 +25,8 @@ void putString(UBYTE *);
 UBYTE getChar(void);
 void putCrLf(void);
 
-void putError(void);
-void putOk(void);
+void put_error(void);
+void put_ok(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);

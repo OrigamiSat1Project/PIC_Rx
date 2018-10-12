@@ -15,6 +15,7 @@
 #include "EPS.h"
 #include "WDT.h"
 #include "CRC16.h"
+#include "OkError.h"
 
 // PIC16F887 Configuration Bit Settings
 #pragma config FOSC     = HS        // Oscillator Selection bits (HS oscillator)
@@ -193,7 +194,7 @@ void main(void) {
                     WriteLastCommandIdToEEPROM(commandData[1]);                    
                     break;
                 default:
-                    //TODO: error message
+                    switchError(error_main_reveiveCommand);
                     break;
                 }
 

@@ -16,6 +16,7 @@
       <itemPath>decodeAX25.h</itemPath>
       <itemPath>MPU.h</itemPath>
       <itemPath>FMCW.h</itemPath>
+      <itemPath>OkError.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -34,6 +35,7 @@
       <itemPath>decodeAX25.c</itemPath>
       <itemPath>MPU.c</itemPath>
       <itemPath>FMCW.c</itemPath>
+      <itemPath>OkError.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -43,6 +45,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
+    <Elem>../../PIC_Tx/PIC_Tx</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

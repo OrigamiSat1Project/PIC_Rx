@@ -6,6 +6,7 @@
 #include "typeDefine.h"
 #include "time.h"
 #include "CRC16.h"
+#include "OkError.h"
 
 void InitSerial(void){
     // SPBRG  = 4;                   // boudrate is 115200 bps
@@ -57,7 +58,7 @@ void putCrLf(void){
     putChar('\n');//Line feed
 }
 
-void putError(void){
+void put_error(void){
     putChar('E');
     putChar('R');
     putChar('R');
@@ -66,7 +67,7 @@ void putError(void){
     putChar('!');
 }
 
-void putOk(void){
+void put_ok(void){
     putChar('O');
     putChar('K');
     putChar('!');
@@ -142,7 +143,7 @@ int change_baud_rate( UBYTE command_baud_rate ){
 }
 
 //TODO:check
-//TODO:SPBRG,BRGH,SYNC��main.c��InitSerial();�ŏ���������邯�Ǒ��v��
+//TODO:SPBRG,BRGH,SYNC?��?��main.c?��?��InitSerial();?��ŏ�?��?��?��?��?��?��?��?��邯?��Ǒ�?��v?��?��
 //UART_speed: high_speed = 1  / low_speed =0
 //UART_type : synchronous = 1 / asynchronous = 0
 //Data sheet : p113
@@ -198,7 +199,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
     switch(command){    
         case 'w': //UART write
             //TODO: write method for UART writ
-            WriteUART( data1 );  //TODO:change "data1" �C�ӂ̐��ɑΉ��ł���悤��
+            WriteUART( data1 );  //TODO:change "data1" ?��C?��ӂ̐�?��ɑΉ�?��ł�?��?��悤?��?��
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?
@@ -215,7 +216,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
             changeInterruptPermission(data1,data2);
             break;
         default:
-            //TODO: error message
+            switchError(error_UART_commandSwitchUART);
             break;
     }
 }

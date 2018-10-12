@@ -4,6 +4,7 @@
 #include "pinDefine.h"
 #include "time.h"
 #include "typeDefine.h"
+#include "OkError.h"
 
 /*Identifiers for the radio units (called unitID if given to a functions)*/
 /* Do not change!! */
@@ -25,7 +26,7 @@ void _NOP(void);
  * [Send 'Low' to radio]
  * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
  * 2. Set the DAT terminal to Low
- * 3. Change the CLK pin from 0 Å® 1 Å® 0
+ * 3. Change the CLK pin from 0 ?øΩ?øΩ 1 ?øΩ?øΩ 0
  */
 void sendLow(int unitID){
     if(unitID == FMTX_ID)
@@ -59,7 +60,7 @@ void sendLow(int unitID){
  * [Send 'High' to radio]
  * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
  * 2. Set the DAT terminal to High
- * 3. Change the CLK pin from 0 Å® 1 Å® 0
+ * 3. Change the CLK pin from 0 ?øΩ?øΩ 1 ?øΩ?øΩ 0
  */
 void sendHigh(int unitID){
     if(unitID == FMTX_ID)
@@ -92,7 +93,7 @@ void sendHigh(int unitID){
 /*
  * [Send STB signal to radio]
  * 1. Select which radio unit to send  to (FMTX or FMRX or CWTX)
- * 2. Change the STB pin from 0 Å® 1 Å® 0
+ * 2. Change the STB pin from 0 ?øΩ?øΩ 1 ?øΩ?øΩ 0
  */
 void sendSTB(int unitID){
     if(unitID == FMTX_ID)
@@ -183,7 +184,7 @@ void setNprg(int unitID, int *Nprg){
 /*
  * [Setting the reference counter of the radio]
  * 1. Convert reference counter read from argument to binary number (stored as array)
- * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) Åiê›íËÇÃäÃÅj???
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?øΩi?øΩ›íÔøΩÃäÃÅj???
  * 3. Send group code '11'
  * 4. Send STB signal
  */
@@ -315,7 +316,7 @@ void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBY
             //TODO: write method for FM RX
             break;
         default:
-            //TODO: error message
+            switchError(error_FMCW_commandSwitchFMCW);
             break;
     }
 }

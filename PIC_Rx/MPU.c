@@ -3,6 +3,7 @@
 #include "pinDefine.h"
 #include "time.h"
 #include "typeDefine.h"
+#include "OkError.h"
 
 
 
@@ -16,8 +17,8 @@ void InitMPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-//	ANSEL  = 0x00;	//ADê›íË// AD setting
-//	ANSELH = 0x00;	//ADê›íË// AD setting
+//	ANSEL  = 0x00;	//ADÔøΩ›íÔøΩ// AD setting
+//	ANSELH = 0x00;	//ADÔøΩ›íÔøΩ// AD setting
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -75,7 +76,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             //TODO: write method for survival mode
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchSatMode);
             break;
     }
 }
@@ -102,7 +103,7 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             //TODO: write method for WDT using pin: POWER_WDT
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchSatMode);
             break;
     }
 }
@@ -120,7 +121,7 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
             //TODO: write method for change frequency
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchIntProcess);
             break;
     }
 }
