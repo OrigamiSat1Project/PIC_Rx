@@ -59,7 +59,7 @@ void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
             }
             */
         }else{
-            ///TODO:ƒRƒ}ƒ“ƒhCRCƒ_ƒ‚¾‚Á‚½‚Ìˆ—
+            ///TODO:ï¿½Rï¿½}ï¿½ï¿½ï¿½hCRCï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½
         }
     }
 }
@@ -168,13 +168,13 @@ void main(void) {
         
         /*-------------------------------------------------------------------*/
         //FIXME:for debug to test switch power supply start
-        UBYTE onOff = 0x01;
-        UBYTE timeHigh = 0x00;
-        UBYTE timeLow = 0x00;
+        // UBYTE onOff = 0x01;
+        // UBYTE timeHigh = 0x00;
+        // UBYTE timeLow = 0x00;
  
-        putChar(0xaa);
-        putChar(0xaa);
-        putChar(0xaa);
+        // putChar(0xaa);
+        // putChar(0xaa);
+        // putChar(0xaa);
 //        for(UBYTE i=1; i<10; i++){
 //            SEP_SW = HIGH;
 //            RBF_SW = HIGH;
@@ -194,177 +194,117 @@ void main(void) {
 //            switchPowerEPS(onOff, timeHigh, timeLow);
 //            __delay_ms(1000);            
 //        }   
-        delay_ms(100);
-        for(UBYTE i=0; i<4; i++){
-            putChar(0xbb);
-            putChar(0xbb);
-            putChar(i);
-            putChar(0xbb);
-            putChar(0xbb);
+        // delay_ms(100);
+        // for(UBYTE i=0; i<4; i++){
+        //     putChar(0xbb);
+        //     putChar(0xbb);
+        //     putChar(i);
+        //     putChar(0xbb);
+        //     putChar(0xbb);
        
-            onOff = 0x01;
-            timeHigh = 0x00;
-            timeLow = 0x03;
-            delay_ms(100);
+        //     onOff = 0x01;
+        //     timeHigh = 0x00;
+        //     timeLow = 0x03;
+        //     delay_ms(100);
             
-            putChar(0xc1);
-            putChar(0xc1);
-            delay_ms(100);
-            switchPowerEPS(onOff, timeHigh, timeLow);
-            delay_ms(100);
-            putChar(0xc2);
-            putChar(0xc2);
-            delay_s(1);
-        }   
-        putChar(0xf2);
-        putChar(0xf2);
-        putChar(0xf2);
-        delay_ms(100);
+        //     putChar(0xc1);
+        //     putChar(0xc1);
+        //     delay_ms(100);
+        //     switchPowerEPS(onOff, timeHigh, timeLow);
+        //     delay_ms(100);
+        //     putChar(0xc2);
+        //     putChar(0xc2);
+        //     delay_s(1);
+        // }   
+        // putChar(0xf2);
+        // putChar(0xf2);
+        // putChar(0xf2);
+        // delay_ms(100);
         //FIXME:for debug to test switch power supply finish
         /*-------------------------------------------------------------------*/
         
         
-//        /*---Receive command data---*/ 
-//        /*------------------------------------------------------------------*/
-//        UBYTE *commandData;         //data of uplink command     
-//        //for information on EEPROM see data sheet: 24LC1025        
-//        UBYTE B0select;             //control byte B0 of EEPROM
-//        UBYTE wHighAddress;         //address high byte of EEPROM
-//        UBYTE wLowAddress;          //address low byte of EEPROM
-//        UBYTE mainControlByte;      //control byte of main EEPROM
-//        UBYTE subControlByte;       //control byte of sub EEPROM
-//
-//        commandData = receiveDataPacket();
-//        B0select = commandData[20];
-//        wHighAddress = commandData[21];
-//        wLowAddress = commandData[22];
-//        mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
-//        subControlByte = SUB_EEPROM_ADDRESS | B0select;
-//        
-//        //printf("%s\r\n", commandData); //used for debugging with computer
-//                
-//        LED_WHITE = 1; //debugging receive command from ground station
-//        __delay_ms(100);
-//        LED_WHITE = 0;
-//
-//        
-//        /*---Write uplink command in EEPROM---*/
-//        /*------------------------------------------------------------------*/
-//        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
-//        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
-//        
-//        
-//        /*---Send command using UART to OBC and TXCOBC---*/
-//        /*------------------------------------------------------------------*/
-//        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, 0x00);
-//        
-//          
-//        /*---Define if command target is RXCOBC 'R' and read in task target ---*/
-//        /*------------------------------------------------------------------*/
-//        if(commandData[0]=='R'){                //command target = PIC_RX
-//            //Task target
-//            if(commandData[2] == 'r'){          //task target =  PIC_RX
-//                // Command type
-//                switch(commandData[3]){         //Process command type
-//                case 'm': /*change sattelite mode*/
-//                    commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-//                    break;
-//                case 'p': /*power supply*/
-//                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-//                    break;
-//                case 'n': /*radio unit*/
-//                    commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-//                    break;
-//                case 'i':/*I2C*/
-//                    commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
-//                    break;
-//                case 'u':/*UART*/
-//                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-//                    break;
-//                case 'w':/*WDT (watch dog timer)*/
-//                    commandWDT(commandData[4], commandData[5], commandData[6]);
-//                    break;
-//                case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-//                    //TODO: write function directly here or in MPU.c
-//                    break;
-//                case 'r':/*internal processing*/
-//                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-//                    break;
-//                default:
-//                    //TODO: error message
-//                    break;
-//                }
-//
-//            }
-//        }else{
-//            //debugging if coomand target is not RXCOBC
-//            LED_WHITE = 1;  
-//            __delay_ms(1000);
-//            LED_WHITE = 0;
-//        }
-//        
-//        
-//        /*---Old command switch case---*/ //kept for reference can be deleted once new switch code is finished and tested
-////        if(commandData[0]=='R'){                //command target = PIC_RX
-////            //Task target
-////            if(commandData[2] == 'r'){          //task target =  PIC_RX
-////                // Command type
-////                switch(commandData[3]){
-////                case 'E': /*EPS kill*/
-////                    Reset_EPS();
-////                    __delay_ms(5000);
-////                    //ˆÈ‰º‚Ì”š‚Í‰Šúİ’è‚Æ•Ï‰»‚µ‚Ä‚¢‚é‚½‚ß‚à‚¤ˆê“x’è‹`
-////                    //–{—ˆ‚È‚ç•Ï‰»‚·‚é•¶š—ñ‚ğ‘¼‚É—pˆÓ‚µ‚½‚Ù‚¤‚ª—Ç‚¢‚©‚à‚µ‚ê‚È‚¢
-////                    // values for Nprg are changed in setNprg function so they have to be reset
-////                    //TODO: make seperate function for set-up
-////                    int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-////                    int CWTX_Nprg[5]     =   {0,1,4,0,0};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-////                    int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
-////                    //reset PLL setting (because it gets lost during shutdown)
-////                    FMTX(FMTX_Nref, FMTX_Nprg);
-////                    CWTX(CWTX_Nref, CWTX_Nprg);
-////                    FMRX(FMRX_Nref, FMRX_Nprg);
-////                    __delay_ms(500);
-////                    break;
-////                case 'I':
-////                    // I2C mode
-////                    break;
-////                case '3':
-////                    // 
-////                    break;
-////                case 'N':
-////                    // NanoMind
-////                    break;
-////                case 'T':
-////                    // send TXPIC by I2C
-////                    break;
-////                default:
-////                    // error
-////                    break;
-////                }
-////
-////            }else if(commandData[2] == 't'){      //task target =  PIC_TX       
-////
-////            }else if(commandData[2] == 'o'){      //task target =  OBC       
-////
-////            }else if(commandData[2] == '5'){      //task target =  5R8G       
-////
-////            }
-////        }else{
-////            //debugging if coomand target is not RXCOBC
-////            LED_WHITE = 1;  
-////            __delay_ms(1000);
-////            LED_WHITE = 0;
-////        }
-//    
-//        __delay_ms(500);
-        putChar(0xf3);
-        putChar(0xf3);
-        putChar(0xf3);
-        delay_ms(200);
+       /*---Receive command data---*/ 
+       /*------------------------------------------------------------------*/
+       UBYTE *commandData;         //data of uplink command     
+       //for information on EEPROM see data sheet: 24LC1025        
+       UBYTE B0select;             //control byte B0 of EEPROM
+       UBYTE wHighAddress;         //address high byte of EEPROM
+       UBYTE wLowAddress;          //address low byte of EEPROM
+       UBYTE mainControlByte;      //control byte of main EEPROM
+       UBYTE subControlByte;       //control byte of sub EEPROM
+
+       commandData = receiveDataPacket();
+       B0select = commandData[20];
+       wHighAddress = commandData[21];
+       wLowAddress = commandData[22];
+       mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
+       subControlByte = SUB_EEPROM_ADDRESS | B0select;
+       
+       //printf("%s\r\n", commandData); //used for debugging with computer
+               
+       LED_WHITE = 1; //debugging receive command from ground station
+       __delay_ms(100);
+       LED_WHITE = 0;
+
+       
+       /*---Write uplink command in EEPROM---*/
+       /*------------------------------------------------------------------*/
+       WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
+       WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+       
+       
+       /*---Send command using UART to OBC and TXCOBC---*/
+       /*------------------------------------------------------------------*/
+       sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, 0x00);
+       
+         
+       /*---Define if command target is RXCOBC 'R' and read in task target ---*/
+       /*------------------------------------------------------------------*/
+       if(commandData[0]=='R'){                //command target = PIC_RX
+           //Task target
+           if(commandData[2] == 'r'){          //task target =  PIC_RX
+               // Command type
+               switch(commandData[3]){         //Process command type
+               case 'm': /*change sattelite mode*/
+                   commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+                   break;
+               case 'p': /*power supply*/
+                   commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                   break;
+               case 'n': /*radio unit*/
+                   commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                   break;
+               case 'i':/*I2C*/
+                   commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
+                   break;
+               case 'u':/*UART*/
+                   commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                   break;
+               case 'w':/*WDT (watch dog timer)*/
+                   commandWDT(commandData[4], commandData[5], commandData[6]);
+                   break;
+               case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+                   //TODO: write function directly here or in MPU.c
+                   break;
+               case 'r':/*internal processing*/
+                   commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+                   break;
+               default:
+                   //TODO: error message
+                   break;
+               }
+
+           }
+       }else{
+           //debugging if coomand target is not RXCOBC
+           LED_WHITE = 1;  
+           __delay_ms(1000);
+           LED_WHITE = 0;
+       }
+       
+   
+       __delay_ms(500);
     }
     //return;
-    putChar(0xf4);
-    putChar(0xf4);
-    putChar(0xf4);
 }
