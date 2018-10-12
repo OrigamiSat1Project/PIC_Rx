@@ -20,6 +20,7 @@
       <itemPath>IMU.h</itemPath>
       <itemPath>ITG3701.h</itemPath>
       <itemPath>adxl345.h</itemPath>
+      <itemPath>OkError.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -39,7 +40,6 @@
       <itemPath>WDT.c</itemPath>
       <itemPath>ADC.c</itemPath>
       <itemPath>ICM20601.c</itemPath>
-      <itemPath>IMU.c</itemPath>
       <itemPath>ITG3701.c</itemPath>
       <itemPath>adxl345.c</itemPath>
       <itemPath>OkError.c</itemPath>
