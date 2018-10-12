@@ -17,12 +17,15 @@ UBYTE UPLINK_COMMAND_SIZE = 32;
 
 void Init_SERIAL(void);
 void putChar(UBYTE c);                  // Writes a character to the serial port
+void putString(UBYTE *);
+
+void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 //void putstr(UBYTE *);
 
 //void putcrlf(void);
 
-//void put_error(void);
-//void put_ok(void);
+void put_error(void);
+void put_ok(void);
 //void NM_waddress(UBYTE, UBYTE, UBYTE);
 //void interrupt InterReceiver(void);
 //void CwDownlink(UBYTE RXDATA[]);

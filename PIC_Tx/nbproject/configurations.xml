@@ -42,6 +42,7 @@
       <itemPath>IMU.c</itemPath>
       <itemPath>ITG3701.c</itemPath>
       <itemPath>adxl345.c</itemPath>
+      <itemPath>OkError.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

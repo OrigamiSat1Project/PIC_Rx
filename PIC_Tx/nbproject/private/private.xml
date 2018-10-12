@@ -3,12 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/I2C.c</file>
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/encode_AX25.c</file>
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/main.c</file>
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/IMU.c</file>
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/FMCW.c</file>
             <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/encode_AX25.h</file>
+=======
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/UART.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/FMCW.h</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/OkError.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/main.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/FMCW.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/OkError.h</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/MPU.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/UART.h</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/ADC.c</file>
+            <file>file:/C:/Users/user/OneDrive/ORIGAMI/GitHub/PIC_Tx/PIC_Tx/EEPROM.h</file>
+>>>>>>> kurosaki_dev
         </group>
     </open-files>
 </project-private>

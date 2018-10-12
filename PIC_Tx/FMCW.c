@@ -9,6 +9,7 @@
 #include "encode_AX25.h"
 #include "Type_define.h"
 #include "time.h"
+#include "OkError.h"
 
 /*******************************************************************************
 *Marco, Enum / Global data / Method 
@@ -32,6 +33,7 @@ void CwDownlinkFR0(void);
 void CwDownlinkFR1(void);
 void CwDownlinkFR2(void);
 void CwDownlinkFRXXX(void);
+void CWdownlinkStart(void);
 
 /*******************************************************************************
 *Downlink Command
@@ -42,6 +44,8 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     mainAddress = EEPROM_address | B0Select;
     subAddress = EEPROM_subaddress | B0Select;
     ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
+
+    //TODO:is thhis corrrect?
     if(crc16(0,commandData,29) == CRC_check(commandData,29)){
         commandData[31] = 0x0F;
     }else{
@@ -61,7 +65,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         __delay_ms(300);
     }
     FMPTT = 0;
-    
+        
     /*-------------------------------------------------*/
     if(commandData[0]=='T'){                //command target = PIC_TX
         //Task target
@@ -69,38 +73,47 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         // Command type
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
-                    downlinkFMSignal(commandData[4], deviceOnOff_EEPROMAndB0Select, deviceOnOff_addressHigh, deviceOnOff_addressLow, commandData[5], deviceOnOff_DataSize);
-                    break;               
+                    downlinkFMSignal(sattelliteMode_EEPROMAndB0Select, sattelliteMode_addressHigh, sattelliteMode_addressLow, commandData[4], sattelliteMode_DataSize);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                case 'C':/*downlink CW Signal*/
+                    commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'f':/*downlink FM Signal*/
+                    downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;           
                 case 'p': /*power supply*/
                     commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'n': /*radio unit*/
     //                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'i':/*I2C*/
                     //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'u':/*UART*/
     //                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
-    //                commandWDT(commandData[4], commandData[5], commandData[6]);
+    //                commandWDT(commandData[4], commandData[5], commandData[6]);             
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
                     //TODO: write function directly here or in MPU.c
 //                   commandSwitchHKdata(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 't':/*internal processing*/
     //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                    break;
-                case 'C':/*downlink CW Signal*/
-                    //downlinkCWSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9]);
-                    break;
-                case 'f':/*downlink FM Signal*/
-                    downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 default:
-                    //TODO: error message
+                    switchError(error_FMCW_downlinkReceivedCommand);
                     break;
             }
         }
@@ -124,18 +137,18 @@ void _NOP(void) {
 /*******************************************************************************
 *FM
 ******************************************************************************/
-void downlinkFMSignal(UBYTE EEPROM_select, UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
-    UBYTE readAddress;
-    switch(EEPROM_select){
-        case 0x00: //main EEPROM
-            readAddress = EEPROM_address | EEPROMAndB0Select;
-            break;
-        case 0x01: //sub EEPROM
-            readAddress = EEPROM_subaddress | EEPROMAndB0Select;
-            break;
-    }
+void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = EEPROM_address | EEPROMAndB0Select;
+    subAddress = EEPROM_subaddress | EEPROMAndB0Select;
+
     UBYTE readData[];
-    ReadDataFromEEPROM(readAddress,addressHigh,addressLow, readData,DataSize);
+    ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, readData,DataSize);
+    
+    //TODO:eror->read sub EEPROM
+//    ReadDataFromEEPROM(subAddress,addressHigh,addressLow, readData,DataSize);
+
     FMPTT = 1;
     __delay_ms(100);//TODO check time
     for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
@@ -144,6 +157,31 @@ void downlinkFMSignal(UBYTE EEPROM_select, UBYTE EEPROMAndB0Select, UBYTE addres
         __delay_ms(300);
     }
     FMPTT = 0;
+}
+
+/*******************************************************************************
+*CW swtich
+******************************************************************************/
+void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_address_forData, UBYTE low_address_forData, UBYTE downlink_times, UINT EEPROMDataLength_or_high_address_forDataSize, UBYTE low_address_forDataSize){
+    UBYTE read_data_forCW[];
+    switch(type_select){
+        case 's':   //start CW downlink
+            CWdownlinkStart();
+            switchOk(ok_FMCW_commandSwitchCWDownlink_Start);
+            break;
+        case 0xaa:  //the size of data is specified by the command
+            ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
+            switchOk(ok_FMCW_commandSwitchCWDownlink_aa);
+            break;
+        case 0xbb:  //the size of data is written in EEPROM
+            //TODO:add function
+            switchOk(ok_FMCW_commandSwitchCWDownlink_bb);
+            break;
+        default:
+            switchError(error_FMCW_commandSwitchCWDownlink);
+            break;
+
+    }
 }
 
 
@@ -510,6 +548,10 @@ void downlinkCWSignal(void){
     // delay_s(10);
     CwDownlinkFR3();
     // delay_s(10);
+}
+
+void CWdownlinkStart(void){
+    //TODO:
 }
 
 /*******************************************************************************
