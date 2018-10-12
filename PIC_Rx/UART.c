@@ -6,6 +6,7 @@
 #include "typeDefine.h"
 #include "time.h"
 #include "CRC16.h"
+#include "OkError.h"
 
 void InitSerial(void){
     // SPBRG  = 4;                   // boudrate is 115200 bps
@@ -57,7 +58,7 @@ void putCrLf(void){
     putChar('\n');//Line feed
 }
 
-void putError(void){
+void put_error(void){
     putChar('E');
     putChar('R');
     putChar('R');
@@ -66,7 +67,7 @@ void putError(void){
     putChar('!');
 }
 
-void putOk(void){
+void put_ok(void){
     putChar('O');
     putChar('K');
     putChar('!');
@@ -88,8 +89,8 @@ void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_addr
     __delay_ms(50);
 }
 
-void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4){
-    UBYTE Command[8];
+void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
+    UBYTE Command[10];
     UWORD CRC;
     Command[0] = TaskTarget;
     Command[1] = CommandType;
@@ -97,9 +98,11 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
     Command[3] = Parameter2;
     Command[4] = Parameter3;
     Command[5] = Parameter4;
-    CRC = crc16(0, Command, 6);
-    Command[6] = CRC >> 8;
-    Command[7] = CRC & 0x00FF;
+    Command[6] = Parameter5;
+    Command[7] = Parameter6;
+    CRC = crc16(0, Command, 8);
+    Command[8] = CRC >> 8;
+    Command[9] = CRC & 0x00FF;
     putString(Command);
 }
 
@@ -140,7 +143,7 @@ int change_baud_rate( UBYTE command_baud_rate ){
 }
 
 //TODO:check
-//TODO:SPBRG,BRGH,SYNC��main.c��InitSerial();�ŏ���������邯�Ǒ��v��
+//TODO:SPBRG,BRGH,SYNC?��?��main.c?��?��InitSerial();?��ŏ�?��?��?��?��?��?��?��?��邯?��Ǒ�?��v?��?��
 //UART_speed: high_speed = 1  / low_speed =0
 //UART_type : synchronous = 1 / asynchronous = 0
 //Data sheet : p113
@@ -196,7 +199,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
     switch(command){    
         case 'w': //UART write
             //TODO: write method for UART writ
-            WriteUART( data1 );  //TODO:change "data1" �C�ӂ̐��ɑΉ��ł���悤��
+            WriteUART( data1 );  //TODO:change "data1" ?��C?��ӂ̐�?��ɑΉ�?��ł�?��?��悤?��?��
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?
@@ -213,7 +216,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
             changeInterruptPermission(data1,data2);
             break;
         default:
-            //TODO: error message
+            switchError(error_UART_commandSwitchUART);
             break;
     }
 }

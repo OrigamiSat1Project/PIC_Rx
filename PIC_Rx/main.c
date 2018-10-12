@@ -15,6 +15,7 @@
 #include "EPS.h"
 #include "WDT.h"
 #include "CRC16.h"
+#include "OkError.h"
 
 // PIC16F887 Configuration Bit Settings
 #pragma config FOSC     = HS        // Oscillator Selection bits (HS oscillator)
@@ -130,7 +131,7 @@ void main(void) {
         
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
-        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes);
+        sendCommand('g', 'u', B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
         putChar('G');
         
         for(int i=0; i<DATA_SIZE; i++){
@@ -146,33 +147,42 @@ void main(void) {
                 switch(commandData[3]){         //Process command type
                 case 'm': /*change sattelite mode*/
                     commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'p': /*power supply*/
                     commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'n': /*radio unit*/
                     commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'i':/*I2C*/
                     commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'e':
                     commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'u':/*UART*/
                     commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
                     commandWDT(commandData[4], commandData[5], commandData[6]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
                     //TODO: write function directly here or in MPU.c
+                    WriteLastCommandIdToEEPROM(commandData[1]);                    
                     break;
                 case 'r':/*internal processing*/
                     commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);                    
                     break;
                 default:
-                    //TODO: error message
+                    switchError(error_main_reveiveCommand);
                     break;
                 }
 

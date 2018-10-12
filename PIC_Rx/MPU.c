@@ -8,6 +8,7 @@
 #include "FMCW.h"
 #include "EEPROM.h"
 #include "I2C.h"
+#include "OkError.h"
 
 /*******************************************************************************
 *Initialize MPU 
@@ -22,8 +23,8 @@ void InitMPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-//	ANSEL  = 0x00;	//AD設定// AD setting
-//	ANSELH = 0x00;	//AD設定// AD setting
+//	ANSEL  = 0x00;	//AD?ｿｽﾝ抵ｿｽ// AD setting
+//	ANSELH = 0x00;	//AD?ｿｽﾝ抵ｿｽ// AD setting
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -286,8 +287,8 @@ void changeInOut(UINT pin_select_command, UBYTE inOut){
             inOutStatus_addressLow  = TRISE_addressLow;
             break;
     }
-    Write1byteDataToEEPROM(MAIN_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
-    Write1byteDataToEEPROM(SUB_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
 }
 
 void changeHighLow(UINT pin_select_command, UBYTE highLow){
@@ -320,12 +321,12 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
             highLowStatus_addressLow  = PORTE_addressLow;
             break;
     }
-    Write1byteDataToEEPROM(MAIN_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
-    Write1byteDataToEEPROM(SUB_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
 
-//TODO:コメントアウトとったときのエラー改善
-//time.cとtime.hもいじった
+//TODO:?ｿｽR?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽg?ｿｽA?ｿｽE?ｿｽg?ｿｽﾆゑｿｽ?ｿｽ?ｿｽ?ｿｽﾆゑｿｽ?ｿｽﾌエ?ｿｽ?ｿｽ?ｿｽ[?ｿｽ?ｿｽ?ｿｽP
+//time.c?ｿｽ?ｿｽtime.h?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ?ｿｽ
 void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
     switch (XTAL_FREQUENCY_TYPE){                // Clock frequency
         case 'h':
@@ -363,8 +364,8 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * TODO:how to turn on CIB? */
             /*---------------------------*/
             switchPowerEPS(0x00, timeHigh, timeLow);
-            Write1byteDataToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
-            Write1byteDataToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
+            WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
+            WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
             break;
         case 0x0F: 
             /*----------------------------*/
@@ -378,13 +379,13 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * 4.after setting time, revive EPS (this also revive OBC)
             /*----------------------------*/
             killEPS();
-            sendCommand('t', 'p', 'n', 0x01, timeHigh, timeLow);
+            sendCommand('t', 'p', 'n', 0x01, timeHigh, timeLow, 0x00, 0x00);
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
             reviveEPS(timeHigh, timeLow);
-            Write1byteDataToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
-            Write1byteDataToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
+            WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
+            WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
             break;
         case 0xFF: 
             /*---------------------------*/
@@ -399,11 +400,11 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
-            Write1byteDataToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
-            Write1byteDataToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
+            WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
+            WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchSatMode);
             break;
     }
 }
@@ -432,7 +433,7 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             switchPowerSpply1pin('W', onOff, timeHigh, timeLow);
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchSatMode);
             break;
     }
 }
@@ -453,7 +454,7 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
             changeXtalFrequency(data1);
             break;
         default:
-            //TODO: error message
+            switchError(error_MPU_commandSwitchIntProcess);
             break;
     }
 }

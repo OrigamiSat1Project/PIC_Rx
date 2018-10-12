@@ -3,6 +3,7 @@
 #include "time.h"
 #include "EEPROM.h"
 #include "I2C.h"
+#include "OkError.h"
 
 //UBYTE EEPROMData[32];                                         
 
@@ -106,18 +107,30 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
     __delay_ms(300);
 }
 
-void Write1byteDataToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
-    UBYTE Address = addressEEPROM << 1;
-
-    I2CMasterStart();         //Start condition
-    I2CMasterWrite(Address);     //7 bit address + Write
+void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE address;
+    address= addressEEPROM << 1;
+    //UINT Datasize = sizeof(data);
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
     I2CMasterWrite(addressHigh);    //Adress High Byte
-    I2CMasterWrite(addressLow);    //Adress Low Byte
-    
-    I2CMasterWrite(data);    //Data
-
-    I2CMasterStop();         //Stop condition
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    I2CMasterWrite(data);      //Data
+    I2CMasterStop();                //Stop condition
     __delay_ms(200);
+}
+
+void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = MAIN_EEPROM_ADDRESS | B0Select;
+    subAddress = SUB_EEPROM_ADDRESS | B0Select;
+    WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
+}
+
+void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
+    WriteCheckByteToEEPROMs(B0select_for_RXCOBCLastCommand, HighAddress_for_RXCOBCLastCommand, LowAddress_for_RXCOBCLastCommand, last_command_ID);
 }
 
 /*******************************************************************************
@@ -241,8 +254,8 @@ void TestEEPROM(UBYTE slaveaddress){
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){ 
     switch(command){    
         case 'w': //I2C write
-            //TODO�F����i�i�m�}�C���h�Ƃ�EEPROM�Ƃ��j��l���ăt�H�[�}�b�g�`����l����
-            //���̂�EEPROM�ɂ����Ή��ł��Ă��Ȃ�����A���ł�Ή��ł��邩�B
+            //TODO??��?��F??��?��??��?��??��?��??��?��i??��?��i??��?��m??��?��}??��?��C??��?��??��?��??��?��h??��?��Ƃ�EEPROM??��?��Ƃ�??��?��j??��?��??��?��l??��?��??��?��??��?��ăt??��?��H??��?��[??��?��}??��?��b??��?��g??��?��`??��?��??��?��??��?��??��?��l??��?��??��?��??��?��??��?��
+            //??��?��??��?��??��?��̂�EEPROM??��?��ɂ�??��?��??��?��??��?��Ή�??��?��ł�??��?��Ă�??��?��Ȃ�??��?��??��?��??��?��??��?��A??��?��??��?��??��?��ł�Ή�??��?��ł�??��?��邩??��?��B
             I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
             I2CMasterWrite(dataHigh);
             I2CMasterWrite(dataLow);
@@ -269,7 +282,7 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE da
             ChangeI2CBaudRate( slaveAdress );
             break;
         default:
-            //TODO: error message
+            switchError(error_I2C_commandSwitchI2C);
             break;
     }
 }
@@ -302,7 +315,7 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             TestEEPROM(slaveAdress);
             break;
         default:
-            //TODO: error message
+            switchError(error_I2C_commandSwitchEEPROM);
             break;
     }
 }
