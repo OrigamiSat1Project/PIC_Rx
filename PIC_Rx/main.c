@@ -73,7 +73,7 @@ void main(void) {
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
         UBYTE commandData[DATA_SIZE];         //data of uplink command
-//        UBYTE *commandData;         //data of uplink command
+
 //        UBYTE commandID;            //ID of uplink command
         //for information on EEPROM see data sheet: 24LC1025        
         UBYTE B0select;             //control byte B0 of EEPROM
@@ -82,9 +82,9 @@ void main(void) {
         UBYTE mainControlByte;      //control byte of main EEPROM
         UBYTE subControlByte;       //control byte of sub EEPROM       
         UBYTE downlinkTimes;       //downlink times of received command
-//        receiveDataPacket();
+
         receiveDataPacket(commandData);
-//        commandData = receiveDataPacket();
+
         
 //        putString(commandData);
 //        putChar('C');

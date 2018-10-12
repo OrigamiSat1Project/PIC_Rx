@@ -23,8 +23,8 @@ void InitMPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-//	ANSEL  = 0x00;	//AD?¿½Ý’ï¿½// AD setting
-//	ANSELH = 0x00;	//AD?¿½Ý’ï¿½// AD setting
+//	ANSEL  = 0x00;	//AD?ï¿½ï¿½Ý’ï¿½// AD setting
+//	ANSELH = 0x00;	//AD?ï¿½ï¿½Ý’ï¿½// AD setting
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -119,6 +119,9 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
             break;
         case 'W':
             onOffWDT(onOff);
+            break;
+        default:
+            // switchError(error_MPU_switchPowerSpply1pin);
             break;
     }  
     //TODO:add function to change OnOff time
@@ -286,6 +289,9 @@ void changeInOut(UINT pin_select_command, UBYTE inOut){
             inOutStatus_addressHigh = TRISE_addressHigh;
             inOutStatus_addressLow  = TRISE_addressLow;
             break;
+        default:
+            // switchError(error_MPU_changeInOut);
+            break;
     }
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
@@ -320,13 +326,16 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
             highLowStatus_addressHigh = PORTE_addressHigh;
             highLowStatus_addressLow  = PORTE_addressLow;
             break;
+        default:
+            // switchError(error_MPU_changeHighLow);
+            break;
     }
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
 
-//TODO:?¿½R?¿½?¿½?¿½?¿½?¿½g?¿½A?¿½E?¿½g?¿½Æ‚ï¿½?¿½?¿½?¿½Æ‚ï¿½?¿½ÌƒG?¿½?¿½?¿½[?¿½?¿½?¿½P
-//time.c?¿½?¿½time.h?¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½
+//TODO:?ï¿½ï¿½R?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½g?ï¿½ï¿½A?ï¿½ï¿½E?ï¿½ï¿½g?ï¿½ï¿½Æ‚ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½Æ‚ï¿½?ï¿½ï¿½ÌƒG?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½[?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½P
+//time.c?ï¿½ï¿½?ï¿½ï¿½time.h?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
 void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
     switch (XTAL_FREQUENCY_TYPE){                // Clock frequency
         case 'h':
@@ -337,6 +346,9 @@ void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
             break;
         case 'l':
             //_XTAL_FREQ = _XTAL_FREQ_LOW;
+            break;
+        default:
+            //TODO:add error
             break;
     }
 }

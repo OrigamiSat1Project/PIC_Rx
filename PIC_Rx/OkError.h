@@ -8,7 +8,7 @@
 #include "typeDefine.h"
 
 #ifndef OKERROR_H
-#define	OKERRORC_H
+#define	OKERROR_H
 
 #define SUCCESS        1
 #define FAILURE        0
@@ -39,6 +39,11 @@
 #define error_MPU_commandSwitchSatMode           0x90
 #define error_MPU_commandSwitchPowerSupply       0x91
 #define error_MPU_commandSwitchIntProcess        0x92
+#define error_MPU_switchPowerSpply1pin           0x93
+#define error_MPU_changeInOut                    0x94
+#define error_MPU_changeHighLow                  0x95
+
+
 #define error_UART_commandSwitchUART             0x30
 
 
