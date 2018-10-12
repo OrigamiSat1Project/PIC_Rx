@@ -106,6 +106,20 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
     __delay_ms(300);
 }
 
+void Write1byteDataToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE Address = addressEEPROM << 1;
+
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);    //Adress Low Byte
+    
+    I2CMasterWrite(data);    //Data
+
+    I2CMasterStop();         //Stop condition
+    __delay_ms(200);
+}
+
 /*******************************************************************************
 *Method for EEPROM Read
 ******************************************************************************/
@@ -227,8 +241,8 @@ void TestEEPROM(UBYTE slaveaddress){
 void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data){ 
     switch(command){    
         case 'w': //I2C write
-            //TODOF‘ŠŽèiƒiƒmƒ}ƒCƒ“ƒh‚Æ‚©EEPROM‚Æ‚©j‚ðl‚¦‚ÄƒtƒH[ƒ}ƒbƒgŒ`Ž®‚ðl‚¦‚é
-            //¡‚Ì‚ÍEEPROM‚É‚µ‚©‘Î‰ž‚Å‚«‚Ä‚¢‚È‚¢‚©‚çA‘¼‚Å‚à‘Î‰ž‚Å‚«‚é‚©B
+            //TODOï¿½Fï¿½ï¿½ï¿½ï¿½iï¿½iï¿½mï¿½}ï¿½Cï¿½ï¿½ï¿½hï¿½Æ‚ï¿½EEPROMï¿½Æ‚ï¿½ï¿½jï¿½ï¿½lï¿½ï¿½ï¿½Äƒtï¿½Hï¿½[ï¿½}ï¿½bï¿½gï¿½`ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½
+            //ï¿½ï¿½ï¿½Ì‚ï¿½EEPROMï¿½É‚ï¿½ï¿½ï¿½ï¿½Î‰ï¿½ï¿½Å‚ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Å‚ï¿½Î‰ï¿½ï¿½Å‚ï¿½ï¿½é‚©ï¿½B
             I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
             I2CMasterWrite(dataHigh);
             I2CMasterWrite(dataLow);

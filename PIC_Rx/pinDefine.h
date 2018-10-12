@@ -36,9 +36,10 @@
 #define CWTX_CLK        PORTDbits.RD2
 #define CWTX_DAT        PORTDbits.RD1
 #define CWTX_STB        PORTDbits.RD0
-        
-#define SEP_SW          PORTBbits.RB4 //Short Separation switch 1&2
-#define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2
+     
+    /* PIN assignment for EPS * */
+#define SEP_SW          PORTBbits.RB4 //Short Separation switch 1&2  //High--->EPS OFF
+#define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2  //High--->EPS OFF
 
 //New definitions
 #define WDT             PORTBbits.RB3 //turn off WDT(high -> WDT off)

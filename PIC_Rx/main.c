@@ -68,19 +68,7 @@ void main(void) {
             //getbit();
             //debugLEDyellow();   //6us
         //}
-        
-        /*-------------------------------------------------------------------*/
-        //FIME:debug for test to change UART baud rate start 
-//        UBYTE c;
-//        c = getChar();
-//        c++;
-//        putChar(c);
-        // for(UBYTE i=1; i<20; i++){
-        // putChar(i);
-        // }
-        //FIME:debug for test to change UART baud rate finish 
-        /*-------------------------------------------------------------------*/
-        
+                
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
         UBYTE commandData[DATA_SIZE];         //data of uplink command
@@ -249,8 +237,149 @@ void main(void) {
 //            __delay_ms(1000);
 //            LED_WHITE = 0;
 //        }
+        // __delay_ms(500);
+
+        /*-------------------------------------------------------------------*/
+        //FIME:debug for test to change UART baud rate start 
+//        UBYTE c;
+//        c = getChar();
+//        c++;
+//        putChar(c);
+        // for(UBYTE i=1; i<20; i++){
+        // putChar(i);
+        // }
+        //FIME:debug for test to change UART baud rate finish 
+        /*-------------------------------------------------------------------*/
+
+        /*-------------------------------------------------------------------*/
+        //FIXME:[start]for debug to test to change h/l and i/o
+//        UBYTE m;
+//        UBYTE s; 
+//        putChar(0xaa);
+//         changeInOut(0x0a, 0b00011001);
+//         putChar(TRISA);
+//         m = ReadEEPROM(MAIN_EEPROM_ADDRESS, TRISA_addressHigh, TRISA_addressLow);
+//         m++;
+//         putChar(m);
+//         s = ReadEEPROM(SUB_EEPROM_ADDRESS, TRISA_addressHigh, TRISA_addressLow);
+//         s++;
+//         putChar(s);
+//         __delay_ms(1000);
+//         
+//         putChar(0xbb);
+//         changeInOut(0x0b, 0b00100001);
+//         putChar(TRISB);
+//         __delay_ms(1000); 
+//         
+//         putChar(0xcc);
+//         changeInOut(0x0c, 0b10011001);
+//         putChar(TRISC);
+//         __delay_ms(1000);   
+//         
+//         putChar(0xdd);
+//         changeInOut(0x0d, 0b00001101);
+//         putChar(TRISD);
+//         __delay_ms(1000);   
+//         
+//         putChar(0xee);
+//         changeInOut(0x0e, 0b00000111);
+//         putChar(TRISE);
+//         __delay_ms(1000); 
+        //FIXME:[finish]for debug to test to change h/l and i/o
+        /*-------------------------------------------------------------------*/
+         
+         /*-------------------------------------------------------------------*/
+        //FIXME:[start]for debug to test to change h/l and i/o
+//         putChar(0xaa);
+//         changeHighLow(0x0a, 0b00000001);
+//         //changeHighLow(0x0a, 0b00000010);
+//         putChar(RA0);      
+//         __delay_ms(1000);
+//         
+//         putChar(0xbb);
+//        // changeHighLow(0x0b, 0b00010000);
+//         changeHighLow(0x0b, 0b00000001);
+//         putChar(RB0);      
+//         __delay_ms(1000);
+//         
+//         putChar(0xcc);
+//         changeHighLow(0x0c, 0x01);
+//         //putChar(PORTC);
+//         putChar(RC0);
+//         __delay_ms(1000);
+//         
+//         putChar(0xdd);
+//         changeHighLow(0x0d, 0x01);
+//         //putChar(PORTD); 
+//         putChar(RD0);
+//         __delay_ms(1000);   
+//         
+//         putChar(0xee);
+//         changeHighLow(0x0e, 0x01);
+//         //putChar(PORTE);
+//         putChar(RE0);
+//         __delay_ms(1000); 
+        //FIXME:[finish]for debug to test to change h/l and i/o
+        /*-------------------------------------------------------------------*/
+        
+        /*-------------------------------------------------------------------*/
+        //FIXME:for debug to test switch power supply start
+        // UBYTE onOff = 0x01;
+        // UBYTE timeHigh = 0x00;
+        // UBYTE timeLow = 0x00;
+ 
+        // putChar(0xaa);
+        // putChar(0xaa);
+        // putChar(0xaa);
+//        for(UBYTE i=1; i<10; i++){
+//            SEP_SW = HIGH;
+//            RBF_SW = HIGH;
+//            putChar(0x11);
+//            __delay_ms(2000); 
+//            SEP_SW = LOW;
+//            RBF_SW = LOW;
+//            putChar(0x22);
+//            __delay_ms(2000); 
+//        }
+//        for(UBYTE i=1; i<5; i++){
+//            putChar(i);
+//            onOff = 0x01;
+//            switchPowerEPS(onOff, timeHigh, timeLow);
+//            __delay_ms(1000);
+//            onOff = 0x00;
+//            switchPowerEPS(onOff, timeHigh, timeLow);
+//            __delay_ms(1000);            
+//        }   
+        // delay_ms(100);
+        // for(UBYTE i=0; i<4; i++){
+        //     putChar(0xbb);
+        //     putChar(0xbb);
+        //     putChar(i);
+        //     putChar(0xbb);
+        //     putChar(0xbb);
+       
+        //     onOff = 0x01;
+        //     timeHigh = 0x00;
+        //     timeLow = 0x03;
+        //     delay_ms(100);
+            
+        //     putChar(0xc1);
+        //     putChar(0xc1);
+        //     delay_ms(100);
+        //     switchPowerEPS(onOff, timeHigh, timeLow);
+        //     delay_ms(100);
+        //     putChar(0xc2);
+        //     putChar(0xc2);
+        //     delay_s(1);
+        // }   
+        // putChar(0xf2);
+        // putChar(0xf2);
+        // putChar(0xf2);
+        // delay_ms(100);
+        //FIXME:for debug to test switch power supply finish
+        /*-------------------------------------------------------------------*/
     
-        __delay_ms(500);
+       __delay_ms(500);
     }
-    return;
+    //return;
 }
