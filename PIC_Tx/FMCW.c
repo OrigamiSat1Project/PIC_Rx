@@ -83,7 +83,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;           
                 case 'p': /*power supply*/
-                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'n': /*radio unit*/

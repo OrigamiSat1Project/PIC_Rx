@@ -8,6 +8,7 @@
 #include "UART.h"
 #include "time.h"
 #include "EEPROM.h"
+#include "FMCW.h"
 #include "I2C.h"
 #include "OkError.h"
 #include <xc.h>
@@ -45,4 +46,9 @@ void switchError(UBYTE action_select){
     put_error();
     putChar(error_data[0]);
     putChar(action_select);
+    //TODO:need debug
+    //only FM downlink? need CW?
+    UBYTE downlinlTimes = 36;
+    UBYTE DataSize = 2; 
+    downlinkFMSignal(B0select_for_Error, HighAddress_for_commandID, LowAddress_for_Error, downlinlTimes, DataSize);
 }

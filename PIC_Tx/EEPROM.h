@@ -83,5 +83,12 @@
 #define sattelliteMode_addressLow        0x00
 #define sattelliteMode_DataSize          1
 
+
+/*******************************************************************************
+*Initial Operation
+******************************************************************************/
+#define HighAddress_for_meltingCompelationFlag      0xE0
+#define LowAddress_for_meltingCompelationFlag       0x00
+
 #endif	/* EEPROM_H */
 

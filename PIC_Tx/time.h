@@ -22,6 +22,8 @@
 #define TURN_ON_WAIT_TIME  2
 #define CW_START_WAIT_TIME 200000
 
+#define WIRE_CUT_INTERVAL 3 //[s] 
+
 //�s���m��delay�֐�
 //functions to wait [ms] or [us]
 void delay_ms(UWORD);
