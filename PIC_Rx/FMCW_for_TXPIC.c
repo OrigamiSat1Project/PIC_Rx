@@ -516,12 +516,12 @@ void testForCwFunctions(void){
 //        CWKEY = 1;
 
     //debug:send morse 'V'->'Y'->'J' -->finish
-    Morse_V();
-    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
-    Morse_Y();
-    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
-    Morse_J();
-    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//    Morse_V();
+//    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//    Morse_Y();
+//    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//    Morse_J();
+//    __delay_us(LONG_DELAYTIMES_FOR_MORSE);
 //    debug send morse char--->finish
     //  UBYTE test_morse[4];
     // test_morse[0] = '1';
@@ -573,22 +573,45 @@ void testForCwFunctions(void){
 
       
     //debug:send ReadOneByteDataFromEEPROMan dSendMorse -->finish
-    putChar(0xA0);
-    UBYTE TEST_DATA[3] = {0xa2, 0b10110001, 'C'};  //0b10110001 = 0xb1 / 0x43 = 'C'
-//     UBYTE TEST_DATA[3] = {0xa2, 0b10110001, 0xab};  //0b10110001 = 0xb1 
+//    UBYTE TEST_DATA[3] = {0xa2, 0b10110001, 'C'};  //0b10110001 = 0xb1 / 0x43 = 'C'
+//    UBYTE TEST_DATA[3] = {0xa2, 0b10110001, 0xab};  //0b10110001 = 0xb1 
 //    UBYTE TEST_DATA[3] = {0xa2, 0xb1, 0xab};  
-    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+//    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
 //    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address);
         
     //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse--->finish
-    putChar(0xA1);
-    UBYTE ReadData[];
-    UBYTE size = 3;
-    UBYTE sendtime = 5;
+//    UBYTE ReadData[];
+//    UBYTE size = 3;
+//    UBYTE sendtime = 5;
 //    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, size);
        
     //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes-->finish
-    ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, size, sendtime); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success    
+//    ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, size, sendtime); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success    
 //         //FIXME:[finish]debug for downlink CW signal
 //         /*---------------------------------------------------------------*/
+    UBYTE size_high_address = 0x00;
+    UBYTE size_low_address = 0x1F;
+    UBYTE bytesize = 0;
+//    UBYTE TestCommand[9] = {'T','t','c',0xaa,0x50,0xE0,0x00,2,3};
+    UBYTE TestCommand[10] = {'T','t','c',0xbb,0x50,0xE0,0x00,1,0x00,0x1F};//'T','t','c',0xbb,EEPROM_address,whigh_address,wlow_address,sendtime,size_high_address,size_low_address
+    UBYTE TEST_DATA[3] = {0xa2, 0xb1, 0xab}; 
+    UBYTE Size_DATA = 3;
+    UBYTE ReadData[];
+    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+    WriteOneByteToEEPROM(EEPROM_address, size_high_address, size_low_address, Size_DATA);
+    switch(TestCommand[3]){
+        case 0xaa:
+            putChar(0xFa);
+            bytesize = 3;
+            ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(TestCommand[4], TestCommand[5], TestCommand[6], ReadData, TestCommand[8], TestCommand[7]);
+            break;
+        case 0xbb:
+            putChar(0xFb);
+            bytesize = ReadEEPROM(TestCommand[4],TestCommand[8],TestCommand[9]);
+            ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(TestCommand[4], TestCommand[5], TestCommand[6], ReadData, bytesize, TestCommand[7]);
+            break;
+        default:
+            putChar(0xFc);
+            break;
+    }
 }

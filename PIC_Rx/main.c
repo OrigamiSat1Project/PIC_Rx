@@ -58,9 +58,9 @@ void main(void) {
 //        __delay_ms(1000);
 //        FMPTT = 0;
 //        __delay_ms(1000);
-        putChar(0xF0);
+        putChar(0xA0);
         testForCwFunctions();
-        putChar(0xF1);
+        putChar(0xA1);
         delay_ms(1500);
     }
         

@@ -27,6 +27,7 @@ UBYTE I2CMasterRead(UBYTE a);
 
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
 void WriteToEEPROMWithDataSize(UBYTE, UBYTE ,UBYTE, UBYTE*, UBYTE);
+void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE );
 UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
 void ReadDataFromEEPROMWithDataSize(UBYTE, UBYTE, UBYTE , UBYTE*, UINT);
 

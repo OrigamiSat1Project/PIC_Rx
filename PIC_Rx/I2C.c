@@ -106,6 +106,18 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
     __delay_ms(300);
 }
 
+void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE address;
+    address= addressEEPROM << 1;
+    //UINT Datasize = sizeof(data);
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    I2CMasterWrite(data);      //Data
+    I2CMasterStop();                //Stop condition
+    __delay_ms(200);
+}
 /*******************************************************************************
 *Method for EEPROM Read
 ******************************************************************************/
