@@ -64,10 +64,8 @@ void debugLEDyellow(void){
 //bit invertState(bit pinState){
 UINT invertState(UINT pinState){
     if(pinState==HIGH){
-        putChar('L');
         return LOW;
     }else{
-        putChar('H');
         return HIGH;
     }
 }

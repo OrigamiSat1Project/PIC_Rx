@@ -90,5 +90,13 @@
 #define HighAddress_for_RXCOBCLastCommand  0xE0
 #define LowAddress_for_RXCOBCLastCommand   0x00
 
+
+/*******************************************************************************
+*Initial Operation
+******************************************************************************/
+#define HighAddress_for_meltingCompelationFlag      0xE0
+#define LowAddress_for_meltingCompelationFlag       0x00
+
+
 #endif	/* EEPROM_H */
 

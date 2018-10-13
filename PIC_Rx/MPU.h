@@ -17,7 +17,13 @@
 #define LED_Y_ON() LED_YELLOW = HIGH;
 #define LED_Y_OFF() LED_YELLOW = LOW;
 
-
+/*Initial Operation*/
+#define OBC_ALIVE   HIGH
+#define OBC_DIED    LOW
+#define OnOff_forCutWIRE    0x01
+#define hightime_forCutWIRE 0x0f
+#define lowtime_forCutWIRE  0xff
+#define cuttimes_forCutWIRE 3 
 
 void InitMPU(void);
 
