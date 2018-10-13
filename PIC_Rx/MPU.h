@@ -25,9 +25,9 @@ void LEDOnOff(void);
 void debugLEDyellow(void);
 UINT invertState(UINT);
 
-void onOff5R8G(UBYTE);
-void onOffOBC(UBYTE);
-void onOffWDT(UBYTE);
+void onOff5R8G(UBYTE, UBYTE, UBYTE);
+void onOffOBC(UBYTE, UBYTE, UBYTE);
+void onOffWDT(UBYTE, UBYTE, UBYTE);
 void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
 
 void killEPS(void);

@@ -23,8 +23,8 @@ void InitMPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-//	ANSEL  = 0x00;	//AD?��ݒ�// AD setting
-//	ANSELH = 0x00;	//AD?��ݒ�// AD setting
+//	ANSEL  = 0x00;	//AD??��?��ݒ�// AD setting
+//	ANSELH = 0x00;	//AD??��?��ݒ�// AD setting
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -79,7 +79,7 @@ UINT invertState(UINT pinState){
  *	witch Power Spply for 1pin
  *	arg      :   POWER_PIN, onOff, timeHigh, timeLow
  *	return   :   target_select :  5->5R8G O->OBC W->WDT 
- *               5R8G&OBC 0x01->high->on, WDT 0x01->high->low
+ *               0x00->off 0x01->on
  *               timeHigh == 0x00 && timeLow == 0x00 -> not chage until next Uplink
  *               timeHigh != 0x00 && timeLow == 0x00 -> wait time is short ( 1byte:1~255[ms])  -> invert state
  *               timeHigh != 0x00 && timeLow != 0x00 -> wait time is long ( 2byte:266~65535[ms)  -> invert state
@@ -87,41 +87,67 @@ UINT invertState(UINT pinState){
  *	FIXME    :   not yet
  *	XXX      :   add function to change OnOff time
  */
-void onOff5R8G( UBYTE onOff ){ //high->on
+void onOff5R8G(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if ( onOff == 0x00 ){        
             POWER_5R8G = LOW;  
     } else {                     
             POWER_5R8G = HIGH;
     }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        POWER_5R8G =invertState(onOff);
+    }
 }
-void onOffOBC( UBYTE onOff ){ //high->on
+
+void onOffOBC(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if ( onOff == 0x00 ){        
             POWER_OBC = LOW;  
     } else {                     
             POWER_OBC = HIGH;
     }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        POWER_OBC =invertState(onOff);
+    }
 }
-void onOffWDT( UBYTE onOff ){ //high->off
+
+void onOffWDT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->off
     if ( onOff == 0x00 ){        
-            POWER_WDT = LOW;  
+            POWER_WDT = HIGH;  
     } else {                     
-            POWER_WDT = HIGH;
+            POWER_WDT = LOW;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        POWER_WDT =invertState(onOff);
     }
 }
 
 void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
     switch(target_select){
         case '5':
-            onOff5R8G(onOff);
+            onOff5R8G(onOff, timeHigh, timeLow);
             break;
         case 'O':
-            onOffOBC(onOff);
+            onOffOBC(onOff, timeHigh, timeLow);
             break;
         case 'W':
-            onOffWDT(onOff);
+            onOffWDT(onOff, timeHigh, timeLow);
             break;
         default:
-            // switchError(error_MPU_switchPowerSpply1pin);
+            switchError(error_MPU_switchPowerSpply1pin);
             break;
     }  
     //TODO:add function to change OnOff time
@@ -159,7 +185,7 @@ void onEPS(void){
 /*
  *	switch Power EPS
  *	arg      :   POWER_PIN_1, POWER_PIN_2, onOff, timeHigh, timeLow
- *	return   :   0x00 -> SEP_SW&RBF_SW : LOW -> EPS : ON, 0x01 -> SEP_SW&RBF_SW : HIGH -> EPS : OFF
+ *	return   :   0x00 -> SEP_SW&RBF_SW : HIGH -> EPS : OFF, 0x01 -> SEP_SW&RBF_SW : LOW -> EPS : ON
  *               timeHigh == 0x00 && timeLow == 0x00 -> not chage until next Uplink
  *               timeHigh != 0x00 && timeLow == 0x00 -> wait time is short ( 1byte:1~255[ms]) -> invert state
  *               timeHigh != 0x00 && timeLow != 0x00 -> wait time is long ( 2byte:266~65535[ms) -> invert state
@@ -170,68 +196,66 @@ void onEPS(void){
 void switchPowerEPS(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){  
     /*-------------------------------------------------------*/
     //FIXME:for debug to test switch start
-    if ( onOff == 0x00 ){        
-            putChar(0xA0);
-            SEP_SW = LOW;
-            RBF_SW = LOW;
-            putChar(0xA0);
-    } else {                     
-            putChar(0xA1);
+//     if ( onOff == 0x00 ){        
+//             putChar(0xA0);
+//             SEP_SW = HIGH;
+//             RBF_SW = HIGH;
+//             putChar(0xA0);
+//     } else {                     
+//             putChar(0xA1);
+//             SEP_SW = LOW;
+//             RBF_SW = LOW;
+//             putChar(0xA1);
+//     }
+    
+//     if(timeHigh == 0x00 && timeLow == 0x00){     
+//         putChar(0xB0);
+//         putChar(0xB0);
+// //    }else if(timeLow == 0x00){                    
+// //        __delay_s(timeHigh);                     
+// //        SEP_SW =invertState(onOff);
+// //        RBF_SW =invertState(onOff);
+// //        putChar(0xFF);
+// //        putChar(timeHigh);
+// //        putChar(0x0c);
+//     }else {        
+//         putChar(0xB1);
+//         putChar(0xB1);
+//         UWORD wait_time;
+//         wait_time = (timeHigh << 8 | timeLow);
+//         delay_s(wait_time);
+//         putChar(0xB2);
+//         putChar(0xB2);
+//         delay_ms(1500);
+//         SEP_SW =invertState(onOff);
+//         RBF_SW =invertState(onOff);
+//         putChar(0xB3);
+//         putChar(0xB3);
+//         delay_ms(100);
+//         putChar(0xB4);
+//         putChar(0xB4);
+//         delay_ms(100);
+//     }
+    //FIXME:for debug to test switch finish
+    /*-------------------------------------------------------*/
+
+    if ( onOff == 0x00 ){        //EPS off
             SEP_SW = HIGH;
             RBF_SW = HIGH;
-            putChar(0xA1);
+    } else {                     //EPS on
+            SEP_SW = LOW;
+            RBF_SW = LOW;
     }
     
     if(timeHigh == 0x00 && timeLow == 0x00){     
-        putChar(0xB0);
-        putChar(0xB0);
-//    }else if(timeLow == 0x00){                    
-//        __delay_s(timeHigh);                     
-//        SEP_SW =invertState(onOff);
-//        RBF_SW =invertState(onOff);
-//        putChar(0xFF);
-//        putChar(timeHigh);
-//        putChar(0x0c);
     }else {        
-        putChar(0xB1);
-        putChar(0xB1);
         UWORD wait_time;
         wait_time = (timeHigh << 8 | timeLow);
-        delay_s(wait_time);
-        putChar(0xB2);
-        putChar(0xB2);
-        delay_ms(1500);
+        delay_ms(wait_time);
         SEP_SW =invertState(onOff);
         RBF_SW =invertState(onOff);
-        putChar(0xB3);
-        putChar(0xB3);
-        delay_ms(100);
-        putChar(0xB4);
-        putChar(0xB4);
-        delay_ms(100);
     }
-    //FIXME:for debug to test switch finish
-    /*-------------------------------------------------------*/
-//    if ( onOff == 0x00 ){   //low->ON     
-//            SEP_SW = LOW;
-//            RBF_SW = LOW;
-//    } else {                     
-//            SEP_SW = HIGH;
-//            RBF_SW = HIGH;
-//    }
-//    
-//    if(timeHigh == 0x00 && timeLow == 0x00){     
-//    }else if(timeLow == 0x00){                    
-//        __delay_ms(timeHigh);                     
-//        POWER_PIN_1 =invertState(POWER_PIN_1);
-//        POWER_PIN_2 =invertState(POWER_PIN_2);
-//    }else {                                      
-//        UWORD wait_time;
-//        wait_time = (timeHigh << 8 | timeLow);
-//        __delay_ms(wait_time);
-//        POWER_PIN_1 =invertState(POWER_PIN_1);
-//        POWER_PIN_2 =invertState(POWER_PIN_2);
-//    }
+
 }
 
 /*
@@ -290,7 +314,7 @@ void changeInOut(UINT pin_select_command, UBYTE inOut){
             inOutStatus_addressLow  = TRISE_addressLow;
             break;
         default:
-            // switchError(error_MPU_changeInOut);
+            switchError(error_MPU_changeInOut);
             break;
     }
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
@@ -327,15 +351,15 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
             highLowStatus_addressLow  = PORTE_addressLow;
             break;
         default:
-            // switchError(error_MPU_changeHighLow);
+            switchError(error_MPU_changeHighLow);
             break;
     }
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
 
-//TODO:?��R?��?��?��?��?��g?��A?��E?��g?��Ƃ�?��?��?��Ƃ�?��̃G?��?��?��[?��?��?��P
-//time.c?��?��time.h?��?��?��?��?��?��?��?��
+//TODO:??��?��R??��?��??��?��??��?��??��?��??��?��g??��?��A??��?��E??��?��g??��?��Ƃ�??��?��??��?��??��?��Ƃ�??��?��̃G??��?��??��?��??��?��[??��?��??��?��??��?��P
+//time.c??��?��??��?��time.h??��?��??��?��??��?��??��?��??��?��??��?��??��?��??��?��
 void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
     switch (XTAL_FREQUENCY_TYPE){                // Clock frequency
         case 'h':
