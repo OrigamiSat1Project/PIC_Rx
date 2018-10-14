@@ -101,7 +101,7 @@ void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,U
 }
 
 void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
-    WriteCheckByteToEEPROMs(B0select_for_TXCOBCLastCommand, HighAddress_for_TXCOBCLastCommand, LowAddress_for_TXCOBCLastCommand, last_command_ID);
+    WriteCheckByteToEEPROMs(B0select_for_TXCOBCLastCommandID, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID, last_command_ID);
 }
 
 

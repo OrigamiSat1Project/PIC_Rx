@@ -17,23 +17,10 @@
 #define EEPROM_COMMAND_DATA_SIZE 32
 #define MAX_DOWNLINK_DATA_SIZE 32
 
-UBYTE commandData[EEPROM_COMMAND_DATA_SIZE];
+#define CWHIGH 1
+#define CWLOW 0
 
-void Morse_V(void);
-void Morse_Y(void);
-void Morse_J(void);
-int changeCharMorse (char);
-char changeBinaryToChar(UBYTE);
-void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
-void sendMorse(char*,size_t);
-void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
-void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
-void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
-void CwDownlinkFR0(void);
-void CwDownlinkFR1(void);
-void CwDownlinkFR2(void);
-void CwDownlinkFRXXX(void);
-void CWdownlinkStart(void);
+UBYTE commandData[EEPROM_COMMAND_DATA_SIZE];
 
 /*******************************************************************************
 *Downlink Command
@@ -73,7 +60,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
         // Command type
             switch(commandData[3]){         //Process command type
                 case 'm':/*get satellite mode*/
-                    downlinkFMSignal(sattelliteMode_EEPROMAndB0Select, sattelliteMode_addressHigh, sattelliteMode_addressLow, commandData[4], sattelliteMode_DataSize);
+                    downlinkFMSignal(satelliteMode_EEPROMAndB0Select, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                 case 'C':/*downlink CW Signal*/
                     commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
@@ -153,7 +140,7 @@ void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressL
     __delay_ms(100);//TODO check time
     for(int sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
         SendPacket(readData);
-        // SendPacketWithDataSize(readData,DataSize);
+//         SendPacketWithDataSize(readData,DataSize);
         __delay_ms(300);
     }
     FMPTT = 0;
@@ -174,7 +161,7 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
             switchOk(ok_FMCW_commandSwitchCWDownlink_aa);
             break;
         case 0xbb:  //the size of data is written in EEPROM
-            //TODO:add function
+            GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, low_address_forDataSize, downlink_times);
             switchOk(ok_FMCW_commandSwitchCWDownlink_bb);
             break;
         default:
@@ -200,24 +187,24 @@ void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_ad
  *  return  : send morse singnal 'V' (ton-ton-ton-tu)
  */
 void Morse_V(void){
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
-    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-    CWKEY = 1;
-    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
 
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
 
-    CWKEY = 1;
+    CWKEY = CWHIGH;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+    CWKEY = CWLOW;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = CWHIGH;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
 }
 
@@ -227,24 +214,24 @@ void Morse_V(void){
  *  return  : send morse singnal 'Y' (tu-ton-tu-tu)
  */
 void Morse_Y(void){
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
 
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
-    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-    CWKEY = 1;
-    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
 
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = CWHIGH;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = CWLOW;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
 }
 
@@ -254,24 +241,24 @@ void Morse_Y(void){
  *  return  : send morse singnal 'J' (ton-tu-tu-tu)
  */
 void Morse_J(void){
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
-    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
-
-    CWKEY = 1;
-    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
 
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
 
-    CWKEY = 1;
+    CWKEY = CWHIGH;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
-    CWKEY = 0;
+    CWKEY = CWLOW;
+    __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+    CWKEY = CWHIGH;
+    __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    CWKEY = CWLOW;
     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE); 
 }
 
@@ -411,15 +398,15 @@ void sendMorse(char *HK_Data,size_t data_size){
             if(mo==0){
                 break;
             } else if((mo&1)==1){
-                CWKEY = 1;
+                CWKEY = CWHIGH;
                 __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
             } else {
-                CWKEY = 0;
+                CWKEY = CWLOW;
                 __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
             }
             mo=mo>>1;
         }
-        CWKEY = 0;
+        CWKEY = CWLOW;
         __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
     }
 }
@@ -454,21 +441,21 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE Address7Bytes, UBYTE high
     UBYTE char_data_highLow[2];
     UBYTE send_data[];
     ReadDataFromEEPROM(Address7Bytes, high_address, low_address, ReadData, EEPROMDataLength); 
-    putChar('1');
-    putChar('1');
-    putChar('1');
-    for(int i=0;i<3;i++){
-        putChar(ReadData[i]);
-    }
-    putChar('1');
-    putChar('1');
-    putChar('1');
+//    putChar('1');
+//    putChar('1');
+//    putChar('1');
+//    for(int i=0;i<3;i++){
+//        putChar(ReadData[i]);
+//    }
+//    putChar('1');
+//    putChar('1');
+//    putChar('1');
   
     for(UBYTE i=0; i<EEPROMDataLength; i++){
-        putChar(i);
-        putChar(i);
-        putChar(i);
-        putChar(i);
+//        putChar(i);
+//        putChar(i);
+//        putChar(i);
+//        putChar(i);
         DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
         sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
         delay_us(ADD_BLANK_FOR_MORSE);
@@ -498,56 +485,103 @@ void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE Address7
     }
 }
 
+void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address, UBYTE *ReadData, UINT high_address_forDataSize, UBYTE low_address_forDataSize, UBYTE downlink_times){
+    UBYTE char_data_highLow[2];
+    UBYTE send_data[];
+    UBYTE EEPROMDataLength;
+    EEPROMDataLength = ReadEEPROM(Address7Bytes,high_address_forDataSize,low_address_forDataSize);
+    ReadDataFromEEPROM(Address7Bytes, high_address, low_address, ReadData, EEPROMDataLength); 
+    
+    for(UBYTE downlink_counter =0; downlink_counter<downlink_times; downlink_counter++){
+        for(UBYTE i=0; i<EEPROMDataLength; i++){
+            DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
+            sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+            delay_us(ADD_BLANK_FOR_MORSE);
+        }
+    }
+}
+
+/*******************************************************************************
+/**Main : HK downlink
+ * ---
+ * FR0  :  satellite name('ori') + satellite number('1') + message('HELLO')
+ * FR1  :  satellite status() which can be write by OBC and CIB
+ * FR2  :  satellite status() which can be write by only OBC 
+ * ---
+ * interval between frames is 10 seconds (normalmode)
+******************************************************************************/
+void HKDownlink(UBYTE SatMode){
+    
+    switch(SatMode){
+        case 0x00:/*------------Nominal Mode------------*/
+            HKDownlinkFR0();
+            // delay_s(10);
+            HKDownlinkFR1();
+            // delay_s(10);
+            HKDownlinkFR2();
+            // delay_s(10);
+            break;
+        case 0x01:/*------------Saving Mode------------*/
+            HKDownlinkFR0();
+            // delay_s(10);
+            HKDownlinkFR1();
+            // delay_s(10);
+            break;
+        case 0x02:/*------------Survival Mode------------*/
+            break;
+        default:
+            break;
+    }
+}
+
 /*******************************************************************************
 Frame
 ******************************************************************************/
-void CwDownlinkFR0(void){
-    UBYTE satellite_name[4] = {'o', 'r', 'i', '1'};
-    sendMorse(satellite_name,sizeof(satellite_name)/sizeof(satellite_name[0]));
-}
-
-void CwDownlinkFR1(void){
+void HKDownlinkFR0(void){
+    UBYTE SatName[4] = {'o', 'r', 'i', '1'};
+    sendMorse(SatName,sizeof(SatName)/sizeof(SatName[0]));
     UBYTE message[5] = {'H', 'E', 'L', 'L', 'O'};
     sendMorse(message,sizeof(message)/sizeof(message[0]));
 }
 
-void CwDownlinkFR2(void){
-    //battery status (data from OBC)
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, batteryStatus_addressHigh, batteryStatus_addressLow);
-    //satellite bus status (data from OBC)
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, satelliteBusStatus_addressHigh, satelliteBusStatus_addressLow);
-    //satellite mode (data from COBC)
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, satelliteMode_addressHigh, satelliteMode_addressLow);
+void HKDownlinkFR1(void){
+    UBYTE DATA[];//for ReadDatasFromEEPROMWithDataSizeAndSendMorse()
+    //battery Voltage 
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltage_addressHigh,BatteryVoltage_addressLow);
+    //3.3VBus Voltage 
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH3_DATAHIGH_addressHigh,adcValue_CH3_DATAHIGH_addressLow,DATA,2);
+    //5VBus Voltage 
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH2_DATAHIGH_addressHigh,adcValue_CH2_DATAHIGH_addressLow,DATA,2);
+    //melting status
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    //latest execution command ID(RX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
+    //command error status(RX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);////////////////
+    //latest execution command ID (OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow);
+    //Battery Current
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
+    //Sattellite Bus status
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,SatelliteBusStatus_addressHigh,SatelliteBusStatus_addressLow,DATA,2);
+    //EPS switch status
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
+    //TX temperature
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow);
+    //RX temperature
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow);
+    //latest execution command ID(TX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
+    //command error status(TX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);///////////////
+    //HK filenumber
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HkFilenumber_addressHigh,HkFilenumber_addressLow);
+    //EPS telemtry downlink
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,EpsTelemtryDownlink_addressHigh,EpsTelemtryDownlink_addressLow,DATA,2);
 }
 
-void CwDownlinkFR3(void){
-    //OBC last command
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, OBC_LastCommand_addressHigh, OBC_LastCommand_addressLow);
-    //RXCOBC last command
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, RXCOBC_LastCommand_addressHigh, RXCOBC_LastCommand_addressLow);
-    //TXCOBC last command
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, TXCOBC_LastCommand_addressHigh, TXCOBC_LastCommand_addressLow);
-}
+void HKDownlinkFR2(void){
 
-/*******************************************************************************
-/**Main : CW downlink
- * ---
- * FR0  :  satellite name('ori') + satellite number('1')
- * FR1  :  message('HELLO')
- * FR2  :  satellite status(battery status + satellite bus status + satellite mode)
- * FR3  :  command
- * ---
- * interval between frames is 10 seconds (normalmode)
-******************************************************************************/
-void downlinkCWSignal(void){
-    CwDownlinkFR0();
-    // delay_s(10);
-    CwDownlinkFR1();
-    // delay_s(10);
-    CwDownlinkFR2();
-    // delay_s(10);
-    CwDownlinkFR3();
-    // delay_s(10);
 }
 
 void CWdownlinkStart(void){
@@ -558,30 +592,31 @@ void CWdownlinkStart(void){
 for debug
 ******************************************************************************/
 void testForCwFunctions(void){
+    
 //        FMPTT = 0; 
 //        CWKEY = 1;
 
-    //debug:send morse 'V'->'Y'->'J' 3 times
-     for(UBYTE i=0; i<3; i++){
-           Morse_V();
-           Morse_Y();
-           Morse_J();
-           delay_us(ADD_BLANK_FOR_MORSE);
-        }
-        
-        //debug send morse char
-        UBYTE test_morse[4];
-        test_morse[0] = 'O';
-        test_morse[1] = 'r';
-        test_morse[2] = 'i';
-        test_morse[3] = '1';
-        sendMorse(test_morse,sizeof(test_morse)/sizeof(test_morse[0]));
+//    //debug:send morse 'V'->'Y'->'J' 3 times
+//     for(UBYTE i=0; i<3; i++){
+//           Morse_V();
+//           __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//           Morse_Y();
+//           __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//           Morse_J();
+//           __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//           delay_us(ADD_BLANK_FOR_MORSE);
+//        }
+      
+//    //debug send morse char
+//    UBYTE test_morse[4];
+//    test_morse[0] = 'O';
+//    test_morse[1] = 'r';
+//    test_morse[2] = 'i';
+//    test_morse[3] = '1';
+//    sendMorse(test_morse,sizeof(test_morse)/sizeof(test_morse[0]));
         
 //        
 //        //debug:translate binary to char
-////        putChar(0xbb);
-//        putChar(0xbb);
-//        putChar(0xbb);
 //        UBYTE _binary;
 //        _binary = 0x05;
 //        putChar(changeBinaryToChar(_binary));
@@ -589,48 +624,43 @@ void testForCwFunctions(void){
 //        putChar(changeBinaryToChar(_binary));  //for check to defalt / X -> success
 //        __delay_ms(1000);
 //
-//        //debug:DevideDataAndChangeBinaryToChar
-////        putChar(0xcc);
-////        putChar(0xcc);
-////        putChar(0xcc);
-        UBYTE binary_data = 0xF3;
-        UBYTE char_data_highLow[2]; 
-        DevideDataAndChangeBinaryToChar (binary_data, char_data_highLow);
+//    //debug:DevideDataAndChangeBinaryToChar
+//    UBYTE binary_data = 0xF3;
+//    UBYTE char_data_highLow[2]; 
+//    DevideDataAndChangeBinaryToChar (binary_data, char_data_highLow);
 //        putChar(char_data_highLow[0]);  //'5'->success
 //        putChar(char_data_highLow[1]);  //'A'->success
 ////        __delay_ms(1000);
 ////
-////        //debug:send morse
-//////        putChar(0xdd);
-//////        putChar(0xdd);
-//////        putChar(0xdd);
-        for(UBYTE i=0; i<5; i++){
-            sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0])); //morse signal '5'->delay(150ms)->'A'->success
-            delay_us(ADD_BLANK_FOR_MORSE);
-        } 
-////
-////        //debug:send ReadOneByteDataFromEEPROMandSendMorse
-////        putChar(0xee);
-////        putChar(0xee);
-////        putChar(0xee);
-        UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};  //'T'=0x54 / 0b10100111 = 0xA7
-        WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
-        ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
-        delay_us(ADD_BLANK_FOR_MORSE);
-////        
-////        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
-////        putChar(0xff);
-////        putChar(0xff);
-////        putChar(0xff);
-        UBYTE ReadData[];
-        ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
-//        
-//        //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
-//        putChar(0x11);
-//        putChar(0x11);
-//        putChar(0x11);
-       ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
+//    //debug:send morse
+//    for(UBYTE i=0; i<5; i++){
+//        sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0])); //morse signal '5'->delay(150ms)->'A'->success
+//        delay_us(ADD_BLANK_FOR_MORSE);
+//    } 
+
+//    //debug:send ReadOneByteDataFromEEPROMandSendMorse
+//    UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};  //'T'=0x54 / 0b10100111 = 0xA7
+//    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+//    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
+//    delay_us(ADD_BLANK_FOR_MORSE);
         
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
+//    //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
+//    UBYTE ReadData[];
+//    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
+        
+//    //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+//    ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
+    
+    //debug:GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+    UBYTE size_high_address = 0x00;
+    UBYTE size_low_address = 0x1F;
+    UBYTE TEST_DATA[3] = {0xa2, 0xb1, 0xab};
+    UBYTE ReadData[];
+    UBYTE Size_DATA = 3;
+    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+    WriteOneByteToEEPROM(EEPROM_address, size_high_address, size_low_address, Size_DATA);
+    GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, size_high_address, size_low_address, 5);
+        
+    //FIXME:[finish]debug for downlink CW signal
+    /*---------------------------------------------------------------*/
 }

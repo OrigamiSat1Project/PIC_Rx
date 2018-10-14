@@ -30,12 +30,31 @@ void _NOP(void);
 /*FM*/
 void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
 
+/*Function : HK downlink*/
+void HKDownlink(UBYTE);
+void HKDownlinkFR0(void);
+void HKDownlinkFR1(void);
+void HKDownlinkFR2(void);
+
 /*Function : CW downlink*/
-void downlinkCWSignal(void);
 void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UINT, UBYTE);
+int changeCharMorse (char);
+char changeBinaryToChar(UBYTE);
+void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
+void sendMorse(char*,size_t);
+void ReadOneByteDataFromEEPROMandSendMorse(UBYTE, UBYTE, UBYTE);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE, UBYTE, UBYTE, UBYTE*, UINT);
+void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE);
+void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE, UBYTE, UBYTE, UBYTE *, UINT, UBYTE, UBYTE);
 
 /*for debug*/
 void testForCwFunctions(void);
+void Morse_V(void);
+void Morse_Y(void);
+void Morse_J(void);
+
+
+void CWdownlinkStart(void);
 
 #endif	/* FMCW_H */
 

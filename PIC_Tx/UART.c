@@ -174,11 +174,11 @@ void FMDownlink(UBYTE RXDATA[]){
             }
             break;
         case 0x80:
-            ReadDataFromEEPROM(EEPROM_Maddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+            ReadDataFromEEPROM(EEPROM_address_B1,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
             if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                 EEPROMCmdData[31] = 0x0F;
             }else{
-                ReadDataFromEEPROM(EEPROM_subMaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
+                ReadDataFromEEPROM(EEPROM_subaddress_B1,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
                 if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
                     EEPROMCmdData[31] = 0x6F;
                 }else{

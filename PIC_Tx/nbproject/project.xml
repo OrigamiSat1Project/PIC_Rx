@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>TXCOBC</name>
+            <name>PIC_TX</name>
             <creation-uuid>867fe402-7914-4114-95d5-77b7ed46cce5</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>

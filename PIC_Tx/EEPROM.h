@@ -15,9 +15,9 @@
 *EEPROM address
 ******************************************************************************/
 #define EEPROM_address 0x50
-//#define EEPROM_Maddress 0x54
+#define EEPROM_address_B1 0x54
 #define EEPROM_subaddress 0x52
-//#define EEPROM_subMaddress 0x56
+#define EEPROM_subMaddress_B1 0x56
 #define whigh_address 0x00
 #define wlow_address 0xE0
 #define rhigh_address 0x00
@@ -41,10 +41,11 @@
 /*******************************************************************************
 *Last Command ID
 ******************************************************************************/
-#define B0select_for_TXCOBCLastCommand     0x00
-#define HighAddress_for_TXCOBCLastCommand  0xE0
-#define LowAddress_for_TXCOBCLastCommand   0x00
-
+#define B0select_for_TXCOBCLastCommandID     0x00
+#define HighAddress_for_TXCOBCLastCommandID  0xE0
+#define LowAddress_for_TXCOBCLastCommandID   0x00
+#define HighAddress_for_RXCOBCLastCommandID  0x00
+#define LowAddress_for_RXCOBCLastCommandID   0x00
 
 /*******************************************************************************
 *ADC value
@@ -58,12 +59,12 @@
 #define adcValue_CH1_DATAHIGH_addressLow  0x1F
 #define adcValue_CH1_DATALOW_addressHigh 0x00
 #define adcValue_CH1_DATALOW_addressLow  0x2F
-//ch2
+//ch2 (5VBUS voltage(EPS 5V))
 #define adcValue_CH2_DATAHIGH_addressHigh 0x00
 #define adcValue_CH2_DATAHIGH_addressLow  0x3F
 #define adcValue_CH2_DATALOW_addressHigh 0x00
 #define adcValue_CH2_DATALOW_addressLow  0x4F
-//ch3
+//ch3 (3V3BUS voltage(EPS 3.3V))
 #define adcValue_CH3_DATAHIGH_addressHigh 0x00
 #define adcValue_CH3_DATAHIGH_addressLow  0x5F
 #define adcValue_CH3_DATALOW_addressHigh 0x00
@@ -78,21 +79,15 @@
 *address for satellite mode
 ******************************************************************************/
 //TODO:change address
-#define sattelliteMode_EEPROMAndB0Select 0x00
-#define sattelliteMode_addressHigh       0x00
-#define sattelliteMode_addressLow        0x00
-#define sattelliteMode_DataSize          1
+#define satelliteMode_EEPROMAndB0Select 0x00
+#define satelliteMode_addressHigh       0x00//include SEP(3,2bit) and RBF(1,0bit)
+#define satelliteMode_addressLow        0x00//include SEP(3,2bit) and RBF(1,0bit)
+#define satelliteMode_DataSize          1
 
 /*******************************************************************************
 *CW downlink
 ******************************************************************************/
-//TODO:change address
-#define batteryStatus_addressHigh       0x00
-#define batteryStatus_addressLow        0x00
-#define satelliteBusStatus_addressHigh  0x00
-#define satelliteBusStatus_addressLow   0x00
-#define satelliteMode_addressHigh       0x00
-#define satelliteMode_addressLow        0x00
+
 //TODO:change address
 #define OBC_LastCommand_addressHigh     0x00
 #define OBC_LastCommand_addressLow      0x00
@@ -100,6 +95,28 @@
 #define RXCOBC_LastCommand_addressLow   0x00
 #define TXCOBC_LastCommand_addressHigh  0x00
 #define TXCOBC_LastCommand_addressLow   0x00
+
+//HK
+#define BatteryVoltage_addressHigh    0x00
+#define BatteryVoltage_addressLow     0x00
+#define MeltingStatus_addressHigh     0x00
+#define MeltingStatus_addressLow      0x00
+#define LatestExcutionCommandID_addressHigh   0x00
+#define LatestExcutionCommandID_addressLow   0x00
+#define BatteryCurrent_addressHigh 0x00
+#define BatteryCurrent_addressLow  0x00
+#define SatelliteBusStatus_addressHigh  0x00
+#define SatelliteBusStatus_addressLow   0x00
+#define EpsSwitchStatus_addressHigh   0x00
+#define EpsSwitchStatus_addressLow   0x00
+#define TxTemperature_addressHigh 0x00 
+#define TxTemperature_addressLow 0x00 
+#define RxTemperature_addressHigh 0x00 
+#define RxTemperature_addressLow 0x00 
+#define HkFilenumber_addressHigh 0x00
+#define HkFilenumber_addressLow 0x00
+#define EpsTelemtryDownlink_addressHigh 0x00
+#define EpsTelemtryDownlink_addressLow  0x00
 
 #endif	/* EEPROM_H */
 
