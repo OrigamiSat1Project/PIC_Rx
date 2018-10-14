@@ -14,9 +14,11 @@
 #define HIGH 1
 #define LOW  0
 
-void commandWDT(UBYTE, UBYTE, UBYTE);
-void resetWDT(void);
+void InitWDT(void);
+void commandWDT(UBYTE);
+void resetWDT();
 void sendPulseWDT(void);
+void WDTwait(void);
 
 #endif	/* WDT_H */
 
