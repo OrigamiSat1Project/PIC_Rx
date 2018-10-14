@@ -23,7 +23,7 @@
 #define POWER_5R8G      PORTCbits.RC5 //Turn on 5R8G (high -> on)
 #define POWER_OBC       PORTDbits.RD3 //Turn on OBC sub power (high -> on)??
 #define POWER_WDT       PORTBbits.RB3 //turn off WDT(high -> WDT off)
-        
+#define PULSE_WDT       PORTBbits.RB1 //Send pulse to WDT        
     /* PIN assignment for FMRX */
 #define FMRX_CLK        PORTAbits.RA2 //clock
 #define FMRX_DAT        PORTAbits.RA3 //data
@@ -49,7 +49,6 @@
 //PORTAbits.RA0 //BAT_POS voltage(10/43)
 //PORTAbits.RA4 //Pull down to GND
 //PORTAbits.RA5 //Pull down to GND
-//PORTBbits.RB1 //Send pulse to WDT
 //PORTBbits.RB6 //PGC
 //PORTBbits.RB7 //PGD
 //PORTCbits.RC0 //TXCOBC-3(RA4)
