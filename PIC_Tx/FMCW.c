@@ -565,6 +565,7 @@ void HKDownlinkFR1(void){
 }
 
 void HKDownlinkFR2(void){
+    UBYTE DATA[];//for ReadDatasFromEEPROMWithDataSizeAndSendMorse()
     //latest execution command ID (OBC)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow);
     //Battery Current
