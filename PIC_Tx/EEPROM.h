@@ -97,10 +97,10 @@
 #define TXCOBC_LastCommand_addressLow   0x00
 
 //HK
-#define BatteryVoltage_addressHigh    0x00
-#define BatteryVoltage_addressLow     0x00
-#define MeltingStatus_addressHigh     0x00
-#define MeltingStatus_addressLow      0x00
+#define BatteryVoltage_addressHigh  0x00
+#define BatteryVoltage_addressLow 0x00
+#define MeltingStatus_addressHigh  0x00
+#define MeltingStatus_addressLow  0x00
 #define LatestExcutionCommandID_addressHigh   0x00
 #define LatestExcutionCommandID_addressLow   0x00
 #define BatteryCurrent_addressHigh 0x00

@@ -336,15 +336,15 @@ void main(void) {
         //TODO send pulse to WDT
         
         //switchSatMode
-        UBYTE SatMode = ReadEEPROM( EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
+        UBYTE SatMode = ReadEEPROM( EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow) & 0xF0;
         //TODO check AD value
         switch(SatMode){
-            case 0x00:/*------------Nominal Mode------------*/
+            case 0x50:/*------------Nominal Mode------------*/
                 break;
-            case 0x01:/*------------Saving Mode------------*/
+            case 0x60:/*------------Saving Mode------------*/
                 //Todo write HK Data
                 break;
-            case 0x02:/*------------Survival Mode------------*/
+            case 0xA0:/*------------Survival Mode------------*/
                 break;
             default:
                 break;           

@@ -513,7 +513,7 @@ void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(
 void HKDownlink(UBYTE SatMode){
     
     switch(SatMode){
-        case 0x00:/*------------Nominal Mode------------*/
+        case 0x50:/*------------Nominal Mode------------*/
             HKDownlinkFR0();
             // delay_s(10);
             HKDownlinkFR1();
@@ -521,13 +521,13 @@ void HKDownlink(UBYTE SatMode){
             HKDownlinkFR2();
             // delay_s(10);
             break;
-        case 0x01:/*------------Saving Mode------------*/
+        case 0x60:/*------------Saving Mode------------*/
             HKDownlinkFR0();
             // delay_s(10);
             HKDownlinkFR1();
             // delay_s(10);
             break;
-        case 0x02:/*------------Survival Mode------------*/
+        case 0xF0:/*------------Survival Mode------------*/
             break;
         default:
             break;
@@ -557,7 +557,14 @@ void HKDownlinkFR1(void){
     //latest execution command ID(RX)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
     //command error status(RX)
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);////////////////
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
+    //latest execution command ID(TX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
+    //command error status(TX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
+}
+
+void HKDownlinkFR2(void){
     //latest execution command ID (OBC)
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow);
     //Battery Current
@@ -570,18 +577,10 @@ void HKDownlinkFR1(void){
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow);
     //RX temperature
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow);
-    //latest execution command ID(TX)
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
-    //command error status(TX)
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);///////////////
     //HK filenumber
     ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HkFilenumber_addressHigh,HkFilenumber_addressLow);
     //EPS telemtry downlink
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,EpsTelemtryDownlink_addressHigh,EpsTelemtryDownlink_addressLow,DATA,2);
-}
-
-void HKDownlinkFR2(void){
-
 }
 
 void CWdownlinkStart(void){
