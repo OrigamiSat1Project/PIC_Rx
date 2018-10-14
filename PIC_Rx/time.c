@@ -1,4 +1,4 @@
-/*** Timer controll ***/
+    /*** Timer controll ***/
 
 #include <htc.h>
 #include "typeDefine.h"
