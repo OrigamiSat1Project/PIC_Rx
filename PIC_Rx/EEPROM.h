@@ -79,23 +79,23 @@
 #define LowAddress_for_Ok     0x00
 
 #define B0select_for_Error     0x00
-#define HighAddress_for_Error  0xE0
-#define LowAddress_for_Error   0x00
+#define HighAddress_for_Error  0x97
+#define LowAddress_for_Error   0x09
 
 
 /*******************************************************************************
 *Last Command ID
 ******************************************************************************/
 #define B0select_for_RXCOBCLastCommand     0x00
-#define HighAddress_for_RXCOBCLastCommand  0xE0
-#define LowAddress_for_RXCOBCLastCommand   0x00
+#define HighAddress_for_RXCOBCLastCommand  0x97
+#define LowAddress_for_RXCOBCLastCommand   0x08
 
 
 /*******************************************************************************
 *Initial Operation
 ******************************************************************************/
-#define HighAddress_for_meltingCompelationFlag      0xE0
-#define LowAddress_for_meltingCompelationFlag       0x00
+#define HighAddress_for_meltingCompelationFlag      0x97
+#define LowAddress_for_meltingCompelationFlag       0x07
 
 
 #endif	/* EEPROM_H */

@@ -48,5 +48,15 @@ void changeXtalFrequency(UBYTE);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+
+//DELETE ME:for debug
+void commandSwitchPowerSupply_forTX(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times);
+void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow);
+void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes);
+
+#define WIRE_CUTTER PORTAbits.RA3 //FMRX pin
+#define WIRE_CUT_INTERVAL 2
+UBYTE melting_compelation_flag;
+
 #endif /*INITMPU_H*/
 
