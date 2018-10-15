@@ -113,17 +113,17 @@ void main(void) {
     while(1){  //FIXME:for debug
     putChar(0xf1);
     delay_ms(3000);
-//    //write  melting_status
-//    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow,0x01);
-//    //write commandID
+    //write  melting_status
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow,0x01);
+    //write commandID
 //    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, HighAddress_for_commandID, LowAddress_for_commandID,0x01);
     
     //check melting compelation flag
     UBYTE melting_status;
     melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-    putChar(0xf2);
-    putChar(melting_status);
-    putChar(0xf3);
+//    putChar(0xf2);
+//    putChar(melting_status);
+//    putChar(0xf3);
     
     //[melting_status]over2 ->already developed / 1-> not yet
     if(melting_status >= 0x02){
@@ -134,17 +134,17 @@ void main(void) {
 
         switch(OBC_STATUS){
             case OBC_ALIVE:
-//                putChar(0xf5);
-                switchOk(ok_main_forOBCstatus_ALIVE);
+                putChar(0xf5);
+//                switchOk(ok_main_forOBCstatus_ALIVE);
                 break;
             case OBC_DIED:
-//                putChar(0xf6);
+                putChar(0xf6);
                 sendCommand('t','p','t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00);
-                switchOk(ok_main_forOBCstatus_DIED);
+//                switchOk(ok_main_forOBCstatus_DIED);
                 break;
             default:
-//                putChar(0xf7);
-                switchError(error_main_forOBCstatus);
+                putChar(0xf7);
+//                switchError(error_main_forOBCstatus);
                 break;
         }
     } 
