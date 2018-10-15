@@ -23,8 +23,16 @@ void Init_MPU(void);
 
 //void led_onoff(void);
 //void debug_ledy(void);
-void cutWire(UBYTE,UBYTE);
-void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE);
+
+void onOffHEATER(UBYTE,UBYTE, UBYTE);
+void onOffNTRX(UBYTE,UBYTE, UBYTE);
+void onOff5R8GSubPower(UBYTE,UBYTE, UBYTE);
+void cutWire(UBYTE,UBYTE, UBYTE);
+void cutWireWithMeltingtimes(UBYTE,UBYTE, UBYTE, UBYTE);
+void onOffTXWDT(UBYTE,UBYTE, UBYTE);
+void onOffFMPTT(UBYTE,UBYTE, UBYTE);
+void onOffCWKEY(UBYTE,UBYTE, UBYTE);
+void commandSwitchPowerSupply(UBYTE , UBYTE , UBYTE , UBYTE, UBYTE);
 
 
 

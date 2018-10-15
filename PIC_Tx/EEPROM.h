@@ -48,6 +48,14 @@
 #define LowAddress_for_RXCOBCLastCommandID   0x00
 
 /*******************************************************************************
+*CRC check
+******************************************************************************/
+#define crcResult_B0select        0x00
+#define crcResult_addressHigh     0xE0
+#define crcResult_addressLow      0x00
+
+
+/*******************************************************************************
 *ADC value
 ******************************************************************************/
 //TODO:change address
@@ -117,6 +125,13 @@
 #define HkFilenumber_addressLow 0x00
 #define EpsTelemtryDownlink_addressHigh 0x00
 #define EpsTelemtryDownlink_addressLow  0x00
+
+
+/*******************************************************************************
+*Initial Operation
+******************************************************************************/
+#define HighAddress_for_meltingCompelationFlag      0xE0
+#define LowAddress_for_meltingCompelationFlag       0x00
 
 #endif	/* EEPROM_H */
 

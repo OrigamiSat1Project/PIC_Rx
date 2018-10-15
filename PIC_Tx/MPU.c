@@ -4,11 +4,15 @@
 #include "time.h"
 //#include "decode_AX25.h"
 #include "encode_AX25.h"
+#include "EEPROM.h"
+#include "I2C.h"
 #include "pinDefine.h"
 #include "OkError.h"
 
-
+UINT invertState(UINT);
 UINT invertStateWithTime(UINT,UBYTE,UBYTE);
+
+UBYTE melting_compelation_flag;
 
 void Init_MPU(void)
 {
@@ -20,8 +24,8 @@ void Init_MPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-	ANSEL  = 0x00;	//AD?¿½Ý’ï¿½
-	ANSELH = 0x00;	//AD?¿½Ý’ï¿½
+	ANSEL  = 0x00;	//AD?ï¿½ï¿½Ý’ï¿½
+	ANSELH = 0x00;	//AD?ï¿½ï¿½Ý’ï¿½
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -54,6 +58,16 @@ void Init_MPU(void)
 //}
 
 //Used to switch PIN to the opposite status(high/low)
+//bit invertState(bit pinState){
+UINT invertState(UINT pinState){
+    if(pinState==high){
+        return low;
+    }else{
+        return high;
+    }
+}
+
+//Used to switch PIN to the opposite status(high/low)
 UINT invertStateWithTIme(UINT pinState,UBYTE timeHigh, UBYTE timeLow){
     if (timeHigh != 0x00 && timeLow != 0x00){
         UWORD operationTime;
@@ -65,44 +79,183 @@ UINT invertStateWithTIme(UINT pinState,UBYTE timeHigh, UBYTE timeLow){
     }
 }
 
-void cutWire(UBYTE timeHigh, UBYTE timeLow){
-    UWORD cutTime;
-    cutTime = (UWORD)timeHigh * 0x100 + timeLow;
-    WIRE_CUTTER = 1;
-    delay_ms(cutTime);
-    WIRE_CUTTER = 0;
+// void cutWire(UBYTE timeHigh, UBYTE timeLow){
+//     UWORD cutTime;
+//     cutTime = (UWORD)timeHigh * 0x100 + timeLow;
+//     WIRE_CUTTER = 1;
+//     delay_ms(cutTime);
+//     WIRE_CUTTER = 0;
+// }
+
+/*heater*/
+void onOffHEATER(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            HEATER = low;  
+    } else {                     
+            HEATER = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        HEATER =invertState(onOff);
+    }
 }
 
+/*NTRX*/
+void onOffNTRX(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            NTRX = low;  
+    } else {                     
+            NTRX = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        NTRX =invertState(onOff);
+    }
+}
+
+/*5R8G 5V Sub Power*/
+void onOff5R8GSubPower(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            SW_5R8G = low;  
+    } else {                     
+            SW_5R8G = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        SW_5R8G =invertState(onOff);
+    }
+}
+
+/*antenna melting*/
+void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            WIRE_CUTTER = low;  
+    } else {                     
+            WIRE_CUTTER = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+
+        if(wait_time<0x0FA0){    //melting time limit : 0x0FA0 -> 4000[ms]
+            wait_time = (timeHigh << 8 | timeLow);
+            delay_ms(wait_time);
+            WIRE_CUTTER =invertState(onOff);
+        }
+        //TODO:wait time ga over -> error
+    }
+
+    //add melting completion flag
+    melting_compelation_flag = ReadEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
+    melting_compelation_flag++;
+    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+    WriteOneByteToEEPROM(EEPROM_subaddress,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+
+}
+
+/*antenna melting with meliing times*/
+void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes){
+    melting_compelation_flag = ReadEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
+    for(UBYTE i=0; i<meltingTimes; i++){    
+        cutWire(onOff, timeHigh, timeLow);
+        melting_compelation_flag++;
+        WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+        WriteOneByteToEEPROM(EEPROM_subaddress,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+        delay_s(WIRE_CUT_INTERVAL);
+    }
+}
+
+/*WDT*/
+void onOffTXWDT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            WDT_POWER = low;  
+    } else {                     
+            WDT_POWER = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        WDT_POWER =invertState(onOff);
+    }
+}
+
+/*FMPTT*/
+void onOffFMPTT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            FMPTT = low;  
+    } else {                     
+            FMPTT = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        FMPTT =invertState(onOff);
+    }
+}
+
+/*CWKEY*/
+void onOffCWKEY(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            CWKEY = low;  
+    } else {                     
+            CWKEY = high;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){ 
+    }else {        
+        UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
+        delay_ms(wait_time);
+        CWKEY =invertState(onOff);
+    }
+}
+
+
 //process command data if the command type is 'power supply'
-void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //times are given in ms
+void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times){ //times are given in ms
     switch(command){
         case 'h':   //Heater
-            HEATER = onOff;
-            HEATER = invertStateWithTIme(HEATER,timeHigh, timeLow);
+            onOffHEATER(onOff, timeHigh, timeLow);
             break;
         case 'n':   //NTRX
-            NTRX = onOff;
-            NTRX = invertStateWithTIme(NTRX,timeHigh, timeLow);
+            onOffNTRX(onOff, timeHigh, timeLow);
             break;
-        case '5': //5R8G
-            SW_5R8G = onOff;
-            HEATER = invertStateWithTIme(SW_5R8G,timeHigh, timeLow);
+        case '5': //5R8G 5V Sub Power
+            onOff5R8GSubPower(onOff, timeHigh, timeLow);
             break;
         case 'a': //WIRE_CUTTER
-            WIRE_CUTTER = onOff;
-            HEATER = invertStateWithTIme(WIRE_CUTTER,timeHigh, timeLow);
+            cutWire(onOff, timeHigh, timeLow);
+            break;
+        case 't': //WIRE_CUTTER with times
+            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT
-            WDT_POWER = 1 - onOff;
-            HEATER = invertStateWithTIme(WIRE_CUTTER,timeHigh, timeLow);
+            onOffTXWDT(onOff, timeHigh, timeLow);
             break;
         case 'p': //FMPTT
-            FMPTT = onOff;
-            HEATER = invertStateWithTIme(FMPTT,timeHigh, timeLow);
+            onOffFMPTT(onOff, timeHigh, timeLow);
             break;
         case 'k': //CWKEY
-            CWKEY = onOff;
-            HEATER = invertStateWithTIme(CWKEY,timeHigh, timeLow);
+            onOffCWKEY(onOff, timeHigh, timeLow);
             break;
         default:
             switchError(error_MPU_commandSwitchPowerSupply);

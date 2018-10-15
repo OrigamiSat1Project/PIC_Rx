@@ -140,11 +140,12 @@ void flipout(void){
 
 //  FCSCalculation
 void fcsbit(UBYTE tbyte){
-    #asm
-        BCF 03,0
-        RRF _efcshi,F
-        RRF _efcslo,F
-    #endasm
+    //FIXME:fix assembry
+//    #asm
+//        BCF 03,0
+//        RRF _efcshi,F
+//        RRF _efcslo,F
+//    #endasm
     if(((STATUS & bit_H)^(tbyte)) == bit_H){
         efcshi = efcshi ^ 0x84;
         efcslo = efcslo ^ 0x08;

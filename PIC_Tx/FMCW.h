@@ -8,6 +8,8 @@
 #ifndef FMCW_H
 #define	FMCW_H
 
+#include <xc.h>
+#include <stdio.h>
 #include "Type_define.h"
 
 //***Read Me!!!
