@@ -41,6 +41,9 @@
 #define SEP_SW          PORTBbits.RB4 //Short Separation switch 1&2  //High--->EPS OFF
 #define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2  //High--->EPS OFF
 
+    /* PIN assignment for OBC*/
+#define OBC_STATUS      PORTDbits.RD7  //check whether OBC are alive or died  //High--->OBC are alive 
+
 //New definitions
 #define WDT             PORTBbits.RB3 //turn off WDT(high -> WDT off)
 
