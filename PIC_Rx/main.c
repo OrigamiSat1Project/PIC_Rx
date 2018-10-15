@@ -85,10 +85,6 @@ void main(void) {
     
 
     putChar('A');
-    
-    /*******************************************************************************
-    *Initial Operation [TXPIC]
-    ******************************************************************************/
 
     while(1){
         putChar('B');
@@ -151,12 +147,6 @@ void main(void) {
 //        LED_WHITE = 0;
 
         
-        /*---Write uplink command in EEPROM---*/
-        /*------------------------------------------------------------------*/
-        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
-        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
-        putChar('S');
-        
         /*---CRC check for command from Grand Station---*/ 
         /*------------------------------------------------------------------*/
         UWORD crcResult, crcValue;
@@ -169,14 +159,18 @@ void main(void) {
         crcValueLow = crcValue & 0x00FF;
         
         if(crcResult != crcValue){
+            commandData[31] = 0x00; 
             switchError(error_main_crcCheck);
         }else{
-            commandData[31] = 0x0F;
-            switchOk(ok_main_crcCheck);
-            
-        }   
+            commandData[31] = 0b1000000;
+            switchOk(ok_main_crcCheck);           
+        }  
         
-        
+        /*---Write uplink command in EEPROM---*/
+        /*------------------------------------------------------------------*/
+        WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
+        WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+        putChar('S');
         
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
