@@ -29,7 +29,7 @@
 
 #define ok_main_forOBCstatus_ALIVE                 0x1a
 #define ok_main_forOBCstatus_DIED                  0x1b
-
+#define ok_main_crcCheck                           0x1c
 
 /*******************************************************************************
 *error
@@ -40,6 +40,7 @@
 #define error_I2C_commandSwitchEEPROM            0x21
 #define error_main_forOBCstatus                  0x10
 #define error_main_reveiveCommand                0x11
+#define error_main_crcCheck                      0x12
 #define error_MPU_commandSwitchSatMode           0x90
 #define error_MPU_commandSwitchPowerSupply       0x91
 #define error_MPU_commandSwitchIntProcess        0x92

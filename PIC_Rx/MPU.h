@@ -54,7 +54,7 @@ void commandSwitchPowerSupply_forTX(UBYTE command, UBYTE onOff, UBYTE timeHigh, 
 
 #define WIRE_CUTTER PORTDbits.RD5 
 #define WIRE_CUT_INTERVAL 1500
-UBYTE melting_compelation_flag;
+UBYTE melting_status;
 
 #endif /*INITMPU_H*/
 

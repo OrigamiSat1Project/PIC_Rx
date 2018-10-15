@@ -94,8 +94,8 @@
 /*******************************************************************************
 *Initial Operation
 ******************************************************************************/
-#define HighAddress_for_meltingCompelationFlag      0x97
-#define LowAddress_for_meltingCompelationFlag       0x07
+#define MeltingStatus_addressHigh      0x97
+#define MeltingStatus_addressLow       0x07
 
 
 #endif	/* EEPROM_H */
