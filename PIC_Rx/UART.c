@@ -143,7 +143,6 @@ int change_baud_rate( UBYTE command_baud_rate ){
 }
 
 //TODO:check
-//TODO:SPBRG,BRGH,SYNC?��?��main.c?��?��InitSerial();?��ŏ�?��?��?��?��?��?��?��?��邯?��Ǒ�?��v?��?��
 //UART_speed: high_speed = 1  / low_speed =0
 //UART_type : synchronous = 1 / asynchronous = 0
 //Data sheet : p113
@@ -199,7 +198,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
     switch(command){    
         case 'w': //UART write
             //TODO: write method for UART writ
-            WriteUART( data1 );  //TODO:change "data1" ?��C?��ӂ̐�?��ɑΉ�?��ł�?��?��悤?��?��
+            WriteUART( data1 );  //TODO:change "data1"
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?
