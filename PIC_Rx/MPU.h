@@ -49,12 +49,5 @@ void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
 
-//DELETE ME:for debug
-void commandSwitchPowerSupply_forTX(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times);
-
-#define WIRE_CUTTER PORTDbits.RD5 
-#define WIRE_CUT_INTERVAL 1500
-UBYTE melting_status;
-
 #endif /*INITMPU_H*/
 
