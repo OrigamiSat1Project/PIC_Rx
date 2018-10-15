@@ -494,57 +494,68 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
             break;
     }
 }
-//
+
 //
 ////DELETE ME:for debug
-//
-//void commandSwitchPowerSupply_forTX(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times){ 
-//    switch(command){
-//        case 'a':
-//            cutWire(onOff, timeHigh, timeLow);
-//            break;
-//        case 't':
-//            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
-//            break;
-//    }
-//}
+void cutWire(UBYTE, UBYTE, UBYTE);
+void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes);
+
+void commandSwitchPowerSupply_forTX(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE melting_times){ 
+    switch(command){
+        case 'a': //0x61
+            putChar(0xb1);
+            cutWire(onOff, timeHigh, timeLow);
+            break;
+        case 't': //0x74
+            putChar(0xb2);
+            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
+            break;
+    }
+}
 //
 ///*antenna melting*/
-//void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
-//    if ( onOff == 0x00 ){        
-//            WIRE_CUTTER = LOW;  
-//    } else {                     
-//            WIRE_CUTTER = HIGH;
-//    }
-//
-//    if(timeHigh == 0x00 && timeLow == 0x00){ 
-//    }else {        
-//        UWORD wait_time;
-//
-//        if(wait_time<0x0FA0){    //melting time limit : 0x0FA0 -> 4000[ms]
-//            wait_time = (timeHigh << 8 | timeLow);
-//            delay_ms(wait_time);
-//            WIRE_CUTTER =invertState(onOff);
-//        }
-//        //TODO:wait time ga over -> error
-//    }
-//
-//    //add melting completion flag
-//    melting_compelation_flag = ReadEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
-//    melting_compelation_flag++;
-//    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
-//    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
-//
-//}
+void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
+    if ( onOff == 0x00 ){        
+            WIRE_CUTTER = LOW;
+    } else {                     
+            WIRE_CUTTER = HIGH;
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){
+        putChar(0xc1);
+    }else {
+        putChar(0xc2);
+        UWORD wait_time;
+
+        if(wait_time<0x0FA0){    //melting time limit : 0x0FA0 -> 4000[ms]
+            putChar(0xc3);
+            wait_time = (timeHigh << 8 | timeLow);
+            delay_ms(wait_time);
+            WIRE_CUTTER =invertState(onOff);
+        }
+        //TODO:wait time ga over -> error
+    }
+
+    //add melting completion flag
+    melting_compelation_flag = ReadEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
+    melting_compelation_flag++;
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+
+}
 //
 ///*antenna melting with meliing times*/
-//void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes){
-//    melting_compelation_flag = ReadEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
-//    for(UBYTE i=0; i<meltingTimes; i++){    
-//        cutWire(onOff, timeHigh, timeLow);
-//        melting_compelation_flag++;
-//        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
-//        WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
-//        delay_s(WIRE_CUT_INTERVAL);
-//    }
-//}
+void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes){
+    //FIXME:for debug 
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag,0x01);
+    melting_compelation_flag = ReadEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
+    for(UBYTE i=0; i<meltingTimes; i++){
+        putChar(0xd1);
+        putChar(i);
+        cutWire(onOff,timeHigh,timeLow);
+        melting_compelation_flag++;
+        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+        WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+        delay_ms(WIRE_CUT_INTERVAL);
+    }
+}
