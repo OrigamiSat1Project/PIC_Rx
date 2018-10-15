@@ -45,17 +45,24 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     subAddress = EEPROM_subaddress | B0Select;
     ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
 
-    //TODO:is thhis corrrect?
+    /*---read CRC check from EEPROM---*/
+    UBYTE CRC_check_result;
+    CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
+    
+    /*---CRC check for command from Grand Station---*/ 
+    /*------------------------------------------------------------------*/
     if(crc16(0,commandData,29) == CRC_check(commandData,29)){
-        commandData[31] = 0x0F;
+        commandData[31] = commandData[31] | 0b0010000;
     }else{
         ReadDataFromEEPROM(subAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
         if(crc16(0,commandData,29) == CRC_check(commandData,29)){
-            commandData[31] = 0x6F;
+            commandData[31] = commandData[31] & 0b1101111;  
+            commandData[31] = commandData[31] | 0b0001000;
         }else{
-            commandData[31] = 0xFF;
+            commandData[31] = commandData[31] & 0b1100111;
         }
-    }
+    }   
+    
     WriteCheckByteToEEPROMs(B0Select,addressHigh,addressLow, commandData[31]);
     __delay_us(200);
     FMPTT = 1;

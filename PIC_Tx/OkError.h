@@ -36,10 +36,13 @@
 #define error_FMCW_commandSwitchCWDownlink    0xf1
 #define error_I2C_commandSwitchI2C            0x20
 #define error_MPU_commandSwitchPowerSupply    0x90
+#define error_main_crcCheck                   0x10
+#define error_main_commandfromOBCorRXCOBC     0x11
 
 
 void switchOk(UBYTE);
 void switchError(UBYTE);
+void putErrorNoDownlink(UBYTE);
 
 #endif	/* OKERROR_H */
 
