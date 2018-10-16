@@ -75,19 +75,19 @@ void interrupt InterReceiver(void);
 void interrupt InterReceiver(void){
     putChar('I');
     
-    int commandSize;
+    UBYTE commandSize;
     commandSize = 10;
     
     UBYTE RXDATA[10];//array size = commandSize
 //    volatile static int intr_counter;
 
     if (RCIF == 1) {
-        for (int i = 0; i < commandSize; i++){
+        for (UBYTE i = 0; i < commandSize; i++){
             RXDATA[i] = getChar();
         }
         
         /*---Send command using UARTto RXCOBC---*/
-        for (int i = 0; i < commandSize; i++){
+        for (UBYTE i = 0; i < commandSize; i++){
             putChar(RXDATA[i]);
             NOP();
         }
@@ -385,7 +385,7 @@ void main(void) {
         
         /*---------------------------------------------------------------*/
         //FIXME:[start]debug for downlink CW signal
-        testForCwFunctions();
+        // testForCwFunctions();
         //FIXME:[finish]debug for downlink CW signal
         /*---------------------------------------------------------------*/
         

@@ -19,9 +19,10 @@
 
 // PINs that are already used in code
 //-----------------------------------
+
 //Original Source: encode_AX25.h
-#define txd             RC5
-#define UHFstart        RC2
+#define txd             RC5  //transmit radio data
+// #define UHFstart        RC2  //not used this pin
 #define FMPTT           RC0
 #define CWKEY           RB2
 //Original Source: Init_MPU.h

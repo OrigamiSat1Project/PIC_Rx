@@ -1,17 +1,9 @@
 #include <xc.h>
 #include "UART.h"
 #include "Type_define.h"
-#include "EEPROM.h"
 #include "encode_AX25.h"
-#include "I2C.h"
-#include "CW.h"
-#include "WDT.h"
-#include "pinDefine.h"
 #include "CRC16.h"
 #include "time.h"
-
-UINT B0_select;
-UINT DownlinkTimes;
 
 void Init_SERIAL(void){
     SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
@@ -41,6 +33,8 @@ UBYTE getChar(void){                //TODO: add time out feature
         NOP();
         CREN = 1;
     }
+
+    //TODO;need check
     set_timer_counter_only_getChar(0);
 	while(!RCIF){                   //USART Receive Interrupt Flag bit
         if(get_timer_counter_only_getChar() > 1000) break;
@@ -59,18 +53,6 @@ void putString(UBYTE *x)
         putChar(*x);
         x++;
     }
-}
-
-UBYTE get3byte(void){                //TODO: add time out feature
-    /**/
-	if(FERR || OERR) // If over run error, then reset the receiver
-	{
-        CREN = 0;
-        NOP();
-        CREN = 1;
-    }
-	while(RCIF != 0);
-    return RCREG;
 }
 
 void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6){
@@ -114,19 +96,7 @@ void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
     }
 }
 
-//void putstr(UBYTE *x)
-//{
-//    while(*x != '\0'){
-//        putch(*x);
-//        x++;
-//    }
-//}
-
-//void putcrlf(void){
-//    putch('\r');
-//    putch('\n');
-//}
-//
+/*---for debug---*/
 void put_error(void){
    putch('E');
    putch('R');
@@ -141,58 +111,34 @@ void put_ok(void){
    putch('K');
    putch('!');
 }
+// UBYTE get3byte(void){                //TODO: add time out feature
+//     /**/
+// 	if(FERR || OERR) // If over run error, then reset the receiver
+// 	{
+//         CREN = 0;
+//         NOP();
+//         CREN = 1;
+//     }
+// 	while(RCIF != 0);
+//     return RCREG;
+// }
+
+//void putstr(UBYTE *x)
+//{
+//    while(*x != '\0'){
+//        putch(*x);
+//        x++;
+//    }
+//}
+
+//void putcrlf(void){
+//    putch('\r');
+//    putch('\n');
+//}
+//
 
 //void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){
 //    putch(NM_wad_header);
 //    putch(whigh_address);
 //    putch(wlow_address);
 //}
-
-
-
-
-/*
-void CwDownlink(UBYTE RXDATA[]){
-    
-}
-
-void FMDownlink(UBYTE RXDATA[]){
-    UINT B0_select = (UINT)RXDATA[2] & 0x80;
-    UINT DownlinkTimes = (UINT)RXDATA[2] & 0x7F;
-    switch(B0_select){
-        case 0x00:
-            ReadDataFromEEPROM(EEPROM_address,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                EEPROMCmdData[31] = 0x0F;
-            }else{
-                ReadDataFromEEPROM(EEPROM_subaddress,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                    EEPROMCmdData[31] = 0x6F;
-                }else{
-                    EEPROMCmdData[31] = 0xFF;
-                }
-            }
-            break;
-        case 0x80:
-            ReadDataFromEEPROM(EEPROM_address_B1,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-            if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                EEPROMCmdData[31] = 0x0F;
-            }else{
-                ReadDataFromEEPROM(EEPROM_subaddress_B1,RXDATA[3],RXDATA[4], EEPROMCmdData,EEPROMCmdDataLength);
-                if(crc16(0,EEPROMCmdData,29) == CRC_check(EEPROMCmdData,29)){
-                    EEPROMCmdData[31] = 0x6F;
-                }else{
-                    EEPROMCmdData[31] = 0xFF;
-                }
-            }
-            break;
-    }
-    __delay_ms(200);
-    FMPTT = 1;
-    for(int SendCounter = 0; SendCounter < DownlinkTimes; SendCounter++){
-        SendPacket(EEPROMCmdData);
-        __delay_ms(300);
-    }
-}
-
-*/

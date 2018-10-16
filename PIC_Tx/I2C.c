@@ -1,4 +1,4 @@
-#include <xc.h>
+
 #include "UART.h"
 #include "I2C.h"
 #include "Type_define.h"
@@ -39,13 +39,13 @@ void I2CMasterStop(){
   PEN = 1;
 }
 
-void I2CMasterWrite(unsigned d){
+void I2CMasterWrite(UBYTE d){
   I2CMasterWait();
   SSPBUF = d;
 }
 
 UBYTE I2CMasterRead(UBYTE a){
-  unsigned char temp;
+  UBYTE temp;
   
   I2CMasterWait();
   RCEN = 1;

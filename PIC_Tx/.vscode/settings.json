@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "pindefine.h": "c"
+        "pindefine.h": "c",
+        "mpu.h": "c",
+        "uart.h": "c",
+        "eeprom.h": "c"
     }
 }

@@ -15,7 +15,6 @@
 #define I2Cbps 100000 //100kbps
 #define I2Cnull 0xFF
 
-
 /*******************************************************************************
 *setting
 ******************************************************************************/ 
@@ -29,8 +28,8 @@ void I2CMasterStop(void);
 /*******************************************************************************
 *Method for EEPROM Write 
 ******************************************************************************/
-void I2CMasterWrite(unsigned d);
-UBYTE I2CMasterRead(UBYTE a);
+void I2CMasterWrite(UBYTE);
+UBYTE I2CMasterRead(UBYTE);
 void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
 void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
 void WriteLastCommandIdToEEPROM(UBYTE);

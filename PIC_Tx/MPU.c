@@ -12,8 +12,6 @@
 UINT invertState(UINT);
 UINT invertStateWithTime(UINT,UBYTE,UBYTE);
 
-UBYTE melting_compelation_flag;
-
 void Init_MPU(void)
 {
 	//Initialize Port Status
@@ -24,8 +22,8 @@ void Init_MPU(void)
     PORTE  = 0x00;
 	
 	//AnalogorDigital Setting(All Digital)
-	ANSEL  = 0x00;	//AD?ï¿½ï¿½Ý’ï¿½
-	ANSELH = 0x00;	//AD?ï¿½ï¿½Ý’ï¿½
+	ANSEL  = 0x00;	//AD??¿½?¿½Ý’ï¿½
+	ANSELH = 0x00;	//AD??¿½?¿½Ý’ï¿½
 	
 	//Port I/O Setting 
     //       0b76543210
@@ -159,21 +157,25 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     }
 
     //add melting completion flag
-    melting_compelation_flag = ReadEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
-    melting_compelation_flag++;
-    WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
-    WriteOneByteToEEPROM(EEPROM_subaddress,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+    UBYTE melting_status;
+    melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    //TODO:need change
+    melting_status = 0b0111111;
+    WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
+    WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
 
 }
 
 /*antenna melting with meliing times*/
 void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes){
-    melting_compelation_flag = ReadEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag, LowAddress_for_meltingCompelationFlag);
+    UBYTE melting_status;
+    melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
     for(UBYTE i=0; i<meltingTimes; i++){    
         cutWire(onOff, timeHigh, timeLow);
-        melting_compelation_flag++;
-        WriteOneByteToEEPROM(EEPROM_address,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
-        WriteOneByteToEEPROM(EEPROM_subaddress,HighAddress_for_meltingCompelationFlag,LowAddress_for_meltingCompelationFlag, melting_compelation_flag);
+        //TODO:need change
+        melting_status = 0b0111111;
+        WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
+        WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
         delay_s(WIRE_CUT_INTERVAL);
     }
 }
