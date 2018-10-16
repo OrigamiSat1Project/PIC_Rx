@@ -24,7 +24,7 @@
 //UBYTE commandData[DATA_SIZE];             //only information byte of uplink command
 
 
-UINT getBit(void);
+UBYTE getBit(void);
 void receiveDataPacket(UBYTE*);
 
 #endif	/* DECODE_AX25_H */

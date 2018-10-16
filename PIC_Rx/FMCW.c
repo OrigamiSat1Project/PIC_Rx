@@ -13,12 +13,12 @@
 #define FMRX_ID   3
 
 /*Methods*/
-void sendLow(int unitID);
-void sendHigh(int unitID);
-void sendSTB(int unitID);
-void setNprg(int unitID, int *Nprg);
-void setNref(int unitID, int Nref);
-void setOptionRegister(int unitID);
+void sendLow(UBYTE unitID);
+void sendHigh(UBYTE unitID);
+void sendSTB(UBYTE unitID);
+void setNprg(UBYTE unitID, UBYTE *Nprg);
+void setNref(UBYTE unitID, int Nref);
+void setOptionRegister(UBYTE unitID);
 void _NOP(void);
 
 
@@ -28,7 +28,7 @@ void _NOP(void);
  * 2. Set the DAT terminal to Low
  * 3. Change the CLK pin from 0 ?申?申 1 ?申?申 0
  */
-void sendLow(int unitID){
+void sendLow(UBYTE unitID){
     if(unitID == FMTX_ID)
     {
         FMTX_DAT = 0;
@@ -62,7 +62,7 @@ void sendLow(int unitID){
  * 2. Set the DAT terminal to High
  * 3. Change the CLK pin from 0 ?申?申 1 ?申?申 0
  */
-void sendHigh(int unitID){
+void sendHigh(UBYTE unitID){
     if(unitID == FMTX_ID)
     {
         FMTX_DAT = 1;
@@ -95,7 +95,7 @@ void sendHigh(int unitID){
  * 1. Select which radio unit to send  to (FMTX or FMRX or CWTX)
  * 2. Change the STB pin from 0 ?申?申 1 ?申?申 0
  */
-void sendSTB(int unitID){
+void sendSTB(UBYTE unitID){
     if(unitID == FMTX_ID)
     {
         FMTX_STB = 1;
@@ -124,17 +124,17 @@ void sendSTB(int unitID){
  * 3. Send group code '10'
  * 4. Send STB signal
  */
-void setNprg(int unitID, int *Nprg){
-    int count = 0;
-    int Nprg_b[17];
+void setNprg(UBYTE unitID, UBYTE *Nprg){
+    UBYTE count = 0;
+    UBYTE Nprg_b[17];
     
-    for(int i=0; i<17; i++){
+    for(UBYTE i=0; i<17; i++){
         Nprg_b[i] = 0;
     }
     
     //Nprg transforms decimal to binary
-    for(int i = 0; i < 17; i++){
-        for(int j = 0; j<5; j++){
+    for(UBYTE i = 0; i < 17; i++){
+        for(UBYTE j = 0; j<5; j++){
             if(Nprg[j] % 2 == 0) {
                 if(j == 4){
                     Nprg[j] = Nprg[j] / 2;
@@ -160,7 +160,7 @@ void setNprg(int unitID, int *Nprg){
     }
     
     //Send Nprg data(binary) to communication module
-    for (int i=0; i<17; i++)
+    for (UBYTE i=0; i<17; i++)
     {
         if(Nprg_b[i] == 0)
         {
@@ -188,10 +188,10 @@ void setNprg(int unitID, int *Nprg){
  * 3. Send group code '11'
  * 4. Send STB signal
  */
-void setNref(int unitID, int Nref){
-    int Nref_b[12];
+void setNref(UBYTE unitID, int Nref){
+    UBYTE Nref_b[12];
     
-    for(int i=0; i<12; i++){
+    for(UBYTE i=0; i<12; i++){
         Nref_b[i] = 0;
     }
     
@@ -202,7 +202,7 @@ void setNref(int unitID, int Nref){
     }
     
     //Send Nref data(binay) to communication module
-    for (int i=0; i<12; i++)
+    for (UBYTE i=0; i<12; i++)
     {
         if(Nref_b[i] == 0)
         {
@@ -229,7 +229,7 @@ void setNref(int unitID, int Nref){
  * 2. Send group code '00'
  * 3. Send STB signal
  */
-void setOptionRegister(int unitID){
+void setOptionRegister(UBYTE unitID){
     //Send PLL Common DataSet to communiction module
     sendLow(unitID);//T1
     sendLow(unitID);//T2
@@ -258,8 +258,8 @@ void setOptionRegister(int unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMTX(int Nref, int *Nprg){
-    int fmtx = FMTX_ID;
+void FMTX(int Nref, UBYTE *Nprg){
+    UBYTE fmtx = FMTX_ID;
     setOptionRegister(fmtx);
     setNref(fmtx, Nref);
     setNprg(fmtx, Nprg);
@@ -272,8 +272,8 @@ void FMTX(int Nref, int *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void CWTX(int Nref, int *Nprg){
-    int cwtx = CWTX_ID;
+void CWTX(int Nref, UBYTE *Nprg){
+    UBYTE cwtx = CWTX_ID;
     setOptionRegister(cwtx);
     setNref(cwtx, Nref);
     setNprg(cwtx, Nprg);
@@ -286,8 +286,8 @@ void CWTX(int Nref, int *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMRX(int Nref, int *Nprg){
-    int fmrx = FMRX_ID;
+void FMRX(int Nref, UBYTE *Nprg){
+    UBYTE fmrx = FMRX_ID;
     setOptionRegister(fmrx);
     setNref(fmrx, Nref);
     setNprg(fmrx, Nprg);
@@ -297,7 +297,7 @@ void FMRX(int Nref, int *Nprg){
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
-//void SetPLL(int FMTX_Nref, int *FMTX_Nprg, int CWTX_Nref, int *CWTX_Nprg, int FMRX_Nref, int *FMRX_Nprg){
+//void SetPLL(UBYTE FMTX_Nref, UBYTE *FMTX_Nprg, UBYTE CWTX_Nref, UBYTE *CWTX_Nprg, UBYTE FMRX_Nref, UBYTE *FMRX_Nprg){
 //    FMTX(FMTX_Nref, FMTX_Nprg);
 //    CWTX(CWTX_Nref, CWTX_Nprg);
 //    FMRX(FMRX_Nref, FMRX_Nprg);
@@ -326,7 +326,7 @@ void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBY
  * (Wait for 5 loop iterations)
  */
 void _NOP(void) {
-    for(int i=0; i<5; i++){
+    for(UBYTE i=0; i<5; i++){
         NOP();
     }
 }

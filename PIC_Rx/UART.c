@@ -53,10 +53,10 @@ void putString(UBYTE *x)
     }
 }
 //starts new line for debugging
-void putCrLf(void){
-    putChar('\r');//Carriage return
-    putChar('\n');//Line feed
-}
+// void putCrLf(void){
+//     putChar('\r');//Carriage return
+//     putChar('\n');//Line feed
+// }
 
 void put_error(void){
     putChar('E');
@@ -109,9 +109,9 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1, UBYTE Pa
 //TODO:check
 //Write UART
 void WriteUART( UBYTE *TXDATA ){
-    int command_size;
+    UBYTE command_size;
     command_size = 5 ;  //TODO:chage command size
-    for ( int i=0; i<command_size; i++ ){
+    for ( UBYTE i=0; i<command_size; i++ ){
         putChar(TXDATA[i]); 
         NOP();
     }
@@ -143,12 +143,12 @@ int change_baud_rate( UBYTE command_baud_rate ){
 }
 
 //TODO:check
-//TODO:SPBRG,BRGH,SYNC?ï¿½ï¿½?ï¿½ï¿½main.c?ï¿½ï¿½?ï¿½ï¿½InitSerial();?ï¿½ï¿½Åï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½é‚¯?ï¿½ï¿½Ç‘ï¿½?ï¿½ï¿½v?ï¿½ï¿½?ï¿½ï¿½
+//TODO:SPBRG,BRGH,SYNC??¿½?¿½??¿½?¿½main.c??¿½?¿½??¿½?¿½InitSerial();??¿½?¿½Åï¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½é‚¯??¿½?¿½Ç‘ï¿½??¿½?¿½v??¿½?¿½??¿½?¿½
 //UART_speed: high_speed = 1  / low_speed =0
 //UART_type : synchronous = 1 / asynchronous = 0
 //Data sheet : p113
 void calculate_SPBRG(int baud_rate, UBYTE UART_speed, UBYTE UART_type){
-    int spbrg;
+    UBYTE spbrg;
     if ( UART_speed == high_speed ){
         spbrg = _XTAL_FREQ / ( 16 * baud_rate ) - 1;
         SPBRG = spbrg;
@@ -199,7 +199,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
     switch(command){    
         case 'w': //UART write
             //TODO: write method for UART writ
-            WriteUART( data1 );  //TODO:change "data1" ?ï¿½ï¿½C?ï¿½ï¿½Ó‚Ìï¿½?ï¿½ï¿½É‘Î‰ï¿½?ï¿½ï¿½Å‚ï¿½?ï¿½ï¿½?ï¿½ï¿½æ‚¤?ï¿½ï¿½?ï¿½ï¿½
+            WriteUART( data1 );  //TODO:change "data1" ??¿½?¿½C??¿½?¿½Ó‚Ìï¿½??¿½?¿½É‘Î‰ï¿½??¿½?¿½Å‚ï¿½??¿½?¿½??¿½?¿½æ‚¤??¿½?¿½??¿½?¿½
             break;
         case 'c': //UART buffer clear
             //TODO: write method for UART buffer clear---finish?

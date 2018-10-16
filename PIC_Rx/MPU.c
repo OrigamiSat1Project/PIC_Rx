@@ -46,24 +46,26 @@ void InitMPU(void)
 /*******************************************************************************
 *LED ON/OFF
 ******************************************************************************/
-void LEDOnOff(void){
-    LED_Y_ON();
-    __delay_us(HALF_INTERVAL);
-    LED_Y_OFF();
-    __delay_us(HALF_INTERVAL);
-}
-void debugLEDyellow(void){
-    if(LED_YELLOW == HIGH){
-        LED_Y_OFF();
-    }else{
-        LED_Y_ON();
-    }
-}
+/*---for debug---*/
+// void LEDOnOff(void){
+//     LED_Y_ON();
+//     __delay_us(HALF_INTERVAL);
+//     LED_Y_OFF();
+//     __delay_us(HALF_INTERVAL);
+// }
+
+// void debugLEDyellow(void){
+//     if(LED_YELLOW == HIGH){
+//         LED_Y_OFF();
+//     }else{
+//         LED_Y_ON();
+//     }
+// }
 
 
 //Used to switch PIN to the opposite status(high/low)
 //bit invertState(bit pinState){
-UINT invertState(UINT pinState){
+UBYTE invertState(UBYTE pinState){
     if(pinState==HIGH){
         return LOW;
     }else{

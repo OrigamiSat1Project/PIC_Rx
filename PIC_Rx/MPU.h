@@ -27,9 +27,11 @@
 
 void InitMPU(void);
 
+/*---for debug---*/
 void LEDOnOff(void);
 void debugLEDyellow(void);
-UINT invertState(UINT);
+
+UBYTE invertState(UBYTE);
 
 void onOff5R8G(UBYTE, UBYTE, UBYTE);
 void onOffOBC(UBYTE, UBYTE, UBYTE);

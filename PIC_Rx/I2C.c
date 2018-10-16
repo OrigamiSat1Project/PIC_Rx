@@ -7,9 +7,6 @@
 
 //UBYTE EEPROMData[32];                                         
 
-UBYTE data_length;
-UBYTE *read_data;
-
 /*******************************************************************************
 *setting
 ******************************************************************************/
@@ -40,14 +37,14 @@ void I2CMasterStop(){
   PEN = 1;                      //Stop Condition Enable bit (Master mode only); bit 2 of SSPCON2
 }
 
-void I2CMasterWrite(unsigned dataByte){                               
+void I2CMasterWrite(UBYTE dataByte){                               
   I2CMasterWait();
   SSPBUF = dataByte;                   //Serial Receive/Transmit Buffer Register
 }
 
 
 UBYTE I2CMasterRead(UBYTE address){                                         
-  unsigned char temp;
+  UBYTE temp;
   I2CMasterWait();
   RCEN = 1;                     //Receive Enable bit; bit 3 of SSPCON2
   I2CMasterWait();
@@ -99,7 +96,7 @@ void WriteToEEPROMWithDataSize(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addre
     I2CMasterWrite(address);        //7 bit address + Write
     I2CMasterWrite(addressHigh);    //Adress High Byte
     I2CMasterWrite(addressLow);     //Adress Low Byte
-    for (UINT i = 0; i< dataSize; i++){
+    for (UBYTE i = 0; i< dataSize; i++){
         I2CMasterWrite(*data);      //Data
         ++data;
     }
@@ -182,7 +179,7 @@ void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYT
     I2CMasterRepeatedStart();               //Restart condition
     
     I2CMasterWrite(ReadAddress);            //7 bit address + Read
-    for(UINT i = 0; i < EEPROMDataLength - 1; i++){
+    for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
         ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
     }
     ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
@@ -289,6 +286,8 @@ void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE da
 *process command data if the command type is 'EEPROM'
 ******************************************************************************/
 void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){ 
+    UBYTE data_length;
+    UBYTE *read_data;
     switch(command){    
         case 'w': //write data to EEPROM
             //TODO:now send data is only 1byte. change data size

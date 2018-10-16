@@ -22,7 +22,7 @@ void I2CMasterWait(void);
 void I2CMasterStart(void);                                              
 void I2CMasterRepeatedStart(void);                                   
 void I2CMasterStop(void);                                               
-void I2CMasterWrite(unsigned d);                                        
+void I2CMasterWrite(UBYTE);                                        
 UBYTE I2CMasterRead(UBYTE a);  
 
 /*write*/
