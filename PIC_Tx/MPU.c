@@ -9,6 +9,8 @@
 #include "pinDefine.h"
 #include "OkError.h"
 
+#define MELTING_TIME_MAX 0x0FA0 //0x0FA0 -> 4000[ms] TBD[ms]
+
 UINT invertState(UINT);
 UINT invertStateWithTime(UINT,UBYTE,UBYTE);
 
@@ -147,12 +149,15 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
+        wait_time = (timeHigh << 8 | timeLow);
 
-        if(wait_time<0x0FA0){    //melting time limit : 0x0FA0 -> 4000[ms]
-            wait_time = (timeHigh << 8 | timeLow);
-            delay_ms(wait_time);
-            WIRE_CUTTER =invertState(onOff);
+        if(wait_time>MELTING_TIME_MAX){
+            wait_time = MELTING_TIME_MAX;
+        } else {
         }
+        
+        delay_ms(wait_time);
+        WIRE_CUTTER =invertState(onOff);
         //TODO:wait time ga over -> error
     }
 
