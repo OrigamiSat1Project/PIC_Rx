@@ -12,8 +12,8 @@
 #include "typeDefine.h"
 
 // Clock frequency
-//TODO:change 20M[Hz] and 4M[Hz] ï¿½Kï¿½Ø‚È’l
-//TODO:MPUï¿½ï¿½change Xtal //ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ÌƒGï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½P
+//TODO:change 20M[Hz] and 4M[Hz] ?¿½K?¿½Ø‚È’l
+//TODO:MPU?¿½?¿½change Xtal //?¿½Æ‚ï¿½?¿½?¿½?¿½Æ‚ï¿½?¿½ÌƒG?¿½?¿½?¿½[?¿½?¿½?¿½P
 #define _XTAL_FREQ_HIGH      20000000   //20M[Hz]
 #define _XTAL_FREQ_MIDDLE    10000000   //10M[Hz]
 #define _XTAL_FREQ_LOW        4000000   // 4M[Hz]         
@@ -24,9 +24,6 @@
 #define __delay_s(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4.0)))
 
 #define HALF_INTERVAL   400   // half the time interval of one bit //decided by measurement
-
-/*Initial Operation*/
-#define WAIT_TIME_FOR_ANTENNA 200  //[s]
 
 //functions to wait [ms] or [us]
 void delay_s(UWORD);

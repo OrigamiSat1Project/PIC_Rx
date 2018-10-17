@@ -29,6 +29,10 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
+/*---Initial Operation---*/
+#define MELTING_FINISH 0x06  //TBD
+#define WAIT_TIME_FOR_ANTENNA 200  //[s] //TBD
+
 //TODO:add interrupt finction?
 void main(void) {
     
@@ -59,15 +63,19 @@ void main(void) {
     /*---start checking whether antenna are developed or not---*/
     /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
     /*----------------------------------------------------------------------*/    
-    //check melting compelation flag
+    //check melting status
     UBYTE melting_status;
     melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+
+    //bit operation
+    //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
+    UBYTE melting_status_cal_result;
+    melting_status_cal_result = bitCalResult(melting_status);
   
-    //[melting_status]over2 ->already developed / 1-> not yet
-    if(melting_status >= 0x02){
-                                              //already developed
-    } else {                                  //flag = 1 -> not yet
-        delay_s (WAIT_TIME_FOR_ANTENNA); //200s
+    //cal_result>=TBD: melting already finish   / cal_result<TBD: not yet
+    if(melting_status_cal_result >= MELTING_FINISH){                                              
+    } else {                                  
+        delay_s (WAIT_TIME_FOR_ANTENNA); //TBD[s]
 
         switch(OBC_STATUS){
             case OBC_ALIVE:

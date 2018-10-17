@@ -1028,11 +1028,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;typeDefine.h: 17: typedef unsigned short long USLONG;
 [; ;typeDefine.h: 18: typedef signed long SDWORD;
 [; ;typeDefine.h: 19: typedef unsigned long UDWORD;
-[; ;time.h: 32: void delay_s(UWORD);
-[; ;time.h: 33: void delay_ms(UWORD);
-[; ;time.h: 34: void delay_us(UWORD);
-[; ;time.h: 37: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 38: UINT get_timer_counter_only_getChar(void);
+[; ;time.h: 29: void delay_s(UWORD);
+[; ;time.h: 30: void delay_ms(UWORD);
+[; ;time.h: 31: void delay_us(UWORD);
+[; ;time.h: 34: void set_timer_counter_only_getChar(UINT);
+[; ;time.h: 35: UINT get_timer_counter_only_getChar(void);
 "9 time.c
 [v _timer_counter_only_getChar `ui ~T0 @X0 1 s ]
 [i _timer_counter_only_getChar

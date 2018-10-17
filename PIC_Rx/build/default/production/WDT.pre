@@ -1497,7 +1497,7 @@ void calculate_SPBRG(int, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
-# 32 "time.h"
+# 29 "time.h"
 void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
