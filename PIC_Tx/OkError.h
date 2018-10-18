@@ -43,6 +43,7 @@
 void switchOk(UBYTE);
 void switchError(UBYTE);
 void putErrorNoDownlink(UBYTE);
+UBYTE bitCalResult(UBYTE bit_input);
 
 #endif	/* OKERROR_H */
 

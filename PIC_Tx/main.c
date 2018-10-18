@@ -82,10 +82,25 @@ void interrupt InterReceiver(void){
 //    volatile static int intr_counter;
 
     if (RCIF == 1) {
-        for (UBYTE i = 0; i < commandSize; i++){
-            RXDATA[i] = getChar();
+        /*---for debug---*/
+        // for (UBYTE i = 0; i < commandSize; i++){
+        //     RXDATA[i] = getChar();
+        // }
+        UBYTE get_char_state = 0;
+        while(get_char_state < commandSize){
+            RXDATA[0] = getChar();
+            get_char_state++;
+            if(RXDATA[0] != 't' && RXDATA[0] != 'g'){
+                get_char_state = 0;
+            } else {    
+                for (UBYTE i = 1; i < commandSize; i++){
+                RXDATA[i] = getChar();
+                get_char_state++;
+                }
+            }
         }
         
+        //TODO:need?
         /*---Send command using UARTto RXCOBC---*/
         for (UBYTE i = 0; i < commandSize; i++){
             putChar(RXDATA[i]);
@@ -126,12 +141,16 @@ void interrupt InterReceiver(void){
         
         if(crcResult != crcValue){  //crc error
             
-            /*---write CRC result 6bit 0 ---*/
+            /*---write CRC error result (6bit 0) ---*/
             CRC_check_result = CRC_check_result & 0b1011111;
             WriteCheckByteToEEPROMs(crcResult_B0select,crcResult_addressHigh,crcResult_addressLow,CRC_check_result);
             putErrorNoDownlink(error_main_crcCheck);    
             
         } else {  //crc  OK
+            
+            /*---write CRC ok result (6bit 1) ---*/
+            CRC_check_result = CRC_check_result | 0b01000000;
+            WriteCheckByteToEEPROMs(crcResult_B0select,crcResult_addressHigh,crcResult_addressLow,CRC_check_result);
             
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/

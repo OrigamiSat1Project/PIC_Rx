@@ -10,6 +10,8 @@
 #include "OkError.h"
 
 #define MELTING_TIME_MAX 0x0FA0 //0x0FA0 -> 4000[ms] TBD[ms]
+#define MELTING_TIME_DEFAULT 1000 //[ms] 
+#define MELTING_FINISH 0x06  //TBD
 
 UINT invertState(UINT);
 UINT invertStateWithTime(UINT,UBYTE,UBYTE);
@@ -152,7 +154,7 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
         wait_time = (timeHigh << 8 | timeLow);
 
         if(wait_time>MELTING_TIME_MAX){
-            wait_time = MELTING_TIME_MAX;
+            wait_time = MELTING_TIME_DEFAULT;
         } else {
         }
         
@@ -160,28 +162,30 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
         WIRE_CUTTER =invertState(onOff);
         //TODO:wait time ga over -> error
     }
-
-    //add melting completion flag
-    UBYTE melting_status;
-    melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
-    //TODO:need change
-    melting_status = 0b0111111;
-    WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
-    WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
-
 }
 
 /*antenna melting with meliing times*/
 void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE meltingTimes){
-    UBYTE melting_status;
-    melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
-    for(UBYTE i=0; i<meltingTimes; i++){    
-        cutWire(onOff, timeHigh, timeLow);
-        //TODO:need change
-        melting_status = 0b0111111;
-        WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
-        WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh,MeltingStatus_addressLow, melting_status);
-        delay_s(WIRE_CUT_INTERVAL);
+    UBYTE main_melting_status;
+    UBYTE sub_melting_status;
+    main_melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    sub_melting_status = ReadEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow);
+
+    //bit operation
+    //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
+    UBYTE main_melting_status_cal_result;
+    UBYTE sub_melting_status_cal_result;
+    main_melting_status_cal_result = bitCalResult(main_melting_status);
+    sub_melting_status_cal_result = bitCalResult(sub_melting_status);
+  
+    //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
+    if((main_melting_status_cal_result < MELTING_FINISH)&&(sub_melting_status_cal_result < MELTING_FINISH)){ 
+        for(UBYTE i=0; i<meltingTimes; i++){    
+            cutWire(onOff, timeHigh, timeLow);
+            delay_s(WIRE_CUT_INTERVAL);
+        }
+    } else {
+        //already melting finishs
     }
 }
 
