@@ -94,6 +94,7 @@
 /*******************************************************************************
 *Initial Operation
 ******************************************************************************/
+#define MeltingStatus_B0select         0x00
 #define MeltingStatus_addressHigh      0x97
 #define MeltingStatus_addressLow       0x07
 

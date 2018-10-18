@@ -12,11 +12,11 @@
       <itemPath>EPS.h</itemPath>
       <itemPath>WDT.h</itemPath>
       <itemPath>CRC16.h</itemPath>
-      <itemPath>pinDefine.h</itemPath>
       <itemPath>typeDefine.h</itemPath>
       <itemPath>decodeAX25.h</itemPath>
       <itemPath>MPU.h</itemPath>
       <itemPath>OkError.h</itemPath>
+      <itemPath>pinDefine.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

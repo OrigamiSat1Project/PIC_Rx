@@ -64,17 +64,20 @@ void main(void) {
     /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
     /*----------------------------------------------------------------------*/    
     //check melting status
-    UBYTE melting_status;
-    melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    UBYTE main_melting_status;
+    UBYTE sub_melting_status;
+    main_melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, );
+    sub_melting_status = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
 
     //bit operation
     //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-    UBYTE melting_status_cal_result;
-    melting_status_cal_result = bitCalResult(melting_status);
+    UBYTE main_melting_status_cal_result;
+    UBYTE sub_melting_status_cal_result;
+    main_melting_status_cal_result = bitCalResult(main_melting_status);
+    sub_melting_status_cal_result = bitCalResult(sub_melting_status);
   
-    //cal_result>=TBD: melting already finish   / cal_result<TBD: not yet
-    if(melting_status_cal_result >= MELTING_FINISH){                                              
-    } else {                                  
+    //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
+    if((main_melting_status_cal_result < MELTING_FINISH)&&(sub_melting_status_cal_result < MELTING_FINISH)){                                                                             
         delay_s (WAIT_TIME_FOR_ANTENNA); //TBD[s]
 
         switch(OBC_STATUS){
@@ -89,6 +92,7 @@ void main(void) {
                 switchError(error_main_forOBCstatus);
                 break;
         }
+    } else {
     } 
     
 
@@ -212,7 +216,7 @@ void main(void) {
                     commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
-                case 'e':
+                case 'e': /*EEPROM*/
                     commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;

@@ -312,6 +312,9 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
         case 't': //EEPROM test
             TestEEPROM(slaveAdress);
             break;
+        case 'm': //write melting status to EEPROM --> stop melting
+            WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+            break;
         default:
             switchError(error_I2C_commandSwitchEEPROM);
             break;
