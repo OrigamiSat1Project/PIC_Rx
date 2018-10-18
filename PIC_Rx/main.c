@@ -31,7 +31,7 @@
 
 /*---Initial Operation---*/
 #define MELTING_FINISH 0x06  //TBD
-#define WAIT_TIME_FOR_ANTENNA 200  //[s] //TBD
+#define WAIT_TIME_FOR_ANTENNA 2  //[s] //TBD
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -63,11 +63,31 @@ void main(void) {
     /*---start checking whether antenna are developed or not---*/
     /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
     /*----------------------------------------------------------------------*/    
+    //FIXME:for TXPIC
+    for(UBYTE i=0; i<15; i++){
+        UBYTE send_command[6]= {'t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00};
+        sendCommandnew('t','p',send_command);
+    }
+    
+    //FIXME:write melting status
+    UBYTE main_test_melting_status = 0b00000011;
+    UBYTE sub_test_melting_status = 0b01111111;
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, main_test_melting_status);
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, sub_test_melting_status);
+    
+    putChar(0xa1);
+    putChar(main_test_melting_status);
+    putChar(sub_test_melting_status);
+    
     //check melting status
     UBYTE main_melting_status;
     UBYTE sub_melting_status;
-    main_melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, );
+    main_melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
     sub_melting_status = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    
+    putChar(0xa2);
+    putChar(main_melting_status);
+    putChar(sub_melting_status);
 
     //bit operation
     //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
@@ -75,24 +95,38 @@ void main(void) {
     UBYTE sub_melting_status_cal_result;
     main_melting_status_cal_result = bitCalResult(main_melting_status);
     sub_melting_status_cal_result = bitCalResult(sub_melting_status);
+    
+    putChar(0xa3);
+    putChar(main_melting_status_cal_result);
+    putChar(sub_melting_status_cal_result);
   
     //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
     if((main_melting_status_cal_result < MELTING_FINISH)&&(sub_melting_status_cal_result < MELTING_FINISH)){                                                                             
+        putChar(0xa4);
         delay_s (WAIT_TIME_FOR_ANTENNA); //TBD[s]
+        putChar(0xa5);
 
         switch(OBC_STATUS){
             case OBC_ALIVE:
+                putChar(0xa6);
                 switchOk(ok_main_forOBCstatus_ALIVE);
                 break;
             case OBC_DIED:
-                sendCommand('t','p','t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00);
+                putChar(0xa7);
+                UBYTE send_command[6]= {'t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00};
+                sendCommandnew('t','p',send_command);
+//                UBYTE send_command[6]= {0xb3,0xb4,0xb5, 0xb6,0xb7,0xb8};
+//                sendCommandnew(0xb1,0xb2,send_command);
+                putChar(0xa8);
                 switchOk(ok_main_forOBCstatus_DIED);
                 break;
             default:
+                putChar(0xa9);
                 switchError(error_main_forOBCstatus);
                 break;
         }
     } else {
+        putChar(0xa0);
     } 
     
 

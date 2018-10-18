@@ -5,7 +5,9 @@
 #include "I2C.h"
 #include "OkError.h"
 
-//UBYTE EEPROMData[32];                                         
+//UBYTE EEPROMData[32];                  
+
+#define MELTING_FINISH 0b11111111
 
 /*******************************************************************************
 *setting
@@ -313,7 +315,7 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             TestEEPROM(slaveAdress);
             break;
         case 'm': //write melting status to EEPROM --> stop melting
-            WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+            WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH);
             break;
         default:
             switchError(error_I2C_commandSwitchEEPROM);
