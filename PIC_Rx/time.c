@@ -5,8 +5,8 @@
 #include "time.h"
 /**/
 
-//Global
-static UINT timer_counter_only_getChar = 0;
+////Global
+//static UINT timer_counter_only_getChar = 0;
 
 void delay_s(UWORD sec)
 {
@@ -38,11 +38,11 @@ void delay_us(UWORD usec)
 	}	
 }
 
-//timer counter only getChar
-void set_timer_counter_only_getChar(UINT time){
-    timer_counter_only_getChar = time;
-}
-
-UINT get_timer_counter_only_getChar(void){
-    return timer_counter_only_getChar;
-}
+////timer counter only getChar
+//void set_timer_counter_only_getChar(UINT time){
+//    timer_counter_only_getChar = time;
+//}
+//
+//UINT get_timer_counter_only_getChar(void){
+//    return timer_counter_only_getChar;
+//}

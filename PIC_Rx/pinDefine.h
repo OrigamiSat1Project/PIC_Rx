@@ -17,6 +17,8 @@
 
 // PINs that are already used in code
 //-----------------------------------
+//Original Source: MPU.h
+//Original Source: WDT.h 
 #define LED_YELLOW      PORTCbits.RC2 
 #define LED_WHITE       PORTBbits.RB2
 #define FX614_RXD       PORTBbits.RB5 //Receive radio data
@@ -24,6 +26,7 @@
 #define POWER_OBC       PORTDbits.RD3 //Turn on OBC sub power (high -> on)??
 #define POWER_WDT       PORTBbits.RB3 //turn off WDT(high -> WDT off)
 #define PULSE_WDT       PORTBbits.RB1 //Send pulse to WDT        
+//Original Source: FMCW.h
     /* PIN assignment for FMRX */
 #define FMRX_CLK        PORTAbits.RA2 //clock
 #define FMRX_DAT        PORTAbits.RA3 //data
@@ -36,7 +39,9 @@
 #define CWTX_CLK        PORTDbits.RD2
 #define CWTX_DAT        PORTDbits.RD1
 #define CWTX_STB        PORTDbits.RD0
-     
+
+//Original Source: EPS.h 
+//Original Source: MPU.h      
     /* PIN assignment for EPS * */
 #define SEP_SW          PORTBbits.RB4 //Short Separation switch 1&2  //High--->EPS OFF
 #define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2  //High--->EPS OFF
@@ -44,8 +49,6 @@
     /* PIN assignment for OBC*/
 #define OBC_STATUS      PORTDbits.RD7  //check whether OBC are alive or died  //High--->OBC are alive 
 
-//New definitions
-#define WDT             PORTBbits.RB3 //turn off WDT(high -> WDT off)
 
 // PINs NOT used in code
 //--------------------------

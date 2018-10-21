@@ -1031,15 +1031,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-[; ;time.h: 34: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 35: UINT get_timer_counter_only_getChar(void);
-"9 time.c
-[v _timer_counter_only_getChar `ui ~T0 @X0 1 s ]
-[i _timer_counter_only_getChar
--> -> 0 `i `ui
-]
-[; ;time.c: 9: static UINT timer_counter_only_getChar = 0;
-"11
+"11 time.c
 [v _delay_s `(v ~T0 @X0 1 ef1`us ]
 "12
 {
@@ -1143,32 +1135,4 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.c: 39: }
 "39
 [e :UE 103 ]
-}
-"42
-[v _set_timer_counter_only_getChar `(v ~T0 @X0 1 ef1`ui ]
-{
-[; ;time.c: 42: void set_timer_counter_only_getChar(UINT time){
-[e :U _set_timer_counter_only_getChar ]
-[v _time `ui ~T0 @X0 1 r1 ]
-[f ]
-[; ;time.c: 43: timer_counter_only_getChar = time;
-"43
-[e = _timer_counter_only_getChar _time ]
-[; ;time.c: 44: }
-"44
-[e :UE 107 ]
-}
-"46
-[v _get_timer_counter_only_getChar `(ui ~T0 @X0 1 ef ]
-{
-[; ;time.c: 46: UINT get_timer_counter_only_getChar(void){
-[e :U _get_timer_counter_only_getChar ]
-[f ]
-[; ;time.c: 47: return timer_counter_only_getChar;
-"47
-[e ) _timer_counter_only_getChar ]
-[e $UE 108  ]
-[; ;time.c: 48: }
-"48
-[e :UE 108 ]
 }

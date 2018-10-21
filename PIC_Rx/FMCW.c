@@ -297,7 +297,7 @@ void FMRX(int Nref, UBYTE *Nprg){
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
-//void SetPLL(UBYTE FMTX_Nref, UBYTE *FMTX_Nprg, UBYTE CWTX_Nref, UBYTE *CWTX_Nprg, UBYTE FMRX_Nref, UBYTE *FMRX_Nprg){
+//void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
 //    FMTX(FMTX_Nref, FMTX_Nprg);
 //    CWTX(CWTX_Nref, CWTX_Nprg);
 //    FMRX(FMRX_Nref, FMRX_Nprg);

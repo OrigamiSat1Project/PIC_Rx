@@ -7,6 +7,7 @@ UART.h  \
 CRC16.h  \
 typeDefine.h  \
 decodeAX25.h  \
+timer.h  \
 pinDefine.h  \
 EPS.h  \
 WDT.h  \

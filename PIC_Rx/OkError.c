@@ -48,8 +48,17 @@ void switchError(UBYTE action_select){
     //TODO:need debug
     //only FM downlink? need CW?
     UBYTE downlinlTimes = 36;
-    UBYTE DataSize = 2; 
-    sendCommand('t', 'f', 0xaa, B0select_for_Error, HighAddress_for_Error, LowAddress_for_Error, downlinlTimes, DataSize);
+    UBYTE DataSize = 2;
+    UBYTE send_command[8];
+    send_command[0] = 't';
+    send_command[1] = 'f';
+    send_command[2] = 0xaa;
+    send_command[3] = B0select_for_Error;
+    send_command[4] = HighAddress_for_Error;
+    send_command[5] = LowAddress_for_Error;
+    send_command[6] = downlinlTimes;
+    send_command[7] = DataSize;
+    sendCommandByPointer(send_command); 
 }
 
 //TODO:need debug

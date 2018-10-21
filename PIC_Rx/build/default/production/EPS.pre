@@ -1479,10 +1479,6 @@ void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-
-void set_timer_counter_only_getChar(UINT);
-UINT get_timer_counter_only_getChar(void);
-
 # 8 "EPS.c"
 void Reset_EPS(void){
 PORTBbits.RB4 = 1;

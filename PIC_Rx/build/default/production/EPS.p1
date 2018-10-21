@@ -1048,8 +1048,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-[; ;time.h: 34: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 35: UINT get_timer_counter_only_getChar(void);
 "8 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {

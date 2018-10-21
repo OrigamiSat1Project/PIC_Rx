@@ -415,7 +415,16 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * 4.after setting time, revive EPS (this also revive OBC)
             /*----------------------------*/
             killEPS();
-            sendCommand('t', 'p', 'n', 0x01, timeHigh, timeLow, 0x00, 0x00);
+            UBYTE send_command[8];
+            send_command[0] = 't';
+            send_command[1] = 'p';
+            send_command[2] = 'n';
+            send_command[3] = 0x01;
+            send_command[4] = timeHigh;
+            send_command[5] = timeLow;
+            send_command[6] = 0x00;
+            send_command[7] = 0x00;
+            sendCommandByPointer(send_command);
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);

@@ -1476,13 +1476,7 @@ void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-
-void set_timer_counter_only_getChar(UINT);
-UINT get_timer_counter_only_getChar(void);
-
-# 9 "time.c"
-static UINT timer_counter_only_getChar = 0;
-
+# 11 "time.c"
 void delay_s(UWORD sec)
 {
 while(sec)
@@ -1513,11 +1507,3 @@ usec--;
 }
 }
 
-
-void set_timer_counter_only_getChar(UINT time){
-timer_counter_only_getChar = time;
-}
-
-UINT get_timer_counter_only_getChar(void){
-return timer_counter_only_getChar;
-}

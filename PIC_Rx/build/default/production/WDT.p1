@@ -1065,8 +1065,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-[; ;time.h: 34: void set_timer_counter_only_getChar(UINT);
-[; ;time.h: 35: UINT get_timer_counter_only_getChar(void);
 "11 WDT.c
 [v _InitWDT `(v ~T0 @X0 1 ef ]
 {

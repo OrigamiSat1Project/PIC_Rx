@@ -26,18 +26,15 @@ void InitSerial(void){
 	TXEN   = 1;						// Enable the transmitter
 }
 
-UBYTE getChar(void){        //TODO: add time out feature---finish
+UBYTE getChar(void){        //TODO: add time out feature
 	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit
 	{
         CREN = 0;                   //Continuous Receive Enable bit
         NOP();
         CREN = 1;
     }
-    set_timer_counter_only_getChar(0);
-	while(!RCIF){                   //USART Receive Interrupt Flag bit
-        if(get_timer_counter_only_getChar() > 1000) break;
-    }
-    return RCREG;                   //USART Receive Data Register
+	while(!RCIF);                   //USART Receive Interrupt Flag bit
+	return RCREG;                   //USART Receive Data Register
 }
 
 void putChar(UBYTE byte){
@@ -73,21 +70,21 @@ void put_ok(void){
     putChar('!');
 }
 
-void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
-    putChar(NM_wad_header);
-    putChar(whigh_address);
-    putChar(wlow_address);
-}
-
-void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-    __delay_ms(50);
-    putChar(TXOBC_wad_header);
-    __delay_ms(50);
-    putChar(whigh_address);
-    __delay_ms(50);
-    putChar(wlow_address);
-    __delay_ms(50);
-}
+//void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
+//    putChar(NM_wad_header);
+//    putChar(whigh_address);
+//    putChar(wlow_address);
+//}
+//
+//void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
+//    __delay_ms(50);
+//    putChar(TXOBC_wad_header);
+//    __delay_ms(50);
+//    putChar(whigh_address);
+//    __delay_ms(50);
+//    putChar(wlow_address);
+//    __delay_ms(50);
+//}
 
 void sendCommandByPointer(UBYTE* Parameter){
     UBYTE Command[10];
@@ -106,25 +103,26 @@ void sendCommandByPointer(UBYTE* Parameter){
     
     for(UBYTE i=0; i<10; i++){
         putChar(Command[i]);
+        NOP();
     }        
 }
 
-void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Parameter2,UBYTE Parameter3,UBYTE Parameter4,UBYTE Parameter5,UBYTE Parameter6){
-    UBYTE Command[10];
-    UWORD CRC;
-    Command[0] = TaskTarget;
-    Command[1] = CommandType;
-    Command[2] = Parameter1;
-    Command[3] = Parameter2;
-    Command[4] = Parameter3;
-    Command[5] = Parameter4;
-    Command[6] = Parameter5;
-    Command[7] = Parameter6;
-    CRC = crc16(0, Command, 8);
-    Command[8] = (UBYTE)(CRC >> 8);
-    Command[9] = (UBYTE)(CRC & 0x00FF);
-    putString(Command);
-}
+//void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Parameter2,UBYTE Parameter3,UBYTE Parameter4,UBYTE Parameter5,UBYTE Parameter6){
+//    UBYTE Command[10];
+//    UWORD CRC;
+//    Command[0] = TaskTarget;
+//    Command[1] = CommandType;
+//    Command[2] = Parameter1;
+//    Command[3] = Parameter2;
+//    Command[4] = Parameter3;
+//    Command[5] = Parameter4;
+//    Command[6] = Parameter5;
+//    Command[7] = Parameter6;
+//    CRC = crc16(0, Command, 8);
+//    Command[8] = (UBYTE)(CRC >> 8);
+//    Command[9] = (UBYTE)(CRC & 0x00FF);
+//    putString(Command);
+//}
 
 //TODO:check
 //Write UART

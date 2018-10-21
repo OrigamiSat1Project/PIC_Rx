@@ -21,6 +21,7 @@ static UBYTE rcvState = 0;           //TODO: improve readability, recieve state 
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
 UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UBYTE  dPacketCounter = 0;
+//UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
 
@@ -183,11 +184,14 @@ UINT fcsCheck(void){
             byte = dPacket[i];
             for(UBYTE j=0;j<8;j++){
                 bt = byte & BIT_HIGH;
-                #asm                                //embedded assembly language route to do a 16 bit rotate
-                    BCF 03,0
-                    RRF _dfcsHighByte,F
-                    RRF _dfcsLowByte,F
-                #endasm
+//                #asm                                //embedded assembly language route to do a 16 bit rotate
+//                    BCF 03,0
+//                    RRF _dfcsHighByte,F
+//                    RRF _dfcsLowByte,F
+//                #endasm
+                STATUS &= ~0x01;
+                dfcsHighByte = dfcsHighByte >> 1;
+                dfcsLowByte = dfcsLowByte >> 1;
                 if(((STATUS & BIT_HIGH)^bt) == BIT_HIGH){
                     dfcsHighByte = dfcsHighByte ^ 0x84;
                     dfcsLowByte = dfcsLowByte ^ 0x08;
