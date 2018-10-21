@@ -7,7 +7,7 @@
 
 //UBYTE EEPROMData[32];                  
 
-#define MELTING_FINISH 0b11111111
+#define MELTING_FINISH_FLAG 0b11111111
 
 /*******************************************************************************
 *setting
@@ -83,6 +83,11 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
     __delay_ms(200);
 }
 
+void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
+    WriteToEEPROM(MAIN_EEPROM_ADDRESS,addressHigh,addressLow,data);
+    WriteToEEPROM(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data);
+}
+
 /*
  *  Write To EEPROM
  *	arg      :   addressEEPROM, addressHigh, addressLow, *data, dataSize
@@ -117,6 +122,11 @@ void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow
     I2CMasterWrite(data);      //Data
     I2CMasterStop();                //Stop condition
     __delay_ms(200);
+}
+
+void WriteOneByteToMainAnadSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data);
 }
 
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
@@ -315,7 +325,7 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             TestEEPROM(slaveAdress);
             break;
         case 'm': //write melting status to EEPROM --> stop melting
-            WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH);
+            WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
             break;
         default:
             switchError(error_I2C_commandSwitchEEPROM);

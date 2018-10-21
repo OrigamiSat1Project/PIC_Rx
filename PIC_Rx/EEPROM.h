@@ -16,8 +16,10 @@
 /*******************************************************************************
 *EEPROM address
 ******************************************************************************/
-#define MAIN_EEPROM_ADDRESS 0x50
-#define SUB_EEPROM_ADDRESS 0x52
+#define MAIN_EEPROM_ADDRESS     0x50
+#define SUB_EEPROM_ADDRESS      0x52
+#define MAIN_EEPROM_ADDRESS_B1  0x54
+#define SUB_EEPROM_ADDRESS_B1   0x56
 
 //for test EEPROM
 //TODO:change address
@@ -92,11 +94,16 @@
 
 
 /*******************************************************************************
-*Initial Operation
+*DATA
 ******************************************************************************/
+/*---initial operation---*/
 #define MeltingStatus_B0select         0x00
-#define MeltingStatus_addressHigh      0x97
-#define MeltingStatus_addressLow       0x07
+#define MeltingStatus_addressHigh      0xE0
+#define MeltingStatus_addressLow       0x00
+#define BatteryVoltage_addressHigh     0xE0
+#define BatteryVoltage_addressLow      0x08
+#define MeltingCounter_addressHigh     0xE0
+#define MeltingCounter_addressLow      0x08
 
 
 #endif	/* EEPROM_H */

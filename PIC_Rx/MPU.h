@@ -21,8 +21,10 @@
 #define OBC_ALIVE   HIGH
 #define OBC_DIED    LOW
 #define OnOff_forCutWIRE    0x01
-#define hightime_forCutWIRE 0x0f
-#define lowtime_forCutWIRE  0xff
+#define CutWIRE_LONG_highTime  0x09  //LONG:2500ms
+#define CutWIRE_LONG_lowTime   0xC4
+#define CutWIRE_SHORT_highTime 0x07  //SHORT:2000ms 
+#define CutWIRE_SHORT_lowTime  0xD0
 #define cuttimes_forCutWIRE 3 
 
 void InitMPU(void);

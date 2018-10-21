@@ -3,6 +3,7 @@
 #include <string.h>
 #include <xc.h>
 #include <PIC16LF877A.h>
+#include "ADC.h"
 #include "typeDefine.h"
 #include "pinDefine.h"
 #include "MPU.h"
@@ -31,7 +32,10 @@
 
 /*---Initial Operation---*/
 #define MELTING_FINISH 0x06  //TBD
-#define WAIT_TIME_FOR_ANTENNA 2  //[s] //TBD
+#define WAIT_TIME_FOR_SETTING 2  //[s] //TBD  200->2
+//#define BAT_LIMIT_FOR_MELTING 0x01B3 //[V] //TBD 6.0V
+#define BAT_LIMIT_FOR_MELTING 0x0077 //[V] //TBD 6.0V
+#define MELTING_COUNTER_LIMIT 10  //for debug 77->10 
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -59,80 +63,132 @@ void main(void) {
     //UBYTE lastCommandID;        //ID of last uplink command
     
     //WDT = 1; // kick watchdog
-
-    /*---start checking whether antenna are developed or not---*/
-    /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
-    /*----------------------------------------------------------------------*/    
+    
     //FIXME:for TXPIC
-    for(UBYTE i=0; i<15; i++){
-        UBYTE send_command[6]= {'t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00};
-        sendCommandnew('t','p',send_command);
-    }
-    
-    //FIXME:write melting status
-    UBYTE main_test_melting_status = 0b00000011;
-    UBYTE sub_test_melting_status = 0b01111111;
-    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, main_test_melting_status);
-    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, sub_test_melting_status);
-    
-    putChar(0xa1);
-    putChar(main_test_melting_status);
-    putChar(sub_test_melting_status);
-    
-    //check melting status
-    UBYTE main_melting_status;
-    UBYTE sub_melting_status;
-    main_melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-    sub_melting_status = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-    
-    putChar(0xa2);
-    putChar(main_melting_status);
-    putChar(sub_melting_status);
-
-    //bit operation
-    //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-    UBYTE main_melting_status_cal_result;
-    UBYTE sub_melting_status_cal_result;
-    main_melting_status_cal_result = bitCalResult(main_melting_status);
-    sub_melting_status_cal_result = bitCalResult(sub_melting_status);
-    
-    putChar(0xa3);
-    putChar(main_melting_status_cal_result);
-    putChar(sub_melting_status_cal_result);
-  
-    //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
-    if((main_melting_status_cal_result < MELTING_FINISH)&&(sub_melting_status_cal_result < MELTING_FINISH)){                                                                             
-        putChar(0xa4);
-        delay_s (WAIT_TIME_FOR_ANTENNA); //TBD[s]
-        putChar(0xa5);
-
-        switch(OBC_STATUS){
-            case OBC_ALIVE:
-                putChar(0xa6);
-                switchOk(ok_main_forOBCstatus_ALIVE);
-                break;
-            case OBC_DIED:
-                putChar(0xa7);
-                UBYTE send_command[6]= {'t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00};
-                sendCommandnew('t','p',send_command);
-//                UBYTE send_command[6]= {0xb3,0xb4,0xb5, 0xb6,0xb7,0xb8};
-//                sendCommandnew(0xb1,0xb2,send_command);
-                putChar(0xa8);
-                switchOk(ok_main_forOBCstatus_DIED);
-                break;
-            default:
-                putChar(0xa9);
-                switchError(error_main_forOBCstatus);
-                break;
-        }
-    } else {
-        putChar(0xa0);
-    } 
-    
+    putChar('S');
+    putChar('S');
+    putChar('S');
 
     putChar('A');
 
     while(1){
+        
+//    for(UBYTE i=0; i<3; )
+//        putChar(0xb1);
+//        switch(OBC_STATUS){
+//            case OBC_ALIVE:
+//                putChar(0xa6);
+//                __delay_ms(2000);
+//                break;
+//            case OBC_DIED:
+//                putChar(0xa7);
+//                __delay_ms(2000);
+//                break;
+//        }
+//        putChar(0xb2);
+//    }
+//    for(UBYTE i=0; i<15; i++){
+//        UBYTE send_command[8]= {'t','p','t', OnOff_forCutWIRE, hightime_forCutWIRE, lowtime_forCutWIRE, cuttimes_forCutWIRE, 0x00};
+//        sendCommandByPointer(send_command);
+//    }
+      
+        /*---start checking whether antenna are developed or not---*/
+        /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
+        /*--------------------------------------------------------------------------------*/
+        switch(OBC_STATUS){
+            case OBC_ALIVE:
+                putChar(0xa1);
+                switchOk(ok_main_forOBCstatus_ALIVE);
+                break;
+            case OBC_DIED:{
+                putChar(0xa2);
+                //FIXME:write datas to EEPROM for debug
+                UBYTE test_melting_status;
+                test_melting_status = 0b00000111;
+                WriteOneByteToMainAnadSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, test_melting_status);
+                
+                //check melting status
+                UBYTE main_melting_status;
+                UBYTE sub_melting_status;
+                main_melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+                sub_melting_status = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+
+                //bit operation
+                //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
+                UBYTE melting_status_cal_result[2];
+                melting_status_cal_result[0] = bitCalResult(main_melting_status);
+                melting_status_cal_result[1] = bitCalResult(sub_melting_status);
+
+                //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
+                if((melting_status_cal_result[0] < MELTING_FINISH)&&(melting_status_cal_result[1] < MELTING_FINISH)){
+                    
+                    putChar(0xa3);
+                    //check the battery voltage
+                    UBYTE bat_voltage[2];
+                    ReadBatVoltageWithPointer(bat_voltage);
+                    WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,bat_voltage);
+
+//                    putChar(0xb1);
+//                    putChar(bat_voltage[0]);
+//                    putChar(bat_voltage[1]);
+
+                    UWORD bat_voltage_2byte;
+                    bat_voltage_2byte = (bat_voltage[0]<<8)| bat_voltage[1];
+
+                    if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
+                        putChar(0xa4);
+                    } else {
+                        putChar(0xa5);
+                        //check melting counter
+                        UWORD melting_counter;
+                        //FIXME:for debug
+                        melting_counter = 0;
+                        WriteOneByteToMainAnadSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressHigh, melting_counter);
+
+                        for(UBYTE i=0; i<15; i++){ //FIXME:for debug
+                        putChar(i);
+                        putChar(i);
+                        putChar(i);
+                        
+                        melting_counter = ReadEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressHigh);
+                        //TODO:read data from sub EEPROM (main EEPROM error)
+                        
+                        if(melting_counter==MELTING_COUNTER_LIMIT){
+                            putChar(0xa6);
+                            melting_counter = 0;
+                        } else if (7 < melting_counter<MELTING_COUNTER_LIMIT){
+                            putChar(0xa7);
+                            melting_counter++;
+                        } else {
+                            putChar(0xa8);
+                            delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
+
+                            if(melting_counter<4){
+                                putChar(0xa9);
+                                UBYTE send_command_shortTime[8]= {'t','p','a', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x00, 0x00};
+                                sendCommandByPointer(send_command_shortTime);
+                            } else {
+                                putChar(0xa0);
+                                UBYTE send_command_longTime[8]= {'t','p','a', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x00, 0x00};
+                                sendCommandByPointer(send_command_longTime);
+                            }
+                            melting_counter++;
+                            switchOk(ok_main_forOBCstatus_DIED);
+                        }
+                        
+                        putChar(0xaa);
+                        WriteOneByteToMainAnadSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressHigh, melting_counter);
+                        } //FIXME:for debug
+                    }
+                }
+                putChar(0xab);
+                break;}
+            default:
+                putChar(0xac);
+                switchError(error_main_forOBCstatus);
+                break;    
+        }
+                    
         putChar('B');
         
         /*measure the runtime of the getBitLoop*/    //for normal run not needed

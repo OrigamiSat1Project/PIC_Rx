@@ -31,13 +31,14 @@ void InitMPU(void)
 	TRISA  = 0b10000000;
 	TRISB  = 0b00100000;
     TRISC  = 0b10011000;
-    TRISD  = 0b00000000;
+//    TRISD  = 0b00000000;
+    TRISD  = 0b10000000;
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
 	PORTA  = 0x00;
-	PORTB  = 0x00;
-//    PORTB  = 0b00001000;
+	PORTB  = 0x00; //WDT on
+//    PORTB  = 0b00001000;  //WDT off
 	PORTC  = 0x00;
     PORTD  = 0x00;
     PORTE  = 0x00;
