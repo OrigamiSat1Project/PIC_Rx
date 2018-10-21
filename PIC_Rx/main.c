@@ -98,7 +98,7 @@ void main(void) {
         switch(OBC_STATUS){
             case OBC_ALIVE:
                 putChar(0xa1);
-                switchOk(ok_main_forOBCstatus_ALIVE);
+//                switchOk(ok_main_forOBCstatus_ALIVE);
                 break;
             case OBC_DIED:{
                 putChar(0xa2);
@@ -165,15 +165,13 @@ void main(void) {
 
                             if(melting_counter<4){
                                 putChar(0xa9);
-                                UBYTE send_command_shortTime[8]= {'t','p','a', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x00, 0x00};
-                                sendCommandByPointer(send_command_shortTime);
+                                sendCommand('t','p','a', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x00, 0x00);
                             } else {
                                 putChar(0xa0);
-                                UBYTE send_command_longTime[8]= {'t','p','a', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x00, 0x00};
-                                sendCommandByPointer(send_command_longTime);
+                                sendCommand('t','p','a', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x00, 0x00);
                             }
                             melting_counter++;
-                            switchOk(ok_main_forOBCstatus_DIED);
+//                            switchOk(ok_main_forOBCstatus_DIED);
                         }
                         
                         putChar(0xaa);
@@ -265,13 +263,14 @@ void main(void) {
             switchError(error_main_crcCheck);
         }else{
             commandData[31] = 0b1000000;
-            switchOk(ok_main_crcCheck);           
+//            switchOk(ok_main_crcCheck);           
         }  
         
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
         WriteToEEPROM(mainControlByte,wHighAddress,wLowAddress,commandData);
         WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
+        WriteLastCommandIdToEEPROM(commandData[1]);
         putChar('S');
         
         /*---Send address using UART to OBC and TXCOBC---*/
@@ -292,39 +291,30 @@ void main(void) {
                 switch(commandData[3]){         //Process command type
                 case 'm': /*change sattelite mode*/
                     commandSwitchSatMode(commandData[4], commandData[5], commandData[6]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'p': /*power supply*/
                     commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'n': /*radio unit*/
                     commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'i':/*I2C*/
                     commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'e': /*EEPROM*/
                     commandSwitchEEPROM(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'u':/*UART*/
                     commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
                     commandWDT(commandData[4]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
-                    //TODO: write function directly here or in MPU.c
-                    WriteLastCommandIdToEEPROM(commandData[1]);                    
+                    //TODO: write function directly here or in MPU.c                   
                     break;
                 case 'r':/*internal processing*/
-                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
-                    WriteLastCommandIdToEEPROM(commandData[1]);                    
+                    commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);                   
                     break;
                 default:
                     switchError(error_main_reveiveCommand);

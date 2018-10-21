@@ -14,11 +14,11 @@
 #include "typeDefine.h"
 
 // set the values for reference counter(Nref) and programmable counter(Nprg) //TODO: rewrite Nprg values from arrays to integers
-int FMTX_Nref        =   2560;          // Nref = 2560 (const)
+#define FMTX_Nref           2560          // Nref = 2560 (const)
 int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87501 = Ftx / 0.05 [437.505MHz]
-int CWTX_Nref        =   128;           // Nref = * see 301ACWPLL-20080520.pdf *
+#define CWTX_Nref           128           // Nref = * see 301ACWPLL-20080520.pdf *
 int CWTX_Nprg[5]     =   {0,1,4,0,0};   // Nprg = 1400(* see 301ACWPLL-20080520.pdf *) [437.505MHz]
-int FMRX_Nref        =   2560;          // Nref = 2560 (const)
+#define FMRX_Nref           2560          // Nref = 2560 (const)
 int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24916 = (Frx - 21.4) / 0.05 [145.980MHz]
 
 //function declarations:

@@ -73,21 +73,21 @@ void put_ok(void){
     putChar('!');
 }
 
-void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
-    putChar(NM_wad_header);
-    putChar(whigh_address);
-    putChar(wlow_address);
-}
-
-void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
-    __delay_ms(50);
-    putChar(TXOBC_wad_header);
-    __delay_ms(50);
-    putChar(whigh_address);
-    __delay_ms(50);
-    putChar(wlow_address);
-    __delay_ms(50);
-}
+//void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
+//    putChar(NM_wad_header);
+//    putChar(whigh_address);
+//    putChar(wlow_address);
+//}
+//
+//void TXOBC_waddress(UBYTE TXOBC_wad_header, UBYTE whigh_address, UBYTE wlow_address){
+//    __delay_ms(50);
+//    putChar(TXOBC_wad_header);
+//    __delay_ms(50);
+//    putChar(whigh_address);
+//    __delay_ms(50);
+//    putChar(wlow_address);
+//    __delay_ms(50);
+//}
 
 void sendCommandByPointer(UBYTE* Parameter){
     UBYTE Command[10];
@@ -123,7 +123,10 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Par
     CRC = crc16(0, Command, 8);
     Command[8] = (UBYTE)(CRC >> 8);
     Command[9] = (UBYTE)(CRC & 0x00FF);
-    putString(Command);
+//    putString(Command);
+    for(UBYTE i=0; i<10; i++){
+    putChar(Command[i]);
+    }
 }
 
 //TODO:check
@@ -141,49 +144,18 @@ void UART_buffer_clear(void){
     RCREG = 0;   //USART Receive Register
 }
 
-//TODO:check
-int change_baud_rate( UBYTE command_baud_rate ){
-    switch( command_baud_rate ){
-        case '1':
-            return 9600;
-            break;
-        case '2':
-            return 19200;
-            break;
-        case '3':
-            return 38400;
-            break;
-        case '4':
-            return 57600;
-            break;
-        case '5':
-            return 115200;
-            break;
-    }
-}
-
-//TODO:check
-//TODO:SPBRG,BRGH,SYNC??¿½?¿½??¿½?¿½main.c??¿½?¿½??¿½?¿½InitSerial();??¿½?¿½Åï¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½??¿½?¿½é‚¯??¿½?¿½Ç‘ï¿½??¿½?¿½v??¿½?¿½??¿½?¿½
-//UART_speed: high_speed = 1  / low_speed =0
-//UART_type : synchronous = 1 / asynchronous = 0
-//Data sheet : p113
-void calculate_SPBRG(int baud_rate, UBYTE UART_speed, UBYTE UART_type){
-    UBYTE spbrg;
-    if ( UART_speed == high_speed ){
-        spbrg = _XTAL_FREQ / ( 16 * baud_rate ) - 1;
-        SPBRG = spbrg;
-        BRGH = high_speed;
-        SYNC = asynchronous;
-    } else if ( UART_speed == low_speed && UART_type == asynchronous ){
-        spbrg = _XTAL_FREQ / ( 64 * baud_rate ) - 1;
-        SPBRG = spbrg;
-        BRGH = low_speed;
-        SYNC = asynchronous;
-    } else if ( UART_speed == low_speed && UART_type == synchronous ){
-        spbrg = _XTAL_FREQ / ( 4 * baud_rate ) - 1;
-        SPBRG = spbrg;
-        BRGH = low_speed;
-        SYNC = synchronous;
+void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){
+    if(type_select=='h'){ //115200bps
+        SPBRG  = 4;                   
+        BRGH   = 1;   
+    } else if(type_select=='l'){ //14400bps
+        SPBRG  = 10;                   
+        BRGH   = 0;  
+    } else if(type_select=='a'){
+        SPBRG  = SPBRG_number;                   
+        BRGH   = BRGH_number;            
+    } else {
+        //TODO:add error
     }
 }
 
@@ -226,10 +198,7 @@ void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBY
             UART_buffer_clear();
             break;
         case 'b': //change UART baud rate
-            //TODO: write method for change UART baud rate---finish?
-            //TODO: check
-            BaudRate = change_baud_rate(data1);       //data1:command_baud_rate
-            calculate_SPBRG(BaudRate, data2, data3);  //data2:UART_speed / data3:UART_type
+            changeBaudRate(data1,data2,data3);
             break;
         case 'i': //interrupt permission
             //TODO: write method for interrupt permission
