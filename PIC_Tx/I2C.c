@@ -91,6 +91,11 @@ void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow
     __delay_ms(200);
 }
 
+void WriteOneByteToMainAnadSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    WriteOneByteToEEPROM(EEPROM_address,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(EEPROM_subaddress,addressHigh,addressLow,data);
+}
+
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE mainAddress;
     UBYTE subAddress;

@@ -6,7 +6,11 @@
 #include "time.h"
 
 void Init_SERIAL(void){
-    SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
+//    //FIXME:
+    SPBRG  = 8;                   // boudrate is 14400 bps for 8MHz
+//    SPBRG  = 103;                   // boudrate is 1200 bps for 8MHz
+    
+//    SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
 //    SPBRG  = 4;                    // boudrate is 115200 bps at BRGH = 1
     GIE    = 1;
     PEIE   = 1;

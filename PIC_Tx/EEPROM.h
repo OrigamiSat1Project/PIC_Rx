@@ -26,7 +26,6 @@
 /*******************************************************************************
 *OK and ERROR
 ******************************************************************************/
-#define B0select_for_commandID     0x00
 #define HighAddress_for_commandID  0xE0
 #define LowAddress_for_commandID   0x00
 
@@ -50,7 +49,7 @@
 /*******************************************************************************
 *CRC check
 ******************************************************************************/
-#define crcResult_B0select        0x00
+//#define crcResult_B0select        0x00
 #define crcResult_addressHigh     0xE0
 #define crcResult_addressLow      0x00
 

@@ -27,18 +27,31 @@ void interrupt InterReceiver(void);
 // 'C' source line config statements
 
 /* PIC16F887 Configuration Bit Settings */
-#pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
-#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
-#pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
-#pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
-#pragma config CP       = OFF           // Code Protection bit (Program memory code protection is disabled)
-#pragma config CPD      = OFF           // Data Code Protection bit (Data memory code protection is disabled)
-#pragma config BOREN    = OFF            // Brown Out Reset Selection bits (BOR enabled)
-#pragma config IESO     = OFF            // Internal External Switchover bit (Internal/External Switchover mode is enabled)
-#pragma config FCMEN    = OFF            // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
-#pragma config LVP      = OFF           // Low Voltage Programming Enable bit (RB3 pin has digital I/O, HV on MCLR must be used for programming)
-#pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
-#pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
+//#pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
+//#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+//#pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
+//#pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
+//#pragma config CP       = OFF           // Code Protection bit (Program memory code protection is disabled)
+//#pragma config CPD      = OFF           // Data Code Protection bit (Data memory code protection is disabled)
+//#pragma config BOREN    = OFF            // Brown Out Reset Selection bits (BOR enabled)
+//#pragma config IESO     = OFF            // Internal External Switchover bit (Internal/External Switchover mode is enabled)
+//#pragma config FCMEN    = OFF            // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
+//#pragma config LVP      = OFF           // Low Voltage Programming Enable bit (RB3 pin has digital I/O, HV on MCLR must be used for programming)
+//#pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
+//#pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
+
+//FIXME:for debug to use board
+#pragma config CPD = OFF
+#pragma config BOREN = OFF
+#pragma config IESO = OFF
+#pragma config DEBUG = OFF
+#pragma config FOSC = INTRC_NOCLKOUT
+#pragma config FCMEN = OFF
+#pragma config MCLRE = OFF
+#pragma config WDTE = OFF
+#pragma config CP = OFF
+#pragma config LVP = OFF
+#pragma config PWRTE = OFF
 
 
 //test_interrupt
@@ -74,6 +87,7 @@ void interrupt InterReceiver(void);
 
 void interrupt InterReceiver(void){
     putChar('I');
+    putChar('I');
     
     UBYTE commandSize;
     commandSize = 10;
@@ -83,12 +97,16 @@ void interrupt InterReceiver(void){
 
     if (RCIF == 1) {
         /*---for debug---*/
-        // for (UBYTE i = 0; i < commandSize; i++){
-        //     RXDATA[i] = getChar();
-        // }
+//         for (UBYTE i = 0; i < commandSize; i++){
+//             RXDATA[i] = getChar();
+//         }
         UBYTE get_char_state = 0;
         while(get_char_state < commandSize){
             RXDATA[0] = getChar();
+//            putChar('g');
+//            putChar('e');
+//            putChar('t');
+//            putChar(RXDATA[0]);
             get_char_state++;
             if(RXDATA[0] != 't' && RXDATA[0] != 'g'){
                 get_char_state = 0;
@@ -120,62 +138,75 @@ void interrupt InterReceiver(void){
         
         /*----------------------------------------------*/
         //FIXME:[start]debug for test to CRCcheck
-        putChar(crcResultHigh);
-        putChar(crcResultLow);
-        putChar(crcValueHigh);
-        putChar(crcValueLow);
+//        putChar(0xcc);
+//        putChar(0xcc);
+//        putChar(crcResultHigh);
+//        putChar(crcResultLow);
+//        putChar(crcValueHigh);
+//        putChar(crcValueLow);
         //FIXME:[finish]debug for test to CRCcheck
         /*----------------------------------------------*/
         
         /*---read command ID---*/
         UBYTE commandID;
-        UBYTE mainAddress;
-        UBYTE subAddress;
-        mainAddress = EEPROM_address | B0select_for_commandID;
-        subAddress = EEPROM_subaddress | B0select_for_commandID;
-        commandID = ReadEEPROM(mainAddress, HighAddress_for_commandID, LowAddress_for_commandID);
+        commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
+        //TODO:read datas from sub EEPROM
 
         /*---read CRC check from EEPROM---*/
         UBYTE CRC_check_result;
+        //FIXME:for debug
+        CRC_check_result = 0x00;
+        WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
         CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
         
         if(crcResult != crcValue){  //crc error
             
             /*---write CRC error result (6bit 0) ---*/
             CRC_check_result = CRC_check_result & 0b1011111;
-            WriteCheckByteToEEPROMs(crcResult_B0select,crcResult_addressHigh,crcResult_addressLow,CRC_check_result);
+            WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+            
+            putChar(0xa1);
+            putChar(CRC_check_result);
             putErrorNoDownlink(error_main_crcCheck);    
             
         } else {  //crc  OK
             
             /*---write CRC ok result (6bit 1) ---*/
             CRC_check_result = CRC_check_result | 0b01000000;
-            WriteCheckByteToEEPROMs(crcResult_B0select,crcResult_addressHigh,crcResult_addressLow,CRC_check_result);
+            WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+            
+            putChar(0xa2);
+            putChar(CRC_check_result);
             
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
             if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
                 //TODO:add error messege
+                putChar(0xa3);
             } else {
                 switch(RXDATA[1]){
                     /*---Command from RXCOBC---*/
                     /*------------------------------------------------------------------*/
                     case 0x75:  //'u'
-                        putChar('R');                        
+                        putChar('R'); 
+                        putChar(0xa4);
                         downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
                         break;
 
                     /*---Command from OBC---*/
                     /*------------------------------------------------------------------*/
                     case 0x63: /*'c':CW Downlink*/
+                        putChar(0xa5);
                         commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
                         WriteLastCommandIdToEEPROM(commandID);
                         break;
                     case 0x66:  /*'f':FM Downlink*/
+                        putChar(0xa6);
                         downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                         WriteLastCommandIdToEEPROM(commandID);
                         break;
                     case 'p':/*'p':power*/
+                        putChar(0xa7); 
                         commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                         WriteLastCommandIdToEEPROM(commandID);
                         break;
@@ -193,7 +224,7 @@ void interrupt InterReceiver(void){
             }
         /*---write CRC result 6bit 1 ---*/
         CRC_check_result = CRC_check_result | 0b0100000;
-        WriteCheckByteToEEPROMs(crcResult_B0select,crcResult_addressHigh,crcResult_addressLow,CRC_check_result);
+        WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
         switchOk(error_main_crcCheck);   
         }
         RCIF = 0;
@@ -343,18 +374,46 @@ void interrupt InterReceiver(void){
 
 void main(void) {
 
+    //FIME
+    OSCCON = 0b01110001;
+    
     __delay_ms(1000);
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
 //    Init_WDT();
-    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
-    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
+//    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
+//    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 
     putChar('S');
+    putChar('S');
+    putChar('S');
     
+    //FIXME:write melting status for debug
+//    UBYTE main_test_melting_status = 0b00000011;
+//    UBYTE sub_test_melting_status = 0b01111111;
+//    WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow, main_test_melting_status);
+//    WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow, sub_test_melting_status);
+//    putChar(0xa1);
+////    
+//    UBYTE main_melting_status;
+//    UBYTE sub_melting_status;
+//    main_melting_status = ReadEEPROM(EEPROM_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+//    sub_melting_status = ReadEEPROM(EEPROM_subaddress, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+//    putChar(0xa2);
+//    putChar(main_melting_status);
+//    putChar(sub_melting_status);
     
     while(1){
+        
+        //FIXME
+        for(UBYTE i=0; i<30; i++){
+        led_yellow = high;
+        __delay_ms(1000);
+        led_yellow = low;
+        __delay_ms(1000);
+        }
+        
         putChar('m');
         __delay_ms(1000);
 
