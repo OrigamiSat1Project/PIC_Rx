@@ -98,12 +98,12 @@
 ******************************************************************************/
 /*---initial operation---*/
 #define MeltingStatus_B0select         0x00
-#define MeltingStatus_addressHigh      0xE0
-#define MeltingStatus_addressLow       0x00
-#define BatteryVoltage_addressHigh     0xE0
-#define BatteryVoltage_addressLow      0x08
+#define MeltingStatus_addressHigh      0x97
+#define MeltingStatus_addressLow       0x07
+#define BatteryVoltage_addressHigh     0x97
+#define BatteryVoltage_addressLow      0x01
 #define MeltingCounter_addressHigh     0xE0
-#define MeltingCounter_addressLow      0x08
+#define MeltingCounter_addressLow      0x0A
 
 
 #endif	/* EEPROM_H */

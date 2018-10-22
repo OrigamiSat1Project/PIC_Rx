@@ -55,7 +55,7 @@ void interrupt TimerCheck(void){
 //            else putChar(0xbb);
 //        }
         
-        if(second_counter >= 15){
+        if(second_counter >= 5){
             initial_ope_counter = 0;
             putChar(0xcc);
             putChar(0xcc);
@@ -91,46 +91,50 @@ void InitialOperation(void){
     /*---start checking whether antenna are developed or not---*/
     /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
     /*--------------------------------------------------------------------------------*/
+    UBYTE temp;
+    UBYTE array_2byte[2];
+    UWORD bat_voltage_2byte;
+
     switch(OBC_STATUS){
         case OBC_ALIVE:
             putChar(0xa1);
 //                switchOk(ok_main_forOBCstatus_ALIVE);
             break;
         case OBC_DIED:{
+            
             putChar(0xa2);
             //FIXME:write datas to EEPROM for debug
-            UBYTE test_melting_status;
-            test_melting_status = 0b00000111;
-            WriteOneByteToMainAnadSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, test_melting_status);
+            
+            temp = 0b00000111;
+            WriteOneByteToMainAnadSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
             putChar(0xb1);
 
-            //check melting status
-            UBYTE main_melting_status;
-            UBYTE sub_melting_status;
-            main_melting_status = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-            sub_melting_status = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-
-            //bit operation
-            //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-            UBYTE melting_status_cal_result[2];
-            melting_status_cal_result[0] = bitCalResult(main_melting_status);
-            melting_status_cal_result[1] = bitCalResult(sub_melting_status);
+//            //check melting status
+//            array_2byte[0] = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+//            array_2byte[1] = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+//
+//            //bit operation
+//            //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
+//            array_2byte[0] = bitCalResult(array_2byte[0]);
+//            array_2byte[1] = bitCalResult(array_2byte[1]);
+            
+            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
 
             //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
-            if((melting_status_cal_result[0] < MELTING_FINISH)&&(melting_status_cal_result[1] < MELTING_FINISH)){
+            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
 
                 putChar(0xa3);
                 //check the battery voltage
-                UBYTE bat_voltage[2];
-                ReadBatVoltageWithPointer(bat_voltage);
-                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,bat_voltage);
+                ReadBatVoltageWithPointer(array_2byte);
+                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,array_2byte);
 
 //                    putChar(0xb1);
-//                    putChar(bat_voltage[0]);
-//                    putChar(bat_voltage[1]);
+//                    putChar(array_2byte[0]);
+//                    putChar(array_2byte[1]);
 
-                UWORD bat_voltage_2byte;
-                bat_voltage_2byte = (bat_voltage[0]<<8)| bat_voltage[1];
+
+                bat_voltage_2byte = (array_2byte[0]<<8)| array_2byte[1];
 
                 if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
                     putChar(0xa4);
@@ -142,11 +146,11 @@ void InitialOperation(void){
 //                    melting_counter = 0;
 //                    WriteOneByteToMainAnadSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressHigh, melting_counter);      
 
-                    UBYTE melting_counter;
-                    melting_counter = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
-                    putChar(melting_counter);
-                    putChar(melting_counter);
-                    putChar(melting_counter);
+                    UBYTE temp;
+                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
+                    putChar(temp);
+                    putChar(temp);
+                    putChar(temp);
                     //TODO:read data from sub EEPROM (main EEPROM error)
                     
 //                    UWORD melting_counter_amari;
@@ -169,33 +173,33 @@ void InitialOperation(void){
 ////                            switchOk(ok_main_forOBCstatus_DIED);
 //                    }                    
 
-                    if(melting_counter==MELTING_COUNTER_LIMIT){
+                    if(temp==MELTING_COUNTER_LIMIT){
                         putChar(0xa6);
-                        melting_counter = 0;
-                    } else if ((7 < melting_counter)&&(melting_counter<MELTING_COUNTER_LIMIT)){
+                        temp = 0;
+                    } else if ((7 < temp)&&(temp<MELTING_COUNTER_LIMIT)){
                         putChar(0xa7);
-                        melting_counter++;
+                        temp++;
                     } else {
                         putChar(0xa8);
                         delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
 
-                        if(melting_counter<4){
+                        if(temp<4){
                             putChar(0xa9);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
                         } else {
                             putChar(0xa0);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
                         }
-                        melting_counter++;
+                        temp++;
                         putChar(0xb1);
-                        putChar(melting_counter);
+                        putChar(temp);
 //                            switchOk(ok_main_forOBCstatus_DIED);
                     }
                     putChar(0xaa);
-                    WriteOneByteToMainAnadSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressHigh, melting_counter);
-                    UBYTE melting_counter_result;
-                    melting_counter_result = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
-                    putChar(melting_counter_result);
+                    WriteOneByteToMainAnadSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressHigh, temp);
+
+                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
+                    putChar(temp);
                 }
             }
             putChar(0xab);
@@ -205,6 +209,13 @@ void InitialOperation(void){
 //            switchError(error_main_forOBCstatus);
             break;    
     }
+}
+
+UBYTE checkMeltingStatus(UBYTE e_address){
+    UBYTE temp;
+    temp = ReadEEPROM(e_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    temp = bitCalResult(temp);
+    return temp;
 }
 
 //EPS reset every week

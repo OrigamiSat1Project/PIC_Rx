@@ -27,6 +27,7 @@ int initial_ope_counter = 0;
 void initTimer(void);
 void interrupt TimerCheck(void);
 void InitialOperation(void);
+UBYTE checkMeltingStatus(UBYTE);
 //void interrupt TimerReset(void);
 
 #endif	/* TIME_H */

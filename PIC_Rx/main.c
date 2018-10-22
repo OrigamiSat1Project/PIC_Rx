@@ -86,9 +86,9 @@ void main(void) {
 //    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressHigh, melting_counter);
 //    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressHigh, melting_counter);
     
-    UBYTE melting_counter_read[2];
-    melting_counter_read[0] = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
-    melting_counter_read[1] = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
+//    UBYTE melting_counter_read[2];
+//    melting_counter_read[0] = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
+//    melting_counter_read[1] = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
     
 //    putChar(melting_counter_read[0]);
 //    putChar(melting_counter_read[1]);
