@@ -4,6 +4,7 @@
 #include "EEPROM.h"
 #include "I2C.h"
 #include "OkError.h"
+#include "UART.h"
 
 //UBYTE EEPROMData[32];                  
 

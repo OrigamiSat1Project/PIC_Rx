@@ -22,9 +22,11 @@ int hour_counter = 0;
 int day_counter = 0;
 
 int bat_meas_counter = 0;
+int initial_ope_counter = 0;
 
 void initTimer(void);
 void interrupt TimerCheck(void);
+void InitialOperation(void);
 //void interrupt TimerReset(void);
 
 #endif	/* TIME_H */

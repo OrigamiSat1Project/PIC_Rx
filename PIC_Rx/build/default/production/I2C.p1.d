@@ -3,6 +3,7 @@
  I2C.c  \
 OkError.h  \
 I2C.h  \
+UART.h  \
 typeDefine.h  \
 EEPROM.h  \
 time.h 
