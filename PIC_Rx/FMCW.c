@@ -302,6 +302,12 @@ void FMRX(int Nref, UBYTE *Nprg){
 //    CWTX(CWTX_Nref, CWTX_Nprg);
 //    FMRX(FMRX_Nref, FMRX_Nprg);
 //}
+void setPLL(void){
+    FMTX(FMTX_Nref, FMTX_Nprg);
+    CWTX(CWTX_Nref, CWTX_Nprg);
+    FMRX(FMRX_Nref, FMRX_Nprg);
+}
+
 
 //process command data if the command type is 'radio unit'
 void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){ //TODO: specify which Nref and Nprg are which

@@ -33,6 +33,7 @@ void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 
 /*unused function declaration*/
 //void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg);
+void setPLL(void);
 
 #endif	/* FMCW_H */
 
