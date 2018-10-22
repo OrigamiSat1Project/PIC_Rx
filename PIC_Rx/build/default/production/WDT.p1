@@ -1058,10 +1058,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 33: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE,UBYTE, UBYTE);
 [; ;UART.h: 34: void WriteUART( UBYTE* );
 [; ;UART.h: 35: void UART_buffer_clear(void);
-[; ;UART.h: 36: int change_baud_rate( UBYTE );
-[; ;UART.h: 37: void calculate_SPBRG(int, UBYTE, UBYTE);
-[; ;UART.h: 38: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 39: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 36: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 37: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 38: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
