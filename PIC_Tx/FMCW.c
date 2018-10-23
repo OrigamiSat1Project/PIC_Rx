@@ -538,8 +538,12 @@ void HKDownlinkFR0(void){
 
 void HKDownlinkFR1(void){
     UBYTE DATA[];//for ReadDatasFromEEPROMWithDataSizeAndSendMorse()
-    //battery Voltage 
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltage_addressHigh,BatteryVoltage_addressLow);
+    //battery Voltage (OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow);
+    //battery Voltage (CIB)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow);
+    //battery Temperature
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow);
     //3.3VBus Voltage 
     ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
     //5VBus Voltage 

@@ -60,9 +60,9 @@
 ******************************************************************************/
 //TODO:change address
 #define adcValue_addressHigh 0x00
-#define adcValue_addressLow  0xE0
+#define adcValue_addressLow  0x00
 
-//ch1
+//ch1 (Battery Temperature))
 #define adcValue_CH1_addressHigh 0x00
 #define adcValue_CH1_addressLow  0x00
 //ch2 (5VBUS voltage(EPS 5V))
@@ -97,8 +97,10 @@
 #define TXCOBC_LastCommand_addressLow   0x00
 
 //HK
-#define BatteryVoltage_addressHigh  0x00
-#define BatteryVoltage_addressLow 0x00
+#define BatteryVoltageOBC_addressHigh  0x00
+#define BatteryVoltageOBC_addressLow 0x00
+#define BatteryVoltageCIB_addressHigh  0x00
+#define BatteryVoltageCIB_addressLow 0x00
 #define MeltingStatus_addressHigh  0x00
 #define MeltingStatus_addressLow  0x00
 #define LatestExcutionCommandID_addressHigh   0x00
