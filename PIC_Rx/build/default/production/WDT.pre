@@ -1510,7 +1510,7 @@ sendPulseWDT();
 
 
 void commandWDT(UBYTE command){
-if(command = 's'){
+if(command == 's'){
 
 
 

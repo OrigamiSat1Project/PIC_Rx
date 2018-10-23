@@ -15,6 +15,11 @@
 #define one_day 24
 #define one_week 7
 
+#define EPS_RSET_INTERVAL       10
+#define EPS_RSET_INTERVAL_LONG     one_day*7
+#define EPS_RSET_INTERVAL_SHORT    one_day
+#define INITIAL_OPE_INTERVAL 8
+
 int timer_counter = 0;
 int second_counter = 0;
 int minute_counter = 0;
@@ -22,12 +27,12 @@ int hour_counter = 0;
 int day_counter = 0;
 
 int bat_meas_counter = 0;
-int initial_ope_counter = 0;
 
 void initTimer(void);
 void interrupt TimerCheck(void);
 void InitialOperation(void);
 UBYTE checkMeltingStatus(UBYTE);
+
 //void interrupt TimerReset(void);
 
 #endif	/* TIME_H */

@@ -26,29 +26,30 @@ void InitSerial(void){
 	TXEN   = 1;						// Enable the transmitter
 }
 
-UBYTE getChar(void){        //TODO: add time out feature
-	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit
-	{
-        CREN = 0;                   //Continuous Receive Enable bit
-        NOP();
-        CREN = 1;
-    }
-	while(!RCIF);                   //USART Receive Interrupt Flag bit
-	return RCREG;                   //USART Receive Data Register
-}
+//UBYTE getChar(void){        //TODO: add time out feature
+//	if(FERR || OERR) // If over run error, then reset the receiver //FERR = Framin Error bit// OERR = Overrun Error bit
+//	{
+//        CREN = 0;                   //Continuous Receive Enable bit
+//        NOP();
+//        CREN = 1;
+//    }
+//	while(!RCIF);                   //USART Receive Interrupt Flag bit
+//	return RCREG;                   //USART Receive Data Register
+//}
 
 void putChar(UBYTE byte){
     while(!TXIF);                   //USART Transmit Interrupt Flag bit
 	TXREG = byte;                   //USART Transmit Data Register
 }
 
-void putString(UBYTE *x)
-{
-    while(*x != '\0'){
-        putChar(*x);
-        x++;
-    }
-}
+//void putString(UBYTE *x)
+//{
+//    while(*x != '\0'){
+//        putChar(*x);
+//        x++;
+//    }
+//}
+
 //starts new line for debugging
 // void putCrLf(void){
 //     putChar('\r');//Carriage return
@@ -64,11 +65,11 @@ void put_error(void){
     putChar('!');
 }
 
-void put_ok(void){
-    putChar('O');
-    putChar('K');
-    putChar('!');
-}
+//void put_ok(void){
+//    putChar('O');
+//    putChar('K');
+//    putChar('!');
+//}
 
 //void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
 //    putChar(NM_wad_header);

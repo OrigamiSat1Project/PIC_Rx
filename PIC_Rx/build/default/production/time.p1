@@ -1101,38 +1101,3 @@ Version 3.2 HI-TECH Software Intermediate Code
 "29
 [e :UE 99 ]
 }
-"32
-[v _delay_us `(v ~T0 @X0 1 ef1`us ]
-"33
-{
-[; ;time.c: 32: void delay_us(UWORD usec)
-[; ;time.c: 33: {
-[e :U _delay_us ]
-"32
-[v _usec `us ~T0 @X0 1 r1 ]
-"33
-[f ]
-[; ;time.c: 34: while(usec)
-"34
-[e $U 104  ]
-[e :U 105 ]
-[; ;time.c: 35: {
-"35
-{
-[; ;time.c: 36: _delay((unsigned long)((1)*(10000000/4000000.0)));
-"36
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
-[; ;time.c: 37: usec--;
-"37
-[e -- _usec -> -> 1 `i `us ]
-"38
-}
-[e :U 104 ]
-"34
-[e $ != -> _usec `ui -> -> -> 0 `i `us `ui 105  ]
-[e :U 106 ]
-[; ;time.c: 38: }
-[; ;time.c: 39: }
-"39
-[e :UE 103 ]
-}

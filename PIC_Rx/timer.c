@@ -37,7 +37,6 @@ void interrupt TimerCheck(void){
     if(timer_counter >= one_second){
         timer_counter = 0;
         bat_meas_counter += 1;
-        initial_ope_counter +=1;
         second_counter += 1;
         LED_WHITE = 1 - LED_WHITE;  //for debug
         
@@ -55,35 +54,60 @@ void interrupt TimerCheck(void){
 //            else putChar(0xbb);
 //        }
         
-        if(second_counter >= 5){
-            initial_ope_counter = 0;
+        
+        /*---Initial Operation---*/
+        //sampling rate is not determined
+        if(second_counter >= INITIAL_OPE_INTERVAL){
             putChar(0xcc);
             putChar(0xcc);
             putChar(0xcc);
-            InitialOperation();
+            InitialOperation(); 
+//            setPLL();
+                FMTX(FMTX_Nref, FMTX_Nprg);
+                CWTX(CWTX_Nref, CWTX_Nprg);
+                FMRX(FMRX_Nref, FMRX_Nprg);
         }
         
-        if(second_counter >= one_minute){
-            second_counter = 0;
-            minute_counter += 1;
-            
-            //for debug
-            //EPS reset every 3 minitues
-            if(minute_counter >= 3){
-                Reset_EPS();
-                delay_ms(5000);
-                //resubstitution Nprg
-//                FMTX_Nprg[0] = 8; FMTX_Nprg[1] = 7; FMTX_Nprg[2] = 5; FMTX_Nprg[3] = 0; FMTX_Nprg[4] = 1;
-//                CWTX_Nprg[0] = 0; CWTX_Nprg[1] = 1; CWTX_Nprg[2] = 4; CWTX_Nprg[3] = 0; CWTX_Nprg[4] = 0;
-//                FMTX_Nprg[0] = 2; FMTX_Nprg[1] = 4; FMTX_Nprg[2] = 9; FMTX_Nprg[3] = 1; FMTX_Nprg[4] = 6;
-                //reset PLL setting (because it gets lost during shutdown)
-//                FMTX(FMTX_Nref, FMTX_Nprg);
-//                CWTX(CWTX_Nref, CWTX_Nprg);
-//                FMRX(FMRX_Nref, FMRX_Nprg);
-//                setPLL();
-                __delay_ms(500);
-            }
-        }
+//        /*---EPS reset---*/
+//        if(second_counter >= EPS_RSET_INTERVAL){
+//            UBYTE array_2byte[2];
+//            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+//
+//            UBYTE EPS_reset_time;
+//            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+//                EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
+//            } else {
+//                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
+//            }
+//            
+//            if(second_counter >= EPS_reset_time){
+////                setPLL();  
+//                Reset_EPS();
+//            }
+//        }
+        
+//        if(second_counter >= one_minute){
+//            second_counter = 0;
+//            minute_counter += 1;
+//            
+//            //for debug
+//            //EPS reset every 3 minitues
+//            if(minute_counter >= 3){
+//                Reset_EPS();
+//                delay_ms(5000);
+//                //resubstitution Nprg
+////                FMTX_Nprg[0] = 8; FMTX_Nprg[1] = 7; FMTX_Nprg[2] = 5; FMTX_Nprg[3] = 0; FMTX_Nprg[4] = 1;
+////                CWTX_Nprg[0] = 0; CWTX_Nprg[1] = 1; CWTX_Nprg[2] = 4; CWTX_Nprg[3] = 0; CWTX_Nprg[4] = 0;
+////                FMTX_Nprg[0] = 2; FMTX_Nprg[1] = 4; FMTX_Nprg[2] = 9; FMTX_Nprg[3] = 1; FMTX_Nprg[4] = 6;
+//                //reset PLL setting (because it gets lost during shutdown)
+////                FMTX(FMTX_Nref, FMTX_Nprg);
+////                CWTX(CWTX_Nref, CWTX_Nprg);
+////                FMRX(FMRX_Nref, FMRX_Nprg);
+////                setPLL();
+//                __delay_ms(500);
+//            }
+//        }
     }
 }
 
@@ -108,18 +132,12 @@ void InitialOperation(void){
             temp = 0b00000111;
             WriteOneByteToMainAnadSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
             putChar(0xb1);
-
-//            //check melting status
-//            array_2byte[0] = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//            array_2byte[1] = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//
-//            //bit operation
-//            //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-//            array_2byte[0] = bitCalResult(array_2byte[0]);
-//            array_2byte[1] = bitCalResult(array_2byte[1]);
             
+            /*---read melting status & bit cal*/
             array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+            
+//            checkMeltingStatus(array_2byte);
 
             //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
             if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
@@ -212,8 +230,12 @@ void InitialOperation(void){
 }
 
 UBYTE checkMeltingStatus(UBYTE e_address){
+    /*---read melting status---*/
     UBYTE temp;
     temp = ReadEEPROM(e_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
+    
+    /*---bit operation---*/
+    //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
     temp = bitCalResult(temp);
     return temp;
 }

@@ -1479,7 +1479,23 @@ void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-# 8 "EPS.c"
+# 18 "FMCW.h"
+UBYTE FMTX_Nprg[5] = {8,7,5,0,1};
+
+UBYTE CWTX_Nprg[5] = {0,1,4,0,0};
+
+UBYTE FMRX_Nprg[5] = {2,4,9,1,6};
+
+
+void FMTX(int Nref, UBYTE *Nprg);
+void CWTX(int Nref, UBYTE *Nprg);
+void FMRX(int Nref, UBYTE *Nprg);
+void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+
+# 36
+void setPLL(void);
+
+# 9 "EPS.c"
 void Reset_EPS(void){
 PORTBbits.RB4 = 1;
 PORTAbits.RA1 = 1;

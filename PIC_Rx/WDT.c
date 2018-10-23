@@ -15,7 +15,7 @@ void InitWDT(void){
 
 //process command data if the command type is 'WDT' 
 void commandWDT(UBYTE command){   //times are given in ms
-    if(command = 's'){
+    if(command == 's'){
         //Command leads to a reset of PIC (instead of "stop send pulse" use "resetWDT", 
         //this should have same result, but safes the time since it is not necessary
         //to wait until WDT realises that phase is missing (would take about 11 sec))

@@ -1087,9 +1087,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :U _commandWDT ]
 [v _command `uc ~T0 @X0 1 r1 ]
 [f ]
-[; ;WDT.c: 18: if(command = 's'){
+[; ;WDT.c: 18: if(command == 's'){
 "18
-[e $ ! != -> = _command -> -> 115 `ui `uc `i -> -> -> 0 `i `uc `i 97  ]
+[e $ ! == -> _command `ui -> 115 `ui 97  ]
 {
 [; ;WDT.c: 22: resetWDT();
 "22

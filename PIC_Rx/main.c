@@ -278,13 +278,17 @@ void main(void) {
         /*---CRC check for command from Grand Station---*/ 
         /*------------------------------------------------------------------*/
         UWORD crcResult, crcValue;
-        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
         crcResult = crc16(0,commandData,29);
         crcValue =  checkCRC(commandData,29);
-        crcResultHigh = crcResult>>8;
-        crcResultLow = crcResult & 0x00FF;
-        crcValueHigh = crcValue>>8;
-        crcValueLow = crcValue & 0x00FF;
+        
+        /*------------------------------------*/
+        //for debug (check CRC)
+//        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
+//        crcResultHigh = crcResult>>8;
+//        crcResultLow = crcResult & 0x00FF;
+//        crcValueHigh = crcValue>>8;
+//        crcValueLow = crcValue & 0x00FF;
+        /*------------------------------------*/
         
         if(crcResult != crcValue){
             commandData[31] = 0x00; 
@@ -303,17 +307,17 @@ void main(void) {
         
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
-        UBYTE send_command[8];
-        send_command[0] = 'g';
-        send_command[1] = 'u';
-        send_command[2] = B0select;
-        send_command[3] = wHighAddress;
-        send_command[4] = wLowAddress;
-        send_command[5] = downlinkTimes;
-        send_command[6] = 0x00;
-        send_command[7] = 0x00;
-        sendCommandByPointer(send_command);
-//        sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
+//        UBYTE send_command[8];
+//        send_command[0] = 'g';
+//        send_command[1] = 'u';
+//        send_command[2] = B0select;
+//        send_command[3] = wHighAddress;
+//        send_command[4] = wLowAddress;
+//        send_command[5] = downlinkTimes;
+//        send_command[6] = 0x00;
+//        send_command[7] = 0x00;
+//        sendCommandByPointer(send_command);
+        sendCommand('g','u',B0select, wHighAddress, wLowAddress, downlinkTimes, 0x00, 0x00);
         putChar('G');
         
         for(int i=0; i<DATA_SIZE; i++){

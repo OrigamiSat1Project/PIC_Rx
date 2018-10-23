@@ -319,8 +319,7 @@ void changeInOut(UINT pin_select_command, UBYTE inOut){
             switchError(error_MPU_changeInOut);
             break;
     }
-    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
-    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
+    WriteOneByteToMainAnadSubB0EEPROM(inOutStatus_addressHigh, inOutStatus_addressLow, inOut);
 }
 
 void changeHighLow(UINT pin_select_command, UBYTE highLow){
@@ -356,8 +355,7 @@ void changeHighLow(UINT pin_select_command, UBYTE highLow){
             switchError(error_MPU_changeHighLow);
             break;
     }
-    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
-    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
+    WriteOneByteToMainAnadSubB0EEPROM(highLowStatus_addressHigh, highLowStatus_addressLow, highLow);
 }
 
 void changeXtalFrequency(UBYTE XTAL_FREQUENCY_TYPE){
@@ -400,8 +398,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * TODO:how to turn on CIB? */
             /*---------------------------*/
             switchPowerEPS(0x00, timeHigh, timeLow);
-            WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
-            WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
+            WriteOneByteToMainAnadSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, all_device_ON);
             break;
         case 0x0F: 
             /*----------------------------*/
@@ -429,8 +426,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
             reviveEPS(timeHigh, timeLow);
-            WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
-            WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
+            WriteOneByteToMainAnadSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
             break;
         case 0xFF: 
             /*---------------------------*/
@@ -445,8 +441,7 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             FMTX(FMTX_Nref, FMTX_Nprg);
             CWTX(CWTX_Nref, CWTX_Nprg);
             FMRX(FMRX_Nref, FMRX_Nprg);
-            WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
-            WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
+            WriteOneByteToMainAnadSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
             break;
         default:
             switchError(error_MPU_commandSwitchSatMode);

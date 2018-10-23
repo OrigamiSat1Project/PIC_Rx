@@ -1048,31 +1048,72 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-"8 EPS.c
+"18 FMCW.h
+[v _FMTX_Nprg `uc ~T0 @X0 -> 5 `i e ]
+[i _FMTX_Nprg
+:U ..
+-> -> 8 `i `uc
+-> -> 7 `i `uc
+-> -> 5 `i `uc
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+..
+]
+[; ;FMCW.h: 18: UBYTE FMTX_Nprg[5] = {8,7,5,0,1};
+"20
+[v _CWTX_Nprg `uc ~T0 @X0 -> 5 `i e ]
+[i _CWTX_Nprg
+:U ..
+-> -> 0 `i `uc
+-> -> 1 `i `uc
+-> -> 4 `i `uc
+-> -> 0 `i `uc
+-> -> 0 `i `uc
+..
+]
+[; ;FMCW.h: 20: UBYTE CWTX_Nprg[5] = {0,1,4,0,0};
+"22
+[v _FMRX_Nprg `uc ~T0 @X0 -> 5 `i e ]
+[i _FMRX_Nprg
+:U ..
+-> -> 2 `i `uc
+-> -> 4 `i `uc
+-> -> 9 `i `uc
+-> -> 1 `i `uc
+-> -> 6 `i `uc
+..
+]
+[; ;FMCW.h: 22: UBYTE FMRX_Nprg[5] = {2,4,9,1,6};
+[; ;FMCW.h: 25: void FMTX(int Nref, UBYTE *Nprg);
+[; ;FMCW.h: 26: void CWTX(int Nref, UBYTE *Nprg);
+[; ;FMCW.h: 27: void FMRX(int Nref, UBYTE *Nprg);
+[; ;FMCW.h: 28: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 36: void setPLL(void);
+"9 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {
-[; ;EPS.c: 8: void Reset_EPS(void){
+[; ;EPS.c: 9: void Reset_EPS(void){
 [e :U _Reset_EPS ]
 [f ]
-[; ;EPS.c: 9: PORTBbits.RB4 = 1;
-"9
-[e = . . _PORTBbits 0 4 -> -> 1 `i `uc ]
-[; ;EPS.c: 10: PORTAbits.RA1 = 1;
+[; ;EPS.c: 10: PORTBbits.RB4 = 1;
 "10
-[e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
-[; ;EPS.c: 11: _delay((unsigned long)((5000)*(10000000/4000.0)));
+[e = . . _PORTBbits 0 4 -> -> 1 `i `uc ]
+[; ;EPS.c: 11: PORTAbits.RA1 = 1;
 "11
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 12: PORTBbits.RB4 = 0;
+[e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
+[; ;EPS.c: 12: _delay((unsigned long)((5000)*(10000000/4000.0)));
 "12
-[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
-[; ;EPS.c: 13: PORTAbits.RA1 = 0;
+[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;EPS.c: 13: PORTBbits.RB4 = 0;
 "13
-[e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
-[; ;EPS.c: 14: _delay((unsigned long)((500)*(10000000/4000.0)));
+[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
+[; ;EPS.c: 14: PORTAbits.RA1 = 0;
 "14
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 15: }
+[e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
+[; ;EPS.c: 15: _delay((unsigned long)((500)*(10000000/4000.0)));
 "15
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;EPS.c: 16: }
+"16
 [e :UE 95 ]
 }
