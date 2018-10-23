@@ -37,14 +37,11 @@
 ******************************************************************************/
 void initADC(void);
 UWORD adc_read();
-void setAddressEEPROM(void);
-
-UWORD adcValue[CHANEL_SIZE];
-UBYTE adcValue_dataHigh_addressHigh[CHANEL_SIZE];
-UBYTE adcValue_dataHigh_addressLow[CHANEL_SIZE];
-UBYTE adcValue_dataLow_addressHigh[CHANEL_SIZE];
-UBYTE adcValue_dataLow_addressLow[CHANEL_SIZE];
-
+UWORD adcValue[Channel_Size];
+UBYTE adcValue_dataHigh_addressHigh[Channel_Size];
+UBYTE adcValue_dataHigh_addressLow[Channel_Size];
+UBYTE adcValue_dataLow_addressHigh[Channel_Size];
+UBYTE adcValue_dataLow_addressLow[Channel_Size];
 /*******************************************************************************
 * Function: void initMain()
 *
@@ -105,6 +102,7 @@ void initADC(){
     ADRESH = 0;
 
 }
+
 UWORD adc_read(){
     //Turn ADC on
     ADCON0bits.ADON = 1;
@@ -140,27 +138,6 @@ void adc_led_Test(UBYTE voltage){
     }
 }
 
-void setAddressEEPROM(){
-    
-    //set EEPROM address
-    adcValue_dataHigh_addressHigh[0] = adcValue_CH1_DATAHIGH_addressHigh;
-    adcValue_dataHigh_addressLow[0]  = adcValue_CH1_DATAHIGH_addressLow;
-    adcValue_dataLow_addressHigh[0] = adcValue_CH1_DATALOW_addressHigh;
-    adcValue_dataLow_addressLow[0]  = adcValue_CH1_DATALOW_addressLow;
-    adcValue_dataHigh_addressHigh[1] = adcValue_CH2_DATAHIGH_addressHigh;
-    adcValue_dataHigh_addressLow[1]  = adcValue_CH2_DATAHIGH_addressLow;
-    adcValue_dataLow_addressHigh[1] = adcValue_CH2_DATALOW_addressHigh;
-    adcValue_dataLow_addressLow[1]  = adcValue_CH2_DATALOW_addressLow;
-    adcValue_dataHigh_addressHigh[2] = adcValue_CH3_DATAHIGH_addressHigh;
-    adcValue_dataHigh_addressLow[2]  = adcValue_CH3_DATAHIGH_addressLow;
-    adcValue_dataLow_addressHigh[2] = adcValue_CH3_DATALOW_addressHigh;
-    adcValue_dataLow_addressLow[2]  = adcValue_CH3_DATALOW_addressLow;
-    adcValue_dataHigh_addressHigh[3] = adcValue_CH4_DATAHIGH_addressHigh;
-    adcValue_dataHigh_addressLow[3]  = adcValue_CH4_DATAHIGH_addressLow;
-    adcValue_dataLow_addressHigh[3] = adcValue_CH4_DATALOW_addressHigh;
-    adcValue_dataLow_addressLow[3]  = adcValue_CH4_DATALOW_addressLow; 
-    
-}
 /*******************************************************************************
 * Function: Main
 *
@@ -169,33 +146,16 @@ void setAddressEEPROM(){
  * Description: Program entry point
 ******************************************************************************/
 void measureAllChanelADC(){
-    
-    initADC();    
-    setAddressEEPROM();
-        
+    initADC();          
     PORTBbits.RB1 = 0;        //Set LED off
-    ADCON0bits.CHS = 0b0010;
-    adcValue[0] = adc_read();
-    ADCON0bits.CHS = 0b0011;
-    adcValue[1] = adc_read();
-    ADCON0bits.CHS = 0b0100;
-    adcValue[2] = adc_read();
-    ADCON0bits.CHS = 0b1010;
-    adcValue[3] = adc_read();
-    
-    //write data to main and sub EEPROM
-    for (UBYTE i=0; i<CHANEL_SIZE; i++){
-        //data High
-        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
-        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataHigh_addressHigh[i], adcValue_dataHigh_addressLow[i], (UBYTE)(adcValue[i] >> 8));
-        //data Low
-        WriteOneByteToEEPROM(EEPROM_address, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
-        WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_dataLow_addressHigh[i], adcValue_dataLow_addressLow[i], (UBYTE)(adcValue[i] & 0xff));
-    }
+    measureDcDcTemperature();
+    measureChannel2();
+    measureChannel3();
+    measureChannel4();
     
     /*----------------------------------------------*/
     //FIXME:[start]debug for check the adcValue--->success 
-//    for (UBYTE i=0; i<CHANEL_SIZE; i++){
+//    for (UBYTE i=0; i<Channel_Size; i++){
 //        putChar(i);
 //        putChar(i);
 //        putChar(i);
@@ -228,7 +188,7 @@ void measureAllChanelADC(){
     /*--------------------------------------------------*/
     //FIXME:[start]debug for write adc value--->successs
     //write data to main and sub EEPROM
-//    for (UBYTE i=0; i<CHANEL_SIZE; i++){
+//    for (UBYTE i=0; i<Channel_Size; i++){
 //        putChar(adcValue_dataHigh_addressHigh[i]);
 //        putChar(adcValue_dataHigh_addressLow[i]);
 //        putChar(adcValue_dataLow_addressHigh[i]);
@@ -266,26 +226,18 @@ return;
  * TODO    : debug 
  * 
 */
-void measureDcDcTemperature(UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
-    
-    initADC();    
-        
+void measureDcDcTemperature() {    
+    initADC();          
     //Set LED off
     PORTBbits.RB1 = 0;
     ADCON0bits.CHS = 0b0010;
-    adcValue[0] = adc_read();
-    
-    /*write data to EEPROM*/
+    adcValue[0] = adc_read();  
     //data high
-    WriteOneByteToEEPROM(EEPROM_address, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     
-    WriteOneByteToEEPROM(EEPROM_subaddress, high_address, low_address, (UBYTE)(adcValue[0] >> 8));     
-    
-    high_address = high_address + 0x08;
-    low_address = low_address + 0x08;
-
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
     //data low
-    WriteOneByteToEEPROM(EEPROM_address, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));   
-    WriteOneByteToEEPROM(EEPROM_subaddress, high_address, low_address, (UBYTE)(adcValue[0] & 0xff));  
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh + 0x08, adcValue_CH1_addressLow + 0x08, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh + 0x08, adcValue_CH1_addressLow + 0x08, (UBYTE)(adcValue[0] & 0xff));  
     
     /*--------------------------------------------------*/
     //FIXME:[start]debug for write adc value--->successs
@@ -310,25 +262,52 @@ void measureDcDcTemperature(UBYTE slaveaddress, UBYTE high_address, UBYTE low_ad
 
 /**
  * measure 1 channle and downlinl the data 
- * 1. select chanel
- * 2. read ADC data (**the size of data is 2byte)
- * 3. write to EEPROM
- * 4. downlink the data 
- * arg     : slaveaddress, high_address, low_address
+ * 1. read ADC data (**the size of data is 2byte)
+ * 2. write to EEPROM
+ * 3. downlink the data 
  * return  : ---
  * TODO    : debug 
  * 
 */
-void measureValueAndDownlink(UBYTE channel_select, UBYTE slaveaddress, UBYTE high_address, UBYTE low_address) {
-    measureAllChanelADC();
-    //TODO:add data downlink
+void measureChannel2(){
+    initADC();
+    ADCON0bits.CHS = 0b0011;
+    adcValue[1] = adc_read();
+    //data High
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] >> 8));
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] >> 8));
+    //data low
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] & 0xff));
+}
+void measureChannel3(){
+    initADC();
+    ADCON0bits.CHS = 0b0100;
+    adcValue[2] = adc_read();
+    //data High
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] >> 8));
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] >> 8));
+    //data low
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] & 0xff));
+}
+void measureChannel4(){
+    initADC();
+    ADCON0bits.CHS = 0b1010;
+    adcValue[3] = adc_read();
+    //data High
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] >> 8));
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] >> 8));
+    //data low
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] & 0xff));
 }
 
 //process command data if the command type is 'HKdata'
 void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE data3){ 
    switch(type_sellect){    
         case 'd': //measure DC-DC temperature
-            measureDcDcTemperature(data1, data2, data3);
+            measureDcDcTemperature();
             switchOk(ok_ADC_downlinkReceivedCommand_DcDc);
             break;
         case '5': //5VBUS 

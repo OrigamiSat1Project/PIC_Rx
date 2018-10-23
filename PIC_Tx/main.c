@@ -161,7 +161,7 @@ void interrupt InterReceiver(void){
                         WriteLastCommandIdToEEPROM(commandID);
                         break;
                     case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
-                        measureDcDcTemperature(RXDATA[3], RXDATA[4], RXDATA[5]);
+                        measureDcDcTemperature();
                         WriteLastCommandIdToEEPROM(commandID);
                         break;
                     case 0x72: /*'r':send command to RXCOBC*/

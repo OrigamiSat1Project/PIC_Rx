@@ -39,8 +39,9 @@ void HKDownlinkFR1(void);
 void HKDownlinkFR2(void);
 
 /*Function : CW downlink*/
-void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-int changeCharMorse (char);
+
+void commandSwitchCWDownlink(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UINT, UBYTE);
+long changeCharMorse (char);
 char changeBinaryToChar(UBYTE);
 void DevideDataAndChangeBinaryToChar (UBYTE, UBYTE*);
 void sendMorse(char*,size_t);
