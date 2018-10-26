@@ -4,8 +4,10 @@
 #include "encode_AX25.h"
 #include "CRC16.h"
 #include "time.h"
+#include "I2C.h"
 
 void Init_SERIAL(void){
+
     SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
 //    SPBRG  = 4;                    // boudrate is 115200 bps at BRGH = 1
     GIE    = 1;
@@ -23,6 +25,7 @@ void Init_SERIAL(void){
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
 	TXEN   = 1;						// Enable the transmitter
+
 }
 
 UBYTE getChar(void){                //TODO: add time out feature
@@ -111,6 +114,56 @@ void put_ok(void){
    putch('K');
    putch('!');
 }
+
+void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){
+    if(type_select=='h'){ //115200bps
+        SPBRG  = 4;                   
+        BRGH   = 1;   
+    } else if(type_select=='l'){ //14400bps
+        SPBRG  = 10;                   
+        BRGH   = 0;  
+    } else if(type_select=='a'){
+        SPBRG  = SPBRG_number;                   
+        BRGH   = BRGH_number;            
+    } else {
+        //TODO:add error
+    }
+}
+
+void UARTbufferClear(void){
+    RCREG = 0;   //USART Receive Register
+}
+
+void readEEPROMandUARTwrite(UBYTE slaveAddress, UBYTE highAddress, UBYTE lowAddress, UBYTE *ReadData, UBYTE dataLength){
+    UWORD CRC;
+    ReadDataFromEEPROM(slaveAddress, highAddress, lowAddress, ReadData, dataLength);
+    for(UBYTE i=0;i<dataLength;i++){
+        putChar(ReadData[i]);
+        NOP();
+    }
+    CRC = crc16(0, ReadData, dataLength);
+    putChar(CRC >> 8);
+    NOP();
+    putChar(CRC & 0x00FF);
+}
+
+void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5){
+    UBYTE data[7];
+    UWORD CRC;
+    data[0] = data1;
+    data[1] = data2;
+    data[2] = data3;
+    data[3] = data4;
+    data[4] = data5;
+    CRC = crc16(0, data, 5);
+    data[5] = CRC >> 8;
+    data[6] = CRC & 0x00FF;
+    for(UBYTE i=0; i<7; i++){
+        putChar(data[i]);
+        NOP();
+    }
+}
+
 // UBYTE get3byte(void){                //TODO: add time out feature
 //     /**/
 // 	if(FERR || OERR) // If over run error, then reset the receiver
@@ -142,3 +195,29 @@ void put_ok(void){
 //    putch(whigh_address);
 //    putch(wlow_address);
 //}
+
+//process command data if the command type is UART
+void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){
+    UBYTE ReadData[];
+    switch(command){    
+        case 'w': //UART write
+            UARTwrite5byte(data1,data2,data3,data4,data5);      
+            break;
+        case 'e': //read EEPROM and send datas to RXCOBC
+            //data1:slave address / data2:high address / data3:low address / data4:data size
+            readEEPROMandUARTwrite(data1, data2, data3, ReadData, data4);
+            break;
+        case 'c': //UART buffer clear
+            UARTbufferClear();
+            break;
+        case 'b': //change UART baud rate
+            changeBaudRate(data1,data2,data3);
+            break;
+        case 'i': //interrupt permission
+            changeInterruptPermission(data1,data2);
+            break;
+        default:
+//            switchError(error_UART_commandSwitchUART);
+            break;
+    }
+}

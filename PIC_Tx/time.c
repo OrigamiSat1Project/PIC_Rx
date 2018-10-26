@@ -1,4 +1,4 @@
-/*** ï¿½ï¿½ï¿½Ôï¿½ï¿½ï¿½ ***/
+/*** ?¿½?¿½?¿½Ôï¿½?¿½?¿½ ***/
 
 #include <htc.h>
 #include "Type_define.h"
@@ -35,6 +35,12 @@ void delay_s(UWORD sec)
 		__delay_s(1);
 		sec--;
 	}	
+}
+
+UWORD calTime2Byte(UBYTE timeHigh, UBYTE timeLow){
+    UWORD timeBin = 0;     
+    timeBin = (UWORD)((timeHigh<<8) | timeLow);
+    return timeBin;
 }
 
 //timer counter only getChar

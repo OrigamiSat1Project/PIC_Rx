@@ -41,14 +41,17 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     /*---CRC check for command from Grand Station---*/ 
     /*------------------------------------------------------------------*/
     if(crc16(0,commandData,29) == CRC_check(commandData,29)){
-        commandData[31] = commandData[31] | 0b0010000;
+        //5bit 0--->1
+        commandData[31] = commandData[31] | 0b00100000;
     }else{
         ReadDataFromEEPROM(subAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
         if(crc16(0,commandData,29) == CRC_check(commandData,29)){
-            commandData[31] = commandData[31] & 0b1101111;  
-            commandData[31] = commandData[31] | 0b0001000;
+            //5bit 0--->0 / 4bit 0--->1
+            commandData[31] = commandData[31] & 0b11011111;  
+            commandData[31] = commandData[31] | 0b00010000;
         }else{
-            commandData[31] = commandData[31] & 0b1100111;
+            //5,4bit 0--->0
+            commandData[31] = commandData[31] & 0b11001111;
         }
     }   
     
@@ -92,7 +95,7 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'u':/*UART*/
-    //                commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
                     WriteLastCommandIdToEEPROM(commandData[1]);
                     break;
                 case 'w':/*WDT (watch dog timer)*/
