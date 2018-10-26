@@ -36,7 +36,7 @@ void switchError(UBYTE action_select){
     UBYTE error_data[2];
     error_data[0] = ReadEEPROM(MAIN_EEPROM_ADDRESS, HighAddress_for_commandID, LowAddress_for_commandID);
     error_data[1] = action_select;
-    WriteOneByteToMainAnadSubB0EEPROM(HighAddress_for_Error, LowAddress_for_Error, error_data);
+    WriteOneByteToMainAndSubB0EEPROM(HighAddress_for_Error, LowAddress_for_Error, error_data);
     
     //for debug
     put_error();

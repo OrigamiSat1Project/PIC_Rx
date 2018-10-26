@@ -19,6 +19,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
 [p i __delay ]
+"30 time.h
+[v _delay_ms `(v ~T0 @X0 0 ef1`us ]
+"25 FMCW.h
+[v _FMTX `(v ~T0 @X0 0 ef2`i`*uc ]
+"26
+[v _CWTX `(v ~T0 @X0 0 ef2`i`*uc ]
+"27
+[v _FMRX `(v ~T0 @X0 0 ef2`i`*uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1036,6 +1044,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 194: extern __bank0 __bit __powerdown;
 [; ;pic.h: 195: extern __bank0 __bit __timeout;
 [; ;EPS.h: 14: void Reset_EPS(void);
+[; ;EPS.h: 15: void ResetEPSandSetPLL(void);
 [; ;typeDefine.h: 11: typedef signed char SBYTE;
 [; ;typeDefine.h: 12: typedef unsigned char UBYTE;
 [; ;typeDefine.h: 13: typedef signed short SWORD;
@@ -1101,19 +1110,47 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;EPS.c: 11: PORTAbits.RA1 = 1;
 "11
 [e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
-[; ;EPS.c: 12: _delay((unsigned long)((5000)*(10000000/4000.0)));
-"12
-[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 13: PORTBbits.RB4 = 0;
+[; ;EPS.c: 13: _delay((unsigned long)((500)*(10000000/4000.0)));
 "13
-[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
-[; ;EPS.c: 14: PORTAbits.RA1 = 0;
-"14
-[e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
-[; ;EPS.c: 15: _delay((unsigned long)((500)*(10000000/4000.0)));
-"15
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 16: }
+[; ;EPS.c: 14: PORTBbits.RB4 = 0;
+"14
+[e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
+[; ;EPS.c: 15: PORTAbits.RA1 = 0;
+"15
+[e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
+[; ;EPS.c: 16: _delay((unsigned long)((500)*(10000000/4000.0)));
 "16
+[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;EPS.c: 17: }
+"17
 [e :UE 95 ]
+}
+"19
+[v _ResetEPSandSetPLL `(v ~T0 @X0 1 ef ]
+{
+[; ;EPS.c: 19: void ResetEPSandSetPLL(void){
+[e :U _ResetEPSandSetPLL ]
+[f ]
+[; ;EPS.c: 20: Reset_EPS();
+"20
+[e ( _Reset_EPS ..  ]
+[; ;EPS.c: 21: delay_ms(5000);
+"21
+[e ( _delay_ms (1 -> -> 5000 `i `us ]
+[; ;EPS.c: 22: FMTX(2560, FMTX_Nprg);
+"22
+[e ( _FMTX (2 , -> 2560 `i &U _FMTX_Nprg ]
+[; ;EPS.c: 23: CWTX(128, CWTX_Nprg);
+"23
+[e ( _CWTX (2 , -> 128 `i &U _CWTX_Nprg ]
+[; ;EPS.c: 24: FMRX(2560, FMRX_Nprg);
+"24
+[e ( _FMRX (2 , -> 2560 `i &U _FMRX_Nprg ]
+[; ;EPS.c: 25: delay_ms(5000);
+"25
+[e ( _delay_ms (1 -> -> 5000 `i `us ]
+[; ;EPS.c: 26: }
+"26
+[e :UE 96 ]
 }

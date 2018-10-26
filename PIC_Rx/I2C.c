@@ -125,7 +125,7 @@ void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow
     __delay_ms(200);
 }
 
-void WriteOneByteToMainAnadSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,addressHigh,addressLow,data);
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data);
 }
@@ -172,6 +172,15 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     I2CMasterStop();          //Stop condition
     return ReadData;
     __delay_ms(200);  
+}
+
+UBYTE ReadEEPROMmainAndSub(UBYTE high_address,UBYTE low_address){
+    UBYTE ReadData;
+    ReadData = ReadEEPROM(MAIN_EEPROM_ADDRESS,high_address,low_address);
+    if (ReadData==0xFF){
+        ReadData = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
+    }
+    return ReadData;
 }
 
 /*

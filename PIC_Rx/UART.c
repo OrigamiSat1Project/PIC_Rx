@@ -185,8 +185,6 @@ void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 //process command data if the command type is UART
 void commandSwitchUART(UBYTE command, UBYTE data1, UBYTE data2, UBYTE data3, UBYTE data4, UBYTE data5){ //TODO: different format for writedataUART
     
-    int BaudRate;
-    
     switch(command){    
         case 'w': //UART write
             //TODO: write method for UART writ

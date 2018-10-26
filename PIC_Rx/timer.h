@@ -15,10 +15,10 @@
 #define one_day 24
 #define one_week 7
 
-#define EPS_RSET_INTERVAL       10
-#define EPS_RSET_INTERVAL_LONG     one_day*7
-#define EPS_RSET_INTERVAL_SHORT    one_day
-#define INITIAL_OPE_INTERVAL 8
+#define WDT_INTERVAL             4
+#define EPS_RSET_INTERVAL_LONG   10
+#define EPS_RSET_INTERVAL_SHORT  5
+#define INITIAL_OPE_INTERVAL     5
 
 int timer_counter = 0;
 int second_counter = 0;
@@ -27,6 +27,7 @@ int hour_counter = 0;
 int day_counter = 0;
 
 int bat_meas_counter = 0;
+int eps_rest_counter = 0;
 
 void initTimer(void);
 void interrupt TimerCheck(void);

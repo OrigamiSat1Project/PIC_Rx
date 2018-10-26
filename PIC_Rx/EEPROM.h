@@ -103,7 +103,7 @@
 #define BatteryVoltage_addressHigh     0x97
 #define BatteryVoltage_addressLow      0x01
 #define MeltingCounter_addressHigh     0xE0
-#define MeltingCounter_addressLow      0x0A
+#define MeltingCounter_addressLow      0x00
 
 
 #endif	/* EEPROM_H */

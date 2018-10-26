@@ -1462,6 +1462,7 @@ extern __bank0 __bit __timeout;
 
 # 14 "EPS.h"
 void Reset_EPS(void);
+void ResetEPSandSetPLL(void);
 
 # 11 "typeDefine.h"
 typedef signed char SBYTE;
@@ -1499,9 +1500,19 @@ void setPLL(void);
 void Reset_EPS(void){
 PORTBbits.RB4 = 1;
 PORTAbits.RA1 = 1;
-_delay((unsigned long)((5000)*(10000000/4000.0)));
+
+_delay((unsigned long)((500)*(10000000/4000.0)));
 PORTBbits.RB4 = 0;
 PORTAbits.RA1 = 0;
 _delay((unsigned long)((500)*(10000000/4000.0)));
+}
+
+void ResetEPSandSetPLL(void){
+Reset_EPS();
+delay_ms(5000);
+FMTX(2560, FMTX_Nprg);
+CWTX(128, CWTX_Nprg);
+FMRX(2560, FMRX_Nprg);
+delay_ms(5000);
 }
 

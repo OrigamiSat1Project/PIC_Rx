@@ -15,10 +15,12 @@ void Reset_EPS(void){
     __delay_ms(500);
 }
 
-//void ResetEPSandSetPLL(void){
-//    Reset_EPS();
-//    FMTX(FMTX_Nref, FMTX_Nprg);
-//    CWTX(CWTX_Nref, CWTX_Nprg);
-//    FMRX(FMRX_Nref, FMRX_Nprg);
-//}
+void ResetEPSandSetPLL(void){
+   Reset_EPS();
+   delay_ms(5000);
+   FMTX(FMTX_Nref, FMTX_Nprg);
+   CWTX(CWTX_Nref, CWTX_Nprg);
+   FMRX(FMRX_Nref, FMRX_Nprg);
+   delay_ms(5000);
+}
 
