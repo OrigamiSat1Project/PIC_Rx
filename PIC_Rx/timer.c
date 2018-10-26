@@ -118,9 +118,9 @@ void interrupt TimerCheck(void){
 ////                CWTX_Nprg[0] = 0; CWTX_Nprg[1] = 1; CWTX_Nprg[2] = 4; CWTX_Nprg[3] = 0; CWTX_Nprg[4] = 0;
 ////                FMTX_Nprg[0] = 2; FMTX_Nprg[1] = 4; FMTX_Nprg[2] = 9; FMTX_Nprg[3] = 1; FMTX_Nprg[4] = 6;
 //               //reset PLL setting (because it gets lost during shutdown)
-////               FMTX(FMTX_Nref, FMTX_Nprg);
-////               CWTX(CWTX_Nref, CWTX_Nprg);
-////               FMRX(FMRX_Nref, FMRX_Nprg);
+//               FMTX(FMTX_Nref, FMTX_Nprg);
+//               CWTX(CWTX_Nref, CWTX_Nprg);
+//               FMRX(FMRX_Nref, FMRX_Nprg);
 //               __delay_ms(500);
 //           }
 

@@ -21,12 +21,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p i __delay ]
 "30 time.h
 [v _delay_ms `(v ~T0 @X0 0 ef1`us ]
-"25 FMCW.h
-[v _FMTX `(v ~T0 @X0 0 ef2`i`*uc ]
-"26
-[v _CWTX `(v ~T0 @X0 0 ef2`i`*uc ]
-"27
-[v _FMRX `(v ~T0 @X0 0 ef2`i`*uc ]
+"56 FMCW.h
+[v _FMTX `(v ~T0 @X0 0 ef2`us`um ]
+"57
+[v _CWTX `(v ~T0 @X0 0 ef2`us`um ]
+"58
+[v _FMRX `(v ~T0 @X0 0 ef2`us`um ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1057,47 +1057,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-"18 FMCW.h
-[v _FMTX_Nprg `uc ~T0 @X0 -> 5 `i e ]
-[i _FMTX_Nprg
-:U ..
--> -> 8 `i `uc
--> -> 7 `i `uc
--> -> 5 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
-]
-[; ;FMCW.h: 18: UBYTE FMTX_Nprg[5] = {8,7,5,0,1};
-"20
-[v _CWTX_Nprg `uc ~T0 @X0 -> 5 `i e ]
-[i _CWTX_Nprg
-:U ..
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 4 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
-]
-[; ;FMCW.h: 20: UBYTE CWTX_Nprg[5] = {0,1,4,0,0};
-"22
-[v _FMRX_Nprg `uc ~T0 @X0 -> 5 `i e ]
-[i _FMRX_Nprg
-:U ..
--> -> 2 `i `uc
--> -> 4 `i `uc
--> -> 9 `i `uc
--> -> 1 `i `uc
--> -> 6 `i `uc
-..
-]
-[; ;FMCW.h: 22: UBYTE FMRX_Nprg[5] = {2,4,9,1,6};
-[; ;FMCW.h: 25: void FMTX(int Nref, UBYTE *Nprg);
-[; ;FMCW.h: 26: void CWTX(int Nref, UBYTE *Nprg);
-[; ;FMCW.h: 27: void FMRX(int Nref, UBYTE *Nprg);
-[; ;FMCW.h: 28: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 36: void setPLL(void);
+[; ;FMCW.h: 56: void FMTX(UWORD Nref, USLONG Nprg);
+[; ;FMCW.h: 57: void CWTX(UWORD Nref, USLONG Nprg);
+[; ;FMCW.h: 58: void FMRX(UWORD Nref, USLONG Nprg);
+[; ;FMCW.h: 60: UWORD calculateNref(UBYTE, UBYTE);
+[; ;FMCW.h: 61: USLONG calculateNprg(UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 63: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 "9 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {
@@ -1110,47 +1075,47 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;EPS.c: 11: PORTAbits.RA1 = 1;
 "11
 [e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
-[; ;EPS.c: 13: _delay((unsigned long)((500)*(10000000/4000.0)));
+[; ;EPS.c: 12: _delay((unsigned long)((5000)*(10000000/4000.0)));
+"12
+[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;EPS.c: 13: PORTBbits.RB4 = 0;
 "13
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 14: PORTBbits.RB4 = 0;
-"14
 [e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
-[; ;EPS.c: 15: PORTAbits.RA1 = 0;
-"15
+[; ;EPS.c: 14: PORTAbits.RA1 = 0;
+"14
 [e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
-[; ;EPS.c: 16: _delay((unsigned long)((500)*(10000000/4000.0)));
-"16
+[; ;EPS.c: 15: _delay((unsigned long)((500)*(10000000/4000.0)));
+"15
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 17: }
-"17
+[; ;EPS.c: 16: }
+"16
 [e :UE 95 ]
 }
-"19
+"18
 [v _ResetEPSandSetPLL `(v ~T0 @X0 1 ef ]
 {
-[; ;EPS.c: 19: void ResetEPSandSetPLL(void){
+[; ;EPS.c: 18: void ResetEPSandSetPLL(void){
 [e :U _ResetEPSandSetPLL ]
 [f ]
-[; ;EPS.c: 20: Reset_EPS();
-"20
+[; ;EPS.c: 19: Reset_EPS();
+"19
 [e ( _Reset_EPS ..  ]
-[; ;EPS.c: 21: delay_ms(5000);
+[; ;EPS.c: 20: delay_ms(5000);
+"20
+[e ( _delay_ms (1 -> -> 5000 `i `us ]
+[; ;EPS.c: 21: FMTX(2560, 87501);
 "21
-[e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 22: FMTX(2560, FMTX_Nprg);
+[e ( _FMTX (2 , -> -> 2560 `i `us -> -> 87501 `l `um ]
+[; ;EPS.c: 22: CWTX(128, 1400);
 "22
-[e ( _FMTX (2 , -> 2560 `i &U _FMTX_Nprg ]
-[; ;EPS.c: 23: CWTX(128, CWTX_Nprg);
+[e ( _CWTX (2 , -> -> 128 `i `us -> -> -> 1400 `i `m `um ]
+[; ;EPS.c: 23: FMRX(2560, 24916);
 "23
-[e ( _CWTX (2 , -> 128 `i &U _CWTX_Nprg ]
-[; ;EPS.c: 24: FMRX(2560, FMRX_Nprg);
+[e ( _FMRX (2 , -> -> 2560 `i `us -> -> -> 24916 `i `m `um ]
+[; ;EPS.c: 24: delay_ms(5000);
 "24
-[e ( _FMRX (2 , -> 2560 `i &U _FMRX_Nprg ]
-[; ;EPS.c: 25: delay_ms(5000);
-"25
 [e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 26: }
-"26
+[; ;EPS.c: 25: }
+"25
 [e :UE 96 ]
 }

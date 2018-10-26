@@ -1480,28 +1480,21 @@ void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-# 18 "FMCW.h"
-UBYTE FMTX_Nprg[5] = {8,7,5,0,1};
+# 56 "FMCW.h"
+void FMTX(UWORD Nref, USLONG Nprg);
+void CWTX(UWORD Nref, USLONG Nprg);
+void FMRX(UWORD Nref, USLONG Nprg);
 
-UBYTE CWTX_Nprg[5] = {0,1,4,0,0};
+UWORD calculateNref(UBYTE, UBYTE);
+USLONG calculateNprg(UBYTE, UBYTE, UBYTE);
 
-UBYTE FMRX_Nprg[5] = {2,4,9,1,6};
-
-
-void FMTX(int Nref, UBYTE *Nprg);
-void CWTX(int Nref, UBYTE *Nprg);
-void FMRX(int Nref, UBYTE *Nprg);
 void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-
-# 36
-void setPLL(void);
 
 # 9 "EPS.c"
 void Reset_EPS(void){
 PORTBbits.RB4 = 1;
 PORTAbits.RA1 = 1;
-
-_delay((unsigned long)((500)*(10000000/4000.0)));
+_delay((unsigned long)((5000)*(10000000/4000.0)));
 PORTBbits.RB4 = 0;
 PORTAbits.RA1 = 0;
 _delay((unsigned long)((500)*(10000000/4000.0)));
@@ -1510,9 +1503,9 @@ _delay((unsigned long)((500)*(10000000/4000.0)));
 void ResetEPSandSetPLL(void){
 Reset_EPS();
 delay_ms(5000);
-FMTX(2560, FMTX_Nprg);
-CWTX(128, CWTX_Nprg);
-FMRX(2560, FMRX_Nprg);
+FMTX(2560, 87501);
+CWTX(128, 1400);
+FMRX(2560, 24916);
 delay_ms(5000);
 }
 
