@@ -9,10 +9,7 @@
 #ifndef TIME_H
 #define	TIME_H
 
-//#define _XTAL_FREQ       10000000       // Clock frequency
-
-//FIXME:
-#define _XTAL_FREQ 8000000
+#define _XTAL_FREQ       10000000       // Clock frequency
 
 //#define __delay_ms(1)    _delay((unsigned long)((1)*(_XTAL_FREQ/4000UL)))
 #define __delay_us(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000000.0)))
@@ -33,6 +30,8 @@
 void delay_ms(UWORD);
 void delay_us(UWORD);
 void delay_s(UWORD);
+
+UWORD calTime2Byte(UBYTE, UBYTE);
 
 //timer counter only getChar
 void set_timer_counter_only_getChar(UINT);

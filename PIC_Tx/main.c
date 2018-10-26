@@ -27,32 +27,20 @@ void interrupt InterReceiver(void);
 // 'C' source line config statements
 
 /* PIC16F887 Configuration Bit Settings */
-//#pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
-//#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
-//#pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
-//#pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
-//#pragma config CP       = OFF           // Code Protection bit (Program memory code protection is disabled)
-//#pragma config CPD      = OFF           // Data Code Protection bit (Data memory code protection is disabled)
-//#pragma config BOREN    = OFF            // Brown Out Reset Selection bits (BOR enabled)
-//#pragma config IESO     = OFF            // Internal External Switchover bit (Internal/External Switchover mode is enabled)
-//#pragma config FCMEN    = OFF            // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
-//#pragma config LVP      = OFF           // Low Voltage Programming Enable bit (RB3 pin has digital I/O, HV on MCLR must be used for programming)
-//#pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
-//#pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
+#pragma config FOSC     = HS            // Oscillator Selection bits (HS oscillator: High-speed crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
+#pragma config WDTE     = OFF           // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config PWRTE    = ON            // Power-up Timer Enable bit (PWRT disabled)
+#pragma config MCLRE    = ON            // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
+#pragma config CP       = OFF           // Code Protection bit (Program memory code protection is disabled)
+#pragma config CPD      = OFF           // Data Code Protection bit (Data memory code protection is disabled)
+#pragma config BOREN    = OFF            // Brown Out Reset Selection bits (BOR enabled)
+#pragma config IESO     = OFF            // Internal External Switchover bit (Internal/External Switchover mode is enabled)
+#pragma config FCMEN    = OFF            // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
+#pragma config LVP      = OFF           // Low Voltage Programming Enable bit (RB3 pin has digital I/O, HV on MCLR must be used for programming)
+#pragma config BOR4V    = BOR40V        // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
+#pragma config WRT      = OFF           // Flash Program Memory Self Write Enable bits (Write protection off)
 
-//FIXME:for debug to use board
-#pragma config CPD = OFF
-#pragma config BOREN = OFF
-#pragma config IESO = OFF
-#pragma config DEBUG = OFF
-#pragma config FOSC = INTRC_NOCLKOUT
-#pragma config FCMEN = OFF
-#pragma config MCLRE = OFF
-#pragma config WDTE = OFF
-#pragma config CP = OFF
-#pragma config LVP = OFF
-#pragma config PWRTE = OFF
-
+#define commandSize 10
 
 //test_interrupt
 //pc-->pic-->pc 
@@ -89,10 +77,11 @@ void interrupt InterReceiver(void){
     putChar('I');
     putChar('I');
     
-    UBYTE commandSize;
-    commandSize = 10;
-    
-    UBYTE RXDATA[10];//array size = commandSize
+//    UBYTE commandSize;
+//    commandSize = 10;
+
+//    UBYTE RXDATA[10];//array size = commandSize
+    UBYTE RXDATA[commandSize];
 //    volatile static int intr_counter;
 
     if (RCIF == 1) {
@@ -103,7 +92,7 @@ void interrupt InterReceiver(void){
         UBYTE get_char_state = 0;
         while(get_char_state < commandSize){
             RXDATA[0] = getChar();
-//            putChar('g');
+            putChar('X');
 //            putChar('e');
 //            putChar('t');
 //            putChar(RXDATA[0]);
@@ -155,15 +144,15 @@ void interrupt InterReceiver(void){
         /*---read CRC check from EEPROM---*/
         UBYTE CRC_check_result;
         //FIXME:for debug
-        CRC_check_result = 0x00;
-        WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+        CRC_check_result = 0b1000000;
+        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
         CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
         
         if(crcResult != crcValue){  //crc error
             
             /*---write CRC error result (6bit 0) ---*/
             CRC_check_result = CRC_check_result & 0b1011111;
-            WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+            WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
             
             putChar(0xa1);
             putChar(CRC_check_result);
@@ -173,7 +162,7 @@ void interrupt InterReceiver(void){
             
             /*---write CRC ok result (6bit 1) ---*/
             CRC_check_result = CRC_check_result | 0b01000000;
-            WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+            WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
             
             putChar(0xa2);
             putChar(CRC_check_result);
@@ -224,7 +213,7 @@ void interrupt InterReceiver(void){
             }
         /*---write CRC result 6bit 1 ---*/
         CRC_check_result = CRC_check_result | 0b0100000;
-        WriteOneByteToMainAnadSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
         switchOk(error_main_crcCheck);   
         }
         RCIF = 0;
@@ -373,21 +362,19 @@ void interrupt InterReceiver(void){
 
 
 void main(void) {
-
-    //FIME
-    OSCCON = 0b01110001;
     
     __delay_ms(1000);
     Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
-//    Init_WDT();
+    Init_WDT();
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
 
     putChar('S');
     putChar('S');
     putChar('S');
+    putChar('y');
     
     //FIXME:write melting status for debug
 //    UBYTE main_test_melting_status = 0b00000011;
@@ -415,6 +402,7 @@ void main(void) {
         }
         
         putChar('m');
+        putChar('X');
         __delay_ms(1000);
 
         //TODO send pulse to WDT

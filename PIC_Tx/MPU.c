@@ -70,16 +70,16 @@ UINT invertState(UINT pinState){
 }
 
 //Used to switch PIN to the opposite status(high/low)
-UINT invertStateWithTIme(UINT pinState,UBYTE timeHigh, UBYTE timeLow){
-    if (timeHigh != 0x00 && timeLow != 0x00){
-        UWORD operationTime;
-        operationTime = (UWORD)timeHigh * 0x100 + timeLow;
-        delay_ms(operationTime);
-        pinState = 1 - pinState;
-    }else{
-        return pinState;
-    }
-}
+//UINT invertStateWithTIme(UINT pinState,UBYTE timeHigh, UBYTE timeLow){
+//    if (timeHigh != 0x00 && timeLow != 0x00){
+//        UWORD operationTime;
+//        operationTime = (UWORD)timeHigh * 0x100 + timeLow;
+//        delay_ms(operationTime);
+//        pinState = 1 - pinState;
+//    }else{
+//        return pinState;
+//    }
+//}
 
 // void cutWire(UBYTE timeHigh, UBYTE timeLow){
 //     UWORD cutTime;
@@ -100,7 +100,8 @@ void onOffHEATER(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        // wait_time = (UWORD)((timeHigh << 8) | timeLow);
+        wait_time = calTime2Byte(timeHigh, timeLow);
         delay_ms(wait_time);
         HEATER =invertState(onOff);
     }
@@ -117,7 +118,8 @@ void onOffNTRX(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         NTRX =invertState(onOff);
     }
@@ -134,7 +136,8 @@ void onOff5R8GSubPower(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         SW_5R8G =invertState(onOff);
     }
@@ -153,8 +156,9 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){
         putChar(0xd3);
     }else {        
-        UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        UWORD wait_time = 0;
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
         putChar(0xd4);
 
         if(wait_time>MELTING_TIME_MAX){
@@ -215,7 +219,8 @@ void onOffTXWDT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         WDT_POWER =invertState(onOff);
     }
@@ -232,7 +237,8 @@ void onOffFMPTT(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         FMPTT =invertState(onOff);
     }
@@ -249,7 +255,8 @@ void onOffCWKEY(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
     if(timeHigh == 0x00 && timeLow == 0x00){ 
     }else {        
         UWORD wait_time;
-        wait_time = (timeHigh << 8 | timeLow);
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
         delay_ms(wait_time);
         CWKEY =invertState(onOff);
     }
