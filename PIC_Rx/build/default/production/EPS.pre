@@ -1500,8 +1500,7 @@ void setPLL(void);
 void Reset_EPS(void){
 PORTBbits.RB4 = 1;
 PORTAbits.RA1 = 1;
-
-_delay((unsigned long)((500)*(10000000/4000.0)));
+_delay((unsigned long)((5000)*(10000000/4000.0)));
 PORTBbits.RB4 = 0;
 PORTAbits.RA1 = 0;
 _delay((unsigned long)((500)*(10000000/4000.0)));

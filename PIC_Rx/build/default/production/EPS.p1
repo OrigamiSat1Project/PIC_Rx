@@ -1110,47 +1110,47 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;EPS.c: 11: PORTAbits.RA1 = 1;
 "11
 [e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
-[; ;EPS.c: 13: _delay((unsigned long)((500)*(10000000/4000.0)));
+[; ;EPS.c: 12: _delay((unsigned long)((5000)*(10000000/4000.0)));
+"12
+[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;EPS.c: 13: PORTBbits.RB4 = 0;
 "13
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 14: PORTBbits.RB4 = 0;
-"14
 [e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
-[; ;EPS.c: 15: PORTAbits.RA1 = 0;
-"15
+[; ;EPS.c: 14: PORTAbits.RA1 = 0;
+"14
 [e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
-[; ;EPS.c: 16: _delay((unsigned long)((500)*(10000000/4000.0)));
-"16
+[; ;EPS.c: 15: _delay((unsigned long)((500)*(10000000/4000.0)));
+"15
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 17: }
-"17
+[; ;EPS.c: 16: }
+"16
 [e :UE 95 ]
 }
-"19
+"18
 [v _ResetEPSandSetPLL `(v ~T0 @X0 1 ef ]
 {
-[; ;EPS.c: 19: void ResetEPSandSetPLL(void){
+[; ;EPS.c: 18: void ResetEPSandSetPLL(void){
 [e :U _ResetEPSandSetPLL ]
 [f ]
-[; ;EPS.c: 20: Reset_EPS();
-"20
+[; ;EPS.c: 19: Reset_EPS();
+"19
 [e ( _Reset_EPS ..  ]
-[; ;EPS.c: 21: delay_ms(5000);
+[; ;EPS.c: 20: delay_ms(5000);
+"20
+[e ( _delay_ms (1 -> -> 5000 `i `us ]
+[; ;EPS.c: 21: FMTX(2560, FMTX_Nprg);
 "21
-[e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 22: FMTX(2560, FMTX_Nprg);
-"22
 [e ( _FMTX (2 , -> 2560 `i &U _FMTX_Nprg ]
-[; ;EPS.c: 23: CWTX(128, CWTX_Nprg);
-"23
+[; ;EPS.c: 22: CWTX(128, CWTX_Nprg);
+"22
 [e ( _CWTX (2 , -> 128 `i &U _CWTX_Nprg ]
-[; ;EPS.c: 24: FMRX(2560, FMRX_Nprg);
-"24
+[; ;EPS.c: 23: FMRX(2560, FMRX_Nprg);
+"23
 [e ( _FMRX (2 , -> 2560 `i &U _FMRX_Nprg ]
-[; ;EPS.c: 25: delay_ms(5000);
-"25
+[; ;EPS.c: 24: delay_ms(5000);
+"24
 [e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 26: }
-"26
+[; ;EPS.c: 25: }
+"25
 [e :UE 96 ]
 }
