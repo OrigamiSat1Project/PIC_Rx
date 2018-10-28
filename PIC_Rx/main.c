@@ -127,8 +127,32 @@ void main(void) {
         UBYTE mainControlByte;      //control byte of main EEPROM
         UBYTE subControlByte;       //control byte of sub EEPROM       
         UBYTE downlinkTimes;       //downlink times of received command
+        
+        /*----------------------------------------------------------------------------*/
+//XXX : timer process for 1week reset       
+       if(get_timer_counter('w') >= 1){
+           // Execute 1week reset
+           reset_timer();
+       }
+       
+//XXX : timer process for initial operation
+       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){
+           // Initial operation
+           set_init_ope_counter(0,0);
+       }
+//XXX : timer process for measure EPS BATTERY
+       if(get_bat_meas_counter_sec_min() >= EPS_MEASURE_INTERVAL){
+           //measure EPS Battery
+           set_bat_meas_counter(0,0);
+       }
+       
+/*----------------------------------------------------------------------------*/ 
+        
+        //XXX COMMAND RESET
 
         receiveDataPacket(commandData);
+        
+        //XXX if () continue, IF COMMAND IS STILL RESET
 
         
 //        putString(commandData);
@@ -463,6 +487,8 @@ void main(void) {
         /*-------------------------------------------------------------------*/
     
        __delay_ms(500);
+       
+      
     }
     //return;
 }

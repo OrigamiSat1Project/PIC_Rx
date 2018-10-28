@@ -30,28 +30,142 @@ void initTimer(void){
 UBYTE EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
 UWORD time = 0;
 
+static UINT timer_counter   = 0;
+static UINT second_counter  = 0;
+static UINT minute_counter  = 0;
+static UINT hour_counter    = 0;
+static UINT day_counter     = 0;
+static UINT week_counter    = 0;
+
+static UINT receive_command_counter_sec = 0;
+static UINT receive_command_counter_min = 0;
+static UINT bat_meas_counter_sec        = 0;
+static UINT bat_meas_counter_min        = 0;
+//static UINT eps_rest_counter_sec        = 0;
+static UINT init_ope_counter_sec        = 0;
+static UINT init_ope_counter_min        = 0;
+
 //for debug function
 void interrupt TimerCheck(void){
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;
-        timer_counter += 1;
+        timer_counter ++;
     }
     
+    //XXX WDT
+    if((get_timer_counter('m') % WDT_INTERVAL) == 0 ){
+        //Tap WDT
+    }
+   
     if(timer_counter >= one_second){
         timer_counter = 0;
-        bat_meas_counter += 1;
-        eps_rest_counter += 1;
         second_counter += 1;
+        
+        init_ope_counter_sec ++;
+        bat_meas_counter_sec ++;
+//        eps_rest_counter_sec ++;
+        receive_command_counter_sec ++;
         LED_WHITE = 1 - LED_WHITE;  //for debug
+    }
+    if(second_counter >= one_minute){
+        second_counter = 0;
+        minute_counter ++;
+    }
+    if(receive_command_counter_sec >= one_minute){
+        receive_command_counter_sec = 0;
+        receive_command_counter_min ++;
+    }
+    if(init_ope_counter_sec >= one_minute){
+        init_ope_counter_sec = 0;
+        init_ope_counter_min ++;
+    }
+    if(bat_meas_counter_sec >= one_minute){
+        bat_meas_counter_sec = 0;
+        bat_meas_counter_min ++;
+    }
+    if(minute_counter >= one_hour){
+        minute_counter = 0;
+        hour_counter ++;
+    }
+    if(hour_counter >= one_day){
+        hour_counter = 0;
+        day_counter ++;
+    }
+    if(day_counter >= one_week){
+        day_counter = 0;
+        week_counter ++;
+    }
+    if(week_counter >= 2){
+        week_counter = 0;
+    }
+}
+
+void set_receive_command_counter(UINT time_sec, UINT time_min){
+    receive_command_counter_sec = time_sec;
+    receive_command_counter_min = time_min;
+}
+
+UINT get_receive_command_counter_min(void){
+    return receive_command_counter_min;
+}
+
+void set_init_ope_counter(UINT time_sec, UINT time_min){
+    init_ope_counter_sec = time_sec;
+    init_ope_counter_min = time_min;
+}
+
+UINT get_init_ope_counter_min(void){
+    return init_ope_counter_min;
+}
+
+void set_bat_meas_counter(UINT time_sec, UINT time_min){
+    bat_meas_counter_sec = time_sec;
+    bat_meas_counter_min = time_min;
+}
+
+UINT get_bat_meas_counter_sec_min(void){
+    return bat_meas_counter_min;
+}
+
+UINT get_timer_counter(UBYTE unit){
+    switch(unit){
+        case 's':
+            return second_counter;
+        case 'm':
+            return minute_counter;
+        case 'h':
+            return hour_counter;
+        case 'd':
+            return day_counter;
+        case 'w':
+            return week_counter;
+        default:
+            return 0;
+    }
+}
+
+void reset_timer(void){
+    timer_counter   = 0;
+    second_counter  = 0;
+    minute_counter  = 0;
+    hour_counter    = 0;
+    day_counter     = 0;
+    week_counter    = 0;
+}
+
+// -----------------------------------------------------------------------------        
         
         /*---WDT send pulse (4s)---*/
-        time = second_counter % WDT_INTERVAL;
-        if (time==0){
-            putChar('W');
-            sendPulseWDT();
-        }
+//        time = second_counter % WDT_INTERVAL;
+//        if (time==0){
+//            putChar('W');
+//            sendPulseWDT();
+//        }
+// -----------------------------------------------------------------------------        
         
+// -----------------------------------------------------------------------------
+        //XXX No.3 func 
         //battery voltage measure
         //treadhold is not determined
         //sampling rate is not determined
@@ -65,42 +179,47 @@ void interrupt TimerCheck(void){
 //            if(bat_voltage[1] <= 0xD0) putChar(0xaa);
 //            else putChar(0xbb);
 //        }
+// -----------------------------------------------------------------------------        
         
         
+// -----------------------------------------------------------------------------        
         /*---Initial Operation (for debug 5s)---*/
         //sampling rate is not determined
-        time = second_counter % INITIAL_OPE_INTERVAL;
-        if(time==0){
-            putChar(0xcc);
-            putChar(0xcc);
-            putChar(0xcc);
-            InitialOperation();
-            putChar(0xdd);
-            putChar(0xdd);
-        }
+//        time = second_counter % INITIAL_OPE_INTERVAL;
+//        if(time==0){
+//            putChar(0xcc);
+//            putChar(0xcc);
+//            putChar(0xcc);
+//            InitialOperation();
+//            putChar(0xdd);
+//            putChar(0xdd);
+//        }
+// -----------------------------------------------------------------------------        
         
+// -----------------------------------------------------------------------------        
         /*---EPS reset for debug (for debug 5/10s)---*/
-        time = second_counter % EPS_reset_time;
-        if(time == 0){
-            Reset_EPS();
-            
-            putChar(0xd1);
-            UBYTE array_2byte[2];
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//            putChar(array_2byte[0]);
-//            putChar(array_2byte[1]);
-//            array_2byte[0] = 2;
-//            array_2byte[1] = 2;
-            
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-                putChar(0xd2);
-            } else {
-                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
-                putChar('E');
-                putChar(0xd3);
-            }
-        }
+//        time = second_counter % EPS_reset_time;
+//        if(time == 0){
+//            Reset_EPS();
+//            
+//            putChar(0xd1);
+//            UBYTE array_2byte[2];
+//            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+////            putChar(array_2byte[0]);
+////            putChar(array_2byte[1]);
+////            array_2byte[0] = 2;
+////            array_2byte[1] = 2;
+//            
+//            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+//                putChar(0xd2);
+//            } else {
+//                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
+//                putChar('E');
+//                putChar(0xd3);
+//            }
+//        }
+// -----------------------------------------------------------------------------        
 //        
 //       if(second_counter >= one_minute){
 //           second_counter = 0;
@@ -150,8 +269,6 @@ void interrupt TimerCheck(void){
 //                }
 //            }    
 //       }
-    }
-}
 
 void InitialOperation(void){
     /*---start checking whether antenna are developed or not---*/
@@ -339,3 +456,4 @@ UBYTE checkMeltingStatus(UBYTE e_address){
 //        }
 //    }
 //}
+

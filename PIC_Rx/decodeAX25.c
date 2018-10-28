@@ -7,6 +7,7 @@
 #include "time.h"
 #include "decodeAX25.h"
 #include "pinDefine.h"
+#include "timer.h"
 
 //Macro
 #define BIT_HIGH 0x01               
@@ -74,8 +75,17 @@ void waitFlag(void){
     UBYTE buf = 0xff;
     UBYTE callCounter = 0;
     rcvState = 0;
+    
+    //XXX : set timer 0
+    set_receive_command_counter(0,0);
+    
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
+            //XXX break by timer
+            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+                break;
+            }
+            
             readBit = getBit();
             buf = buf << 1;         // TODO: Changed bit shift direction, bit_H, bit_L according to LSB, MSB.
             if(readBit == 0){
@@ -83,6 +93,10 @@ void waitFlag(void){
             }else{
                 buf = buf | BIT_HIGH;
             }
+        }
+        //XXX break by timer
+        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+            break;
         }
         
         /*Search for extra flags and skip them until different byte is read in*/
@@ -216,6 +230,12 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
+    //XXX break by timer
+    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+        set_receive_command_counter(0,0);
+        return;
+    }
+    
     //putChar('w');
     getData();
     //putChar('d');

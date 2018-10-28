@@ -19,20 +19,31 @@
 #define EPS_RSET_INTERVAL_LONG   10
 #define EPS_RSET_INTERVAL_SHORT  5
 #define INITIAL_OPE_INTERVAL     5
+#define COMMAND_COUNTER_INTERVAL 1      //for debug 1min
+#define EPS_MEASURE_INTERVAL 1          //for debug 1min
 
-int timer_counter = 0;
-int second_counter = 0;
-int minute_counter = 0;
-int hour_counter = 0;
-int day_counter = 0;
 
-int bat_meas_counter = 0;
-int eps_rest_counter = 0;
 
 void initTimer(void);
 void interrupt TimerCheck(void);
 void InitialOperation(void);
 UBYTE checkMeltingStatus(UBYTE);
+
+void set_receive_command_counter(UINT, UINT);
+
+UINT get_receive_command_counter_min(void);
+
+void set_init_ope_counter(UINT, UINT);
+
+UINT get_init_ope_counter_min(void);
+
+void set_bat_meas_counter(UINT, UINT);
+
+UINT get_bat_meas_counter_sec_min(void);
+
+UINT get_timer_counter(UBYTE unit);
+
+void reset_timer(void);
 
 //void interrupt TimerReset(void);
 
