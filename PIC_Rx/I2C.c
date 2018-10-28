@@ -333,3 +333,5 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
             break;
     }
 }
+
+

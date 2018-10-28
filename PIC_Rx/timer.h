@@ -15,14 +15,19 @@
 #define one_day 24
 #define one_week 7
 
+//BatMode survival <= 6.114V
+#define BatVol_saving_survival_high 0x01
+#define BatVol_saving_survival_Low 0xB9
+
+#define BatVol_OBCrevival_high 0x02
+#define BatVol_OBCrevival_Low 0x32
+
 int timer_counter = 0;
 int second_counter = 0;
 int minute_counter = 0;
 int hour_counter = 0;
 int day_counter = 0;
 
-int bat_meas_counter = 0;
-int initial_ope_counter = 0;
 
 void initTimer(void);
 void interrupt TimerCheck(void);

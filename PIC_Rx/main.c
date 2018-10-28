@@ -43,12 +43,12 @@
 
 //TODO:add interrupt finction?
 void main(void) {
-    
+
     /*---Initialization---*/
     /*----------------------------------------------------------------------*/ 
     InitSerial();
     InitMPU();
-    InitWDT();
+//    InitWDT();
     InitI2CMaster(I2C_baud_rate_def);
     initTimer();
     
@@ -73,10 +73,6 @@ void main(void) {
     
     //FIXME:for TXPIC
     putChar('S');
-    putChar('S');
-    putChar('S');
-
-    putChar('A');
     
     /*initia; operation debug*/
     /*------------------------------------------------------------------*/
@@ -93,8 +89,6 @@ void main(void) {
 //    putChar(melting_counter_read[0]);
 //    putChar(melting_counter_read[1]);
     /*------------------------------------------------------------------*/
-
-    putChar('B');
     
     while(1){
         
@@ -300,7 +294,7 @@ void main(void) {
         WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
         WriteLastCommandIdToEEPROM(commandData[1]);
         putChar('S');
-        
+
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
         UBYTE send_command[8];
