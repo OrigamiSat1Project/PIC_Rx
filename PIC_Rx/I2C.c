@@ -178,7 +178,7 @@ UBYTE ReadEEPROMmainAndSub(UBYTE high_address,UBYTE low_address){
     UBYTE ReadData;
     ReadData = ReadEEPROM(MAIN_EEPROM_ADDRESS,high_address,low_address);
     if (ReadData==0xFF){
-        ReadData = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
+        ReadData = ReadEEPROM(SUB_EEPROM_ADDRESS, high_address,low_address);
     }
     return ReadData;
 }

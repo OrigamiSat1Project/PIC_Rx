@@ -72,18 +72,16 @@ void interrupt TimerCheck(void){
         time = second_counter % INITIAL_OPE_INTERVAL;
         if(time==0){
             putChar(0xcc);
-            putChar(0xcc);
-            putChar(0xcc);
             InitialOperation();
-            putChar(0xdd);
             putChar(0xdd);
         }
         
         /*---EPS reset for debug (for debug 5/10s)---*/
         time = second_counter % EPS_reset_time;
         if(time == 0){
-            Reset_EPS();
-            
+//            Reset_EPS();
+//            ResetEPSandSetPLL();
+                    
             putChar(0xd1);
             UBYTE array_2byte[2];
             array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);

@@ -422,9 +422,10 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
             send_command[6] = 0x00;
             send_command[7] = 0x00;
             sendCommandByPointer(send_command);
-            FMTX(FMTX_Nref, FMTX_Nprg);
-            CWTX(CWTX_Nref, CWTX_Nprg);
-            FMRX(FMRX_Nref, FMRX_Nprg);
+//            FMTX(FMTX_Nref, FMTX_Nprg);
+//            CWTX(CWTX_Nref, CWTX_Nprg);
+//            FMRX(FMRX_Nref, FMRX_Nprg);
+            setPLL();
             reviveEPS(timeHigh, timeLow);
             WriteOneByteToMainAndSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_TX_RX_ON);
             break;
@@ -438,9 +439,10 @@ void commandSwitchSatMode(UBYTE command, UBYTE timeHigh, UBYTE timeLow){ //times
              * 3.if time has run out switch to power saving mode
             /*---------------------------*/
             switchPowerEPS(0x01, timeHigh, timeLow);
-            FMTX(FMTX_Nref, FMTX_Nprg);
-            CWTX(CWTX_Nref, CWTX_Nprg);
-            FMRX(FMRX_Nref, FMRX_Nprg);
+//            FMTX(FMTX_Nref, FMTX_Nprg);
+//            CWTX(CWTX_Nref, CWTX_Nprg);
+//            FMRX(FMRX_Nref, FMRX_Nprg);
+            setPLL();
             WriteOneByteToMainAndSubB0EEPROM(deviceOnOff_addressHigh, deviceOnOff_addressLow, CIB_ON);
             break;
         default:

@@ -78,9 +78,10 @@ void main(void) {
 //    putChar('x');
 //    FMRX(FMRX_Nref_binary, FMRX_Nprg_binary);
     
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
+//    FMTX(FMTX_Nref, FMTX_Nprg);
+//    CWTX(CWTX_Nref, CWTX_Nprg);
+//    FMRX(FMRX_Nref, FMRX_Nprg);
+    setPLL();
     
     
 //    LED_WHITE = 0;              //for debugging of PLL setting
@@ -105,7 +106,6 @@ void main(void) {
     putChar('B');
     
     while(1){
-        
         
         /*measure the runtime of the getBitLoop*/    //for normal run not needed
         /*------------------------------------------------------------------*/
@@ -184,12 +184,23 @@ void main(void) {
         /*------------------------------------*/
         
         if(crcResult != crcValue){
-            commandData[31] = 0x00; 
+            commandData[31] = commandData[31] & 0b0111111; 
             switchError(error_main_crcCheck);
         }else{
-            commandData[31] = 0b1000000;
+            commandData[31] = commandData[31] | 0b1000000;
 //            switchOk(ok_main_crcCheck);           
         }  
+        
+        /*---check commandID---*/
+        /*------------------------------------------------------------------*/
+//        UBYTE commandID;
+//        UWORD commandID_address;
+//        commandID_address = 
+//        commandID = ReadEEPROM(MAIN_EEPROM_ADDRESS,high_address,low_address);
+//        
+//        if (commandID == commandData[1]){
+//            
+//        } else {
         
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
