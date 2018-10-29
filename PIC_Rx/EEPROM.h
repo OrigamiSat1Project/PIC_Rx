@@ -105,12 +105,12 @@
 #define MeltingCounter_addressHigh     0xE0
 #define MeltingCounter_addressLow      0x0A
 
-#define SatelliteMode_addressHigh       0x00//include SEP(3,2bit) and RBF(1,0bit)
-#define SatelliteMode_addressLow        0x00//include SEP(3,2bit) and RBF(1,0bit)
+#define SatelliteMode_addressHigh       0x84//include SEP(3,2bit) and RBF(1,0bit)
+#define SatelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 
-#define BatVol_nominal_saving_datahigh_addresshigh  0x00
+#define BatVol_nominal_saving_datahigh_addresshigh  0x89
 #define BatVol_nominal_saving_datahigh_addressLow 0x00
-#define BatVol_nominal_saving_datalow_addresshigh  0x00
+#define BatVol_nominal_saving_datalow_addresshigh  0x8A
 #define BatVol_nominal_saving_datalow_addressLow 0x00
 
 #endif	/* EEPROM_H */

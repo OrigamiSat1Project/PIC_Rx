@@ -11,6 +11,7 @@
 #include "MPU.h"
 #include "EEPROM.h"
 #include "okError.h"
+#include "WDT.h"
 
 /*---Initial Operation---*/
 #define MELTING_FINISH 0x06  //TBD
@@ -46,19 +47,41 @@ void interrupt TimerCheck(void){
         if(second_counter%5 == 3){
 //            ReadBatVoltage();
 //            if(adcL <= 0xD0) putChar('s');
-            putChar(0xf0);
+            putChar('F');
             UBYTE bat_voltage[2];
+            UWORD Voltage;
             ReadBatVoltageWithPointer(bat_voltage);
-            UBYTE BatVol_nominal_saving_high = ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow);
-            UBYTE BatVol_nominal_saving_low = ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow);
+            Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];      
+            putChar('X');
+            putChar(bat_voltage[0]);
+            putChar(bat_voltage[1]);
+            putChar('X');
+            UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow);
+            UWORD BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow);
             UBYTE BeforeSatMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
+//            putChar('Y');
+//            putChar(BeforeSatMode);
+//            putChar('Y');
             BeforeSatMode = BeforeSatMode & 0xF0;
-            putChar(BeforeSatMode);
+
+//            UWORD test_vol = BatVol_nominal_saving_high <<8 | BatVol_nominal_saving_low;
+//            putChar('Y');
+//            putChar((UBYTE)(Voltage>>8));
+//            putChar((UBYTE)Voltage);
+//            putChar((UBYTE)(test_vol>>8));
+//            putChar((UBYTE)test_vol);
+//            putChar('Y');
+//            if(Voltage >= test_vol){
+//               putChar('O'); 
+//            }else{
+//                putChar('N'); 
+//            }
             
             switch(BeforeSatMode){
                 case 0x50://nominal mode
-                    if(bat_voltage[0] >= BatVol_nominal_saving_high && bat_voltage[1] >= BatVol_nominal_saving_low) {// >=7.5V
-                        putChar(0xa0);
+                    putChar('A');
+                    if(Voltage >= (BatVol_nominal_saving_high << 8 | BatVol_nominal_saving_low)) {// >=7.5V
+                        putChar('1');
                         //write SatMode nominal(SEP -> ON, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
                         //obc check
@@ -77,14 +100,14 @@ void interrupt TimerCheck(void){
                         }
                         //EPS ON
                         onEPS();
-                    }else if(bat_voltage[0] <= BatVol_saving_survival_high && bat_voltage[1] <= BatVol_saving_survival_Low){// <=6.114V
-                        putChar(0xa1);
+                    }else if(Voltage <= ((UWORD)BatVol_saving_survival_high<<8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
+                        putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
                         //EPS OFF
                         killEPS();
                     }else{
-                        putChar(0xa2);
+                        putChar('3');
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
                         //EPS OFF
@@ -94,8 +117,9 @@ void interrupt TimerCheck(void){
                     }
                     break;
                 case 0x60://saving mode
-                    if(bat_voltage[0] >= BatVol_OBCrevival_high && bat_voltage[1] >= BatVol_OBCrevival_Low){// >= 7.8V
-                        putChar(0xb0);
+                    putChar('B');
+                    if(Voltage >= ((UWORD)BatVol_OBCrevival_high <<8 |(UWORD)BatVol_OBCrevival_Low)){// >= 7.8V
+                        putChar('1');
                         //write SatMode nominal(SEP -> ON, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
                         //turn off NTRX(CIB power supply)
@@ -105,21 +129,22 @@ void interrupt TimerCheck(void){
                         FMTX(FMTX_Nref, FMTX_Nprg);
                         CWTX(CWTX_Nref, CWTX_Nprg);
                         FMRX(FMRX_Nref, FMRX_Nprg);
-                    }else if (bat_voltage[0] <= BatVol_saving_survival_high && bat_voltage[1] <= BatVol_saving_survival_Low){// <=6.114V
-                        putChar(0xb1);
+                    }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
+                        putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
                         //turn off NTRX(CIB power supply)
                         offNtrxPowerSupplyCIB();
                     }else{
-                        putChar(0xb2);
+                        putChar('3');
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
                     }
                     break;
                 case 0xA0://survival mode
-                    if(bat_voltage[0] >= BatVol_OBCrevival_high && bat_voltage[1] >= BatVol_OBCrevival_Low){// >= 7.8V
-                        putChar(0xc0);
+                    putChar('C');
+                    if(Voltage >= ((UWORD)BatVol_OBCrevival_high <<8 | (UWORD)BatVol_OBCrevival_Low)){// >= 7.8V
+                       putChar('1');
                         //write SatMode nominal(SEP -> ON, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
                         //EPS ON
@@ -127,12 +152,12 @@ void interrupt TimerCheck(void){
                         FMTX(FMTX_Nref, FMTX_Nprg);
                         CWTX(CWTX_Nref, CWTX_Nprg);
                         FMRX(FMRX_Nref, FMRX_Nprg);
-                    }else if (bat_voltage[0] <= BatVol_saving_survival_high && bat_voltage[1] <= BatVol_saving_survival_Low){// <=6.114V
-                        putChar(0xc1);
+                    }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
+                        putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
                     }else{
-                        putChar(0xc2);
+                        putChar('3');
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
                         //Turn on NTRX(from CIB)
@@ -141,10 +166,10 @@ void interrupt TimerCheck(void){
                     break;
                 default:
                     //error
-                    putChar(0xdd);
+                    putChar('D');
                     break;
             }
-            putChar(0xf1);
+            putChar('E');
         }
         //------------------------------------------------------------------------------------------------------------
         //---------------------comment out temporarily for debug change SatMode-----------------------------------

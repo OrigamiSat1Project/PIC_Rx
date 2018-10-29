@@ -37,8 +37,8 @@ void InitMPU(void)
 
 	//Port Initial Value Setting	
 	PORTA  = 0x00;
-	PORTB  = 0x00; //WDT on
-//    PORTB  = 0b00001000;  //WDT off
+//	PORTB  = 0x00; //WDT on
+    PORTB  = 0b00001000;  //WDT off
 	PORTC  = 0x00;
     PORTD  = 0x00;
     PORTE  = 0x00;

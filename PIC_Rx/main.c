@@ -73,7 +73,11 @@ void main(void) {
     
     //FIXME:for TXPIC
     putChar('S');
+    putChar('S');
     
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow,0x50);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
     /*initia; operation debug*/
     /*------------------------------------------------------------------*/
     UBYTE melting_counter;

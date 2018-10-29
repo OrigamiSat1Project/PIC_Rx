@@ -3,18 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/I2C.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/main.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/FMCW.h</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/MPU.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/ADC.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/timer.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/typeDefine.h</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/UART.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/decodeAX25.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/FMCW.c</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/MPU.h</file>
-            <file>file:/C:/Users/Yuki%20Nakatsuka/Desktop/OrigamiSat/PIC_Rx/PIC_Rx/timer.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/EEPROM.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/UART.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/main.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/FMCW.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/ADC.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/decodeAX25.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/timer.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/I2C.c</file>
         </group>
     </open-files>
 </project-private>
