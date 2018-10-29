@@ -151,6 +151,7 @@ void interrupt TimerCheck(void){
 //            }    
 //       }
     }
+    interruptI2C();
 }
 
 void InitialOperation(void){
