@@ -2,6 +2,7 @@
  build/default/production/main.p1:  \
  main.c  \
 OkError.h  \
+initial_operation.h  \
 I2C.h  \
 UART.h  \
 CRC16.h  \

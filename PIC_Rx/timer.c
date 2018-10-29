@@ -13,14 +13,6 @@
 #include "okError.h"
 #include "WDT.h"
 
-/*---Initial Operation---*/
-#define MELTING_FINISH 0x06  //TBD
-#define WAIT_TIME_FOR_SETTING 2  //[s] //TBD  200->2
-//#define BAT_LIMIT_FOR_MELTING 0x01B3 //[V] //TBD 6.0V
-#define BAT_LIMIT_FOR_MELTING 0x0077 //[V] //TBD 6.0V
-//#define MELTING_COUNTER_LIMIT 72  //for debug 72->10 
-#define MELTING_COUNTER_LIMIT 13  //for debug 72->10 
-
 void initTimer(void){
     INTCON = 0b11100000;    //GIE = 1, PEIE = 1, TMR0IE = 1
     OPTION_REG = 0b01000111;    //prescaler is assigned, TMR0 rate 1:256
@@ -44,6 +36,11 @@ static UINT bat_meas_counter_min        = 0;
 //static UINT eps_rest_counter_sec        = 0;
 static UINT init_ope_counter_sec        = 0;
 static UINT init_ope_counter_min        = 0;
+UBYTE WDT_flag = 0x00;
+
+//for debug
+static UINT eps_reset_counter_sec = 0;
+static UINT eps_reset_counter_min = 0;
 
 //for debug function
 void interrupt TimerCheck(void){
@@ -52,25 +49,27 @@ void interrupt TimerCheck(void){
         TMR0 = 0x00;
         timer_counter ++;
     }
-    
-    //XXX WDT
-    if((get_timer_counter('m') % WDT_INTERVAL) == 0 ){
-        //Tap WDT
-    }
-   
+           
     if(timer_counter >= one_second){
         timer_counter = 0;
         second_counter += 1;
         
+        eps_reset_counter_sec ++; //for debug        
         init_ope_counter_sec ++;
         bat_meas_counter_sec ++;
-//        eps_rest_counter_sec ++;
         receive_command_counter_sec ++;
         LED_WHITE = 1 - LED_WHITE;  //for debug
+        WDT_flag = 0x01;
     }
     if(second_counter >= one_minute){
         second_counter = 0;
-        minute_counter ++;
+        minute_counter ++;        
+        putChar('G');
+    }
+    //for debug
+    if(eps_reset_counter_sec >= one_minute){
+        eps_reset_counter_sec = 0;
+        eps_reset_counter_min ++;
     }
     if(receive_command_counter_sec >= one_minute){
         receive_command_counter_sec = 0;
@@ -99,11 +98,42 @@ void interrupt TimerCheck(void){
     if(week_counter >= 2){
         week_counter = 0;
     }
+    
+    /*---WDT send pulse (4s)---*/
+    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
+        if(WDT_flag == 0x01){
+            putChar('W');
+            sendPulseWDT();
+            WDT_flag = 0x00;
+        }
+    }
 }
+
+//for debug
+void set_eps_reset_counter(UINT time_sec, UINT time_min){
+    eps_reset_counter_sec = time_sec;
+    eps_reset_counter_min = time_min;
+}
+
+//FIXME:for debug
+UINT get_eps_reset_counter_sec(void){
+    return eps_reset_counter_sec;
+}
+
+//for debug
+UINT get_eps_reset_counter_min(void){
+    return eps_reset_counter_min;
+}
+
 
 void set_receive_command_counter(UINT time_sec, UINT time_min){
     receive_command_counter_sec = time_sec;
     receive_command_counter_min = time_min;
+}
+
+//FIXME:for debug
+UINT get_receive_command_counter_sec(void){
+    return receive_command_counter_sec;
 }
 
 UINT get_receive_command_counter_min(void){
@@ -115,6 +145,11 @@ void set_init_ope_counter(UINT time_sec, UINT time_min){
     init_ope_counter_min = time_min;
 }
 
+//for debug
+UINT get_init_ope_counter_sec(void){
+    return init_ope_counter_sec;
+}
+
 UINT get_init_ope_counter_min(void){
     return init_ope_counter_min;
 }
@@ -124,7 +159,12 @@ void set_bat_meas_counter(UINT time_sec, UINT time_min){
     bat_meas_counter_min = time_min;
 }
 
-UINT get_bat_meas_counter_sec_min(void){
+//for debug
+UINT get_bat_meas_counter_sec(void){
+    return bat_meas_counter_sec;
+}
+
+UINT get_bat_meas_counter_min(void){
     return bat_meas_counter_min;
 }
 
@@ -154,15 +194,6 @@ void reset_timer(void){
     week_counter    = 0;
 }
 
-// -----------------------------------------------------------------------------        
-        
-        /*---WDT send pulse (4s)---*/
-//        time = second_counter % WDT_INTERVAL;
-//        if (time==0){
-//            putChar('W');
-//            sendPulseWDT();
-//        }
-// -----------------------------------------------------------------------------        
         
 // -----------------------------------------------------------------------------
         //XXX No.3 func 
@@ -181,20 +212,7 @@ void reset_timer(void){
 //        }
 // -----------------------------------------------------------------------------        
         
-        
-// -----------------------------------------------------------------------------        
-        /*---Initial Operation (for debug 5s)---*/
-        //sampling rate is not determined
-//        time = second_counter % INITIAL_OPE_INTERVAL;
-//        if(time==0){
-//            putChar(0xcc);
-//            putChar(0xcc);
-//            putChar(0xcc);
-//            InitialOperation();
-//            putChar(0xdd);
-//            putChar(0xdd);
-//        }
-// -----------------------------------------------------------------------------        
+          
         
 // -----------------------------------------------------------------------------        
         /*---EPS reset for debug (for debug 5/10s)---*/
@@ -269,152 +287,6 @@ void reset_timer(void){
 //                }
 //            }    
 //       }
-
-void InitialOperation(void){
-    /*---start checking whether antenna are developed or not---*/
-    /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
-    /*--------------------------------------------------------------------------------*/
-    UBYTE temp = 0;
-    UBYTE array_2byte[2];
-    UWORD bat_voltage_2byte = 0;
-
-    switch(OBC_STATUS){
-        case OBC_ALIVE:
-            putChar(0xa1);
-//                switchOk(ok_main_forOBCstatus_ALIVE);
-            break;
-        case OBC_DIED:
-            
-            putChar(0xa2);
-            
-             /*--------------------------------------------------------------------------------*/
-            //FIXME:write datas to EEPROM for debug
-//            temp = 0b00000111;
-//            WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
-//            putChar(0xb1);
-             /*--------------------------------------------------------------------------------*/
-            
-            /*---read melting status & bit cal*/
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-            
-//            checkMeltingStatus(array_2byte);
-
-            //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-
-//                putChar(0xa3);
-//                putChar(array_2byte[0]);
-//                putChar(array_2byte[1]);
-                
-                
-                //check the battery voltage
-                ReadBatVoltageWithPointer(array_2byte);
-                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,array_2byte);
-
-//                putChar(0xb1);
-//                putChar(array_2byte[0]);
-//                putChar(array_2byte[1]);
-
-
-                bat_voltage_2byte = (array_2byte[0]<<8)| array_2byte[1];
-
-                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
-                    putChar(0xa4);
-                } else {
-//                    putChar(0xa5);
-                    //check melting counter
-                    UWORD melting_counter;
-                    //FIXME:for debug
-                    melting_counter = 0x03;
-                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, melting_counter);      
-
-                    UBYTE temp;
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-                    temp = ReadEEPROMmainAndSub(MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    putChar(temp);
-                    
-                    /*---------------------------*/
-//                    //for debug (if eeprom read error) 
-//                    temp = ReadEEPROM(0x03, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    putChar(temp);
-//                    if (temp==0xFF){
-//                        temp= ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    }
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, 0xff, 0xff);
-//                    putChar(temp);
-//                    putChar(0xa5);
-                    /*---------------------------*/
-                    
-//                    UWORD melting_counter_amari;
-//                    melting_counter_amari = melting_counter % MELTING_COUNTER_LIMIT;
-//                    
-//                    if((7 < melting_counter_amari)&&(melting_counter_amari<MELTING_COUNTER_LIMIT)){
-//                        melting_counter++;
-//                    } else {
-//                        putChar(0xa8);
-//                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-//
-//                        if(melting_counter<4){
-//                            putChar(0xa9);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-//                        } else {
-//                            putChar(0xa0);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-//                        }
-//                        melting_counter++;
-////                            switchOk(ok_main_forOBCstatus_DIED);
-//                    }                    
-
-                    if(temp>=MELTING_COUNTER_LIMIT){
-                        putChar(0xa6);
-                        temp = 0;
-                    } else if ((7 < temp)&&(temp<MELTING_COUNTER_LIMIT)){
-                        putChar(0xa7);
-                        temp++;
-                    } else {
-//                        putChar(0xa8);
-                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-
-                        if(temp<4){
-//                            putChar(0xa9);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-                        } else {
-//                            putChar(0xa0);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-                        }
-                        temp++;
-//                        putChar(0xb1);
-//                        putChar(temp);
-//                            switchOk(ok_main_forOBCstatus_DIED);
-                    }
-//                    putChar(0xaa);
-                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
-//                    putChar(temp);
-                }
-            }
-//            putChar(0xab);
-            break;
-        default:
-//            putChar(0xac);
-//            switchError(error_main_forOBCstatus);
-            break;    
-    }
-}
-
-UBYTE checkMeltingStatus(UBYTE e_address){
-    /*---read melting status---*/
-    UBYTE temp;
-    temp = ReadEEPROM(e_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-      
-    /*---bit operation---*/
-    //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-    temp = bitCalResult(temp);
-    return temp;
-}
-
 
 //EPS reset every week
 //void interrupt TimerReset(void){

@@ -82,7 +82,10 @@ void waitFlag(void){
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
             //XXX break by timer
-            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+//            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+            if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+                putChar('F');
+                putChar('1');
                 break;
             }
             
@@ -95,7 +98,10 @@ void waitFlag(void){
             }
         }
         //XXX break by timer
-        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+//        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+        if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+            putChar('F');
+            putChar('2');            
             break;
         }
         
@@ -231,7 +237,10 @@ void receiveDataPacket(UBYTE *cdData){
     
     waitFlag();
     //XXX break by timer
-    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+//    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+        putChar('F');
+        putChar('3');
         set_receive_command_counter(0,0);
         return;
     }
