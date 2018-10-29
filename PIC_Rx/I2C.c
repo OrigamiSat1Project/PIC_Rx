@@ -10,6 +10,9 @@
 
 #define MELTING_FINISH_FLAG 0b11111111
 
+int AckCheck;
+int CollisionCheck;
+
 /*******************************************************************************
 *setting
 ******************************************************************************/
@@ -18,44 +21,99 @@ void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
   SSPCON2 = 0;                  //MSSP Control Register 2:
   SSPADD = (_XTAL_FREQ/(4*c))-1; //MSSP Address Register: the lower seven bits of SSPADD act as the baud rate generator reload value
   SSPSTAT = 0;                  //MSSP Status Register
+  PIE1bits.SSPIE  = 1 ;               // enable MSSP interrupt
+  PIE2bits.BCLIE  = 1 ;               // enable bus collision interrupt
+  PIR1bits.SSPIF  = 0 ;               // clear MSSP interrupt flag
+  PIR2bits.BCLIF  = 0 ;               // clear bus collision flag
 }
 
-void I2CMasterWait(){
-  while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
+void interruptI2C(void)
+{
+     if (PIR1bits.SSPIF == 1) {
+          if (AckCheck == 1) {
+              AckCheck = 0;
+          }
+          PIR1bits.SSPIF = 0;
+     }
+     if (PIR2bits.BCLIF == 1) {
+          CollisionCheck = 1;
+          PIR2bits.BCLIF = 0;
+     }
 }
 
-
-void I2CMasterStart(){
-  I2CMasterWait();
-  SEN = 1;                      //SEN Start Condition Enable; bit 0 of SSPCON2
-}
-
-void I2CMasterRepeatedStart(){
-  I2CMasterWait();
-  RSEN = 1;                     //Repeated Start Condition Enabled bit (Master mode only); bit 1 of SSPCON2
-}
-
-void I2CMasterStop(){
-  I2CMasterWait();
-  PEN = 1;                      //Stop Condition Enable bit (Master mode only); bit 2 of SSPCON2
-}
-
-void I2CMasterWrite(UBYTE dataByte){                               
-  I2CMasterWait();
-  SSPBUF = dataByte;                   //Serial Receive/Transmit Buffer Register
+void I2CMasterWait(char mask){
+  while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
 }
 
 
-UBYTE I2CMasterRead(UBYTE address){                                         
-  UBYTE temp;
-  I2CMasterWait();
-  RCEN = 1;                     //Receive Enable bit; bit 3 of SSPCON2
-  I2CMasterWait();
-  temp = SSPBUF;
-  I2CMasterWait();
-  ACKDT = (address)?0:1;              //Acknowledge Data bit (Master Receive mode only); bit 3 of SSPCON2 
-  ACKEN = 1;                    //Acknowledge Sequence Enable bit (Master Receive mode only); bit 3 of SSPCON2 
-  return temp;
+int I2CMasterStart(UBYTE slave_address,UBYTE rw){
+//  I2CMasterWait();
+//  SEN = 1;                      //SEN Start Condition Enable; bit 0 of SSPCON2
+     CollisionCheck = 0 ;
+     I2CMasterWait(0x5) ;
+     SSPCON2bits.SEN = 1 ;
+     I2CMasterWait(0x5) ;
+     if (CollisionCheck == 1) return -1 ;
+     AckCheck = 1 ;
+     SSPBUF = (char)((slave_address<<1)+rw);
+     while (AckCheck);
+     if (CollisionCheck == 1) return -1 ;
+     return SSPCON2bits.ACKSTAT;
+}
+
+int I2CMasterRepeatedStart(UBYTE slave_address,UBYTE rw){
+//  I2CMasterWait();
+//  RSEN = 1;                     //Repeated Start Condition Enabled bit (Master mode only); bit 1 of SSPCON2
+     CollisionCheck = 0 ;
+     I2CMasterWait(0x5) ;
+     SSPCON2bits.RSEN = 1 ;
+     I2CMasterWait(0x5) ;
+     if (CollisionCheck == 1) return -1 ;
+     AckCheck = 1;
+     SSPBUF = (char)((slave_address<<1)+rw);
+     while (AckCheck);
+     if (CollisionCheck == 1) return -1;
+     return SSPCON2bits.ACKSTAT;
+}
+
+int I2CMasterStop(void){
+//  I2CMasterWait();
+//  PEN = 1;                      //Stop Condition Enable bit (Master mode only); bit 2 of SSPCON2
+     CollisionCheck = 0 ;
+     I2CMasterWait(0x5) ;
+     SSPCON2bits.PEN = 1 ;
+     if (CollisionCheck == 1) return -1 ;
+     else                     return  0 ;
+}
+
+int I2CMasterWrite(UBYTE dataByte){                               
+//  I2CMasterWait();
+//  SSPBUF = dataByte;                   //Serial Receive/Transmit Buffer Register
+     CollisionCheck = 0 ;
+     I2CMasterWait(0x5) ;
+     if (CollisionCheck == 1) return -1;
+     AckCheck = 1;
+     SSPBUF = dataByte;
+     while (AckCheck);
+     if (CollisionCheck == 1) return -1;
+     return SSPCON2bits.ACKSTAT;
+}
+
+
+int I2CMasterRead(UBYTE address){
+     int data_from_slave ;
+
+     CollisionCheck = 0 ;
+     I2CMasterWait(0x5) ;
+     SSPCON2bits.RCEN = 1;      //  enable receive from slave
+     I2CMasterWait(0x4) ;
+     if (CollisionCheck == 1) return -1 ;
+     data_from_slave = SSPBUF;
+     I2CMasterWait(0x5) ;
+     if (CollisionCheck == 1) return -1 ;
+     SSPCON2bits.ACKDT = address;
+     SSPCON2bits.ACKEN = 1;
+     return data_from_slave;
 }
 
 /*******************************************************************************
@@ -70,18 +128,19 @@ UBYTE I2CMasterRead(UBYTE address){
  *	XXX      :   not yet
  */
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-    UBYTE address = addressEEPROM << 1;
- 
-    I2CMasterStart();               //Start condition
-    I2CMasterWrite(address);        //7 bit address + Write
-    I2CMasterWrite(addressHigh);    //Adress High Byte
-    I2CMasterWrite(addressLow);     //Adress Low Byte
-    while(*data){
-        I2CMasterWrite(*data);      //Data
-        ++data;
-    }
-    I2CMasterStop();                //Stop condition
-    __delay_ms(200);
+    char ans;
+    char ack;
+    
+    ans = I2CMasterStart(addressEEPROM,0);
+    if (ans == 0){
+        I2CMasterWrite(addressHigh);
+        I2CMasterWrite(addressLow);
+        while(*data){
+            I2CMasterWrite(*data);
+            ++data;
+        }
+    } else ans = -1;
+    I2CMasterStop();
 }
 
 void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
@@ -114,13 +173,15 @@ void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
 
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE address;
+    int ans;
     address= addressEEPROM << 1;
     //UINT Datasize = sizeof(data);
-    I2CMasterStart();               //Start condition
-    I2CMasterWrite(address);        //7 bit address + Write
-    I2CMasterWrite(addressHigh);    //Adress High Byte
-    I2CMasterWrite(addressLow);     //Adress Low Byte
-    I2CMasterWrite(data);      //Data
+    ans = I2CMasterStart(addressEEPROM,0);               //Start condition
+    if(ans == 0){
+        I2CMasterWrite(addressHigh);    //Adress High Byte
+        I2CMasterWrite(addressLow);     //Adress Low Byte
+        I2CMasterWrite(data);           //Data
+    }else ans = -1;
     I2CMasterStop();                //Stop condition
     __delay_ms(200);
 }
@@ -155,23 +216,19 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
  *	XXX      :   not yet
  */
 UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
-    UBYTE Address = EEPROM_address << 1;
-    UBYTE ReadAddress = Address | 0x01;
     UBYTE ReadData;
+    int ans;
    
-    I2CMasterStart();         //Start condition
-    I2CMasterWrite(Address);     //7 bit address + Write
-    I2CMasterWrite(high_address);    //Adress High Byte
-    I2CMasterWrite(low_address);    //Adress Low Byte
-    I2CMasterRepeatedStart();         //Restart condition
-    
-    I2CMasterWrite(ReadAddress);     //7 bit address + Read
-    
-    ReadData = I2CMasterRead(0); //Read + Acknowledge
-    
+    ans = I2CMasterStart(EEPROM_address,0);         //Start condition
+    if(ans == 0){
+        I2CMasterWrite(high_address);    //Adress High Byte
+        I2CMasterWrite(low_address);    //Adress Low Byte
+        I2CMasterRepeatedStart(EEPROM_address,0);         //Restart condition
+        ReadData = I2CMasterRead(1); //Read + Acknowledge
+    }
     I2CMasterStop();          //Stop condition
+    __delay_ms(200);
     return ReadData;
-    __delay_ms(200);  
 }
 
 UBYTE ReadEEPROMmainAndSub(UBYTE high_address,UBYTE low_address){
@@ -192,19 +249,19 @@ UBYTE ReadEEPROMmainAndSub(UBYTE high_address,UBYTE low_address){
  *	XXX      :   not yet
  */
 void ReadDataFromEEPROMWithDataSize(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
-    UBYTE Address = EEPROM_address << 1;
-    UBYTE ReadAddress = Address | 0x01;
-    I2CMasterStart();                       //Start condition
-    I2CMasterWrite(Address);                //7 bit address + Write
-    I2CMasterWrite(high_address);           //Adress High Byte
-    I2CMasterWrite(low_address);            //Adress Low Byte
-    I2CMasterRepeatedStart();               //Restart condition
+    int ans;
     
-    I2CMasterWrite(ReadAddress);            //7 bit address + Read
-    for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
-        ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
-    }
-    ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
+    ans = I2CMasterStart(EEPROM_address,0);                       //Start condition
+    if(ans == 0){
+        I2CMasterWrite(high_address);           //Adress High Byte
+        I2CMasterWrite(low_address);            //Adress Low Byte
+        
+        I2CMasterRepeatedStart(EEPROM_address,1);               //Restart condition
+        for(UBYTE i = 0; i < EEPROMDataLength - 1; i++){
+            ReadData[i] = I2CMasterRead(0);     //Read + Acknowledge
+        }
+        ReadData[EEPROMDataLength - 1] = I2CMasterRead(1);
+    } else ans = -1;
     I2CMasterStop();                        //Stop condition
     
     __delay_ms(200);

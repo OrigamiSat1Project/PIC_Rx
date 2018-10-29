@@ -18,12 +18,13 @@
 #define I2C_baud_rate_def  I2C_baud_rate_low
 
 void InitI2CMaster(const UDWORD c);
-void I2CMasterWait(void);                                               
-void I2CMasterStart(void);                                              
-void I2CMasterRepeatedStart(void);                                   
-void I2CMasterStop(void);                                               
-void I2CMasterWrite(UBYTE);                                        
-UBYTE I2CMasterRead(UBYTE a);  
+void InterruptI2C(void);
+void I2CMasterWait(char);                                               
+int I2CMasterStart(unsigned char, unsigned char);                                              
+int I2CMasterRepeatedStart(unsigned char, unsigned char);                                   
+int I2CMasterStop(void);                                               
+int I2CMasterWrite(UBYTE);                                        
+int I2CMasterRead(UBYTE);  
 
 /*write*/
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
