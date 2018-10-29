@@ -16,7 +16,7 @@ void sendLow(int unitID);
 void sendHigh(int unitID);
 void sendSTB(int unitID);
 int binaryToDecimal(int n);
-void setNprg(int unitID, int Nprg);
+void setNprg(int unitID, USLONG Nprg);
 void setNref(int unitID, int Nref);
 void setOptionRegister(int unitID);
 void _NOP(void);
@@ -124,7 +124,7 @@ void sendSTB(int unitID){
  * 3. Send group code '10'
  * 4. Send STB signal
  */
-void setNprg(int unitID, int Nprg){
+void setNprg(int unitID, USLONG Nprg){
     int Nprg_b[17];
     
     for(int i=0; i<17; i++){
@@ -264,7 +264,7 @@ void setOptionRegister(int unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMTX(int Nref, int Nprg){
+void FMTX(int Nref, USLONG Nprg){
     int fmtx = FMTX_ID;
     setOptionRegister(fmtx);
     setNref(fmtx, Nref);
@@ -278,7 +278,7 @@ void FMTX(int Nref, int Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void CWTX(int Nref, int Nprg){
+void CWTX(int Nref, USLONG Nprg){
     int cwtx = CWTX_ID;
     setOptionRegister(cwtx);
     setNref(cwtx, Nref);
@@ -292,7 +292,7 @@ void CWTX(int Nref, int Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMRX(int Nref, int Nprg){
+void FMRX(int Nref, USLONG Nprg){
     int fmrx = FMRX_ID;
     setOptionRegister(fmrx);
     setNref(fmrx, Nref);
@@ -330,8 +330,8 @@ int calculateNref(UBYTE Nref_high, UBYTE Nref_low){
     return Nref;
 }
 
-int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
-    int Nprg;
+USLONG calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
+    USLONG Nprg;
     Nprg = Nprg_high<<8 | Nprg_middle;
     Nprg = Nprg<<8 | Nprg_low;
     
@@ -352,7 +352,7 @@ int calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
 //process command data if the command type is 'radio unit'
 void commandSwitchFMCW(UBYTE command, UBYTE Nref_high, UBYTE Nref_low, UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){ //TODO: specify which Nref and Nprg are which    
     int Nref;
-    int Nprg;
+    USLONG Nprg;
     Nref = calculateNref(Nref_high, Nref_low);
     Nprg = calculateNprg(Nprg_high, Nprg_middle, Nprg_low);
     switch(command){    
