@@ -223,7 +223,7 @@ UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
     if(ans == 0){
         I2CMasterWrite(high_address);    //Adress High Byte
         I2CMasterWrite(low_address);    //Adress Low Byte
-        I2CMasterRepeatedStart(EEPROM_address,0);         //Restart condition
+        I2CMasterRepeatedStart(EEPROM_address,1);         //Restart condition
         ReadData = I2CMasterRead(1); //Read + Acknowledge
     }
     I2CMasterStop();          //Stop condition
