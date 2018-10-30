@@ -59,18 +59,3 @@ void switchError(UBYTE action_select){
 //    sendCommandByPointer(send_command); 
 //    sendCommand('t','f',0xaa,B0select_for_Error,HighAddress_for_Error,LowAddress_for_Error,downlinlTimes,DataSize);
 }
-
-//TODO:need debug
-//ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-UBYTE bitCalResult(UBYTE bit_input){
-    UBYTE bit_cal_result = 0; 
-    for(UBYTE cal_counter=0; cal_counter<8; cal_counter++){
-        if((bit_input & 1)==1){
-            bit_cal_result = bit_cal_result + 1;
-        } else {
-            bit_cal_result = bit_cal_result + 0;
-        }
-        bit_input = bit_input >>1;
-    }
-    return bit_cal_result;
-}

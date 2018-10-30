@@ -13,14 +13,6 @@
 #include "okError.h"
 #include "WDT.h"
 
-/*---Initial Operation---*/
-#define MELTING_FINISH 0x06  //TBD
-#define WAIT_TIME_FOR_SETTING 2  //[s] //TBD  200->2
-//#define BAT_LIMIT_FOR_MELTING 0x01B3 //[V] //TBD 6.0V
-#define BAT_LIMIT_FOR_MELTING 0x0077 //[V] //TBD 6.0V
-//#define MELTING_COUNTER_LIMIT 72  //for debug 72->10 
-#define MELTING_COUNTER_LIMIT 13  //for debug 72->10 
-
 void initTimer(void){
     INTCON = 0b11100000;    //GIE = 1, PEIE = 1, TMR0IE = 1
     OPTION_REG = 0b01000111;    //prescaler is assigned, TMR0 rate 1:256
@@ -30,161 +22,181 @@ void initTimer(void){
 UBYTE EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
 UWORD time = 0;
 
+static UINT timer_counter   = 0;
+static UINT second_counter  = 0;
+static UINT minute_counter  = 0;
+static UINT hour_counter    = 0;
+static UINT day_counter     = 0;
+static UINT week_counter    = 0;
+
+static UINT receive_command_counter_sec = 0;
+static UINT receive_command_counter_min = 0;
+static UINT bat_meas_counter_sec        = 0;
+static UINT bat_meas_counter_min        = 0;
+//static UINT eps_rest_counter_sec        = 0;
+static UINT init_ope_counter_sec        = 0;
+static UINT init_ope_counter_min        = 0;
+UBYTE WDT_flag = 0x00;
+
+//for debug
+static UINT eps_reset_counter_sec = 0;
+static UINT eps_reset_counter_min = 0;
+
 //for debug function
 void interrupt TimerCheck(void){
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;
-        timer_counter += 1;
+        timer_counter ++;
     }
-    
+           
     if(timer_counter >= one_second){
         timer_counter = 0;
         second_counter += 1;
-        LED_WHITE = 1 - LED_WHITE;  //for debug
         
-//      ------battery voltage measure-------------
-//        treadhold is not determined
-//        sampling rate is not determined
-//        debug : 6v -> send 's' 7v -> send 'n'
-        if(second_counter%5 == 3){
-//            ReadBatVoltage();
-//            if(adcL <= 0xD0) putChar('s');
-            putChar('F');
-            UBYTE bat_voltage[2];
-            UWORD Voltage;
-            ReadBatVoltageWithPointer(bat_voltage);
-            Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];      
-            putChar('X');
-            putChar(bat_voltage[0]);
-            putChar(bat_voltage[1]);
-            putChar('X');
-            UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow);
-            UWORD BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow);
-            UBYTE BeforeSatMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
-//            putChar('Y');
-//            putChar(BeforeSatMode);
-//            putChar('Y');
-            BeforeSatMode = BeforeSatMode & 0xF0;
-
-//            UWORD test_vol = BatVol_nominal_saving_high <<8 | BatVol_nominal_saving_low;
-//            putChar('Y');
-//            putChar((UBYTE)(Voltage>>8));
-//            putChar((UBYTE)Voltage);
-//            putChar((UBYTE)(test_vol>>8));
-//            putChar((UBYTE)test_vol);
-//            putChar('Y');
-//            if(Voltage >= test_vol){
-//               putChar('O'); 
-//            }else{
-//                putChar('N'); 
-//            }
-            
-            switch(BeforeSatMode){
-                case 0x50://nominal mode
-                    putChar('A');
-                    if(Voltage >= (BatVol_nominal_saving_high << 8 | BatVol_nominal_saving_low)) {// >=7.5V
-                        putChar('1');
-                        //write SatMode nominal(SEP -> ON, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
-                        //obc check
-                        switch(OBC_STATUS){
-                            case OBC_ALIVE:                               
-                                break;
-                            case OBC_DIED:
-                                killEPS();
-                                onEPS();
-//                                FMTX(FMTX_Nref, FMTX_Nprg);
-//                                CWTX(CWTX_Nref, CWTX_Nprg);
-//                                FMRX(FMRX_Nref, FMRX_Nprg);
-                                break;
-                            default:    
-                                break;
-                        }
-                        //EPS ON
-                        onEPS();
-                    }else if(Voltage <= ((UWORD)BatVol_saving_survival_high<<8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
-                        putChar('2');
-                        //write SatMode survival(SEP -> OFF, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
-                        //EPS OFF
-                        killEPS();
-                    }else{
-                        putChar('3');
-                        //Write SatMode saving(SEP -> OFF, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
-                        //EPS OFF
-                        killEPS();
-                        //Turn on NTRX(from CIB)
-                        onNtrxPowerSupplyCIB(0,0);                   
-                    }
-                    break;
-                case 0x60://saving mode
-                    putChar('B');
-                    if(Voltage >= ((UWORD)BatVol_OBCrevival_high <<8 |(UWORD)BatVol_OBCrevival_Low)){// >= 7.8V
-                        putChar('1');
-                        //write SatMode nominal(SEP -> ON, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
-                        //turn off NTRX(CIB power supply)
-                        offNtrxPowerSupplyCIB();
-                        //EPS ON
-                        onEPS();
-//                        FMTX(FMTX_Nref, FMTX_Nprg);
-//                        CWTX(CWTX_Nref, CWTX_Nprg);
-//                        FMRX(FMRX_Nref, FMRX_Nprg);
-                    }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
-                        putChar('2');
-                        //write SatMode survival(SEP -> OFF, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
-                        //turn off NTRX(CIB power supply)
-                        offNtrxPowerSupplyCIB();
-                    }else{
-                        putChar('3');
-                        //Write SatMode saving(SEP -> OFF, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
-                    }
-                    break;
-                case 0xA0://survival mode
-                    putChar('C');
-                    if(Voltage >= ((UWORD)BatVol_OBCrevival_high <<8 | (UWORD)BatVol_OBCrevival_Low)){// >= 7.8V
-                       putChar('1');
-                        //write SatMode nominal(SEP -> ON, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
-                        //EPS ON
-                        onEPS();
-//                        FMTX(FMTX_Nref, FMTX_Nprg);
-//                        CWTX(CWTX_Nref, CWTX_Nprg);
-//                        FMRX(FMRX_Nref, FMRX_Nprg);
-                    }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
-                        putChar('2');
-                        //write SatMode survival(SEP -> OFF, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
-                    }else{
-                        putChar('3');
-                        //Write SatMode saving(SEP -> OFF, RBF -> ON)
-                        WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
-                        //Turn on NTRX(from CIB)
-                        onNtrxPowerSupplyCIB(0,0);
-                    }                  
-                    break;
-                default:
-                    //error
-                    putChar('D');
-                    break;      
-            putChar('E');
-        }
-        bat_meas_counter += 1;
-        eps_rest_counter += 1;
-        second_counter += 1;
+        eps_reset_counter_sec ++; //for debug        
+        init_ope_counter_sec ++;
+        bat_meas_counter_sec ++;
+        receive_command_counter_sec ++;
         LED_WHITE = 1 - LED_WHITE;  //for debug
-        
-        /*---WDT send pulse (4s)---*/
-        time = second_counter % WDT_INTERVAL;
-        if (time==0){
+        WDT_flag = 0x01;
+    }
+    if(second_counter >= one_minute){
+        second_counter = 0;
+        minute_counter ++;        
+        putChar('G');
+    }
+    //for debug
+    if(eps_reset_counter_sec >= one_minute){
+        eps_reset_counter_sec = 0;
+        eps_reset_counter_min ++;
+    }
+    if(receive_command_counter_sec >= one_minute){
+        receive_command_counter_sec = 0;
+        receive_command_counter_min ++;
+    }
+    if(init_ope_counter_sec >= one_minute){
+        init_ope_counter_sec = 0;
+        init_ope_counter_min ++;
+    }
+    if(bat_meas_counter_sec >= one_minute){
+        bat_meas_counter_sec = 0;
+        bat_meas_counter_min ++;
+    }
+    if(minute_counter >= one_hour){
+        minute_counter = 0;
+        hour_counter ++;
+    }
+    if(hour_counter >= one_day){
+        hour_counter = 0;
+        day_counter ++;
+    }
+    if(day_counter >= one_week){
+        day_counter = 0;
+        week_counter ++;
+    }
+    if(week_counter >= 2){
+        week_counter = 0;
+    }
+    
+    /*---WDT send pulse (4s)---*/
+    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
+        if(WDT_flag == 0x01){
             putChar('W');
             sendPulseWDT();
+            WDT_flag = 0x00;
         }
+    }
+}
+
+//for debug
+void set_eps_reset_counter(UINT time_sec, UINT time_min){
+    eps_reset_counter_sec = time_sec;
+    eps_reset_counter_min = time_min;
+}
+
+//FIXME:for debug
+UINT get_eps_reset_counter_sec(void){
+    return eps_reset_counter_sec;
+}
+
+//for debug
+UINT get_eps_reset_counter_min(void){
+    return eps_reset_counter_min;
+}
+
+
+void set_receive_command_counter(UINT time_sec, UINT time_min){
+    receive_command_counter_sec = time_sec;
+    receive_command_counter_min = time_min;
+}
+
+//FIXME:for debug
+UINT get_receive_command_counter_sec(void){
+    return receive_command_counter_sec;
+}
+
+UINT get_receive_command_counter_min(void){
+    return receive_command_counter_min;
+}
+
+void set_init_ope_counter(UINT time_sec, UINT time_min){
+    init_ope_counter_sec = time_sec;
+    init_ope_counter_min = time_min;
+}
+
+//for debug
+UINT get_init_ope_counter_sec(void){
+    return init_ope_counter_sec;
+}
+
+UINT get_init_ope_counter_min(void){
+    return init_ope_counter_min;
+}
+
+void set_bat_meas_counter(UINT time_sec, UINT time_min){
+    bat_meas_counter_sec = time_sec;
+    bat_meas_counter_min = time_min;
+}
+
+//for debug
+UINT get_bat_meas_counter_sec(void){
+    return bat_meas_counter_sec;
+}
+
+UINT get_bat_meas_counter_min(void){
+    return bat_meas_counter_min;
+}
+
+UINT get_timer_counter(UBYTE unit){
+    switch(unit){
+        case 's':
+            return second_counter;
+        case 'm':
+            return minute_counter;
+        case 'h':
+            return hour_counter;
+        case 'd':
+            return day_counter;
+        case 'w':
+            return week_counter;
+        default:
+            return 0;
+    }
+}
+
+void reset_timer(void){
+    timer_counter   = 0;
+    second_counter  = 0;
+    minute_counter  = 0;
+    hour_counter    = 0;
+    day_counter     = 0;
+    week_counter    = 0;
+}
+
         
+// -----------------------------------------------------------------------------
+        //XXX No.3 func 
         //battery voltage measure
         //treadhold is not determined
         //sampling rate is not determined
@@ -198,41 +210,34 @@ void interrupt TimerCheck(void){
 //            if(bat_voltage[1] <= 0xD0) putChar(0xaa);
 //            else putChar(0xbb);
 //        }
+// -----------------------------------------------------------------------------        
         
+          
         
-        /*---Initial Operation (for debug 5s)---*/
-        //sampling rate is not determined
-        time = second_counter % INITIAL_OPE_INTERVAL;
-        if(time==0){
-            putChar(0xcc);
-            putChar(0xcc);
-            putChar(0xcc);
-            InitialOperation();
-            putChar(0xdd);
-            putChar(0xdd);
-        }
-        
+// -----------------------------------------------------------------------------        
         /*---EPS reset for debug (for debug 5/10s)---*/
-        time = second_counter % EPS_reset_time;
-        if(time == 0){
-            Reset_EPS();
-            
-            putChar(0xd1);
-            UBYTE array_2byte[2];
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//            putChar(array_2byte[0]);
-//            putChar(array_2byte[1]);
-//            array_2byte[0] = 2;
-//            array_2byte[1] = 2;
-            
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-                putChar(0xd2);
-            } else {
-                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
-                putChar('E');
-                putChar(0xd3);
-            }
+//        time = second_counter % EPS_reset_time;
+//        if(time == 0){
+//            Reset_EPS();
+//            
+//            putChar(0xd1);
+//            UBYTE array_2byte[2];
+//            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+////            putChar(array_2byte[0]);
+////            putChar(array_2byte[1]);
+////            array_2byte[0] = 2;
+////            array_2byte[1] = 2;
+//            
+//            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+//                putChar(0xd2);
+//            } else {
+//                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
+//                putChar('E');
+//                putChar(0xd3);
+//            }
+//        }
+// -----------------------------------------------------------------------------        
 //        
 //       if(second_counter >= one_minute){
 //           second_counter = 0;
@@ -282,182 +287,6 @@ void interrupt TimerCheck(void){
 //                }
 //            }    
 //       }
-        }
-        }
-    }
-}
-
-void InitialOperation(void){
-    /*---start checking whether antenna are developed or not---*/
-    /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
-    /*--------------------------------------------------------------------------------*/
-    UBYTE temp = 0;
-    UBYTE array_2byte[2];
-    UWORD bat_voltage_2byte = 0;
-
-    switch(OBC_STATUS){
-        case OBC_ALIVE:
-            putChar(0xa1);
-//                switchOk(ok_main_forOBCstatus_ALIVE);
-            break;
-        case OBC_DIED:
-            
-            putChar(0xa2);
-            
-             /*--------------------------------------------------------------------------------*/
-            //FIXME:write datas to EEPROM for debug
-//            temp = 0b00000111;
-//            WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
-//            putChar(0xb1);
-             /*--------------------------------------------------------------------------------*/
-            
-            /*---read melting status & bit cal*/
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-            
-//            checkMeltingStatus(array_2byte);
-
-            //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-
-//                putChar(0xa3);
-//                putChar(array_2byte[0]);
-//                putChar(array_2byte[1]);
-                
-                
-                //check the battery voltage
-                ReadBatVoltageWithPointer(array_2byte);
-                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,array_2byte);
-
-//                putChar(0xb1);
-//                putChar(array_2byte[0]);
-//                putChar(array_2byte[1]);
-
-
-                bat_voltage_2byte = (array_2byte[0]<<8)| array_2byte[1];
-
-                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
-                    putChar(0xa4);
-                } else {
-//                    putChar(0xa5);
-                    //check melting counter
-                    UWORD melting_counter;
-                    //FIXME:for debug
-                    melting_counter = 0x03;
-                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, melting_counter);      
-
-                    UBYTE temp;
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-                    temp = ReadEEPROMmainAndSub(MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    putChar(temp);
-                    
-                    /*---------------------------*/
-//                    //for debug (if eeprom read error) 
-//                    temp = ReadEEPROM(0x03, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    putChar(temp);
-//                    if (temp==0xFF){
-//                        temp= ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    }
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, 0xff, 0xff);
-//                    putChar(temp);
-//                    putChar(0xa5);
-                    /*---------------------------*/
-                    
-//                    UWORD melting_counter_amari;
-//                    melting_counter_amari = melting_counter % MELTING_COUNTER_LIMIT;
-//                    
-////                    UWORD melting_counter_amari;
-////                    melting_counter_amari = melting_counter % MELTING_COUNTER_LIMIT;
-////                    
-////                    if((7 < melting_counter_amari)&&(melting_counter_amari<MELTING_COUNTER_LIMIT)){
-////                        melting_counter++;
-////                    } else {
-////                        putChar(0xa8);
-////                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-////
-////                        if(melting_counter<4){
-////                            putChar(0xa9);
-////                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-////                        } else {
-////                            putChar(0xa0);
-////                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-////                        }
-////                        melting_counter++;
-//////                            switchOk(ok_main_forOBCstatus_DIED);
-////                    }                    
-//
-//                    if(temp==MELTING_COUNTER_LIMIT){
-//                        putChar(0xa6);
-//                        temp = 0;
-//                    } else if ((7 < temp)&&(temp<MELTING_COUNTER_LIMIT)){
-//                        putChar(0xa7);
-//                        temp++;
-//                    } else {
-//                        putChar(0xa8);
-//                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-//
-//                        if(temp<4){
-//                            putChar(0xa9);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-//                        } else {
-//                            putChar(0xa0);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-//                        }
-//                        temp++;
-//                        putChar(0xb1);
-//                        putChar(temp);
-////                            switchOk(ok_main_forOBCstatus_DIED);
-//                    }                    
-
-                    if(temp>=MELTING_COUNTER_LIMIT){
-                        putChar(0xa6);
-                        temp = 0;
-                    } else if ((7 < temp)&&(temp<MELTING_COUNTER_LIMIT)){
-                        putChar(0xa7);
-                        temp++;
-                    } else {
-//                        putChar(0xa8);
-                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-
-                        if(temp<4){
-//                            putChar(0xa9);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-                        } else {
-//                            putChar(0xa0);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-                        }
-                        temp++;
-//                        putChar(0xb1);
-//                        putChar(temp);
-//                            switchOk(ok_main_forOBCstatus_DIED);
-                    }
-//                    putChar(0xaa);
-                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
-//                    putChar(temp);
-                }
-            }
-//            putChar(0xab);
-            break;
-        default:
-//            putChar(0xac);
-//            switchError(error_main_forOBCstatus);
-            break;    
-    }
-}
-
-UBYTE checkMeltingStatus(UBYTE e_address){
-    /*---read melting status---*/
-    UBYTE temp;
-    temp = ReadEEPROM(e_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-      
-    /*---bit operation---*/
-    //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
-    temp = bitCalResult(temp);
-    return temp;
-}
-
 
 //EPS reset every week
 //void interrupt TimerReset(void){
@@ -499,3 +328,4 @@ UBYTE checkMeltingStatus(UBYTE e_address){
 //        }
 //    }
 //}
+

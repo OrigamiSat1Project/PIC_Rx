@@ -11,6 +11,7 @@
 #include "UART.h"
 #include "decodeAX25.h"
 #include "I2C.h"
+#include "initial_operation.h"
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "EPS.h"
@@ -33,6 +34,7 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
+UBYTE lastCommandID;        //ID of uplink command
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -110,19 +112,48 @@ void main(void) {
     
     while(1){
         
+        /*---timer interrupt---*/
+        /*----------------------------------------------------------------------------*/
+        /*---timer process for EPS reset (1week)---*/       
+//        if(get_timer_counter('w') >= 1){  //for FM
+        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+            putChar('E');
+            putChar('E');
+            putChar('E');
+            Reset_EPS();
+            setPLL();
+            // Execute 1week reset
+            reset_timer();
+            set_eps_reset_counter(0,0);  //for debug
+        }
+
+        /*---timer process for initial operation (22.5min)---*/
+        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
+        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+            putChar('I');
+            putChar('I');
+            putChar('I');
+            InitialOperation();
+            set_init_ope_counter(0,0);
+        }
+
+        /*---timer process for measure EPS BATTERY---*/
+        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+           putChar('B');
+           putChar('B');
+           putChar('B');
+           //TODO:debug function to measure EPS Battery
+           MeasureBatVoltageAnChangeSatMode();
+           set_bat_meas_counter(0,0);
+        }
         
-        /*measure the runtime of the getBitLoop*/    //for normal run not needed
-        /*------------------------------------------------------------------*/
-        //while(1){
-            //getbit();
-            //debugLEDyellow();   //6us
-        //}
                 
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
         UBYTE commandData[DATA_SIZE];         //data of uplink command
 //         UBYTE *commandData;         //data of uplink command
-//        UBYTE commandID;            //ID of uplink command
+        UBYTE commandID;            //ID of uplink command
 
         //for information on EEPROM see data sheet: 24LC1025        
         UBYTE B0select;             //control byte B0 of EEPROM
@@ -130,33 +161,29 @@ void main(void) {
         UBYTE wLowAddress;          //address low byte of EEPROM
         UBYTE mainControlByte;      //control byte of main EEPROM
         UBYTE subControlByte;       //control byte of sub EEPROM       
-        UBYTE downlinkTimes;       //downlink times of received command
-
+        UBYTE downlinkTimes;       //downlink times of received command 
+        
+        /*---COMMAND RESET----*/
+        for(UBYTE i=0; i<DATA_SIZE; i++){
+            commandData[i] = 0;
+        }
+        
         receiveDataPacket(commandData);
-
+        putChar('F');
+        putChar('4');
         
-//        putString(commandData);
-//        putChar('C');
+        //XXX if () continue, IF COMMAND IS STILL RESET
+        if(commandData[DATA_SIZE]==0) {
+            continue;      //not receive command-->continue
+        } 
         
-//        commandID = commandData[1];
-//        
-//        putChar(commandID);
-//        putCrLf();
-//        putChar(lastCommandID);
-//        putCrLf();
-////        if (commandID == lastCommandID) continue;       //same uplink command
-//        lastCommandID = commandID;                      //update command ID
+        /*---check command ID---*/
+        commandID = commandData[1];     
+        if (commandID == lastCommandID) {
+            continue;       //same uplink command-->continue
+        }
+        lastCommandID = commandID;                      //update command ID
         
-//        for (int i = 0; i<5;i++){
-//            LED_WHITE = 1;
-//            __delay_ms(2000);
-//            LED_WHITE = 0;
-//            __delay_ms(1000);
-//        }
-        // putChar('D');
-        // LED_WHITE = 1;
-        // __delay_ms(500);
-        // LED_WHITE = 0;
         
         B0select = commandData[19];
         wHighAddress = commandData[20];
@@ -165,11 +192,6 @@ void main(void) {
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
         
-        //printf("%s\r\n", commandData); //used for debugging with computer
-                
-//        LED_WHITE = 1; //debugging receive command from ground station
-//        __delay_ms(100);
-//        LED_WHITE = 0;
 
         
         /*---CRC check for command from Grand Station---*/ 
@@ -187,11 +209,12 @@ void main(void) {
 //        crcValueLow = crcValue & 0x00FF;
         /*------------------------------------*/
         
+        /*---update CRC---*/
         if(crcResult != crcValue){
-            commandData[31] = 0x00; 
-            switchError(error_main_crcCheck);
+            commandData[31] = commandData[31] & 0b01111111; 
+//            switchError(error_main_crcCheck);
         }else{
-            commandData[31] = 0b1000000;
+            commandData[31] = commandData[31] | 0b1000000;
 //            switchOk(ok_main_crcCheck);           
         }  
         
@@ -218,7 +241,7 @@ void main(void) {
         putChar('G');
         
         for(int i=0; i<DATA_SIZE; i++){
-            putChar(commandData[i]);
+//            putChar(commandData[i]);
         }
         putChar('H');
         /*---Define if command target is RXCOBC 'R' and read in task target ---*/
@@ -256,7 +279,7 @@ void main(void) {
                     commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);                   
                     break;
                 default:
-                    switchError(error_main_reveiveCommand);
+//                    switchError(error_main_reveiveCommand);
                     break;
                 }
 
@@ -467,6 +490,8 @@ void main(void) {
         /*-------------------------------------------------------------------*/
     
        __delay_ms(500);
+       
+      
     }
     //return;
 }
