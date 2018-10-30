@@ -33,7 +33,7 @@ void _NOP(void);
 void downlinkFMSignal(UBYTE,UBYTE, UBYTE, UBYTE, UBYTE);
 
 /*Function : HK downlink*/
-void HKDownlink(UBYTE);
+void HKDownlink(void);
 void HKDownlinkFR0(void);
 void HKDownlinkFR1(void);
 void HKDownlinkFR2(void);

@@ -73,170 +73,170 @@ void interrupt InterReceiver(void);
 //}
 
 
-void interrupt InterReceiver(void){
-    putChar('I');
-    putChar('I');
-    
-//    UBYTE commandSize;
-//    commandSize = 10;
-
-//    UBYTE RXDATA[10];//array size = commandSize
-    UBYTE RXDATA[commandSize];
-//    volatile static int intr_counter;
-
-    if (RCIF == 1) {
-        /*---for debug---*/
-//         for (UBYTE i = 0; i < commandSize; i++){
-//             RXDATA[i] = getChar();
-//         }
-        UBYTE get_char_state = 0;
-        while(get_char_state < commandSize){
-            RXDATA[0] = getChar();
-            putChar('X');
-//            putChar('e');
-//            putChar('t');
-//            putChar(RXDATA[0]);
-            get_char_state++;
-            if(RXDATA[0] != 't' && RXDATA[0] != 'g'){
-                get_char_state = 0;
-            } else {    
-                for (UBYTE i = 1; i < commandSize; i++){
-                RXDATA[i] = getChar();
-                get_char_state++;
-                }
-            }
-        }
-        
-        //TODO:need?
-        /*---Send command using UARTto RXCOBC---*/
-        for (UBYTE i = 0; i < commandSize; i++){
-            putChar(RXDATA[i]);
-            NOP();
-        }
-       
-        /*---CRC check for command from RXCOBC or OBC---*/ 
-       //TODO add case RXDATA[0]!=t or g
-        UWORD crcResult, crcValue;
-        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
-        crcResult = crc16(0,RXDATA,8);
-        crcValue =  CRC_check(RXDATA,8);
-        crcResultHigh = crcResult>>8;
-        crcResultLow = crcResult & 0x00FF;
-        crcValueHigh = crcValue>>8;
-        crcValueLow = crcValue & 0x00FF;
-        
-        /*----------------------------------------------*/
-        //FIXME:[start]debug for test to CRCcheck
-//        putChar(0xcc);
-//        putChar(0xcc);
-//        putChar(crcResultHigh);
-//        putChar(crcResultLow);
-//        putChar(crcValueHigh);
-//        putChar(crcValueLow);
-        //FIXME:[finish]debug for test to CRCcheck
-        /*----------------------------------------------*/
-        
-        /*---read command ID---*/
-        UBYTE commandID;
-        commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
-        //TODO:read datas from sub EEPROM
-
-        /*---read CRC check from EEPROM---*/
-        UBYTE CRC_check_result;
-        //FIXME:for debug
-        CRC_check_result = 0b1000000;
-        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-        CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
-        
-        if(crcResult != crcValue){  //crc error
-            
-            /*---write CRC error result (6bit 0) ---*/
-            CRC_check_result = CRC_check_result & 0b1011111;
-            WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-            
-            putChar(0xa1);
-            putChar(CRC_check_result);
-            putErrorNoDownlink(error_main_crcCheck);    
-            
-        } else {  //crc  OK
-            
-            /*---write CRC ok result (6bit 1) ---*/
-            CRC_check_result = CRC_check_result | 0b01000000;
-            WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-            
-            putChar(0xa2);
-            putChar(CRC_check_result);
-            
-            /*---Define if command target is 't' or 'g' and read in task target ---*/
-            /*------------------------------------------------------------------*/
-            if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
-                //TODO:add error messege
-                putChar(0xa3);
-            } else {
-                switch(RXDATA[1]){
-                    /*---Command from RXCOBC---*/
-                    /*------------------------------------------------------------------*/
-                    case 0x75:  //'u'
-                        putChar('R'); 
-                        putChar(0xa4);
-                        downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-                        break;
-
-                    /*---Command from OBC---*/
-                    /*------------------------------------------------------------------*/
-                    case 0x63: /*'c':CW Downlink*/
-                        putChar(0xa5);
-                        commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
-                        WriteLastCommandIdToEEPROM(commandID);
-                        break;
-                    case 0x66:  /*'f':FM Downlink*/
-                        putChar(0xa6);
-                        downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-                        WriteLastCommandIdToEEPROM(commandID);
-                        break;
-                    case 'p':/*'p':power*/
-                        putChar(0xa7); 
-                        commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-                        WriteLastCommandIdToEEPROM(commandID);
-                        break;
-                    case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
-                        measureDcDcTemperature();
-                        WriteLastCommandIdToEEPROM(commandID);
-                        break;
-                    case 0x72: /*'r':send command to RXCOBC*/
-                        sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
-                        break;
-                    default:
-                        switchError(error_main_commandfromOBCorRXCOBC);   
-                        break;                             
-                }
-            }
-        /*---write CRC result 6bit 1 ---*/
-        CRC_check_result = CRC_check_result | 0b0100000;
-        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-        switchOk(error_main_crcCheck);   
-        }
-        RCIF = 0;
-    }
-//    if ( PIR1bits.TMR1IF == 1 ) {
-//        TMR1 = TIMER_INTERVAL;  // ?????????
-// 
-//        intr_counter++;
-//        if ( intr_counter >= 100 ) {
-//            intr_counter = 0;
+//void interrupt InterReceiver(void){
+//    putChar('I');
+//    putChar('I');
+//    
+////    UBYTE commandSize;
+////    commandSize = 10;
+//
+////    UBYTE RXDATA[10];//array size = commandSize
+//    UBYTE RXDATA[commandSize];
+////    volatile static int intr_counter;
+//
+//    if (RCIF == 1) {
+//        /*---for debug---*/
+////         for (UBYTE i = 0; i < commandSize; i++){
+////             RXDATA[i] = getChar();
+////         }
+//        UBYTE get_char_state = 0;
+//        while(get_char_state < commandSize){
+//            RXDATA[0] = getChar();
+//            putChar('X');
+////            putChar('e');
+////            putChar('t');
+////            putChar(RXDATA[0]);
+//            get_char_state++;
+//            if(RXDATA[0] != 't' && RXDATA[0] != 'g'){
+//                get_char_state = 0;
+//            } else {    
+//                for (UBYTE i = 1; i < commandSize; i++){
+//                RXDATA[i] = getChar();
+//                get_char_state++;
+//                }
+//            }
 //        }
-//         //0.5sec???RB0???????    
-//        if ( intr_counter <= 50 || intr_counter > 51) {
-////            PORTAbits.RA0 = 1;
-//        } else {
-////            PORTAbits.RA0 = 0;
+//        
+//        //TODO:need?
+//        /*---Send command using UARTto RXCOBC---*/
+//        for (UBYTE i = 0; i < commandSize; i++){
+//            putChar(RXDATA[i]);
+//            NOP();
 //        }
-// 
-//        PIR1bits.TMR1IF = 0;    // ???????????
-//    }   
-// 
-//    return;
-}
+//       
+//        /*---CRC check for command from RXCOBC or OBC---*/ 
+//       //TODO add case RXDATA[0]!=t or g
+//        UWORD crcResult, crcValue;
+//        UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
+//        crcResult = crc16(0,RXDATA,8);
+//        crcValue =  CRC_check(RXDATA,8);
+//        crcResultHigh = crcResult>>8;
+//        crcResultLow = crcResult & 0x00FF;
+//        crcValueHigh = crcValue>>8;
+//        crcValueLow = crcValue & 0x00FF;
+//        
+//        /*----------------------------------------------*/
+//        //FIXME:[start]debug for test to CRCcheck
+////        putChar(0xcc);
+////        putChar(0xcc);
+////        putChar(crcResultHigh);
+////        putChar(crcResultLow);
+////        putChar(crcValueHigh);
+////        putChar(crcValueLow);
+//        //FIXME:[finish]debug for test to CRCcheck
+//        /*----------------------------------------------*/
+//        
+//        /*---read command ID---*/
+//        UBYTE commandID;
+//        commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
+//        //TODO:read datas from sub EEPROM
+//
+//        /*---read CRC check from EEPROM---*/
+//        UBYTE CRC_check_result;
+//        //FIXME:for debug
+//        CRC_check_result = 0b1000000;
+//        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+//        CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
+//        
+//        if(crcResult != crcValue){  //crc error
+//            
+//            /*---write CRC error result (6bit 0) ---*/
+//            CRC_check_result = CRC_check_result & 0b1011111;
+//            WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+//            
+//            putChar(0xa1);
+//            putChar(CRC_check_result);
+//            putErrorNoDownlink(error_main_crcCheck);    
+//            
+//        } else {  //crc  OK
+//            
+//            /*---write CRC ok result (6bit 1) ---*/
+//            CRC_check_result = CRC_check_result | 0b01000000;
+//            WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+//            
+//            putChar(0xa2);
+//            putChar(CRC_check_result);
+//            
+//            /*---Define if command target is 't' or 'g' and read in task target ---*/
+//            /*------------------------------------------------------------------*/
+//            if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
+//                //TODO:add error messege
+//                putChar(0xa3);
+//            } else {
+//                switch(RXDATA[1]){
+//                    /*---Command from RXCOBC---*/
+//                    /*------------------------------------------------------------------*/
+//                    case 0x75:  //'u'
+//                        putChar('R'); 
+//                        putChar(0xa4);
+//                        downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+//                        break;
+//
+//                    /*---Command from OBC---*/
+//                    /*------------------------------------------------------------------*/
+//                    case 0x63: /*'c':CW Downlink*/
+//                        putChar(0xa5);
+//                        commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+//                        WriteLastCommandIdToEEPROM(commandID);
+//                        break;
+//                    case 0x66:  /*'f':FM Downlink*/
+//                        putChar(0xa6);
+//                        downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+//                        WriteLastCommandIdToEEPROM(commandID);
+//                        break;
+//                    case 'p':/*'p':power*/
+//                        putChar(0xa7); 
+//                        commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+//                        WriteLastCommandIdToEEPROM(commandID);
+//                        break;
+//                    case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
+//                        measureDcDcTemperature();
+//                        WriteLastCommandIdToEEPROM(commandID);
+//                        break;
+//                    case 0x72: /*'r':send command to RXCOBC*/
+//                        sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
+//                        break;
+//                    default:
+//                        switchError(error_main_commandfromOBCorRXCOBC);   
+//                        break;                             
+//                }
+//            }
+//        /*---write CRC result 6bit 1 ---*/
+//        CRC_check_result = CRC_check_result | 0b0100000;
+//        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+//        switchOk(error_main_crcCheck);   
+//        }
+//        RCIF = 0;
+//    }
+////    if ( PIR1bits.TMR1IF == 1 ) {
+////        TMR1 = TIMER_INTERVAL;  // ?????????
+//// 
+////        intr_counter++;
+////        if ( intr_counter >= 100 ) {
+////            intr_counter = 0;
+////        }
+////         //0.5sec???RB0???????    
+////        if ( intr_counter <= 50 || intr_counter > 51) {
+//////            PORTAbits.RA0 = 1;
+////        } else {
+//////            PORTAbits.RA0 = 0;
+////        }
+//// 
+////        PIR1bits.TMR1IF = 0;    // ???????????
+////    }   
+//// 
+////    return;
+//}
 
 /*******************************************************************************
 *test for interrupt
@@ -407,24 +407,14 @@ void main(void) {
 
         //TODO send pulse to WDT
         
-        //switchSatMode
-        UBYTE SatMode = ReadEEPROM( EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow) & 0xF0;
-        //TODO check AD value
-        switch(SatMode){
-            case 0x50:/*------------Nominal Mode------------*/
-                break;
-            case 0x60:/*------------Saving Mode------------*/
-                //Todo write HK Data
-                break;
-            case 0xA0:/*------------Survival Mode------------*/
-                break;
-            default:
-                break;           
-    }
-        //ADC();
-             
-        //TODO send HK 
-        HKDownlink(SatMode);
+ 
+        measureDcDcTemperature();
+        if(OBC_STATUS == low){          
+            measureChannel2();//read 5V Bus
+        }else{     
+    }         
+        //TODO debug send HK 
+        HKDownlink();
         
         
         /*---------------------------------------------------------------*/

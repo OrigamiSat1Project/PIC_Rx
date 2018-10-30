@@ -34,6 +34,7 @@
 #define NTRX            RB0
 #define SW_5R8G         RB5
 #define WDT_POWER       RA1
+#define OBC_STATUS      RC2
 
 #endif	/* NEWFILE_H */
 

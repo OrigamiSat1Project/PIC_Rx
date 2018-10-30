@@ -94,6 +94,10 @@
 #define RXCOBC_LastCommand_addressLow   0x00
 #define TXCOBC_LastCommand_addressHigh  0x00
 #define TXCOBC_LastCommand_addressLow   0x00
+#define RXCOBC_CommandErrorStatus_addressHigh 0x00
+#define RXCOBC_CommandErrorStatus_addressLow 0x00
+#define TXCOBC_CommandErrorStatus_addressHigh 0x00
+#define TXCOBC_CommandErrorStatus_addressLow 0x00
 
 //HK
 #define BatteryVoltageOBC_addressHigh  0x00
@@ -104,20 +108,17 @@
 #define MeltingStatus_addressLow  0x0A
 #define LatestExcutionCommandID_addressHigh   0x00
 #define LatestExcutionCommandID_addressLow   0x00
+#define OBC_CommandErrorStatus_addressHigh 0x00
+#define OBC_CommandErrorStatus_addressLow 0x00
 #define BatteryCurrent_addressHigh 0x00
 #define BatteryCurrent_addressLow  0x00
-#define SatelliteBusStatus_addressHigh  0x00
-#define SatelliteBusStatus_addressLow   0x00
 #define EpsSwitchStatus_addressHigh   0x00
 #define EpsSwitchStatus_addressLow   0x00
 #define TxTemperature_addressHigh 0x00 
 #define TxTemperature_addressLow 0x00 
 #define RxTemperature_addressHigh 0x00 
 #define RxTemperature_addressLow 0x00 
-#define HkFilenumber_addressHigh 0x00
-#define HkFilenumber_addressLow 0x00
-#define EpsTelemtryDownlink_addressHigh 0x00
-#define EpsTelemtryDownlink_addressLow  0x00
+
 #define FreeDataHigh_addressHigh 0x00
 #define FreeDataHigh_addressLow 0x00
 #define FreeDataLow_addressHigh 0x00
