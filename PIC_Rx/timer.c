@@ -94,9 +94,9 @@ void interrupt TimerCheck(void){
                             case OBC_DIED:
                                 killEPS();
                                 onEPS();
-                                FMTX(FMTX_Nref, FMTX_Nprg);
-                                CWTX(CWTX_Nref, CWTX_Nprg);
-                                FMRX(FMRX_Nref, FMRX_Nprg);
+//                                FMTX(FMTX_Nref, FMTX_Nprg);
+//                                CWTX(CWTX_Nref, CWTX_Nprg);
+//                                FMRX(FMRX_Nref, FMRX_Nprg);
                                 break;
                             default:    
                                 break;
@@ -129,9 +129,9 @@ void interrupt TimerCheck(void){
                         offNtrxPowerSupplyCIB();
                         //EPS ON
                         onEPS();
-                        FMTX(FMTX_Nref, FMTX_Nprg);
-                        CWTX(CWTX_Nref, CWTX_Nprg);
-                        FMRX(FMRX_Nref, FMRX_Nprg);
+//                        FMTX(FMTX_Nref, FMTX_Nprg);
+//                        CWTX(CWTX_Nref, CWTX_Nprg);
+//                        FMRX(FMRX_Nref, FMRX_Nprg);
                     }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
                         putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
@@ -152,9 +152,9 @@ void interrupt TimerCheck(void){
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
                         //EPS ON
                         onEPS();
-                        FMTX(FMTX_Nref, FMTX_Nprg);
-                        CWTX(CWTX_Nref, CWTX_Nprg);
-                        FMRX(FMRX_Nref, FMRX_Nprg);
+//                        FMTX(FMTX_Nref, FMTX_Nprg);
+//                        CWTX(CWTX_Nref, CWTX_Nprg);
+//                        FMRX(FMRX_Nref, FMRX_Nprg);
                     }else if (Voltage <= ((UWORD)BatVol_saving_survival_high << 8 | (UWORD)BatVol_saving_survival_Low)){// <=6.114V
                         putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
@@ -282,6 +282,8 @@ void interrupt TimerCheck(void){
 //                }
 //            }    
 //       }
+        }
+        }
     }
 }
 
