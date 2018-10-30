@@ -13,8 +13,10 @@
 
 #include "typeDefine.h"
 
-#define MAIN_EEPROM_ADDRESS 0x50
-#define SUB_EEPROM_ADDRESS 0x52
+#define MAIN_EEPROM_ADDRESS     0x50
+#define SUB_EEPROM_ADDRESS      0x52
+#define MAIN_EEPROM_ADDRESS_B1  0x54
+#define SUB_EEPROM_ADDRESS_B1   0x56
 
 
 #endif	/* EEPROM_H */

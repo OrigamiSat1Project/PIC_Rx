@@ -40,6 +40,9 @@
 #define SEP_SW          PORTBbits.RB4 //Short Separation switch 1&2
 #define RBF_SW          PORTAbits.RA1 //Short Remove before flight switch 1&2
 
+    /* PIN assignment for OBC*/
+#define OBC_STATUS      PORTDbits.RD7  //check whether OBC are alive or died  //High--->OBC are alive
+
 // PINs NOT used in code
 //--------------------------
 //PORTAbits.RA0 //BAT_POS voltage(10/43)

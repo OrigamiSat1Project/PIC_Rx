@@ -24,7 +24,7 @@ void InitMPU(void)
 	TRISA  = 0b10000000;
 	TRISB  = 0b00100000;
     TRISC  = 0b10011000;
-    TRISD  = 0b00000000;
+    TRISD  = 0b10000000;
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	

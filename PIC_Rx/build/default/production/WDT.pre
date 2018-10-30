@@ -1471,33 +1471,78 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 16 "WDT.h"
+# 17 "WDT.h"
 void InitWDT(void);
-void commandWDT(UBYTE, UBYTE, UBYTE);
+void commandWDT(UBYTE);
+void resetWDT();
+void sendPulseWDT(void);
+void WDTwait(void);
 
-# 5 "WDT.c"
+# 16 "UART.h"
+void InitSerial(void);
+void putChar(UBYTE c);
+void putString(UBYTE *);
+UBYTE getChar(void);
+void putCrLf(void);
+
+void putError(void);
+void putOk(void);
+void NM_waddress(UBYTE, UBYTE, UBYTE);
+void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+
+# 22 "time.h"
+void delay_ms(UWORD);
+void delay_us(UWORD);
+
+
+void set_timer_counter_only_getChar(UINT);
+UINT get_timer_counter_only_getChar(void);
+
+# 11 "WDT.c"
 void InitWDT(void){
-INTCONbits.GIE = 1;
-INTCONbits.PEIE = 1;
-
-PIR1bits.TMR1IF = 0;
-PIE1bits.TMR1IE = 1;
-
-
-T1CONbits.T1CKPS = 2;
-TMR1 = (0xffff - 62500);
-
-T1CONbits.TMR1ON = 1;
-
-
+PORTBbits.RB3 = 0;
+sendPulseWDT();
 }
 
 
-void commandWDT(UBYTE command, UBYTE timeHigh, UBYTE timeLow){
+void commandWDT(UBYTE command){
 if(command = 's'){
+
+
+
+resetWDT();
 
 }else{
 
 }
 }
 
+void WDTwait(void){
+_delay((unsigned long)((12000)*(10000000/4000.0)));
+}
+
+
+void resetWDT(){
+_delay((unsigned long)((20)*(10000000/4000.0)));
+if(PORTBbits.RB3== 0){
+PORTBbits.RB3= 1;
+_delay((unsigned long)((50)*(10000000/4000.0)));
+PORTBbits.RB3= 0;
+}else{
+PORTBbits.RB3= 0;
+_delay((unsigned long)((200)*(10000000/4000.0)));
+PORTBbits.RB3= 1;
+}
+}
+
+
+
+void sendPulseWDT(void){
+putChar('W');
+if(PORTBbits.RB3== 0){
+PORTBbits.RB1 = 0;
+PORTBbits.RB1 = 1;
+}
+}

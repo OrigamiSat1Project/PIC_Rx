@@ -57,6 +57,26 @@ UBYTE I2CMasterRead(UBYTE address){
   return temp;
 }
 
+UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
+    UBYTE Address = EEPROM_address << 1;
+    UBYTE ReadAddress = Address | 0x01;
+    UBYTE ReadData;
+   
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(high_address);    //Adress High Byte
+    I2CMasterWrite(low_address);    //Adress Low Byte
+    I2CMasterRepeatedStart();         //Restart condition
+    
+    I2CMasterWrite(ReadAddress);     //7 bit address + Read
+    
+    ReadData = I2CMasterRead(0); //Read + Acknowledge
+    
+    I2CMasterStop();          //Stop condition
+    return ReadData;
+    __delay_ms(200);  
+}
+
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
     UBYTE address = addressEEPROM << 1;
     //UINT Datasize = sizeof(data);

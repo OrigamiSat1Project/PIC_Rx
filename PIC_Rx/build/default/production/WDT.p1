@@ -1,47 +1,22 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"458 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
-[s S18 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S18 . RBIF INTF TMR0IF RBIE INTE TMR0IE PEIE GIE ]
-"468
-[s S19 :2 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 ]
-[n S19 . . T0IF . T0IE ]
-"457
-[u S17 `S18 1 `S19 1 ]
-[n S17 . . . ]
-"475
-[v _INTCONbits `VS17 ~T0 @X0 0 e@11 ]
-"536
-[s S21 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S21 . TMR1IF TMR2IF CCP1IF SSPIF TXIF RCIF ADIF PSPIF ]
-"535
-[u S20 `S21 1 ]
-[n S20 . . ]
-"547
-[v _PIR1bits `VS20 ~T0 @X0 0 e@12 ]
-"1622
-[s S64 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S64 . TMR1IE TMR2IE CCP1IE SSPIE TXIE RCIE ADIE PSPIE ]
-"1621
-[u S63 `S64 1 ]
-[n S63 . . ]
-"1633
-[v _PIE1bits `VS63 ~T0 @X0 0 e@140 ]
-"659
-[s S25 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 ]
-[n S25 . TMR1ON TMR1CS nT1SYNC T1OSCEN T1CKPS ]
-"666
-[s S26 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S26 . . T1SYNC . T1CKPS0 T1CKPS1 ]
-"673
-[s S27 :2 `uc 1 :1 `uc 1 ]
-[n S27 . . T1INSYNC ]
-"658
-[u S24 `S25 1 `S26 1 `S27 1 ]
-[n S24 . . . . ]
-"678
-[v _T1CONbits `VS24 ~T0 @X0 0 e@16 ]
-"632
-[v _TMR1 `Vus ~T0 @X0 0 e@14 ]
+"220 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16lf877a.h
+[s S8 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S8 . RB0 RB1 RB2 RB3 RB4 RB5 RB6 RB7 ]
+"219
+[u S7 `S8 1 ]
+[n S7 . . ]
+"231
+[v _PORTBbits `VS7 ~T0 @X0 0 e@6 ]
+"20 WDT.h
+[v _sendPulseWDT `(v ~T0 @X0 0 ef ]
+"19
+[v _resetWDT `(v ~T0 @X0 0 ef ]
+[v F1089 `(v ~T0 @X0 1 tf1`ul ]
+"153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
+[v __delay `JF1089 ~T0 @X0 0 e ]
+[p i __delay ]
+"17 UART.h
+[v _putChar `(v ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1067,63 +1042,152 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;typeDefine.h: 17: typedef unsigned short long USLONG;
 [; ;typeDefine.h: 18: typedef signed long SDWORD;
 [; ;typeDefine.h: 19: typedef unsigned long UDWORD;
-[; ;WDT.h: 16: void InitWDT(void);
-[; ;WDT.h: 17: void commandWDT(UBYTE, UBYTE, UBYTE);
-"5 WDT.c
+[; ;WDT.h: 17: void InitWDT(void);
+[; ;WDT.h: 18: void commandWDT(UBYTE);
+[; ;WDT.h: 19: void resetWDT();
+[; ;WDT.h: 20: void sendPulseWDT(void);
+[; ;WDT.h: 21: void WDTwait(void);
+[; ;UART.h: 16: void InitSerial(void);
+[; ;UART.h: 17: void putChar(UBYTE c);
+[; ;UART.h: 18: void putString(UBYTE *);
+[; ;UART.h: 19: UBYTE getChar(void);
+[; ;UART.h: 20: void putCrLf(void);
+[; ;UART.h: 22: void putError(void);
+[; ;UART.h: 23: void putOk(void);
+[; ;UART.h: 24: void NM_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 25: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 26: void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 27: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;time.h: 22: void delay_ms(UWORD);
+[; ;time.h: 23: void delay_us(UWORD);
+[; ;time.h: 26: void set_timer_counter_only_getChar(UINT);
+[; ;time.h: 27: UINT get_timer_counter_only_getChar(void);
+"11 WDT.c
 [v _InitWDT `(v ~T0 @X0 1 ef ]
 {
-[; ;WDT.c: 5: void InitWDT(void){
+[; ;WDT.c: 11: void InitWDT(void){
 [e :U _InitWDT ]
 [f ]
-[; ;WDT.c: 6: INTCONbits.GIE = 1;
-"6
-[e = . . _INTCONbits 0 7 -> -> 1 `i `uc ]
-[; ;WDT.c: 7: INTCONbits.PEIE = 1;
-"7
-[e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
-[; ;WDT.c: 9: PIR1bits.TMR1IF = 0;
-"9
-[e = . . _PIR1bits 0 0 -> -> 0 `i `uc ]
-[; ;WDT.c: 10: PIE1bits.TMR1IE = 1;
-"10
-[e = . . _PIE1bits 0 0 -> -> 1 `i `uc ]
-[; ;WDT.c: 13: T1CONbits.T1CKPS = 2;
+[; ;WDT.c: 12: PORTBbits.RB3 = 0;
+"12
+[e = . . _PORTBbits 0 3 -> -> 0 `i `uc ]
+[; ;WDT.c: 13: sendPulseWDT();
 "13
-[e = . . _T1CONbits 0 4 -> -> 2 `i `uc ]
-[; ;WDT.c: 14: TMR1 = (0xffff - 62500);
+[e ( _sendPulseWDT ..  ]
+[; ;WDT.c: 14: }
 "14
-[e = _TMR1 -> - -> -> 65535 `ui `l -> 62500 `l `us ]
-[; ;WDT.c: 16: T1CONbits.TMR1ON = 1;
-"16
-[e = . . _T1CONbits 0 0 -> -> 1 `i `uc ]
-[; ;WDT.c: 19: }
-"19
 [e :UE 95 ]
 }
-"22
-[v _commandWDT `(v ~T0 @X0 1 ef3`uc`uc`uc ]
+"17
+[v _commandWDT `(v ~T0 @X0 1 ef1`uc ]
 {
-[; ;WDT.c: 22: void commandWDT(UBYTE command, UBYTE timeHigh, UBYTE timeLow){
+[; ;WDT.c: 17: void commandWDT(UBYTE command){
 [e :U _commandWDT ]
 [v _command `uc ~T0 @X0 1 r1 ]
-[v _timeHigh `uc ~T0 @X0 1 r2 ]
-[v _timeLow `uc ~T0 @X0 1 r3 ]
 [f ]
-[; ;WDT.c: 23: if(command = 's'){
-"23
+[; ;WDT.c: 18: if(command = 's'){
+"18
 [e $ ! != -> = _command -> -> 115 `ui `uc `i -> -> -> 0 `i `uc `i 97  ]
 {
-"25
+[; ;WDT.c: 22: resetWDT();
+"22
+[e ( _resetWDT ..  ]
+"24
 }
-[; ;WDT.c: 25: }else{
+[; ;WDT.c: 24: }else{
 [e $U 98  ]
 [e :U 97 ]
 {
-"27
+"26
 }
 [e :U 98 ]
+[; ;WDT.c: 26: }
 [; ;WDT.c: 27: }
-[; ;WDT.c: 28: }
-"28
+"27
 [e :UE 96 ]
+}
+"29
+[v _WDTwait `(v ~T0 @X0 1 ef ]
+{
+[; ;WDT.c: 29: void WDTwait(void){
+[e :U _WDTwait ]
+[f ]
+[; ;WDT.c: 30: _delay((unsigned long)((12000)*(10000000/4000.0)));
+"30
+[e ( __delay (1 -> * -> -> 12000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;WDT.c: 31: }
+"31
+[e :UE 99 ]
+}
+"34
+[v _resetWDT `(v ~T0 @X0 1 ef ]
+{
+[; ;WDT.c: 34: void resetWDT(){
+[e :U _resetWDT ]
+[f ]
+[; ;WDT.c: 35: _delay((unsigned long)((20)*(10000000/4000.0)));
+"35
+[e ( __delay (1 -> * -> -> 20 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;WDT.c: 36: if(PORTBbits.RB3== 0){
+"36
+[e $ ! == -> . . _PORTBbits 0 3 `i -> 0 `i 101  ]
+{
+[; ;WDT.c: 37: PORTBbits.RB3= 1;
+"37
+[e = . . _PORTBbits 0 3 -> -> 1 `i `uc ]
+[; ;WDT.c: 38: _delay((unsigned long)((50)*(10000000/4000.0)));
+"38
+[e ( __delay (1 -> * -> -> 50 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;WDT.c: 39: PORTBbits.RB3= 0;
+"39
+[e = . . _PORTBbits 0 3 -> -> 0 `i `uc ]
+"40
+}
+[; ;WDT.c: 40: }else{
+[e $U 102  ]
+[e :U 101 ]
+{
+[; ;WDT.c: 41: PORTBbits.RB3= 0;
+"41
+[e = . . _PORTBbits 0 3 -> -> 0 `i `uc ]
+[; ;WDT.c: 42: _delay((unsigned long)((200)*(10000000/4000.0)));
+"42
+[e ( __delay (1 -> * -> -> 200 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;WDT.c: 43: PORTBbits.RB3= 1;
+"43
+[e = . . _PORTBbits 0 3 -> -> 1 `i `uc ]
+"44
+}
+[e :U 102 ]
+[; ;WDT.c: 44: }
+[; ;WDT.c: 45: }
+"45
+[e :UE 100 ]
+}
+"49
+[v _sendPulseWDT `(v ~T0 @X0 1 ef ]
+{
+[; ;WDT.c: 49: void sendPulseWDT(void){
+[e :U _sendPulseWDT ]
+[f ]
+[; ;WDT.c: 50: putChar('W');
+"50
+[e ( _putChar (1 -> -> 87 `ui `uc ]
+[; ;WDT.c: 51: if(PORTBbits.RB3== 0){
+"51
+[e $ ! == -> . . _PORTBbits 0 3 `i -> 0 `i 104  ]
+{
+[; ;WDT.c: 52: PORTBbits.RB1 = 0;
+"52
+[e = . . _PORTBbits 0 1 -> -> 0 `i `uc ]
+[; ;WDT.c: 53: PORTBbits.RB1 = 1;
+"53
+[e = . . _PORTBbits 0 1 -> -> 1 `i `uc ]
+"54
+}
+[e :U 104 ]
+[; ;WDT.c: 54: }
+[; ;WDT.c: 55: }
+"55
+[e :UE 103 ]
 }

@@ -16,6 +16,7 @@
 #define I2Cbps 400000
 
 void InitI2CMaster(const UDWORD c);
+UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address);
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data);
 void commandSwitchI2C(UBYTE, UBYTE, UBYTE*, UBYTE*);
 
