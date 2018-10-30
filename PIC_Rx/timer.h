@@ -18,9 +18,12 @@
 //BatMode survival <= 6.114V
 #define BatVol_saving_survival_high 0x01
 #define BatVol_saving_survival_Low 0xB9
-
 #define BatVol_OBCrevival_high 0x02
 #define BatVol_OBCrevival_Low 0x32
+#define WDT_INTERVAL             4
+#define EPS_RSET_INTERVAL_LONG   10
+#define EPS_RSET_INTERVAL_SHORT  5
+#define INITIAL_OPE_INTERVAL     5
 
 int timer_counter = 0;
 int second_counter = 0;
@@ -28,11 +31,14 @@ int minute_counter = 0;
 int hour_counter = 0;
 int day_counter = 0;
 
+int bat_meas_counter = 0;
+int eps_rest_counter = 0;
 
 void initTimer(void);
 void interrupt TimerCheck(void);
 void InitialOperation(void);
 UBYTE checkMeltingStatus(UBYTE);
+
 //void interrupt TimerReset(void);
 
 #endif	/* TIME_H */

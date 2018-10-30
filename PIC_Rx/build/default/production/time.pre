@@ -1497,13 +1497,3 @@ msec--;
 }
 }
 
-
-void delay_us(UWORD usec)
-{
-while(usec)
-{
-_delay((unsigned long)((1)*(10000000/4000000.0)));
-usec--;
-}
-}
-

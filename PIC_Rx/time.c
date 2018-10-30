@@ -29,14 +29,14 @@ void delay_ms(UWORD msec)
 }
 
 //wait [us] function
-void delay_us(UWORD usec)
-{
-	while(usec)
-	{
-		__delay_us(1);
-		usec--;
-	}	
-}
+//void delay_us(UWORD usec)
+//{
+//	while(usec)
+//	{
+//		__delay_us(1);
+//		usec--;
+//	}	
+//}
 
 ////timer counter only getChar
 //void set_timer_counter_only_getChar(UINT time){

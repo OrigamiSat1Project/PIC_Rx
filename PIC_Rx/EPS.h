@@ -12,6 +12,7 @@
 
 
 void Reset_EPS(void);
+void ResetEPSandSetPLL(void);
 
 #endif	/* EPS_H */
 

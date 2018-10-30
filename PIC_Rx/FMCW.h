@@ -13,7 +13,7 @@
 //#include "time.h"
 #include "typeDefine.h"
 
-// set the values for reference counter(Nref) and programmable counter(Nprg) //TODO: rewrite Nprg values from arrays to integers
+//// set the values for reference counter(Nref) and programmable counter(Nprg) //TODO: rewrite Nprg values from arrays to integers
 #define FMTX_Nref           2560          // Nref = 2560 (const)
 //UBYTE FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87501 = Ftx / 0.05 [437.505MHz]
 #define CWTX_Nref           128           // Nref = * see 301ACWPLL-20080520.pdf *

@@ -16,8 +16,8 @@
 void sendLow(UBYTE unitID);
 void sendHigh(UBYTE unitID);
 void sendSTB(UBYTE unitID);
-//void setNprg(UBYTE unitID, UBYTE *Nprg);
 void setNprg(UBYTE unitID, USLONG Nprg);
+void sendSTBFMRX(void);
 void setNref(UBYTE unitID, int Nref);
 void setOptionRegister(UBYTE unitID);
 void _NOP(void);
@@ -27,7 +27,7 @@ void _NOP(void);
  * [Send 'Low' to radio]
  * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
  * 2. Set the DAT terminal to Low
- * 3. Change the CLK pin from 0 ?¿½?¿½ 1 ?¿½?¿½ 0
+ * 3. Change the CLK pin from 0 -> 1 -> 0
  */
 void sendLow(UBYTE unitID){
     if(unitID == FMTX_ID)
@@ -56,12 +56,11 @@ void sendLow(UBYTE unitID){
     }
 }
 
-
 /*
  * [Send 'High' to radio]
  * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
  * 2. Set the DAT terminal to High
- * 3. Change the CLK pin from 0 ?¿½?¿½ 1 ?¿½?¿½ 0
+ * 3. Change the CLK pin from 0 -> 1 -> 0
  */
 void sendHigh(UBYTE unitID){
     if(unitID == FMTX_ID)
@@ -94,7 +93,7 @@ void sendHigh(UBYTE unitID){
 /*
  * [Send STB signal to radio]
  * 1. Select which radio unit to send  to (FMTX or FMRX or CWTX)
- * 2. Change the STB pin from 0 ?¿½?¿½ 1 ?¿½?¿½ 0
+ * 2. Change the STB pin from 0 -> 1 -> 0
  */
 void sendSTB(UBYTE unitID){
     if(unitID == FMTX_ID)
@@ -191,7 +190,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
 /*
  * [Setting the reference counter of the radio]
  * 1. Convert reference counter read from argument to binary number (stored as array)
- * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?¿½i?¿½İ’ï¿½ÌŠÌj???
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?ï¿½ï¿½i?ï¿½ï¿½İ’ï¿½ÌŠÌj???
  * 3. Send group code '11'
  * 4. Send STB signal
  */
@@ -228,7 +227,6 @@ void setNref(UBYTE unitID, int Nref){
     //STB Signal
     sendSTB(unitID);
 }
-
 
 /*
  * [Setting Option Register of Radio Equipment (Common PLL Setting)(PLL = Phase-Locked Loop)
@@ -273,7 +271,6 @@ void setOptionRegister(UBYTE unitID){
 //    //STB Signal
 //    sendSTB(unitID);
 }
-
 
 /*
  * [Set PLL for FMTX]

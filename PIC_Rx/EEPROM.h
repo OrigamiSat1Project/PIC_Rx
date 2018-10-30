@@ -103,7 +103,7 @@
 #define BatteryVoltage_addressHigh     0x97
 #define BatteryVoltage_addressLow      0x01
 #define MeltingCounter_addressHigh     0xE0
-#define MeltingCounter_addressLow      0x0A
+#define MeltingCounter_addressLow      0x00
 
 #define SatelliteMode_addressHigh       0x84//include SEP(3,2bit) and RBF(1,0bit)
 #define SatelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
