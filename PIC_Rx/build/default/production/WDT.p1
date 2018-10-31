@@ -15,8 +15,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "152 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
 [p i __delay ]
-"17 UART.h
-[v _putChar `(v ~T0 @X0 0 ef1`uc ]
 "22 time.h
 [v _delay_ms `(v ~T0 @X0 0 ef1`us ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
@@ -1176,9 +1174,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "50
 [e $ ! == -> . . _PORTBbits 0 3 `i -> 0 `i 104  ]
 {
-[; ;WDT.c: 51: putChar('W');
-"51
-[e ( _putChar (1 -> -> 87 `ui `uc ]
 [; ;WDT.c: 52: PORTBbits.RB1 = 0;
 "52
 [e = . . _PORTBbits 0 1 -> -> 0 `i `uc ]
