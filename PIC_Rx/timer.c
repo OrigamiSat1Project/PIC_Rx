@@ -102,7 +102,6 @@ void interrupt TimerCheck(void){
     /*---WDT send pulse (4s)---*/
     if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
         if(WDT_flag == 0x01){
-            putChar('W');
             sendPulseWDT();
             WDT_flag = 0x00;
         }
