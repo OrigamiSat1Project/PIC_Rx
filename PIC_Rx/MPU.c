@@ -168,7 +168,7 @@ void switchPowerSpply1pin(UBYTE target_select, UBYTE onOff, UBYTE timeHigh, UBYT
  */
 void killEPS(void){
     SEP_SW = HIGH;  
-    RBF_SW = LOW;  
+    RBF_SW = LOW;
 }
 
 /*

@@ -17,6 +17,7 @@ void sendLow(UBYTE unitID);
 void sendHigh(UBYTE unitID);
 void sendSTB(UBYTE unitID);
 void setNprg(UBYTE unitID, USLONG Nprg);
+//void setNprg(UBYTE unitID, UBYTE *Nprg);
 void sendSTBFMRX(void);
 void setNref(UBYTE unitID, int Nref);
 void setOptionRegister(UBYTE unitID);
@@ -125,6 +126,7 @@ void sendSTB(UBYTE unitID){
  * 4. Send STB signal
  */
 void setNprg(UBYTE unitID, USLONG Nprg){
+//void setNprg(UBYTE unitID, UBYTE *Nprg){
     UBYTE count = 0;
     UBYTE Nprg_b[17] = {0};
     
@@ -132,7 +134,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
 //        Nprg_b[i] = 0;
 //    }
     
-    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
+//    Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
     for(int i=0; Nprg>0; i++){
         Nprg_b[i] = Nprg % 2;
         Nprg = Nprg / 2;
@@ -190,7 +192,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
 /*
  * [Setting the reference counter of the radio]
  * 1. Convert reference counter read from argument to binary number (stored as array)
- * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?ï¿½ï¿½i?ï¿½ï¿½İ’ï¿½ÌŠÌj???
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ??¿½?¿½i??¿½?¿½İ’ï¿½ÌŠÌj???
  * 3. Send group code '11'
  * 4. Send STB signal
  */
