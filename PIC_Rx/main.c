@@ -29,14 +29,26 @@
 // Use project enums instead of #define for ON and OFF.
 
 //Receive command from TX_PIC
-//void interrupt InterReceiver(UBYTE *RXDATA, UBYTE COMMAND_SIZE){
+//void interrupt InterReceiver(void);
+
+//void interrupt InterReceiver(void){
+//    
+//    UBYTE RXDATA[2];
+//    
 //    //volatile static int intr_counter;
 //    if (RCIF == 1) {                              //The USART receive buffer is full
-//        for (int i = 0; i < COMMAND_SIZE; i++){
+//        putChar(0xab);
+//        putChar(0xab);
+//        putChar(0xab);
+//        
+//        for (int i = 0; i<2; i++){
 //            RXDATA[i] = getChar();
 //            NOP();
+//        }        
+//        for (int i=0; i<2; i++){
+//            putChar(RXDATA[i]);
+//            NOP();
 //        }
-//        
 //        RCIF = 0;  //USART Receive Interrupt Flag is reset
 //    }
 //}
@@ -76,6 +88,9 @@ void main(void) {
     LED_WHITE = 0;              //for debugging of PLL setting
     __delay_ms(1000);           //wait for circuit of PLL
     
+//    GIE = 1;
+//    PEIE = 1;
+    
     while(1){
         //power on 5R8G
         POWER_5R8G = HIGH;
@@ -88,6 +103,12 @@ void main(void) {
         putChar('m');
         sendPulseWDT();
         delay_ms(3000);
+        
+        //check for loop
+//        while(1){
+//            putChar(0xad);
+//            delay_ms(1000);
+//        }
         
 //        UBYTE data[2];
 //        switch(OBC_STATUS){

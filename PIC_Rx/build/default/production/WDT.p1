@@ -17,6 +17,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p i __delay ]
 "17 UART.h
 [v _putChar `(v ~T0 @X0 0 ef1`uc ]
+"22 time.h
+[v _delay_ms `(v ~T0 @X0 0 ef1`us ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1180,6 +1182,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;WDT.c: 52: PORTBbits.RB1 = 0;
 "52
 [e = . . _PORTBbits 0 1 -> -> 0 `i `uc ]
+[; ;WDT.c: 53: delay_ms(300);
+"53
+[e ( _delay_ms (1 -> -> 300 `i `us ]
 [; ;WDT.c: 54: PORTBbits.RB1 = 1;
 "54
 [e = . . _PORTBbits 0 1 -> -> 1 `i `uc ]
