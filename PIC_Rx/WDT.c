@@ -50,6 +50,7 @@ void sendPulseWDT(void){
     putChar('W');
     if(POWER_WDT== LOW){
         PULSE_WDT = LOW; //no delay necessary
+        delay_ms(300);
         PULSE_WDT = HIGH;
     }
 }

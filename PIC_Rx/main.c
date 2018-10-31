@@ -107,7 +107,7 @@ void main(void) {
 //        POWER_WDT = HIGH;
 //        
         putChar('m');
-//        sendPulseWDT();
+        sendPulseWDT();
         delay_ms(3000);
         
 //        UBYTE data[2];
