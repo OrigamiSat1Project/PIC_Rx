@@ -38,29 +38,6 @@
 //        }
 //        
 //        RCIF = 0;  //USART Receive Interrupt Flag is reset
-//        
-//       //TODO add case RXDATA[0]!=t
-//        if(crc16(0,RXDATA,6) == checkCRC(RXDATA,6)){
-//            //TODO:change commands from TX_PIC
-//            /*
-//            switch(RXDATA[1]){
-//                case 0x75:
-//                    downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-//                    break;
-//                case 0x63:
-////                    CwDownLink(RXDATA);
-//                    break;
-//                case 0x66:
-//                    downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-//                    break;
-//                case 0x61:
-//                    cutWire(RXDATA[2],RXDATA[3]);
-//                    break;
-//            }
-//            */
-//        }else{
-//            ///TODO:コマンドCRCダメだった時の処理
-//        }
 //    }
 //}
 
@@ -71,7 +48,7 @@ void main(void) {
     /*----------------------------------------------------------------------*/ 
     InitSerial();
     InitMPU();
-//    InitWDT();
+    InitWDT();
     InitI2CMaster(I2Cbps);
     
     POWER_5R8G = HIGH;
@@ -86,7 +63,9 @@ void main(void) {
 //    WriteToEEPROM(SUB_EEPROM_ADDRESS_B1,0x00,0x80,reset_counter);
 //    reset_counter = ReadEEPROM(SUB_EEPROM_ADDRESS_B1,0x00,0x80);
 //    reset_counter++;
+//    putChar(0xab);
 //    putChar(reset_counter);
+//    putChar(0xcd);
 //    WriteToEEPROM(SUB_EEPROM_ADDRESS_B1,0x00,0x80,reset_counter);
     
     //PLL setting (common Phase-Locked Loop)

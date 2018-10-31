@@ -47,10 +47,10 @@ void resetWDT(){
 //TODO enter sendPulseWDT function at necessary points in main function, considering pulse max distance of 10sec
 //to keep WDT from resetting the PIC 
 void sendPulseWDT(void){
-    putChar('W');
     if(POWER_WDT== LOW){
+        putChar('W');
         PULSE_WDT = LOW; //no delay necessary
-        delay_ms(300);
+//        delay_ms(300);
         PULSE_WDT = HIGH;
     }
 }
