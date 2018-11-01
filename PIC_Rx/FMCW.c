@@ -115,6 +115,7 @@ void sendSTB(UBYTE unitID){
     }
 }
 
+
 /*
  * [Setting the programmable counter of the radio]
  * 1. Convert programmable counter read from argument to binary number (stored as array)
@@ -254,12 +255,12 @@ void setOptionRegister(UBYTE unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-//void FMTX(int Nref, UBYTE *Nprg){
-//    UBYTE fmtx = FMTX_ID;
-//    setOptionRegister(fmtx);
-//    setNref(fmtx, Nref);
-//    setNprg(fmtx, Nprg);
-//}
+void FMTX(int Nref, UBYTE *Nprg){
+   UBYTE fmtx = FMTX_ID;
+   setOptionRegister(fmtx);
+   setNref(fmtx, Nref);
+   setNprg(fmtx, Nprg);
+}
 
 
 /*
@@ -268,12 +269,12 @@ void setOptionRegister(UBYTE unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-//void CWTX(int Nref, UBYTE *Nprg){
-//    UBYTE cwtx = CWTX_ID;
-//    setOptionRegister(cwtx);
-//    setNref(cwtx, Nref);
-//    setNprg(cwtx, Nprg);
-//}
+void CWTX(int Nref, UBYTE *Nprg){
+   UBYTE cwtx = CWTX_ID;
+   setOptionRegister(cwtx);
+   setNref(cwtx, Nref);
+   setNprg(cwtx, Nprg);
+}
 
 
 /*
@@ -282,27 +283,27 @@ void setOptionRegister(UBYTE unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-// void FMRX(int Nref, UBYTE *Nprg){
-//    UBYTE fmrx = FMRX_ID;
-//    setOptionRegister(fmrx);
-//    setNref(fmrx, Nref);
-//    setNprg(fmrx, Nprg);
-// }
+ void FMRX(int Nref, UBYTE *Nprg){
+     UBYTE fmrx = FMRX_ID;
+     setOptionRegister(fmrx);
+     setNref(fmrx, Nref);
+     setNprg(fmrx, Nprg);
+ }
 
-void setPLL(void){    
-    /*---FMTX---*/
-    setOptionRegister(FMTX_ID);
-    setNref(FMTX_ID, FMTX_Nref);
-    setNprg(FMTX_ID, FMTX_Nprg);
-    /*---CWTX---*/
-    setOptionRegister(CWTX_ID);
-    setNref(CWTX_ID, CWTX_Nref);
-    setNprg(CWTX_ID, CWTX_Nprg);
-    /*---FMRX---*/
-    setOptionRegister(FMRX_ID);
-    setNref(FMRX_ID, FMRX_Nref);
-    setNprg(FMRX_ID, FMRX_Nprg);
-} 
+// void setPLL(void){    
+//     /*---FMTX---*/
+//     setOptionRegister(FMTX_ID);
+//     setNref(FMTX_ID, FMTX_Nref);
+//     setNprg(FMTX_ID, FMTX_Nprg);
+//     /*---CWTX---*/
+//     setOptionRegister(CWTX_ID);
+//     setNref(CWTX_ID, CWTX_Nref);
+//     setNprg(CWTX_ID, CWTX_Nprg);
+//     /*---FMRX---*/
+//     setOptionRegister(FMRX_ID);
+//     setNref(FMRX_ID, FMRX_Nref);
+//     setNprg(FMRX_ID, FMRX_Nprg);
+// } 
  
 
 /*
@@ -313,11 +314,11 @@ void setPLL(void){
 //    CWTX(CWTX_Nref, CWTX_Nprg);
 //    FMRX(FMRX_Nref, FMRX_Nprg);
 //}
-//void setPLL(void){
-//    FMTX(FMTX_Nref, FMTX_Nprg);
-//    CWTX(CWTX_Nref, CWTX_Nprg);
-//    FMRX(FMRX_Nref, FMRX_Nprg);
-//}
+void setPLL(void){
+   FMTX(FMTX_Nref, FMTX_Nprg);
+   CWTX(CWTX_Nref, CWTX_Nprg);
+   FMRX(FMRX_Nref, FMRX_Nprg);
+}
 
 
 //process command data if the command type is 'radio unit'

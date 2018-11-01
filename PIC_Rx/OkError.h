@@ -54,7 +54,6 @@
 
 void switchOk(UBYTE);
 void switchError(UBYTE);
-UBYTE bitCalResult(UBYTE);
 
 #endif	/* OKERROR_H */
 
