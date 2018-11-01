@@ -119,10 +119,14 @@
 #define RxTemperature_addressHigh 0x00 
 #define RxTemperature_addressLow 0x00 
 
-#define FreeDataHigh_addressHigh 0x00
-#define FreeDataHigh_addressLow 0x00
-#define FreeDataLow_addressHigh 0x00
-#define FreeDataLow_addressLow 0x00
+#define FreeData1Highaddress_addressHigh 0x00
+#define FreeData1Highaddress_addressLow 0x00
+#define FreeData1Lowaddress_addressHigh 0x00
+#define FreeData1Lowaddress_addressLow 0x00
+#define FreeData2Highaddress_addressHigh 0x00
+#define FreeData2Highaddress_addressLow 0x00
+#define FreeData2Lowaddress_addressHigh 0x00
+#define FreeData2Lowaddress_addressLow 0x00
 
 /*******************************************************************************
 *Initial Operation

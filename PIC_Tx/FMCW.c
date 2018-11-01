@@ -581,11 +581,17 @@ void HKDownlinkFR1(void){
 void HKDownlinkFR2(void){
     UBYTE DATA[];
     UBYTE EEPROMDataLength = 1;
-    ReadDataFromEEPROM(EEPROM_address, FreeDataHigh_addressHigh, FreeDataHigh_addressLow, DATA, EEPROMDataLength); 
-    UBYTE ReadData_addressHigh = DATA;
-    ReadDataFromEEPROM(EEPROM_address, FreeDataLow_addressHigh, FreeDataLow_addressLow, DATA, EEPROMDataLength); 
-    UBYTE ReadData_addressLow = DATA;
-    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,ReadData_addressHigh,ReadData_addressLow);
+    ReadDataFromEEPROM(EEPROM_address, FreeData1Highaddress_addressHigh, FreeData1Highaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData1_addressHigh = DATA;
+    ReadDataFromEEPROM(EEPROM_address, FreeData1Lowaddress_addressHigh, FreeData1Lowaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData1_addressLow = DATA;
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,ReadData1_addressHigh,ReadData1_addressLow);
+    
+    ReadDataFromEEPROM(EEPROM_address, FreeData2Highaddress_addressHigh, FreeData2Highaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData2_addressHigh = DATA;
+    ReadDataFromEEPROM(EEPROM_address, FreeData2Lowaddress_addressHigh, FreeData2Lowaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData2_addressLow = DATA;
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,ReadData2_addressHigh,ReadData2_addressLow);
 }
 
 void CWdownlinkStart(void){
