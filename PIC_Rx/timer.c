@@ -31,128 +31,128 @@ UBYTE EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
 UWORD time = 0;
 
 //for debug function
-void interrupt TimerCheck(void){
-    if(INTCONbits.TMR0IF){
-        INTCONbits.TMR0IF = 0;
-        TMR0 = 0x00;
-        timer_counter += 1;
-    }
-    
-    if(timer_counter >= one_second){
-        timer_counter = 0;
-        bat_meas_counter += 1;
-        eps_rest_counter += 1;
-        second_counter += 1;
-        LED_WHITE = 1 - LED_WHITE;  //for debug
-        
-        /*---WDT send pulse (4s)---*/
-        time = second_counter % WDT_INTERVAL;
-        if (time==0){
-            putChar('W');
-            sendPulseWDT();
-        }
-        
-        //battery voltage measure
-        //treadhold is not determined
-        //sampling rate is not determined
-        //debug : 6v -> send 's' 7v -> send 'n'
-//        if(bat_meas_counter >= 3){
-//            bat_meas_counter = 0;
-////            ReadBatVoltage();
-////            if(adcL <= 0xD0) putChar('s');
-//            UBYTE bat_voltage[2];
-//            ReadBatVoltageWithPointer(bat_voltage);
-//            if(bat_voltage[1] <= 0xD0) putChar(0xaa);
-//            else putChar(0xbb);
-//        }
-        
-        
-        /*---Initial Operation (for debug 5s)---*/
-        //sampling rate is not determined
-        time = second_counter % INITIAL_OPE_INTERVAL;
-        if(time==0){
-            putChar(0xcc);
-            putChar(0xcc);
-            putChar(0xcc);
-            InitialOperation();
-            putChar(0xdd);
-            putChar(0xdd);
-        }
-        
-        /*---EPS reset for debug (for debug 5/10s)---*/
-        time = second_counter % EPS_reset_time;
-        if(time == 0){
-            Reset_EPS();
-            
-            putChar(0xd1);
-            UBYTE array_2byte[2];
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//            putChar(array_2byte[0]);
-//            putChar(array_2byte[1]);
-//            array_2byte[0] = 2;
-//            array_2byte[1] = 2;
-            
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-                putChar(0xd2);
-            } else {
-                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
-                putChar('E');
-                putChar(0xd3);
-            }
-        }
+//void interrupt TimerCheck(void){
+//    if(INTCONbits.TMR0IF){
+//        INTCONbits.TMR0IF = 0;
+//        TMR0 = 0x00;
+//        timer_counter += 1;
+//    }
+//    
+//    if(timer_counter >= one_second){
+//        timer_counter = 0;
+//        bat_meas_counter += 1;
+//        eps_rest_counter += 1;
+//        second_counter += 1;
+//        LED_WHITE = 1 - LED_WHITE;  //for debug
 //        
-//       if(second_counter >= one_minute){
-//           second_counter = 0;
-//           minute_counter += 1;
-//           putChar(0xd4);
-//           
-//           //for debug
-//           //EPS reset every 3 minitues
-//           if(minute_counter >= 3){
-//               putChar(0xd5);
-//               Reset_EPS();
-//               delay_ms(5000);
-//               //resubstitution Nprg
-////                FMTX_Nprg[0] = 8; FMTX_Nprg[1] = 7; FMTX_Nprg[2] = 5; FMTX_Nprg[3] = 0; FMTX_Nprg[4] = 1;
-////                CWTX_Nprg[0] = 0; CWTX_Nprg[1] = 1; CWTX_Nprg[2] = 4; CWTX_Nprg[3] = 0; CWTX_Nprg[4] = 0;
-////                FMTX_Nprg[0] = 2; FMTX_Nprg[1] = 4; FMTX_Nprg[2] = 9; FMTX_Nprg[3] = 1; FMTX_Nprg[4] = 6;
-//               //reset PLL setting (because it gets lost during shutdown)
-////               FMTX(FMTX_Nref, FMTX_Nprg);
-////               CWTX(CWTX_Nref, CWTX_Nprg);
-////               FMRX(FMRX_Nref, FMRX_Nprg);
-//               __delay_ms(500);
-//           }
-
-//            if(minute_counter >= one_hour){
-//                minute_counter = 0;
-//                hour_counter += 1;
+//        /*---WDT send pulse (4s)---*/
+//        time = second_counter % WDT_INTERVAL;
+//        if (time==0){
+//            putChar('W');
+//            sendPulseWDT();
+//        }
+//        
+//        //battery voltage measure
+//        //treadhold is not determined
+//        //sampling rate is not determined
+//        //debug : 6v -> send 's' 7v -> send 'n'
+////        if(bat_meas_counter >= 3){
+////            bat_meas_counter = 0;
+//////            ReadBatVoltage();
+//////            if(adcL <= 0xD0) putChar('s');
+////            UBYTE bat_voltage[2];
+////            ReadBatVoltageWithPointer(bat_voltage);
+////            if(bat_voltage[1] <= 0xD0) putChar(0xaa);
+////            else putChar(0xbb);
+////        }
+//        
+//        
+//        /*---Initial Operation (for debug 5s)---*/
+//        //sampling rate is not determined
+//        time = second_counter % INITIAL_OPE_INTERVAL;
+//        if(time==0){
+//            putChar(0xcc);
+//            putChar(0xcc);
+//            putChar(0xcc);
+//            InitialOperation();
+//            putChar(0xdd);
+//            putChar(0xdd);
+//        }
+//        
+//        /*---EPS reset for debug (for debug 5/10s)---*/
+//        time = second_counter % EPS_reset_time;
+//        if(time == 0){
+//            Reset_EPS();
+//            
+//            putChar(0xd1);
+//            UBYTE array_2byte[2];
+//            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+////            putChar(array_2byte[0]);
+////            putChar(array_2byte[1]);
+////            array_2byte[0] = 2;
+////            array_2byte[1] = 2;
+//            
+//            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+//                putChar(0xd2);
+//            } else {
+//                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
+//                putChar('E');
+//                putChar(0xd3);
+//            }
+//        }
+////        
+////       if(second_counter >= one_minute){
+////           second_counter = 0;
+////           minute_counter += 1;
+////           putChar(0xd4);
+////           
+////           //for debug
+////           //EPS reset every 3 minitues
+////           if(minute_counter >= 3){
+////               putChar(0xd5);
+////               Reset_EPS();
+////               delay_ms(5000);
+////               //resubstitution Nprg
+//////                FMTX_Nprg[0] = 8; FMTX_Nprg[1] = 7; FMTX_Nprg[2] = 5; FMTX_Nprg[3] = 0; FMTX_Nprg[4] = 1;
+//////                CWTX_Nprg[0] = 0; CWTX_Nprg[1] = 1; CWTX_Nprg[2] = 4; CWTX_Nprg[3] = 0; CWTX_Nprg[4] = 0;
+//////                FMTX_Nprg[0] = 2; FMTX_Nprg[1] = 4; FMTX_Nprg[2] = 9; FMTX_Nprg[3] = 1; FMTX_Nprg[4] = 6;
+////               //reset PLL setting (because it gets lost during shutdown)
+//////               FMTX(FMTX_Nref, FMTX_Nprg);
+//////               CWTX(CWTX_Nref, CWTX_Nprg);
+//////               FMRX(FMRX_Nref, FMRX_Nprg);
+////               __delay_ms(500);
+////           }
 //
-//                if(hour_counter >= one_day){
-//                    hour_counter = 0;
-//                    day_counter += 1;
-//
-//                    UBYTE array_2byte[2];
-//                    array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-//                    array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//
-//                    UBYTE EPS_reset_time;
-//                    if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-//                        EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
-//                    } else {
-//                        EPS_reset_time = EPS_RSET_INTERVAL_LONG;
-//                    }
-//
-//                    if(second_counter >= EPS_reset_time){ 
-////                        ResetEPSandSetPLL();
-//                    }
-//
-//                }
-//            }    
-//       }
-    }
-    interruptI2C();
-}
+////            if(minute_counter >= one_hour){
+////                minute_counter = 0;
+////                hour_counter += 1;
+////
+////                if(hour_counter >= one_day){
+////                    hour_counter = 0;
+////                    day_counter += 1;
+////
+////                    UBYTE array_2byte[2];
+////                    array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+////                    array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+////
+////                    UBYTE EPS_reset_time;
+////                    if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+////                        EPS_reset_time = EPS_RSET_INTERVAL_SHORT;
+////                    } else {
+////                        EPS_reset_time = EPS_RSET_INTERVAL_LONG;
+////                    }
+////
+////                    if(second_counter >= EPS_reset_time){ 
+//////                        ResetEPSandSetPLL();
+////                    }
+////
+////                }
+////            }    
+////       }
+//    }
+//    interruptI2C();
+//}
 
 void InitialOperation(void){
     /*---start checking whether antenna are developed or not---*/

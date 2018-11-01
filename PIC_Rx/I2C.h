@@ -18,7 +18,7 @@
 #define I2C_baud_rate_def  I2C_baud_rate_low
 
 void InitI2CMaster(const UDWORD c);
-void interruptI2C(void);
+//void interruptI2C(void);
 void I2CMasterWait(char);                                               
 int I2CMasterStart(unsigned char, unsigned char);                                              
 int I2CMasterRepeatedStart(unsigned char, unsigned char);                                   

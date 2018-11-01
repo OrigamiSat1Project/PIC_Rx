@@ -27,19 +27,19 @@ void InitI2CMaster(const UDWORD c){//Init Master Synchronous Serial Port(MSSP)
   PIR2bits.BCLIF  = 0 ;               // clear bus collision flag
 }
 
-void interruptI2C(void)
-{
-     if (PIR1bits.SSPIF == 1) {
-          if (AckCheck == 1) {
-              AckCheck = 0;
-          }
-          PIR1bits.SSPIF = 0;
-     }
-     if (PIR2bits.BCLIF == 1) {
-          CollisionCheck = 1;
-          PIR2bits.BCLIF = 0;
-     }
-}
+//void interruptI2C(void)
+//{
+//     if (PIR1bits.SSPIF == 1) {
+//          if (AckCheck == 1) {
+//              AckCheck = 0;
+//          }
+//          PIR1bits.SSPIF = 0;
+//     }
+//     if (PIR2bits.BCLIF == 1) {
+//          CollisionCheck = 1;
+//          PIR2bits.BCLIF = 0;
+//     }
+//}
 
 void I2CMasterWait(char mask){
   while ((SSPSTAT & mask) || (SSPCON2 & 0x1F));
