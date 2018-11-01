@@ -46,7 +46,8 @@ void main(void) {
 //    InitWDT();
     InitI2CMaster(I2C_baud_rate_def);
 //    initTimer();
-    
+    RD3 = 1;
+    RC5 = 1;
     /*initia; operation debug*/
 //    /*------------------------------------------------------------------*/
 //    UBYTE temp;
@@ -87,7 +88,6 @@ void main(void) {
     
 //    LED_WHITE = 0;              //for debugging of PLL setting
     __delay_ms(500);           //wait for circuit of PLL
-    
     //define command ID
     //UBYTE lastCommandID;        //ID of last uplink command
     
