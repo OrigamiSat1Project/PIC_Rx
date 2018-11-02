@@ -37,13 +37,6 @@ void InitialOperation(void){
             
             putChar(0xa2);
             
-            /*--------------------------------------------------------------------------------*/
-            //FIXME:write datas to EEPROM for debug
-//            temp = 0b00000111;
-//            WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
-//            putChar(0xb1);
-            /*--------------------------------------------------------------------------------*/
-            
             /*---read melting status & bit cal---*/
             array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
@@ -55,18 +48,6 @@ void InitialOperation(void){
 //                putChar(array_2byte[0]);
 //                putChar(array_2byte[1]);
                 
-               /*--------------------------------------------------------------------------------------------*/ 
-//                //check the battery voltage
-//                ReadBatVoltageWithPointer(array_2byte);
-//                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,array_2byte);
-//
-////                putChar(0xb1);
-////                putChar(array_2byte[0]);
-////                putChar(array_2byte[1]);
-//
-//                bat_voltage_2byte = (array_2byte[0]<<8)| array_2byte[1];
-                /*--------------------------------------------------------------------------------------------*/
-                
                 /*---check satellite mode---*/
                 temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , satelliteMode_addressHigh, satelliteMode_addressLow);
 
@@ -77,47 +58,10 @@ void InitialOperation(void){
                 } else {
 //                    putChar(0xa5);
                     /*---check melting counter---*/
-                    /*----------------------------------------------------------------------------------------------------*/
-                    //FIXME:write melting counter to eeprom for debug
-//                    temp = 0x03;
-//                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-                    /*----------------------------------------------------------------------------------------------------*/
-
 //                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
                     temp = ReadEEPROMmainAndSub(MeltingCounter_addressHigh, MeltingCounter_addressLow);
 //                    putChar(temp);
                     
-                    /*---------------------------*/
-//                    //for debug (if eeprom read error) 
-//                    temp = ReadEEPROM(0x03, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    putChar(temp);
-//                    if (temp==0xFF){
-//                        temp= ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    }
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, 0xff, 0xff);
-//                    putChar(temp);
-//                    putChar(0xa5);
-                    /*---------------------------*/
-                    
-//                    UWORD melting_counter_amari;
-//                    melting_counter_amari = melting_counter % MELTING_COUNTER_LIMIT;
-//                    
-//                    if((7 < melting_counter_amari)&&(melting_counter_amari<MELTING_COUNTER_LIMIT)){
-//                        melting_counter++;
-//                    } else {
-//                        putChar(0xa8);
-//                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-//
-//                        if(melting_counter<4){
-//                            putChar(0xa9);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-//                        } else {
-//                            putChar(0xa0);
-//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-//                        }
-//                        melting_counter++;
-////                            switchOk(ok_main_forOBCstatus_DIED);
-//                    }               
                     
                     // melting counter
                     //1.temp>=MELTING_COUNTER_LIMIT         -> riset counter
@@ -135,10 +79,12 @@ void InitialOperation(void){
 
                         if(temp<4){
                             putChar(0xa9);
-                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+//                            //***FIXME*** wire melting!! be careful!!
+//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
                         } else {
                             putChar(0xa0);
-                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+//                            //***FIXME***  wire melting!! be careful!!
+//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
                         }
                         temp++;
 //                        putChar(0xb1);
