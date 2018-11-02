@@ -26,6 +26,8 @@
 #define CutWIRE_SHORT_highTime 0x07  //SHORT:2000ms 
 #define CutWIRE_SHORT_lowTime  0xD0
 #define cuttimes_forCutWIRE 3 
+#define EPS_OFF 0x00 //for switchPowerEPS 
+#define EPS_ON  0x01 //for switchPowerEPS
 
 void InitMPU(void);
 
@@ -52,6 +54,9 @@ void changeXtalFrequency(UBYTE);
 void commandSwitchSatMode(UBYTE, UBYTE, UBYTE);
 void commandSwitchPowerSupply(UBYTE, UBYTE, UBYTE, UBYTE);
 void commandSwitchIntProcess(UBYTE, UBYTE, UBYTE);
+
+void onNtrxPowerSupplyCIB(UBYTE,UBYTE);
+void offNtrxPowerSupplyCIB(void);
 
 #endif /*INITMPU_H*/
 

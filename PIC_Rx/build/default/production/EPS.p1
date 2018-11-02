@@ -1051,48 +1051,30 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
-"18 FMCW.h
-[v _FMTX_Nprg `uc ~T0 @X0 -> 5 `i e ]
+"23 FMCW.h
+[v _FMTX_Nprg `um ~T0 @X0 1 e ]
 [i _FMTX_Nprg
-:U ..
--> -> 8 `i `uc
--> -> 7 `i `uc
--> -> 5 `i `uc
--> -> 0 `i `uc
--> -> 1 `i `uc
-..
+-> -> 87501 `l `um
 ]
-[; ;FMCW.h: 18: UBYTE FMTX_Nprg[5] = {8,7,5,0,1};
-"20
-[v _CWTX_Nprg `uc ~T0 @X0 -> 5 `i e ]
+[; ;FMCW.h: 23: USLONG FMTX_Nprg = 87501;
+"24
+[v _CWTX_Nprg `um ~T0 @X0 1 e ]
 [i _CWTX_Nprg
-:U ..
--> -> 0 `i `uc
--> -> 1 `i `uc
--> -> 4 `i `uc
--> -> 0 `i `uc
--> -> 0 `i `uc
-..
+-> -> -> 1400 `i `m `um
 ]
-[; ;FMCW.h: 20: UBYTE CWTX_Nprg[5] = {0,1,4,0,0};
-"22
-[v _FMRX_Nprg `uc ~T0 @X0 -> 5 `i e ]
+[; ;FMCW.h: 24: USLONG CWTX_Nprg = 1400;
+"25
+[v _FMRX_Nprg `um ~T0 @X0 1 e ]
 [i _FMRX_Nprg
-:U ..
--> -> 2 `i `uc
--> -> 4 `i `uc
--> -> 9 `i `uc
--> -> 1 `i `uc
--> -> 6 `i `uc
-..
+-> -> -> 24916 `i `m `um
 ]
-[; ;FMCW.h: 22: UBYTE FMRX_Nprg[5] = {2,4,9,1,6};
-[; ;FMCW.h: 25: void FMTX(int Nref, UBYTE *Nprg);
-[; ;FMCW.h: 26: void CWTX(int Nref, UBYTE *Nprg);
-[; ;FMCW.h: 27: void FMRX(int Nref, UBYTE *Nprg);
-[; ;FMCW.h: 28: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 32: void setNref(UBYTE unitID, int Nref);
-[; ;FMCW.h: 36: void setPLL(void);
+[; ;FMCW.h: 25: USLONG FMRX_Nprg = 24916;
+[; ;FMCW.h: 32: void FMTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 33: void CWTX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 34: void FMRX(int Nref, USLONG Nprg);
+[; ;FMCW.h: 35: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;FMCW.h: 36: void setNref(UBYTE unitID, int Nref);
+[; ;FMCW.h: 40: void setPLL(void);
 "9 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {

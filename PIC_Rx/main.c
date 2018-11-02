@@ -38,7 +38,7 @@ UBYTE lastCommandID;        //ID of uplink command
 
 //TODO:add interrupt finction?
 void main(void) {
-    
+
     /*---Initialization---*/
     /*----------------------------------------------------------------------*/ 
     InitSerial();
@@ -96,8 +96,20 @@ void main(void) {
 
     // RC5 = 1;    //5R8G on
     
-    //FIXME:for TXPIC
+    //FIXME:for TXPIC  
+    putChar('Y');
     putChar('S');
+
+    //for debug BatVoltage measure
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow,0x50);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
+
+    putChar('A');
+    
+
+
+    putChar('B');
     
     while(1){
         
@@ -136,7 +148,8 @@ void main(void) {
            putChar('B');
            putChar('B');
            putChar('B');
-           //TODO:add function to measure EPS Battery
+           //TODO:debug function to measure EPS Battery
+           MeasureBatVoltageAnChangeSatMode();
            set_bat_meas_counter(0,0);
         }
 //        
@@ -236,7 +249,7 @@ void main(void) {
         WriteToEEPROM(subControlByte,wHighAddress,wLowAddress,commandData);
         WriteLastCommandIdToEEPROM(commandData[1]);
         putChar('S');
-        
+
         /*---Send address using UART to OBC and TXCOBC---*/
         /*------------------------------------------------------------------*/
 //        UBYTE send_command[8];

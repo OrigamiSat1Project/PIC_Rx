@@ -16,7 +16,7 @@
 void sendLow(UBYTE unitID);
 void sendHigh(UBYTE unitID);
 void sendSTB(UBYTE unitID);
-void setNprg(UBYTE unitID, UBYTE *Nprg);
+void setNprg(UBYTE unitID, USLONG Nprg);
 void setNref(UBYTE unitID, int Nref);
 void setOptionRegister(UBYTE unitID);
 void _NOP(void);
@@ -37,7 +37,7 @@ void sendLow(UBYTE unitID){
         _NOP();
         FMTX_CLK = 0;
     }
-    if(unitID == CWTX_ID)
+    else if(unitID == CWTX_ID)
     {
         CWTX_DAT = 0;
         _NOP();
@@ -45,7 +45,7 @@ void sendLow(UBYTE unitID){
         _NOP();
         CWTX_CLK = 0;
     }
-    if(unitID == FMRX_ID)
+    else if(unitID == FMRX_ID)
     {
         FMRX_DAT = 0;
         _NOP();
@@ -70,7 +70,7 @@ void sendHigh(UBYTE unitID){
         _NOP();
         FMTX_CLK = 0;
     }
-    if(unitID == CWTX_ID)
+    else if(unitID == CWTX_ID)
     {
         CWTX_DAT = 1;
         _NOP();
@@ -78,7 +78,7 @@ void sendHigh(UBYTE unitID){
         _NOP();
         CWTX_CLK = 0;
     }
-    if(unitID == FMRX_ID)
+    else if(unitID == FMRX_ID)
     {
         FMRX_DAT = 1;
         _NOP();
@@ -101,13 +101,13 @@ void sendSTB(UBYTE unitID){
         _NOP();
         FMTX_STB = 0;
     }
-    if(unitID == CWTX_ID)
+    else if(unitID == CWTX_ID)
     {
         CWTX_STB = 1;
         _NOP();
         CWTX_STB = 0;
     }
-    if(unitID == FMRX_ID)
+    else if(unitID == FMRX_ID)
     {
         FMRX_STB = 1;
         _NOP();
@@ -123,40 +123,46 @@ void sendSTB(UBYTE unitID){
  * 3. Send group code '10'
  * 4. Send STB signal
  */
-void setNprg(UBYTE unitID, UBYTE *Nprg){
+void setNprg(UBYTE unitID, USLONG Nprg){
     UBYTE count = 0;
-    UBYTE Nprg_b[17];
+    UBYTE Nprg_b[17] = {0};
     
-    for(UBYTE i=0; i<17; i++){
-        Nprg_b[i] = 0;
+//    for(UBYTE i=0; i<17; i++){
+//        Nprg_b[i] = 0;
+//    }
+    
+    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
+    for(int i=0; Nprg>0; i++){
+        Nprg_b[i] = Nprg % 2;
+        Nprg = Nprg / 2;
     }
     
-    //Nprg transforms decimal to binary
-    for(UBYTE i = 0; i < 17; i++){
-        for(UBYTE j = 0; j<5; j++){
-            if(Nprg[j] % 2 == 0) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 0;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                }
-            }
-            else if(Nprg[j] % 2 == 1) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 1;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg[j+1] = Nprg[j+1] + 10;
-                }
-            }
-        }
-    }
+//    //Nprg transforms decimal to binary
+//    for(UBYTE i = 0; i < 17; i++){
+//        for(UBYTE j = 0; j<5; j++){
+//            if(Nprg[j] % 2 == 0) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 0;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                }
+//            }
+//            else if(Nprg[j] % 2 == 1) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 1;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg[j+1] = Nprg[j+1] + 10;
+//                }
+//            }
+//        }
+//    }
     
     //Send Nprg data(binary) to communication module
     for (UBYTE i=0; i<17; i++)
@@ -183,16 +189,16 @@ void setNprg(UBYTE unitID, UBYTE *Nprg){
 /*
  * [Setting the reference counter of the radio]
  * 1. Convert reference counter read from argument to binary number (stored as array)
- * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?¿½i?¿½Ý’ï¿½ÌŠÌj???
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?ï¿½ï¿½i?ï¿½ï¿½Ý’ï¿½ÌŠÌj???
  * 3. Send group code '11'
  * 4. Send STB signal
  */
 void setNref(UBYTE unitID, int Nref){
-    UBYTE Nref_b[12];
+    UBYTE Nref_b[12] = {0};
     
-    for(UBYTE i=0; i<12; i++){
-        Nref_b[i] = 0;
-    }
+//    for(UBYTE i=0; i<12; i++){
+//        Nref_b[i] = 0;
+//    }
     
     //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
     for(int i=0; Nref>0; i++){
@@ -229,24 +235,40 @@ void setNref(UBYTE unitID, int Nref){
  */
 void setOptionRegister(UBYTE unitID){
     //Send PLL Common DataSet to communiction module
-    sendLow(unitID);//T1
-    sendLow(unitID);//T2
-    sendLow(unitID);//T3
-    sendHigh(unitID);//CpT1
-    sendHigh(unitID);//CpT2
-    sendLow(unitID);//Cpr1
-    sendLow(unitID);//Cpr2
-    sendLow(unitID);//LD1
-    sendLow(unitID);//LD2
-    sendLow(unitID);//Tx
+    for(UBYTE i=0;i<3;i++){
+        sendLow(unitID);//T1,T2,T3
+    }
+    for(UBYTE i=0;i<2;i++){
+        sendHigh(unitID);//CpT1,Cpr2
+    }
+     for(UBYTE i=0;i<3;i++){
+        sendLow(unitID);//LD1.LD2,Tx
+    }
     sendHigh(unitID);//Rx
-    
     //GroupCode'00' is option reg.
-    sendLow(unitID);
-    sendLow(unitID);
-    
+    for(UBYTE i=0;i<2;i++){
+        sendLow(unitID);
+    }
     //STB Signal
     sendSTB(unitID);
+    
+//    sendLow(unitID);//T1
+//    sendLow(unitID);//T2
+//    sendLow(unitID);//T3
+//    sendHigh(unitID);//CpT1
+//    sendHigh(unitID);//CpT2
+//    sendLow(unitID);//Cpr1
+//    sendLow(unitID);//Cpr2
+//    sendLow(unitID);//LD1
+//    sendLow(unitID);//LD2
+//    sendLow(unitID);//Tx
+//    sendHigh(unitID);//Rx
+//    
+//    //GroupCode'00' is option reg.
+//    sendLow(unitID);
+//    sendLow(unitID);   
+//    //STB Signal
+//    sendSTB(unitID);
 }
 
 /*
@@ -255,11 +277,11 @@ void setOptionRegister(UBYTE unitID){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void FMTX(int Nref, UBYTE *Nprg){
-   UBYTE fmtx = FMTX_ID;
-   setOptionRegister(fmtx);
-   setNref(fmtx, Nref);
-   setNprg(fmtx, Nprg);
+void FMTX(int Nref, USLONG Nprg){
+    UBYTE fmtx = FMTX_ID;
+    setOptionRegister(fmtx);
+    setNref(fmtx, Nref);
+    setNprg(fmtx, Nprg);
 }
 
 
@@ -269,11 +291,11 @@ void FMTX(int Nref, UBYTE *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
-void CWTX(int Nref, UBYTE *Nprg){
-   UBYTE cwtx = CWTX_ID;
-   setOptionRegister(cwtx);
-   setNref(cwtx, Nref);
-   setNprg(cwtx, Nprg);
+void CWTX(int Nref, USLONG Nprg){
+    UBYTE cwtx = CWTX_ID;
+    setOptionRegister(cwtx);
+    setNref(cwtx, Nref);
+    setNprg(cwtx, Nprg);
 }
 
 
@@ -283,12 +305,12 @@ void CWTX(int Nref, UBYTE *Nprg){
  * 2. Setting of Reference counter
  * 3. Setting of programmable counter
  */
- void FMRX(int Nref, UBYTE *Nprg){
-     UBYTE fmrx = FMRX_ID;
-     setOptionRegister(fmrx);
-     setNref(fmrx, Nref);
-     setNprg(fmrx, Nprg);
- }
+void FMRX(int Nref, USLONG Nprg){
+    UBYTE fmrx = FMRX_ID;
+    setOptionRegister(fmrx);
+    setNref(fmrx, Nref);
+    setNprg(fmrx, Nprg);
+}
 
 // void setPLL(void){    
 //     /*---FMTX---*/
