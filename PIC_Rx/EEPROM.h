@@ -104,6 +104,8 @@
 #define BatteryVoltage_addressLow      0x01
 #define MeltingCounter_addressHigh     0xE0
 #define MeltingCounter_addressLow      0x00
+#define satelliteMode_addressHigh      0x00
+#define satelliteMode_addressLow       0x00
 
 
 #endif	/* EEPROM_H */

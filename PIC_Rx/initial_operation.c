@@ -17,15 +17,17 @@
 #define BAT_LIMIT_FOR_MELTING 0x0077 //[V] //TBD 6.0V
 //#define MELTING_COUNTER_LIMIT 72  //for debug 72->10 
 #define MELTING_COUNTER_LIMIT 13  //for debug 72->10 
+#define SAT_MODE_NORMAL 0x01 //FIX ME: need change
 
 void InitialOperation(void){
     /*---start checking whether antenna are developed or not---*/
     /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
     /*--------------------------------------------------------------------------------*/
     UBYTE temp = 0;
-    UBYTE array_2byte[2];
-    UWORD bat_voltage_2byte = 0;
+    UBYTE array_2byte[2] = {0};
+//    UWORD bat_voltage_2byte = 0;
 
+    /*---check OBC status---*/
     switch(OBC_STATUS){
         case OBC_ALIVE:
             putChar(0xa1);
@@ -35,18 +37,16 @@ void InitialOperation(void){
             
             putChar(0xa2);
             
-             /*--------------------------------------------------------------------------------*/
+            /*--------------------------------------------------------------------------------*/
             //FIXME:write datas to EEPROM for debug
 //            temp = 0b00000111;
 //            WriteOneByteToMainAndSubB0EEPROM(MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
 //            putChar(0xb1);
-             /*--------------------------------------------------------------------------------*/
+            /*--------------------------------------------------------------------------------*/
             
-            /*---read melting status & bit cal*/
+            /*---read melting status & bit cal---*/
             array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-            
-//            checkMeltingStatus(array_2byte);
 
             //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
             if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
@@ -55,29 +55,34 @@ void InitialOperation(void){
 //                putChar(array_2byte[0]);
 //                putChar(array_2byte[1]);
                 
+               /*--------------------------------------------------------------------------------------------*/ 
+//                //check the battery voltage
+//                ReadBatVoltageWithPointer(array_2byte);
+//                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,array_2byte);
+//
+////                putChar(0xb1);
+////                putChar(array_2byte[0]);
+////                putChar(array_2byte[1]);
+//
+//                bat_voltage_2byte = (array_2byte[0]<<8)| array_2byte[1];
+                /*--------------------------------------------------------------------------------------------*/
                 
-                //check the battery voltage
-                ReadBatVoltageWithPointer(array_2byte);
-                WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressHigh,array_2byte);
+                /*---check satellite mode---*/
+                temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , satelliteMode_addressHigh, satelliteMode_addressLow);
 
-//                putChar(0xb1);
-//                putChar(array_2byte[0]);
-//                putChar(array_2byte[1]);
-
-
-                bat_voltage_2byte = (array_2byte[0]<<8)| array_2byte[1];
-
-                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
+                //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break
+//                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
+                if(temp!=SAT_MODE_NORMAL){
                     putChar(0xa4);
                 } else {
 //                    putChar(0xa5);
-                    //check melting counter
-                    UWORD melting_counter;
-                    //FIXME:for debug
-                    melting_counter = 0x03;
-                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, melting_counter);      
+                    /*---check melting counter---*/
+                    /*----------------------------------------------------------------------------------------------------*/
+                    //FIXME:write melting counter to eeprom for debug
+//                    temp = 0x03;
+//                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
+                    /*----------------------------------------------------------------------------------------------------*/
 
-                    UBYTE temp;
 //                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
                     temp = ReadEEPROMmainAndSub(MeltingCounter_addressHigh, MeltingCounter_addressLow);
 //                    putChar(temp);
@@ -112,8 +117,12 @@ void InitialOperation(void){
 //                        }
 //                        melting_counter++;
 ////                            switchOk(ok_main_forOBCstatus_DIED);
-//                    }                    
-
+//                    }               
+                    
+                    // melting counter
+                    //1.temp>=MELTING_COUNTER_LIMIT         -> riset counter
+                    //2.7 < temp <MELTING_COUNTER_LIMIT  -> ciunter++
+                    //3.0 <= temp <=7                    -> melting + counter++
                     if(temp>=MELTING_COUNTER_LIMIT){
                         putChar(0xa6);
                         temp = 0;
@@ -136,14 +145,18 @@ void InitialOperation(void){
 //                        putChar(temp);
 //                            switchOk(ok_main_forOBCstatus_DIED);
                     }
+                    
 //                    putChar(0xaa);
+                    
+                    /*---write melting counter to main and sub EEPROM---*/
                     WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
 
 //                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
 //                    putChar(temp);
                 }
+            } else {
+                putChar(0xab);
             }
-//            putChar(0xab);
             break;
         default:
 //            putChar(0xac);

@@ -15,6 +15,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
 [p i __delay ]
+"23 UART.h
+[v _putChar `(v ~T0 @X0 0 ef1`uc ]
+"30 time.h
+[v _delay_ms `(v ~T0 @X0 0 ef1`us ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1172,21 +1176,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;WDT.c: 49: void sendPulseWDT(void){
 [e :U _sendPulseWDT ]
 [f ]
-[; ;WDT.c: 50: if(PORTBbits.RB3== 0){
+[; ;WDT.c: 50: putChar('W');
 "50
+[e ( _putChar (1 -> -> 87 `ui `uc ]
+[; ;WDT.c: 51: if(PORTBbits.RB3== 0){
+"51
 [e $ ! == -> . . _PORTBbits 0 3 `i -> 0 `i 104  ]
 {
-[; ;WDT.c: 51: PORTBbits.RB1 = 0;
-"51
-[e = . . _PORTBbits 0 1 -> -> 0 `i `uc ]
-[; ;WDT.c: 52: PORTBbits.RB1 = 1;
+[; ;WDT.c: 52: PORTBbits.RB1 = 0;
 "52
-[e = . . _PORTBbits 0 1 -> -> 1 `i `uc ]
+[e = . . _PORTBbits 0 1 -> -> 0 `i `uc ]
+[; ;WDT.c: 53: delay_ms(300);
 "53
+[e ( _delay_ms (1 -> -> 300 `i `us ]
+[; ;WDT.c: 54: PORTBbits.RB1 = 1;
+"54
+[e = . . _PORTBbits 0 1 -> -> 1 `i `uc ]
+"55
 }
 [e :U 104 ]
-[; ;WDT.c: 53: }
-[; ;WDT.c: 54: }
-"54
+[; ;WDT.c: 55: }
+[; ;WDT.c: 56: }
+"56
 [e :UE 103 ]
 }

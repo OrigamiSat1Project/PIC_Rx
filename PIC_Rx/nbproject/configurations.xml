@@ -40,8 +40,8 @@
       <itemPath>FMCW.c</itemPath>
       <itemPath>ADC.c</itemPath>
       <itemPath>MPU.c</itemPath>
-      <itemPath>OkError.c</itemPath>
       <itemPath>initial_operation.c</itemPath>
+      <itemPath>OkError.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

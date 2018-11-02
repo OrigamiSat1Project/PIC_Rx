@@ -29,6 +29,7 @@ static UINT hour_counter    = 0;
 static UINT day_counter     = 0;
 static UINT week_counter    = 0;
 
+static UINT wdt_pulse_counter_sec       = 0;
 static UINT receive_command_counter_sec = 0;
 static UINT receive_command_counter_min = 0;
 static UINT bat_meas_counter_sec        = 0;
@@ -54,6 +55,7 @@ void interrupt TimerCheck(void){
         timer_counter = 0;
         second_counter += 1;
         
+        wdt_pulse_counter_sec ++;
         eps_reset_counter_sec ++; //for debug        
         init_ope_counter_sec ++;
         bat_meas_counter_sec ++;
@@ -100,13 +102,23 @@ void interrupt TimerCheck(void){
     }
     
     /*---WDT send pulse (4s)---*/
-    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
-        if(WDT_flag == 0x01){
-            putChar('W');
-            sendPulseWDT();
-            WDT_flag = 0x00;
-        }
-    }
+////    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
+//    if(wdt_pulse_counter_sec>=WDT_INTERVAL){
+////        if(WDT_flag == 0x01){
+//        wdt_pulse_counter_sec = 0;
+//            sendPulseWDT();
+////            WDT_flag = 0x00;
+////        }
+//    }
+}
+
+void set_wdt_pulse_counter(UINT time_sec){
+    wdt_pulse_counter_sec = time_sec;
+}
+
+//for debug
+UINT get_wdt_pulse_counter_sec(void){
+    return wdt_pulse_counter_sec;
 }
 
 //for debug

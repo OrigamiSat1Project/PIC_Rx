@@ -43,7 +43,7 @@ void main(void) {
     /*----------------------------------------------------------------------*/ 
     InitSerial();
     InitMPU();
-    InitWDT();
+//    InitWDT();
     InitI2CMaster(I2C_baud_rate_def);
     initTimer();
     
@@ -98,20 +98,16 @@ void main(void) {
     
     //FIXME:for TXPIC
     putChar('S');
-    putChar('Y');
-    putChar('S');
-
-    putChar('A');
-    
-
-
-    putChar('B');
     
     while(1){
         
+        delay_ms(500);
+        putChar('m');
+        delay_ms(500);
+        
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
-        /*---timer process for EPS reset (1week)---*/       
+//        /*---timer process for EPS reset (1week)---*/       
 //        if(get_timer_counter('w') >= 1){  //for FM
         if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
             putChar('E');
@@ -143,8 +139,17 @@ void main(void) {
            //TODO:add function to measure EPS Battery
            set_bat_meas_counter(0,0);
         }
+//        
+//        /*---WDT---*/
+//        if(get_wdt_pulse_counter_sec() >= WDT_PULSE_INTERVAL){
+//           putChar('w');
+//           putChar('w');
+//           putChar('w');
+//           sendPulseWDT();
+//           set_wdt_pulse_counter(0);
+//        }
         
-                
+        
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
         UBYTE commandData[DATA_SIZE];         //data of uplink command
