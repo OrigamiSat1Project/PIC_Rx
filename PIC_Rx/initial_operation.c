@@ -126,10 +126,12 @@ void InitialOperation(void){
 
                         if(temp<4){
                             putChar(0xa9);
-                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+//                            //FIX ME: ****wire cutter!!
+//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
                         } else {
                             putChar(0xa0);
-                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+//                            //FIX ME: ****wire cutter!!
+//                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
                         }
                         temp++;
 //                        putChar(0xb1);
