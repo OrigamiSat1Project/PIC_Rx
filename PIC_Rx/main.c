@@ -45,7 +45,7 @@ void main(void) {
     InitMPU();
 //    InitWDT();
     InitI2CMaster(I2C_baud_rate_def);
-    initTimer();
+//    initTimer();
     
     /*initia; operation debug*/
 //    /*------------------------------------------------------------------*/
@@ -105,6 +105,7 @@ void main(void) {
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
 
+   
     putChar('A');
     
 
@@ -121,37 +122,37 @@ void main(void) {
         /*----------------------------------------------------------------------------*/
 //        /*---timer process for EPS reset (1week)---*/       
 //        if(get_timer_counter('w') >= 1){  //for FM
-        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-            putChar('E');
-            putChar('E');
-            putChar('E');
-            Reset_EPS();
-            setPLL();
-            // Execute 1week reset
-            reset_timer();
-            set_eps_reset_counter(0,0);  //for debug
-        }
-
-        /*---timer process for initial operation (22.5min)---*/
-        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
-        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
-            putChar('I');
-            putChar('I');
-            putChar('I');
-            InitialOperation();
-            set_init_ope_counter(0,0);
-        }
-
-        /*---timer process for measure EPS BATTERY---*/
-        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-           putChar('B');
-           putChar('B');
-           putChar('B');
-           //TODO:debug function to measure EPS Battery
-           MeasureBatVoltageAnChangeSatMode();
-           set_bat_meas_counter(0,0);
-        }
+//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+//            putChar('E');
+//            putChar('E');
+//            putChar('E');
+//            Reset_EPS();
+//            setPLL();
+//            // Execute 1week reset
+//            reset_timer();
+//            set_eps_reset_counter(0,0);  //for debug
+//        }
+//
+//        /*---timer process for initial operation (22.5min)---*/
+//        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
+//        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+//            putChar('I');
+//            putChar('I');
+//            putChar('I');
+//            InitialOperation();
+//            set_init_ope_counter(0,0);
+//        }
+//
+//        /*---timer process for measure EPS BATTERY---*/
+//        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+//           putChar('B');
+//           putChar('B');
+//           putChar('B');
+//           //TODO:debug function to measure EPS Battery
+//           MeasureBatVoltageAnChangeSatMode();
+//           set_bat_meas_counter(0,0);
+//        }
 //        
 //        /*---WDT---*/
 //        if(get_wdt_pulse_counter_sec() >= WDT_PULSE_INTERVAL){
@@ -162,6 +163,11 @@ void main(void) {
 //           set_wdt_pulse_counter(0);
 //        }
         
+        while (1){
+            putChar('x');
+            InitialOperation();
+            delay_ms(2000);
+        }
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/

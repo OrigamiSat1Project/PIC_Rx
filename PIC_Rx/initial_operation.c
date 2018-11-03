@@ -17,7 +17,7 @@
 #define BAT_LIMIT_FOR_MELTING 0x0077 //[V] //TBD 6.0V
 //#define MELTING_COUNTER_LIMIT 72  //for debug 72->10 
 #define MELTING_COUNTER_LIMIT 13  //for debug 72->10 
-#define SAT_MODE_NORMAL 0x01 //FIX ME: need change
+#define SAT_MODE_NORMAL 0x50 //FIX ME: need change
 
 void InitialOperation(void){
     /*---start checking whether antenna are developed or not---*/
@@ -49,7 +49,7 @@ void InitialOperation(void){
 //                putChar(array_2byte[1]);
                 
                 /*---check satellite mode---*/
-                temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , satelliteMode_addressHigh, satelliteMode_addressLow);
+                temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
 
                 //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break
 //                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
@@ -80,11 +80,11 @@ void InitialOperation(void){
                         if(temp<4){
                             putChar(0xa9);
 //                            //***FIXME*** wire melting!! be careful!!
-//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
                         } else {
                             putChar(0xa0);
 //                            //***FIXME***  wire melting!! be careful!!
-//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
                         }
                         temp++;
 //                        putChar(0xb1);
