@@ -63,7 +63,7 @@ UBYTE I2CMasterRead(UBYTE a){
 ******************************************************************************/
 void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
     UBYTE address;
-    address= addressEEPROM << 1;
+    address= (UBYTE)(addressEEPROM << 1);
     //UINT Datasize = sizeof(data);
     /**/
     I2CMasterStart();               //Start condition
@@ -80,7 +80,7 @@ void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE 
 /**/
 void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE address;
-    address= addressEEPROM << 1;
+    address= (UBYTE)(addressEEPROM << 1);
     //UINT Datasize = sizeof(data);
     I2CMasterStart();               //Start condition
     I2CMasterWrite(address);        //7 bit address + Write
@@ -99,8 +99,8 @@ void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE d
 void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE mainAddress;
     UBYTE subAddress;
-    mainAddress = EEPROM_address | B0Select;
-    subAddress = EEPROM_subaddress | B0Select;
+    mainAddress = (UBYTE)(EEPROM_address | B0Select);
+    subAddress = (UBYTE)(EEPROM_subaddress | B0Select);
     WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
     WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
 }
@@ -115,8 +115,8 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
 ******************************************************************************/
 void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
 
-    UBYTE Address = Address7Bytes << 1;
-    UBYTE ReadAddress = Address | 0x01;
+    UBYTE Address = (UBYTE)(Address7Bytes << 1);
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     I2CMasterStart();                       //Start condition
     I2CMasterWrite(Address);                //7 bit address + Write
     I2CMasterWrite(high_address);           //Adress High Byte
@@ -150,8 +150,8 @@ void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address
  *	XXX      :   not yet
  */
 UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
-    UBYTE Address = Address7Bytes << 1;
-    UBYTE ReadAddress = Address | 0x01;
+    UBYTE Address = (UBYTE)(Address7Bytes << 1);
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     UBYTE ReadData;
    
     I2CMasterStart();         //Start condition
@@ -165,14 +165,13 @@ UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
     ReadData = I2CMasterRead(0); //Read + Acknowledge
     
     I2CMasterStop();          //Stop condition
-    return ReadData;
-    __delay_ms(200);  
+    return ReadData; 
 }
 
 //TODO:need debug
 void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
-    UBYTE Address = Address7Bytes << 1;
-    UBYTE ReadAddress = Address | 0x01;
+    UBYTE Address = (UBYTE)(Address7Bytes << 1);
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     I2CMasterStart();                       //Start condition
     I2CMasterWrite(Address);                //7 bit address + Write
     I2CMasterWrite(high_address);           //Adress High Byte
@@ -243,11 +242,12 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
     switch(command){    
         case 'w': //write data to EEPROM
             //TODO:now send data is only 1byte. change data size
-            WriteToEEPROM(slaveAdress, dataHigh, dataLow, data1);  //data1 is the data to send
+            WriteToEEPROM(slaveAdress, dataHigh, dataLow, &data1);  //data1 is the data to send
             break;
         case 'r': //read data from EEPROM
             data_length = data1;
-            ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, data1);
+            //FIXME : read_data is a single pointer, maybe not worked as you think
+            ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, (UINT)data1);
             if(data2=='f'){
                 //fm downlink
             } else if(data2=='c'){

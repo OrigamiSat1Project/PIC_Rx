@@ -33,7 +33,7 @@ void writeICMAddr(UBYTE , UBYTE);
 UBYTE readICMAddr(UBYTE address)
 {
     UBYTE Address = ICM_ADDR << 1;
-    UBYTE ReadAddress = Address | 0x01;
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
     UBYTE ans;
     I2CMasterStart();                   //Start condition
     I2CMasterWrite(ICM_ADDR);           //7 bit address + Write
@@ -75,11 +75,11 @@ int initICM()
     return ans;
 }
 
-int readICM(UBYTE *data, int offset)
+int readICM(UBYTE *data, UINT offset)
 {
     UBYTE Address = ICM_ADDR << 1;
-    UBYTE ReadAddress = Address | 0x01;
-    int ans , i , ack ;
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
+    int ans , ack ;
     UBYTE dataNumber;
     dataNumber = ICM_DATA_STOP - ICM_DATA_STOP +1;
 
@@ -94,7 +94,7 @@ int readICM(UBYTE *data, int offset)
     I2CMasterWrite(ICM_DATA_START);            //7 bit address + Write
     I2CMasterRepeatedStart();           //Restart condition
     I2CMasterWrite(ReadAddress);        //7 bit address + Read
-    for (UBYTE i = 0; i < dataNumber-1; i++){
+    for (UINT i = 0; i < dataNumber-1; i++){
         data[offset+i] = I2CMasterRead(1);
     }
     data[offset + dataNumber-1] = I2CMasterRead(0);

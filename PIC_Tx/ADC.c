@@ -112,30 +112,8 @@ UWORD adc_read(){
     while (ADCON0bits.GO_nDONE);
     //give out ADC result
     UWORD value;
-    value = (ADRESH<<8) | ADRESL;
+    value = (UWORD)((ADRESH<<8) | ADRESL);
     return(value);              
-}
-void adc_led_Test(UBYTE voltage){
-    if(voltage<1000){//Blink two times
-        for(UBYTE i=0;i<2;i++){
-            PORTBbits.RB1 = 1;
-            __delay_ms(300);
-            PORTBbits.RB1 = 0;
-            __delay_ms(300);
-        }
-    } 
-    else if(voltage<3300){//Blink three times
-        for(UBYTE i=0;i<3;i++){
-            PORTBbits.RB1 = 1;
-            __delay_ms(200);
-            PORTBbits.RB1 = 0;
-            __delay_ms(200);
-        }
-    }
-    else {
-        PORTBbits.RB1 = 1;
-        __delay_ms(1000);
-    }
 }
 
 /*******************************************************************************
@@ -165,7 +143,6 @@ void measureAllChanelADC(){
     //FIXME:[finish]debug for check the adcValue 
     /*------------------------------------------------*
 
-    /*-------------------------------------------------*/
     //FIXME:[start]debug for write/read adc value--->success
 //    for (UBYTE i=0; i<4; i++){    
 //        WriteOneByteToEEPROM(EEPROM_address, adcValue_addressHigh, adcValue_addressLow, (UBYTE)(adcValue[i] >> 8));

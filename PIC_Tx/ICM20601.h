@@ -3,6 +3,6 @@
 
 
 int initICM();
-int readICM(unsigned char *, int);
+int readICM(unsigned char *, UINT);
 
 #endif	/* ICM_H */

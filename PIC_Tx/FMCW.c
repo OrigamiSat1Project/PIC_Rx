@@ -30,8 +30,8 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     
     UBYTE mainAddress;
     UBYTE subAddress;
-    mainAddress = EEPROM_address | B0Select;
-    subAddress = EEPROM_subaddress | B0Select;
+    mainAddress = (UBYTE)(EEPROM_address | B0Select);
+    subAddress = (UBYTE)(EEPROM_subaddress | B0Select);
     ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
 
     /*---read CRC check from EEPROM---*/
@@ -42,16 +42,16 @@ void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow
     /*------------------------------------------------------------------*/
     if(crc16(0,commandData,29) == CRC_check(commandData,29)){
         //5bit 0--->1
-        commandData[31] = commandData[31] | 0b00100000;
+        commandData[31] |= 0b00100000;
     }else{
         ReadDataFromEEPROM(subAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
         if(crc16(0,commandData,29) == CRC_check(commandData,29)){
             //5bit 0--->0 / 4bit 0--->1
-            commandData[31] = commandData[31] & 0b11011111;  
-            commandData[31] = commandData[31] | 0b00010000;
+            commandData[31] &= 0b11011111;  
+            commandData[31] |= 0b00010000;
         }else{
             //5,4bit 0--->0
-            commandData[31] = commandData[31] & 0b11001111;
+            commandData[31] &= 0b11001111;
         }
     }   
     
@@ -139,8 +139,8 @@ void _NOP(void) {
 void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
     UBYTE mainAddress;
     UBYTE subAddress;
-    mainAddress = EEPROM_address | EEPROMAndB0Select;
-    subAddress = EEPROM_subaddress | EEPROMAndB0Select;
+    mainAddress = (UBYTE)(EEPROM_address | EEPROMAndB0Select);
+    subAddress = (UBYTE)(EEPROM_subaddress | EEPROMAndB0Select);
 
     UBYTE readData[];
     ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, readData,DataSize);
@@ -391,8 +391,8 @@ void DevideDataAndChangeBinaryToChar (UBYTE binary_data, UBYTE *char_data_highLo
     UBYTE binary_data_low;
 
     putChar(0xFA);
-    binary_data_high = binary_data >> 4;    //7654bit
-    binary_data_low  = binary_data & 0x0F;  //3210bit
+    binary_data_high = (UBYTE)(binary_data >> 4);    //7654bit
+    binary_data_low  = (UBYTE)(binary_data & 0x0F);  //3210bit
     putChar(binary_data_high);
     putChar(binary_data_low);
     
@@ -404,7 +404,7 @@ void DevideDataAndChangeBinaryToChar (UBYTE binary_data, UBYTE *char_data_highLo
 }
 
 void sendMorse(char *HK_Data,size_t data_size){
-    for (int i = 0;i<data_size;i++){
+    for (UINT i = 0;i<data_size;i++){
         long mo = changeCharMorse(HK_Data[i]);
         for (int n=0;n<19;n++){
             if(mo==0){

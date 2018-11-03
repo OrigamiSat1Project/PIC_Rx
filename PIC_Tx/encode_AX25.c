@@ -7,7 +7,7 @@
 #define bit_H 0x01
 #define bit_L 0x00
 #define ucall "JQ1YCZ"   //call sign of Tokyo Tech
-#define mycall "JS1YAX"  //call sign of OrigamiSar-1
+#define mycall "JS1YAX"  //call sign of OrigamiSat-1
 #define low  0
 #define high 1
 
@@ -84,8 +84,8 @@ void SendPacket(UBYTE *eDataField){
     
     //  FCSField
     efcsflag = 1;
-    efcslo = efcslo ^ 0xff;
-    efcshi = efcshi ^ 0xff;
+    efcslo ^= 0xff;
+    efcshi ^= 0xff;
     SendByte(efcslo);
     SendByte(efcshi);
     efcsflag = 0;
@@ -101,7 +101,7 @@ void SendPacket(UBYTE *eDataField){
 void SendByte(UBYTE byte){
     UBYTE bt;
     for(UBYTE i=0;i<8;i++){
-        bt = byte & bit_H;
+        bt = (UBYTE)(byte & bit_H);
         //  eDataField -- FCSCalculate
         if(efcsflag == 0 && eflag == 0){
             fcsbit(bt);
@@ -118,7 +118,7 @@ void SendByte(UBYTE byte){
             }
         }
         __delay_us(espan);
-        byte = byte >> 1;
+        byte = (UBYTE)(byte >> 1);
     }
 }
 //NRZI
@@ -143,7 +143,7 @@ void fcsbit(UBYTE tbyte){
 //        RRF _efcslo,F
 //    #endasm
     if(((STATUS & bit_H)^(tbyte)) == bit_H){
-        efcshi = efcshi ^ 0x84;
-        efcslo = efcslo ^ 0x08;
+        efcshi ^= 0x84;
+        efcslo ^= 0x08;
     }
 }
