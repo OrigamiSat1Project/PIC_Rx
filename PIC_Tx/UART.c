@@ -36,11 +36,12 @@ UBYTE getChar(void){                //TODO: add time out feature
         NOP();
         CREN = 1;
     }
-
-    //TODO;need check
-    set_timer_counter_only_getChar(0);
-	while(!RCIF){                   //USART Receive Interrupt Flag bit
-        if(get_timer_counter_only_getChar() > 1000) break;
+    
+    UINT break_counter = 0;
+    
+	while(!RCIF){
+        break_counter ++;
+        if(break_counter >= 60000) break;
     }
     return RCREG;
 }
