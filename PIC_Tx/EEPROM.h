@@ -104,8 +104,8 @@
 #define BatteryVoltageOBC_addressLow 0x00
 #define BatteryVoltageCIB_addressHigh  0x00
 #define BatteryVoltageCIB_addressLow 0x00
-#define MeltingStatus_addressHigh  0xE0
-#define MeltingStatus_addressLow  0x0A
+#define MeltingStatus_addressHigh  0x85
+#define MeltingStatus_addressLow   0x00
 #define LatestExcutionCommandID_addressHigh   0x00
 #define LatestExcutionCommandID_addressLow   0x00
 #define OBC_CommandErrorStatus_addressHigh 0x00

@@ -42,8 +42,6 @@ void interrupt InterReceiver(void);
 
 
 void interrupt InterReceiver(void){
-    putChar('I');
-    putChar('I');
     
 //    UBYTE commandSize;
 //    commandSize = 10;
@@ -57,6 +55,9 @@ void interrupt InterReceiver(void){
 //         for (UBYTE i = 0; i < commandSize; i++){
 //             RXDATA[i] = getChar();
 //         }
+        putChar('I');
+        putChar('I');
+        
         UBYTE get_char_state = 0;
         while(get_char_state < commandSize){
             RXDATA[0] = getChar();
@@ -69,19 +70,19 @@ void interrupt InterReceiver(void){
                 get_char_state = 0;
             } else {    
                 for (UBYTE i = 1; i < commandSize; i++){
-                RXDATA[i] = getChar();
-                get_char_state++;
+                    RXDATA[i] = getChar();
+                    get_char_state++;
                 }
             }
         }
-        
+                
         //TODO:need?
         /*---Send command using UARTto RXCOBC---*/
         for (UBYTE i = 0; i < commandSize; i++){
             putChar(RXDATA[i]);
             NOP();
         }
-       
+        
         /*---CRC check for command from RXCOBC or OBC---*/ 
        //TODO add case RXDATA[0]!=t or g
         UWORD crcResult, crcValue;
@@ -108,18 +109,17 @@ void interrupt InterReceiver(void){
         UBYTE commandID;
         commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
         //TODO:read datas from sub EEPROM
-
+        
         /*---read CRC check from EEPROM---*/
         UBYTE CRC_check_result;
-        //FIXME:for debug
-        CRC_check_result = 0b1000000;
-        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
+//        CRC_check_result = 0b1000000; //for debug
+//        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result); //for debug
         CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
         
         if(crcResult != crcValue){  //crc error
             
             /*---write CRC error result (6bit 0) ---*/
-            CRC_check_result &= 0b1011111;
+            CRC_check_result &= 0b10111111;
             WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
             
             putChar(0xa1);
@@ -180,7 +180,7 @@ void interrupt InterReceiver(void){
                 }
             }
             /*---write CRC result 6bit 1 ---*/
-            CRC_check_result |= 0b0100000;
+            CRC_check_result |= 0b01000000;
             WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
             switchOk(error_main_crcCheck);   
         }
@@ -270,18 +270,19 @@ void interrupt InterReceiver(void){
 void main(void) {
     
     __delay_ms(1000);
-    Init_SERIAL();
     Init_MPU();
     InitI2CMaster(I2Cbps);
-    Init_WDT();
+    Init_SERIAL();     
+//    Init_WDT();    
+    sendPulseWDT();
+    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
+    putChar('S');
+
+
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
-
-    putChar('S');
-    putChar('S');
-    putChar('S');
-    putChar('y');
     
+
     //FIXME:write melting status for debug
 //    UBYTE main_test_melting_status = 0b00000011;
 //    UBYTE sub_test_melting_status = 0b01111111;
@@ -300,12 +301,11 @@ void main(void) {
     while(1){
         
         putChar('m');
-        putChar('X');
-        __delay_ms(1000);
 
         //TODO send pulse to WDT
-        
- 
+        sendPulseWDT();
+        __delay_ms(5000);
+         
         measureDcDcTemperature();
         if(OBC_STATUS == low){          
             measureChannel2();//read 5V Bus

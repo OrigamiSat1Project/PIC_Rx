@@ -13,8 +13,13 @@
 
 #define TIMER_INTERVAL (0xffff - 62500) // TMR?????????????
                                         // 10MHz, 1/4????????100msec??????????
+#define HIGH 1
+#define LOW  0
 
+void commandWDT(UBYTE);
 void Init_WDT(void);
+void resetWDT();
+void sendPulseWDT(void);
 //void interrupt intr(void);
 
 #ifdef	__cplusplus
