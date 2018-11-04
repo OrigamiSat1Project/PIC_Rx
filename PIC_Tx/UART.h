@@ -12,6 +12,10 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "Type_define.h"
 
+#define NOT_RECEIVE 0x00
+#define UNCORRECT_RECEIVE 0x01
+#define CORRECT_RECEIVE 0x02
+
 
 UBYTE UPLINK_COMMAND_SIZE = 32;
 
