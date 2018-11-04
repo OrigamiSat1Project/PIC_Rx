@@ -34,7 +34,8 @@
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
-UBYTE lastCommandID;        //ID of uplink command
+#define MELTING_FINISH_FLAG 0b01111110
+UBYTE lastCommandID=0xff;        //ID of uplink command
 
 //TODO:add interrupt finction?
 void main(void) {
@@ -43,9 +44,9 @@ void main(void) {
     /*----------------------------------------------------------------------*/ 
     InitSerial();
     InitMPU();
-//    InitWDT();
+    InitWDT();
     InitI2CMaster(I2C_baud_rate_def);
-//    initTimer();
+    initTimer();
     
     /*initia; operation debug*/
 //    /*------------------------------------------------------------------*/
@@ -63,6 +64,8 @@ void main(void) {
 //    putChar(0xcc);
 //    putChar(melting_counter_read[0]);
 //    putChar(melting_counter_read[1]);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow,0b00000011);
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS, MeltingStatus_addressHigh, MeltingStatus_addressLow,0b00000011);
     /*------------------------------------------------------------------*/
     
 //    LED_WHITE = 1;              //for debugging of init
@@ -105,7 +108,7 @@ void main(void) {
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
 
-   
+       
     putChar('A');
     
 
@@ -114,60 +117,42 @@ void main(void) {
     
     while(1){
         
-        delay_ms(500);
-        putChar('m');
-        delay_ms(500);
-        
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
-//        /*---timer process for EPS reset (1week)---*/       
+        /*---timer process for EPS reset (1week)---*/       
 //        if(get_timer_counter('w') >= 1){  //for FM
-//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-//            putChar('E');
-//            putChar('E');
-//            putChar('E');
-//            Reset_EPS();
-//            setPLL();
-//            // Execute 1week reset
-//            reset_timer();
-//            set_eps_reset_counter(0,0);  //for debug
-//        }
-//
-//        /*---timer process for initial operation (22.5min)---*/
-//        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
-//        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
-//            putChar('I');
-//            putChar('I');
-//            putChar('I');
-//            InitialOperation();
-//            set_init_ope_counter(0,0);
-//        }
-//
-//        /*---timer process for measure EPS BATTERY---*/
-//        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-//           putChar('B');
-//           putChar('B');
-//           putChar('B');
-//           //TODO:debug function to measure EPS Battery
-//           MeasureBatVoltageAnChangeSatMode();
-//           set_bat_meas_counter(0,0);
-//        }
-//        
-//        /*---WDT---*/
-//        if(get_wdt_pulse_counter_sec() >= WDT_PULSE_INTERVAL){
-//           putChar('w');
-//           putChar('w');
-//           putChar('w');
-//           sendPulseWDT();
-//           set_wdt_pulse_counter(0);
-//        }
-        
-        while (1){
-            putChar('x');
-            InitialOperation();
-            delay_ms(2000);
+        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+            putChar('E');
+            putChar('E');
+            putChar('E');
+            Reset_EPS();
+            setPLL();
+            // Execute 1week reset
+            reset_timer();
+            set_eps_reset_counter(0,0);  //for debug
         }
+
+        /*---timer process for initial operation (22.5min)---*/
+        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
+        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+            putChar('I');
+            putChar('I');
+            putChar('I');
+//            InitialOperation();
+            set_init_ope_counter(0,0);
+        }
+
+        /*---timer process for measure EPS BATTERY---*/
+        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+           putChar('B');
+           putChar('B');
+           putChar('B');
+           //TODO:debug function to measure EPS Battery
+           MeasureBatVoltageAnChangeSatMode();
+           set_bat_meas_counter(0,0);
+        }
+       
         
         /*---Receive command data---*/ 
         /*------------------------------------------------------------------*/
@@ -193,7 +178,7 @@ void main(void) {
         putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
-        if(commandData[DATA_SIZE]==0) {
+        if(commandData[0]==0) {
             continue;      //not receive command-->continue
         } 
         
@@ -308,6 +293,12 @@ void main(void) {
                     break;
                 case 'r':/*internal processing*/
                     commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);                   
+                    break;
+                case 'f': /*finish melting*/
+                    /*---write melting status---*/
+                    WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
+                    /*---change task target ('r'->'o')---*/
+                    WriteCheckByteToEEPROMs(B0select, wHighAddress, wLowAddress, 'o');
                     break;
                 default:
 //                    switchError(error_main_reveiveCommand);

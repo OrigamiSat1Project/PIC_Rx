@@ -30,12 +30,14 @@ void InitialOperation(void){
     /*---check OBC status---*/
     switch(OBC_STATUS){
         case OBC_ALIVE:
-            putChar(0xa1);
+//            putChar(0xa1);
+            putChar('1');
 //                switchOk(ok_main_forOBCstatus_ALIVE);
             break;
         case OBC_DIED:
             
-            putChar(0xa2);
+//            putChar(0xa2);
+            putChar('2');
             
             /*---read melting status & bit cal---*/
             array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
@@ -54,7 +56,8 @@ void InitialOperation(void){
                 //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break
 //                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
                 if(temp!=SAT_MODE_NORMAL){
-                    putChar(0xa4);
+//                    putChar(0xa4);
+                    putChar('4');
                 } else {
 //                    putChar(0xa5);
                     /*---check melting counter---*/
@@ -68,23 +71,28 @@ void InitialOperation(void){
                     //2.7 < temp <MELTING_COUNTER_LIMIT  -> ciunter++
                     //3.0 <= temp <=7                    -> melting + counter++
                     if(temp>=MELTING_COUNTER_LIMIT){
-                        putChar(0xa6);
+//                        putChar(0xa6);
+                        putChar('6');
                         temp = 0;
                     } else if ((7 < temp)&&(temp<MELTING_COUNTER_LIMIT)){
-                        putChar(0xa7);
+//                        putChar(0xa7);
+                        putChar('7');
                         temp++;
                     } else {
 //                        putChar(0xa8);
-                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
 
+                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
+                        
                         if(temp<4){
-                            putChar(0xa9);
+//                            putChar(0xa9);
+                            putChar('9');
 //                            //***FIXME*** wire melting!! be careful!!
-                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
                         } else {
-                            putChar(0xa0);
+//                            putChar(0xa0);
+                            putChar('0');
 //                            //***FIXME***  wire melting!! be careful!!
-                            sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
                         }
                         temp++;
 //                        putChar(0xb1);
