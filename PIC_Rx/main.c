@@ -119,18 +119,18 @@ void main(void) {
         
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
-        /*---timer process for EPS reset (1week)---*/       
-//        if(get_timer_counter('w') >= 1){  //for FM
-        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-            putChar('E');
-            putChar('E');
-            putChar('E');
-            Reset_EPS();
-            setPLL();
-            // Execute 1week reset
-            reset_timer();
-            set_eps_reset_counter(0,0);  //for debug
-        }
+//        /*---timer process for EPS reset (1week)---*/       
+////        if(get_timer_counter('w') >= 1){  //for FM
+//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+//            putChar('E');
+//            putChar('E');
+//            putChar('E');
+//            Reset_EPS();
+//            setPLL();
+//            // Execute 1week reset
+//            reset_timer();
+//            set_eps_reset_counter(0,0);  //for debug
+//        }
 
         /*---timer process for initial operation (22.5min)---*/
         //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
@@ -142,16 +142,16 @@ void main(void) {
             set_init_ope_counter(0,0);
         }
 
-        /*---timer process for measure EPS BATTERY---*/
-        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-           putChar('B');
-           putChar('B');
-           putChar('B');
-           //TODO:debug function to measure EPS Battery
-           MeasureBatVoltageAnChangeSatMode();
-           set_bat_meas_counter(0,0);
-        }
+//        /*---timer process for measure EPS BATTERY---*/
+//        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+//           putChar('B');
+//           putChar('B');
+//           putChar('B');
+//           //TODO:debug function to measure EPS Battery
+//           MeasureBatVoltageAnChangeSatMode();
+//           set_bat_meas_counter(0,0);
+//        }
        
         
         /*---Receive command data---*/ 
@@ -174,21 +174,25 @@ void main(void) {
         }
         
         receiveDataPacket(commandData);
+        
         putChar('F');
         putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[0]==0) {
+            putChar('1');
             continue;      //not receive command-->continue
         } 
-        
+        putChar('2');
+         
         /*---check command ID---*/
         commandID = commandData[1];     
         if (commandID == lastCommandID) {
+            putChar('3');
             continue;       //same uplink command-->continue
         }
         lastCommandID = commandID;                      //update command ID
-        
+        putChar('4');
         
         B0select = commandData[19];
         wHighAddress = commandData[20];
@@ -197,7 +201,10 @@ void main(void) {
         mainControlByte = MAIN_EEPROM_ADDRESS | B0select;
         subControlByte = SUB_EEPROM_ADDRESS | B0select;
         
-
+        
+        for(UBYTE i=0; i<DATA_SIZE; i++){
+            putChar(commandData[i]);
+        }
         
         /*---CRC check for command from Grand Station---*/ 
         /*------------------------------------------------------------------*/
@@ -217,22 +224,13 @@ void main(void) {
         /*---update CRC---*/
         if(crcResult != crcValue){
             commandData[31] = commandData[31] & 0b01111111; 
+            putChar('5');  
 //            switchError(error_main_crcCheck);
         }else{
             commandData[31] = commandData[31] | 0b10000000;
+             putChar('6');
 //            switchOk(ok_main_crcCheck);           
         }  
-        
-        /*---check commandID---*/
-        /*------------------------------------------------------------------*/
-//        UBYTE commandID;
-//        UWORD commandID_address;
-//        commandID_address = 
-//        commandID = ReadEEPROM(MAIN_EEPROM_ADDRESS,high_address,low_address);
-//        
-//        if (commandID == commandData[1]){
-//            
-//        } else {
         
         /*---Write uplink command in EEPROM---*/
         /*------------------------------------------------------------------*/
@@ -293,12 +291,6 @@ void main(void) {
                     break;
                 case 'r':/*internal processing*/
                     commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);                   
-                    break;
-                case 'f': /*finish melting*/
-                    /*---write melting status---*/
-                    WriteCheckByteToEEPROMs(MeltingStatus_B0select, MeltingStatus_addressHigh, MeltingStatus_addressLow, MELTING_FINISH_FLAG);
-                    /*---change task target ('r'->'o')---*/
-                    WriteCheckByteToEEPROMs(B0select, wHighAddress, wLowAddress, 'o');
                     break;
                 default:
 //                    switchError(error_main_reveiveCommand);
