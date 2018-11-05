@@ -84,6 +84,8 @@
 #define HighAddress_for_Error  0x97
 #define LowAddress_for_Error   0x09
 
+#define SatMode_error_status_addresshigh 0x81
+#define SatMode_error_status_addresslow 0x09
 
 /*******************************************************************************
 *Last Command ID
@@ -100,20 +102,17 @@
 #define MeltingStatus_B0select         0x00
 #define MeltingStatus_addressHigh      0x97
 #define MeltingStatus_addressLow       0x07
-#define BatteryVoltage_addressHigh     0x97
-#define BatteryVoltage_addressLow      0x01
+#define BatteryVoltage_addressHigh     0x81
+#define BatteryVoltage_addressLow      0x87
 #define MeltingCounter_addressHigh     0xE0
 #define MeltingCounter_addressLow      0x00
-#define satelliteMode_addressHigh      0x00
-#define satelliteMode_addressLow       0x00
-
-#define SatelliteMode_addressHigh       0x84//include SEP(3,2bit) and RBF(1,0bit)
+#define SatelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
 #define SatelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 
-#define BatVol_nominal_saving_datahigh_addresshigh  0x89
-#define BatVol_nominal_saving_datahigh_addressLow 0x00
-#define BatVol_nominal_saving_datalow_addresshigh  0x8A
-#define BatVol_nominal_saving_datalow_addressLow 0x00
+#define BatVol_nominal_saving_datahigh_addresshigh  0x81
+#define BatVol_nominal_saving_datahigh_addressLow 0x01
+#define BatVol_nominal_saving_datalow_addresshigh  0x81
+#define BatVol_nominal_saving_datalow_addressLow 0x02
 
 #endif	/* EEPROM_H */
 

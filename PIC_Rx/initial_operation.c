@@ -49,7 +49,7 @@ void InitialOperation(void){
 //                putChar(array_2byte[1]);
                 
                 /*---check satellite mode---*/
-                temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , satelliteMode_addressHigh, satelliteMode_addressLow);
+                temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
 
                 //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break
 //                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){

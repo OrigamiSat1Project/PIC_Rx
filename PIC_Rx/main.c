@@ -104,13 +104,7 @@ void main(void) {
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow,0x50);
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
-
-    putChar('A');
-    
-
-
-    putChar('B');
-    
+   
     while(1){
         
         delay_ms(500);
@@ -119,28 +113,28 @@ void main(void) {
         
         /*---timer interrupt---*/
         /*----------------------------------------------------------------------------*/
-//        /*---timer process for EPS reset (1week)---*/       
-//        if(get_timer_counter('w') >= 1){  //for FM
-        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
-            putChar('E');
-            putChar('E');
-            putChar('E');
-            Reset_EPS();
-            setPLL();
-            // Execute 1week reset
-            reset_timer();
-            set_eps_reset_counter(0,0);  //for debug
-        }
-
-        /*---timer process for initial operation (22.5min)---*/
-        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
-        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
-            putChar('I');
-            putChar('I');
-            putChar('I');
-            InitialOperation();
-            set_init_ope_counter(0,0);
-        }
+////        /*---timer process for EPS reset (1week)---*/       
+////        if(get_timer_counter('w') >= 1){  //for FM
+//        if(get_eps_reset_counter_sec() >= EPS_RSET_INTERVAL_SHORT){   //for debug
+//            putChar('E');
+//            putChar('E');
+//            putChar('E');
+//            Reset_EPS();
+//            setPLL();
+//            // Execute 1week reset
+//            reset_timer();
+//            set_eps_reset_counter(0,0);  //for debug
+//        }
+//
+//        /*---timer process for initial operation (22.5min)---*/
+//        //       if(get_init_ope_counter_min() >= INITIAL_OPE_INTERVAL){  //for FM
+//        if(get_init_ope_counter_sec() >= INITIAL_OPE_INTERVAL){   //for debug[sec]
+//            putChar('I');
+//            putChar('I');
+//            putChar('I');
+//            InitialOperation();
+//            set_init_ope_counter(0,0);
+//        }
 
         /*---timer process for measure EPS BATTERY---*/
         //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
@@ -149,7 +143,11 @@ void main(void) {
            putChar('B');
            putChar('B');
            //TODO:debug function to measure EPS Battery
-           MeasureBatVoltageAnChangeSatMode();
+           UBYTE SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+           if (SatMode_error_status != 0){
+               SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+           }
+           WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatMode_error_status_addresshigh, SatMode_error_status_addresslow, SatMode_error_status);
            set_bat_meas_counter(0,0);
         }
 //        
@@ -183,8 +181,6 @@ void main(void) {
         }
         
         receiveDataPacket(commandData);
-        putChar('F');
-        putChar('4');
         
         //XXX if () continue, IF COMMAND IS STILL RESET
         if(commandData[DATA_SIZE]==0) {

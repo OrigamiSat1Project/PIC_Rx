@@ -25,6 +25,9 @@
 #include "I2C.h"
 #include <xc.h>
 #include <stdio.h>
+
+UBYTE ReserveBeforeSatMode = 0x50;//spare BeforeSatMode (when can't read BeforeSatMode from EEPROM)
+
 /*******************************************************************************
 * Function: void initMain()
 *
@@ -116,48 +119,62 @@ void ReadBatVoltageWithPointer(UBYTE *bat_voltage){
     bat_voltage[0] = ADRESH; bat_voltage[1] = ADRESL;
 }
 
-void MeasureBatVoltageAnChangeSatMode(){
+UBYTE MeasureBatVoltageAndChangeSatMode(){
           //------battery voltage measure-------------
-//        treadhold is not determined
-//        sampling rate is not determined
-//        debug : 6v -> send 's' 7v -> send 'n'
+//        debug : error handling is not determined
             putChar('F');
             UBYTE bat_voltage[2];
-            UWORD Voltage;
-            ReadBatVoltageWithPointer(bat_voltage);
-            Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];      
-            putChar('X');
-            putChar(bat_voltage[0]);
-            putChar(bat_voltage[1]);
-            putChar('X');
-            UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow);
-            UWORD BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow);
-            UBYTE BeforeSatMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
-//            putChar('Y');
-//            putChar(BeforeSatMode);
-//            putChar('Y');
-            BeforeSatMode = BeforeSatMode & 0xF0;
-
-//            UWORD test_vol = BatVol_nominal_saving_high <<8 | BatVol_nominal_saving_low;
-//            putChar('Y');
-//            putChar((UBYTE)(Voltage>>8));
-//            putChar((UBYTE)Voltage);
-//            putChar((UBYTE)(test_vol>>8));
-//            putChar((UBYTE)test_vol);
-//            putChar('Y');
-//            if(Voltage >= test_vol){
-//               putChar('O'); 
-//            }else{
-//                putChar('N'); 
-//            }
+            UWORD Voltage;//Voltage is 10 bit           
+            UBYTE error_status = 0;
             
+            
+            ReadBatVoltageWithPointer(bat_voltage);
+            Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1]; 
+            
+            //if BatVol_nominal_saving_high is very large,read one more time. Then it is still very large,thereshold BatVol is Initial Value.
+            UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow);
+            UWORD BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow);    
+            if((BatVol_nominal_saving_high & 0b11111100) != 0){
+                BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow);
+                BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow);
+                if((BatVol_nominal_saving_high & 0b11111100) != 0){
+                    BatVol_nominal_saving_high = Init_BatVol_nominal_saving_high;
+                    BatVol_nominal_saving_low = Init_BatVol_nominal_saving_low;
+                    error_status += 3;//0b00000011
+                }              
+            }
+            
+            UBYTE BeforeSatMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
+            UBYTE ChoicedSatMode = BeforeSatMode;//For change BeforeSatMode/ReserveBeforeSatMode when EEPROM broken;
+            BeforeSatMode = BeforeSatMode & 0xF0;
+            ReserveBeforeSatMode = ReserveBeforeSatMode & 0xF0;
             switch(BeforeSatMode){
+                case 0x50:
+                case 0x60:
+                case 0xA0: break;
+                default:
+                    BeforeSatMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow);
+                    BeforeSatMode = BeforeSatMode & 0xF0;
+                    switch(BeforeSatMode){
+                        case 0x50:
+                        case 0x60:
+                        case 0xA0: break;
+                        default:
+                            ChoicedSatMode = ReserveBeforeSatMode;
+                            error_status += 12;//0b00001100
+                            break;                       
+                    }
+                    break;
+            }
+            
+            switch(ChoicedSatMode){
                 case 0x50://nominal mode
                     putChar('A');
                     if(Voltage >= (BatVol_nominal_saving_high << 8 | BatVol_nominal_saving_low)) {// >=7.5V
                         putChar('1');
                         //write SatMode nominal(SEP -> ON, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
+                        ReserveBeforeSatMode = 0x5A;
                         //obc check
                         switch(OBC_STATUS){
                             case OBC_ALIVE:                               
@@ -178,12 +195,14 @@ void MeasureBatVoltageAnChangeSatMode(){
                         putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
+                        ReserveBeforeSatMode = 0xA6;
                         //EPS OFF
                         killEPS();
                     }else{
                         putChar('3');
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
+                        ReserveBeforeSatMode = 0x66;
                         //EPS OFF
                         killEPS();
                         //Turn on NTRX(from CIB)
@@ -196,6 +215,7 @@ void MeasureBatVoltageAnChangeSatMode(){
                         putChar('1');
                         //write SatMode nominal(SEP -> ON, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
+                        ReserveBeforeSatMode = 0x5A;
                         //turn off NTRX(CIB power supply)
                         offNtrxPowerSupplyCIB();
                         //EPS ON
@@ -207,12 +227,14 @@ void MeasureBatVoltageAnChangeSatMode(){
                         putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
+                        ReserveBeforeSatMode = 0xA6;
                         //turn off NTRX(CIB power supply)
                         offNtrxPowerSupplyCIB();
                     }else{
                         putChar('3');
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
+                        ReserveBeforeSatMode = 0x66;
                     }
                     break;
                 case 0xA0://survival mode
@@ -221,6 +243,7 @@ void MeasureBatVoltageAnChangeSatMode(){
                        putChar('1');
                         //write SatMode nominal(SEP -> ON, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x5A);
+                        ReserveBeforeSatMode = 0x5A;
                         //EPS ON
                         onEPS();
                         FMTX(FMTX_Nref, FMTX_Nprg);
@@ -230,18 +253,20 @@ void MeasureBatVoltageAnChangeSatMode(){
                         putChar('2');
                         //write SatMode survival(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0xA6);
+                        ReserveBeforeSatMode = 0xA6;
                     }else{
                         putChar('3');
                         //Write SatMode saving(SEP -> OFF, RBF -> ON)
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, 0x66);
+                        ReserveBeforeSatMode = 0x66;
                         //Turn on NTRX(from CIB)
                         onNtrxPowerSupplyCIB(0,0);
                     }                  
                     break;
-                default:
-                    //error
+                default:       
                     putChar('D');
-                    break;      
+                    error_status += 30;//0b00110000
             putChar('E');
         }
+            return error_status;
 }

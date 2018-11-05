@@ -18,8 +18,8 @@
 #define LED_Y_OFF() LED_YELLOW = LOW;
 
 /*Initial Operation*/
-#define OBC_ALIVE   HIGH
-#define OBC_DIED    LOW
+#define OBC_ALIVE   1
+#define OBC_DIED    0
 #define OnOff_forCutWIRE    0x01
 #define CutWIRE_LONG_highTime  0x09  //LONG:2500ms
 #define CutWIRE_LONG_lowTime   0xC4
