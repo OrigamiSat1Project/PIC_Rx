@@ -32,6 +32,13 @@ UWORD time = 0;
 
 //for debug function
 void interrupt TimerCheck(void){
+    interruptI2C();
+//    if(RCIF == 1){
+//        UBYTE RXDATA;
+//        RXDATA = getChar();
+//        putChar(RXDATA);
+//        RCIF = 0;
+//    }
     if(INTCONbits.TMR0IF){
         INTCONbits.TMR0IF = 0;
         TMR0 = 0x00;
@@ -48,7 +55,7 @@ void interrupt TimerCheck(void){
         /*---WDT send pulse (4s)---*/
         time = second_counter % WDT_INTERVAL;
         if (time==0){
-            putChar('W');
+//            putChar('W');
             sendPulseWDT();
         }
         
@@ -69,38 +76,38 @@ void interrupt TimerCheck(void){
         
         /*---Initial Operation (for debug 5s)---*/
         //sampling rate is not determined
-        time = second_counter % INITIAL_OPE_INTERVAL;
-        if(time==0){
-            putChar(0xcc);
-            putChar(0xcc);
-            putChar(0xcc);
-            InitialOperation();
-            putChar(0xdd);
-            putChar(0xdd);
-        }
+//        time = second_counter % INITIAL_OPE_INTERVAL;
+//        if(time==0){
+//            putChar(0xcc);
+//            putChar(0xcc);
+//            putChar(0xcc);
+//            InitialOperation();
+//            putChar(0xdd);
+//            putChar(0xdd);
+//        }
         
         /*---EPS reset for debug (for debug 5/10s)---*/
-        time = second_counter % EPS_reset_time;
-        if(time == 0){
-            Reset_EPS();
-            
-            putChar(0xd1);
-            UBYTE array_2byte[2];
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-//            putChar(array_2byte[0]);
-//            putChar(array_2byte[1]);
-//            array_2byte[0] = 2;
-//            array_2byte[1] = 2;
-            
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
-                putChar(0xd2);
-            } else {
-                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
-                putChar('E');
-                putChar(0xd3);
-            }
-        }
+//        time = second_counter % EPS_reset_time;
+//        if(time == 0){
+//            Reset_EPS();
+//            
+//            putChar(0xd1);
+//            UBYTE array_2byte[2];
+//            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+//            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+////            putChar(array_2byte[0]);
+////            putChar(array_2byte[1]);
+////            array_2byte[0] = 2;
+////            array_2byte[1] = 2;
+//            
+//            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+//                putChar(0xd2);
+//            } else {
+//                EPS_reset_time = EPS_RSET_INTERVAL_LONG;
+//                putChar('E');
+//                putChar(0xd3);
+//            }
+//        }
 //        
 //       if(second_counter >= one_minute){
 //           second_counter = 0;
@@ -151,7 +158,7 @@ void interrupt TimerCheck(void){
 //            }    
 //       }
     }
-    interruptI2C();
+    
 }
 
 void InitialOperation(void){

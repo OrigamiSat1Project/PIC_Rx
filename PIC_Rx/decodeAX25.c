@@ -216,11 +216,11 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
-    //putChar('w');
+    putChar('w');
     getData();
-    //putChar('d');
+    putChar('d');
     fcschecker = fcsCheck();
-    //putChar('f');
+    putChar('f');
     
     if(fcschecker == 1){    //valid data is stored in dData
         for(UBYTE i=0; i<DATA_SIZE; i++){
