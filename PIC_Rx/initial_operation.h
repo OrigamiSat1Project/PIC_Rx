@@ -10,7 +10,13 @@
 
 #include "typeDefine.h"
 
-void InitialOperation(void);
+#define SAT_MODE_NORMAL    0x50 //FIX ME: need change
+#define SAT_MODE_SAVING    0x60 //FIX ME: need change
+#define SAT_MODE_SURVIVAL  0xA0 //FIX ME: need change
+
+void testInitialOpe(void); //for debug
+void errorCheckInitialOpe(void); //for debug
+UBYTE InitialOperation(void);
 UBYTE bitCalResult(UBYTE);
 UBYTE checkMeltingStatus(UBYTE);
 

@@ -9,112 +9,184 @@
 #include "MPU.h"
 #include "EEPROM.h"
 #include "initial_operation.h"
+#include "OkError.h"
 
 /*---Initial Operation---*/
-#define MELTING_FINISH 0x06  //TBD
-#define WAIT_TIME_FOR_SETTING 2  //[s] //TBD  200->2
-//#define BAT_LIMIT_FOR_MELTING 0x01B3 //[V] //TBD 6.0V
-#define BAT_LIMIT_FOR_MELTING 0x0077 //[V] //TBD 6.0V
-//#define MELTING_COUNTER_LIMIT 72  //for debug 72->10 
-#define MELTING_COUNTER_LIMIT 13  //for debug 72->10 
-#define SAT_MODE_NORMAL 0x50 //FIX ME: need change
+#define MELTING_FINISH        4  
+#define WAIT_TIME_FOR_SETTING 3  //[s] 
+#define MELTING_COUNTER_LIMIT 72  
 
-void InitialOperation(void){
+////for debug
+void testInitialOpe(void){
+    UBYTE temp;
+    /*--melting status---*/
+    temp = 0b00000001;
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
+    temp = 0b00000001;
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
+    /*---sat mode---*/
+    temp = 0x5A; //SAT_MODE_NORMAL / SAT_MODE_SAVING / SAT_MODE_SURVIVAL
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);
+    temp = SAT_MODE_NORMAL; //SAT_MODE_NORMAL / SAT_MODE_SAVING / SAT_MODE_SURVIVAL
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);    
+    /*---melting counter---*/
+    temp = 90;  //0-MELTING_COUNTER_LIMIT
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
+    temp = 3;  //0-MELTING_COUNTER_LIMIT
+    WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
+    put_ok();
+}
+
+////for debug
+void errorCheckInitialOpe(void){
+    put_error();
+    /*---read error status---*/
+    putChar(ReadEEPROM(MAIN_EEPROM_ADDRESS, errorMarker_initialOpe_addressHigh,errorMarker_initialOpe_addressLow));
+    putChar(ReadEEPROM(SUB_EEPROM_ADDRESS, errorMarker_initialOpe_addressHigh,errorMarker_initialOpe_addressLow));
+}
+
+
+UBYTE InitialOperation(void){
     /*---start checking whether antenna are developed or not---*/
     /*---[antenna are not developed]+[OBC does not work]->[RXCOBC develops antenna]---*/
     /*--------------------------------------------------------------------------------*/
-    UBYTE temp = 0;
-    UBYTE array_2byte[2] = {0};
-//    UWORD bat_voltage_2byte = 0;
+    UBYTE sat_mode = 0;
+    UBYTE melting_counter = 0;
+    UBYTE melting_status[2] = {0};
 
     /*---check OBC status---*/
     switch(OBC_STATUS){
         case OBC_ALIVE:
 //            putChar(0xa1);
-            putChar('1');
-//                switchOk(ok_main_forOBCstatus_ALIVE);
-            break;
+//            putChar('1');
+            return error_initialOpe_obcAlive;
         case OBC_DIED:
             
 //            putChar(0xa2);
-            putChar('2');
+//            putChar('2');
             
             /*---read melting status & bit cal---*/
-            array_2byte[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
-            array_2byte[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
+            melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
+            melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
 
             //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
-            if((array_2byte[0] < MELTING_FINISH)&&(array_2byte[1] < MELTING_FINISH)){
+            if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)){
 
 //                putChar(0xa3);
-//                putChar(array_2byte[0]);
-//                putChar(array_2byte[1]);
+//                putChar(melting_status[0]);
+//                putChar(melting_status[1]);
                 
                 /*---check satellite mode---*/
-                temp = ReadEEPROM(MAIN_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
-
-                //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break
-//                if(bat_voltage_2byte<BAT_LIMIT_FOR_MELTING){
-                if(temp!=SAT_MODE_NORMAL){
-//                    putChar(0xa4);
-                    putChar('4');
-                } else {
-//                    putChar(0xa5);
-                    /*---check melting counter---*/
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
-                    temp = ReadEEPROMmainAndSub(MeltingCounter_addressHigh, MeltingCounter_addressLow);
-//                    putChar(temp);
+                sat_mode = ReadEEPROM(MAIN_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
+                sat_mode &= 0xF0;
+                              
+                //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break                
+                if ((sat_mode != SAT_MODE_NORMAL) && (sat_mode != SAT_MODE_SAVING) && (sat_mode != SAT_MODE_SURVIVAL)){
+                    /*---read data from sub EEPROM---*/
+                    sat_mode = ReadEEPROM(SUB_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
+                    sat_mode &= 0xF0;
                     
+                    putChar(0xb1);
+                    putChar(0xb1);
                     
-                    // melting counter
-                    //1.temp>=MELTING_COUNTER_LIMIT         -> riset counter
-                    //2.7 < temp <MELTING_COUNTER_LIMIT  -> ciunter++
-                    //3.0 <= temp <=7                    -> melting + counter++
-                    if(temp>=MELTING_COUNTER_LIMIT){
-//                        putChar(0xa6);
-                        putChar('6');
-                        temp = 0;
-                    } else if ((7 < temp)&&(temp<MELTING_COUNTER_LIMIT)){
-//                        putChar(0xa7);
-                        putChar('7');
-                        temp++;
-                    } else {
-//                        putChar(0xa8);
-
-                        delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
+                    if ((sat_mode!=SAT_MODE_NORMAL) && (sat_mode!=SAT_MODE_SAVING) && (sat_mode!=SAT_MODE_SURVIVAL)){
+//                        putChar(0xb2);
+//                        putChar(0xb2);
                         
-                        if(temp<4){
-//                            putChar(0xa9);
-                            putChar('9');
-//                            //***FIXME*** wire melting!! be careful!!
-//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
-                        } else {
-//                            putChar(0xa0);
-                            putChar('0');
-//                            //***FIXME***  wire melting!! be careful!!
-//                            //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
-                        }
-                        temp++;
-//                        putChar(0xb1);
-//                        putChar(temp);
-//                            switchOk(ok_main_forOBCstatus_DIED);
+                        return error_initialOpe_readSatMode;
                     }
-                    
-//                    putChar(0xaa);
-                    
-                    /*---write melting counter to main and sub EEPROM---*/
-                    WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-
-//                    temp = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
-//                    putChar(temp);
                 }
+                
+                putChar(0xb3);
+                putChar(0xb3);
+                
+                switch(sat_mode){
+                    case SAT_MODE_SAVING:
+                    case SAT_MODE_SURVIVAL:
+    //                    putChar(0xa4);
+//                        putChar('4');
+                        return error_initialOpe_powerShortage; 
+                        
+                    case SAT_MODE_NORMAL:                 
+    //                    putChar(0xa5);
+                        /*---check melting counter---*/
+                        melting_counter = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
+                        
+                        if(melting_counter>MELTING_COUNTER_LIMIT){                            
+                            /*---check melting counter again---*/
+                            melting_counter = ReadEEPROM(SUB_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
+//                            putChar(0xc1);
+                            
+                            if(melting_counter>MELTING_COUNTER_LIMIT){
+                                /*---reset counter---*/
+                                melting_counter = 0;
+//                                putChar(0xc2);
+                            } 
+                        }
+                        
+//                        putChar(0xc3);
+//                        putChar('\r');
+//                        putChar('\n');
+//                        putChar(melting_counter);
+//                        putChar('\r');
+//                        putChar('\n');                        
+
+                        // melting counter
+                        //1.melting_counter==MELTING_COUNTER_LIMIT         -> riset counter
+                        //2.7 < melting_counter <MELTING_COUNTER_LIMIT  -> ciunter++
+                        //3.0 <= melting_counter <=7                    -> melting + counter++
+                        if(melting_counter == MELTING_COUNTER_LIMIT){
+//                            putChar(0xa6);
+//                            putChar('6');
+                            melting_counter = 0;
+                        } else if ((7 < melting_counter)&&(melting_counter<MELTING_COUNTER_LIMIT)){
+//                            putChar(0xa7);
+//                            putChar('7');
+                            melting_counter++;
+                        } else {
+//                            putChar(0xa8);
+
+                            delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
+
+                            if(melting_counter<4){
+//                                putChar(0xa9);
+//                                putChar('9');
+    //                            //***FIXME*** wire melting!! be careful!!
+//                                //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+                            } else {
+//                                putChar(0xa0);
+//                                putChar('0');
+    //                            //***FIXME***  wire melting!! be careful!!
+//                                //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+                            }
+                            melting_counter++;
+    //                        putChar(0xb1);
+                        }
+
+    //                    putChar(0xaa);
+
+                        /*---write melting counter to main and sub EEPROM---*/
+                        WriteOneByteToMainAndSubB0EEPROM(MeltingCounter_addressHigh, MeltingCounter_addressLow, melting_counter);
+
+//                        /*---for debug (check melting counter)---*/
+//                        melting_counter = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressHigh);
+//                        putChar(melting_counter);
+                        
+                        return no_error;
+                        break;
+                    default:
+                        return error_initialOpe_satMode;
+                        break;
+                }    
             } else {
-                putChar(0xab);
-            }
+                /*---melting is already finished---*/
+//                putChar(0xab);
+                return error_initialOpe_alreadyMelting;
+            }              
             break;
         default:
 //            putChar(0xac);
-//            switchError(error_main_forOBCstatus);
+            return error_initialOpe_OBCstatus;
             break;    
     }
 }

@@ -58,19 +58,27 @@ void putChar(UBYTE byte){
 // }
 
 void put_error(void){
+    putChar('\r');
+    putChar('\n');
     putChar('E');
     putChar('R');
     putChar('R');
     putChar('O');
     putChar('R');
     putChar('!');
+    putChar('\r');
+    putChar('\n');
 }
 
-//void put_ok(void){
-//    putChar('O');
-//    putChar('K');
-//    putChar('!');
-//}
+void put_ok(void){
+    putChar('\r');
+    putChar('\n');
+    putChar('O');
+    putChar('K');
+    putChar('!');
+    putChar('\r');
+    putChar('\n');
+}
 
 //void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
 //    putChar(NM_wad_header);

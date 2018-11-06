@@ -84,6 +84,10 @@
 #define HighAddress_for_Error  0x97
 #define LowAddress_for_Error   0x09
 
+#define errorMarker_initialOpe_addressHigh     0x81
+#define errorMarker_initialOpe_addressLow      0x0c
+
+
 
 /*******************************************************************************
 *Last Command ID
@@ -97,13 +101,14 @@
 *DATA
 ******************************************************************************/
 /*---initial operation---*/
-#define MeltingStatus_B0select         0x00
-#define MeltingStatus_addressHigh      0x97
-#define MeltingStatus_addressLow       0x07
+#define MeltingStatus_addressHigh      0x81
+#define MeltingStatus_addressLow       0x0a
+//#define MeltingStatus_addressHigh      0x97
+//#define MeltingStatus_addressLow       0x07
 #define BatteryVoltage_addressHigh     0x97
 #define BatteryVoltage_addressLow      0x01
-#define MeltingCounter_addressHigh     0xE0
-#define MeltingCounter_addressLow      0x00
+#define MeltingCounter_addressHigh     0x81
+#define MeltingCounter_addressLow      0x0b
 #define SatelliteMode_addressHigh       0x84//include SEP(3,2bit) and RBF(1,0bit)
 #define SatelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 
