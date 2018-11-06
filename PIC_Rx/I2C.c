@@ -171,19 +171,25 @@ void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
 //    __delay_ms(300);
 //}
 
-void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
     UBYTE address;
     int ans;
-    address= addressEEPROM << 1;
-    //UINT Datasize = sizeof(data);
-    ans = I2CMasterStart(addressEEPROM,0);               //Start condition
-    if(ans == 0){
-        I2CMasterWrite(addressHigh);    //Adress High Byte
-        I2CMasterWrite(addressLow);     //Adress Low Byte
-        I2CMasterWrite(data);           //Data
-    }else ans = -1;
-    I2CMasterStop();                //Stop condition
-    __delay_ms(200);
+    for(int i = 0 ; i < 10 ; i++){
+        ans = I2CMasterStart(addressEEPROM,0);               //Start condition
+        if(ans == 0){
+            ans = I2CMasterWrite(addressHigh);    //Adress High Byte
+            if(ans == -1) break;
+            ans = I2CMasterWrite(addressLow);     //Adress Low Byte
+            if(ans == -1) break;
+            ans = I2CMasterWrite(data);           //Data
+            if(ans == -1) break;
+            ans = I2CMasterStop();                //Stop condition
+            if(ans == -1) break;
+        }else ans = -1;
+        __delay_ms(200);
+        if(ans != -1) break;
+    }
+    return ans;
 }
 
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
@@ -215,20 +221,29 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
-UBYTE ReadEEPROM(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address){
-    UBYTE ReadData;
+int ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
+    UBYTE dat;
     int ans;
    
-    ans = I2CMasterStart(EEPROM_address,0);         //Start condition
-    if(ans == 0){
-        I2CMasterWrite(high_address);    //Adress High Byte
-        I2CMasterWrite(low_address);    //Adress Low Byte
-        I2CMasterRepeatedStart(EEPROM_address,1);         //Restart condition
-        ReadData = I2CMasterRead(1); //Read + Acknowledge
+    for(int i = 0 ; i < 10 ; i++){
+        ans = I2CMasterStart(address,0);         //Start condition
+        if(ans == 0){
+            ans = I2CMasterWrite(high_address);    //Adress High Byte
+            if(ans == -1) break;
+            ans = I2CMasterWrite(low_address);    //Adress Low Byte
+            if(ans == -1) break;
+            ans = I2CMasterRepeatedStart(address,1);         //Restart condition
+            if(ans == -1) break;
+            dat = I2CMasterRead(1); //Read + Acknowledge
+            if(dat == -1) ans = -1; break;
+            I2CMasterStop();          //Stop condition
+            if(ans == -1) break;
+        }else ans = -1;
+        __delay_ms(200);
+        if ( ans != -1 ) break;
     }
-    I2CMasterStop();          //Stop condition
-    __delay_ms(200);
-    return ReadData;
+    if(ans == -1) dat = ans;
+    return dat;
 }
 
 UBYTE ReadEEPROMmainAndSub(UBYTE high_address,UBYTE low_address){

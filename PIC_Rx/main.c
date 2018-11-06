@@ -71,13 +71,19 @@ void main(void) {
 //    putChar('S');
     
     UBYTE *bat;
-    UBYTE eep[2];
+    int flag = 0;
     
     while(1){
-//        while(1){
-//            sendPulseWDT();
-//            __delay_ms(500);
-//        }
+        while(1){
+            flag = WriteOneByteToEEPROM(0x50,0x00,0x00,0xAE);
+            if(flag != -1){
+                flag = ReadEEPROM(0x50,0x00,0x00);
+                if(flag != -1){
+                    putChar((UBYTE)flag);
+                }else putChar(0xEE);
+            }else putChar(0xEE);
+            __delay_ms(100);
+        }
 //        SendBatVoltage();
 //        delay_ms(300);
 //        WriteOneByteToEEPROM(0x50,0x00,0x00,0xAE);
