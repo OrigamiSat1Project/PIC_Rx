@@ -19,7 +19,7 @@ void InitSerial(void){
 	SREN   = 0;						// No effect
     RCIF   = 0;                     // RX frag Reset
 	TXIE   = 0;						// Disble tx interrupts
-	RCIE   = 1;						// Enable rx interrupts
+	RCIE   = 0;						// Disble rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
