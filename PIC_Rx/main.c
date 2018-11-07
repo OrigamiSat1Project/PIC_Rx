@@ -126,6 +126,8 @@ void main(void) {
 //           set_bat_meas_counter(0,0);
 //        }
        
+        sendPulseWDT();
+        delay_ms(5000);
         continue; //for debug
         
         /*---Receive command data---*/ 

@@ -3,34 +3,34 @@
 #include "typeDefine.h"
 #include "pinDefine.h"
 #include "time.h"
-//#include "FMCW.h"
-#include "ADC.h"
+//#include "ADC.h"
 #include "I2C.h"
 #include "MPU.h"
 #include "EEPROM.h"
 #include "initial_operation.h"
 #include "OkError.h"
+#include "WDT.h"
 
 /*---Initial Operation---*/
 #define MELTING_FINISH        4  
-#define WAIT_TIME_FOR_SETTING 3  //[s] 
-#define MELTING_COUNTER_LIMIT 72  
+#define WAIT_TIME_FOR_SETTING 4  //[s] 
+#define MELTING_COUNTER_LIMIT 71  
 
 ////for debug
 void testInitialOpe(void){
     UBYTE temp;
     /*--melting status---*/
-    temp = 0b00000001;
+    temp = 0b00000011;
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
-    temp = 0b00000001;
+    temp = 0b00000011;
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingStatus_addressHigh, MeltingStatus_addressLow, temp);
     /*---sat mode---*/
-    temp = 0x5A; //SAT_MODE_NORMAL / SAT_MODE_SAVING / SAT_MODE_SURVIVAL
+    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);
-    temp = SAT_MODE_NORMAL; //SAT_MODE_NORMAL / SAT_MODE_SAVING / SAT_MODE_SURVIVAL
+    temp = SATMODE_NOMINAL; //SATMODE_NOMINAL / SATMODE_SAVING / SATMODE_SURVIVAL
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,SatelliteMode_addressHigh, SatelliteMode_addressLow, temp);    
     /*---melting counter---*/
-    temp = 90;  //0-MELTING_COUNTER_LIMIT
+    temp = 3;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
     temp = 3;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
@@ -68,7 +68,7 @@ UBYTE InitialOperation(void){
             /*---read melting status & bit cal---*/
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-
+                        
             //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)){
 
@@ -80,8 +80,8 @@ UBYTE InitialOperation(void){
                 sat_mode = ReadEEPROM(MAIN_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
                 sat_mode &= 0xF0;
                               
-                //sat mode: NORMAL->melting / SAVING or SURVIVAL ->break                
-                if ((sat_mode != SAT_MODE_NORMAL) && (sat_mode != SAT_MODE_SAVING) && (sat_mode != SAT_MODE_SURVIVAL)){
+                //sat mode: NOMINAL->melting / SAVING or SURVIVAL ->break                
+                if ((sat_mode != SATMODE_NOMINAL) && (sat_mode != SATMODE_SAVING) && (sat_mode != SATMODE_SURVIVAL)){
                     /*---read data from sub EEPROM---*/
                     sat_mode = ReadEEPROM(SUB_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
                     sat_mode &= 0xF0;
@@ -89,7 +89,7 @@ UBYTE InitialOperation(void){
                     putChar(0xb1);
                     putChar(0xb1);
                     
-                    if ((sat_mode!=SAT_MODE_NORMAL) && (sat_mode!=SAT_MODE_SAVING) && (sat_mode!=SAT_MODE_SURVIVAL)){
+                    if ((sat_mode!=SATMODE_NOMINAL) && (sat_mode!=SATMODE_SAVING) && (sat_mode!=SATMODE_SURVIVAL)){
 //                        putChar(0xb2);
 //                        putChar(0xb2);
                         
@@ -101,13 +101,13 @@ UBYTE InitialOperation(void){
                 putChar(0xb3);
                 
                 switch(sat_mode){
-                    case SAT_MODE_SAVING:
-                    case SAT_MODE_SURVIVAL:
+                    case SATMODE_SAVING:
+                    case SATMODE_SURVIVAL:
     //                    putChar(0xa4);
 //                        putChar('4');
                         return error_initialOpe_powerShortage; 
                         
-                    case SAT_MODE_NORMAL:                 
+                    case SATMODE_NOMINAL:                 
     //                    putChar(0xa5);
                         /*---check melting counter---*/
                         melting_counter = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
@@ -145,9 +145,14 @@ UBYTE InitialOperation(void){
                             melting_counter++;
                         } else {
 //                            putChar(0xa8);
-
-                            delay_s (WAIT_TIME_FOR_SETTING); //TBD[s] for debug 200s->2s
-
+                            
+                            /*---wait for 200s---*/
+                            for(UBYTE i=0; i<50; i++){
+                                sendPulseWDT();
+                                delay_s(WAIT_TIME_FOR_SETTING);
+                            }
+                            sendPulseWDT();
+                            
                             if(melting_counter<4){
 //                                putChar(0xa9);
 //                                putChar('9');
@@ -211,7 +216,12 @@ UBYTE checkMeltingStatus(UBYTE e_address){
     /*---read melting status---*/
     UBYTE temp;
     temp = ReadEEPROM(e_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-      
+        
+    /*---0xff -> I2C error -> melting status is reset---*/
+    if(temp==0xff){
+        temp = 0x00;
+    }
+    
     /*---bit operation---*/
     //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
     temp = bitCalResult(temp);
