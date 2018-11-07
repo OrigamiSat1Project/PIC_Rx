@@ -50,7 +50,7 @@ void interrupt TimerCheck(void){
         bat_meas_counter += 1;
         eps_rest_counter += 1;
         second_counter += 1;
-        LED_WHITE = 1 - LED_WHITE;  //for debug
+//        LED_WHITE = 1 - LED_WHITE;  //for debug
         
         /*---WDT send pulse (4s)---*/
         time = second_counter % WDT_INTERVAL;
