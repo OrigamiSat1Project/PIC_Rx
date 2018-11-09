@@ -41,8 +41,8 @@ void testInitialOpe(void){
 void errorCheckInitialOpe(void){
     put_error();
     /*---read error status---*/
-    putChar(ReadEEPROM(MAIN_EEPROM_ADDRESS, errorMarker_initialOpe_addressHigh,errorMarker_initialOpe_addressLow));
-    putChar(ReadEEPROM(SUB_EEPROM_ADDRESS, errorMarker_initialOpe_addressHigh,errorMarker_initialOpe_addressLow));
+    putChar(ReadEEPROM(MAIN_EEPROM_ADDRESS, InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow));
+    putChar(ReadEEPROM(SUB_EEPROM_ADDRESS, InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow));
 }
 
 

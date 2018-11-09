@@ -20,6 +20,7 @@
       <itemPath>OkError.h</itemPath>
       <itemPath>pinDefine.h</itemPath>
       <itemPath>initial_operation.h</itemPath>
+      <itemPath>SatMode.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -42,6 +43,7 @@
       <itemPath>MPU.c</itemPath>
       <itemPath>initial_operation.c</itemPath>
       <itemPath>OkError.c</itemPath>
+      <itemPath>SatMode.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

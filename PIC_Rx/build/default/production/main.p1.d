@@ -10,6 +10,7 @@ typeDefine.h  \
 decodeAX25.h  \
 timer.h  \
 pinDefine.h  \
+SatMode.h  \
 EPS.h  \
 WDT.h  \
 EEPROM.h  \

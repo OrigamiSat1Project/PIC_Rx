@@ -64,7 +64,6 @@ void interrupt TimerCheck(void){
     if(second_counter >= one_minute){
         second_counter = 0;
         minute_counter ++;        
-        putChar('G');
     }
     //for debug
     if(eps_reset_counter_sec >= one_minute){

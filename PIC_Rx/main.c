@@ -19,6 +19,7 @@
 #include "CRC16.h"
 #include "OkError.h"
 #include "timer.h"
+#include "SatMode.h"
 
 
 
@@ -57,7 +58,7 @@ void main(void) {
 //    CWTX(CWTX_Nref, CWTX_Nprg);
 //    FMRX(FMRX_Nref, FMRX_Nprg);
     setPLL();
-    
+
     
 //    LED_WHITE = 0;              //for debugging of PLL setting
     __delay_ms(500);           //wait for circuit of PLL
@@ -70,11 +71,11 @@ void main(void) {
     // RC5 = 1;    //5R8G on
     
     //FIXME:for TXPIC  
-    putChar('Y');
-    putChar('S');
+//    putChar('Y');
+//    putChar('S');
 
     //for debug BatVoltage measure
-    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow,0x50);
+    WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,SatelliteMode_addressHigh,SatelliteMode_addressLow,SATMODE_SURVIVAL_SEPOFF_RBFON);
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addresshigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addresshigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
 
@@ -110,21 +111,23 @@ void main(void) {
             putChar('I');
             putChar('I');
             error_status = InitialOperation();
-            WriteOneByteToMainAndSubB0EEPROM(errorMarker_initialOpe_addressHigh,errorMarker_initialOpe_addressLow,error_status);
+            WriteOneByteToMainAndSubB0EEPROM(InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow,error_status);
             errorCheckInitialOpe();  //*******for debug (initial ope) ************
             set_init_ope_counter(0,0);
         }
 
-//        /*---timer process for measure EPS BATTERY---*/
-//        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
-//        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
-//           putChar('B');
-//           putChar('B');
-//           putChar('B');
-//           //TODO:debug function to measure EPS Battery
-//           MeasureBatVoltageAnChangeSatMode();
-//           set_bat_meas_counter(0,0);
-//        }
+        /*---timer process for measure EPS BATTERY---*/
+        //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
+        if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
+           //TODO:debug function to measure EPS Battery
+           UBYTE SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+                  
+           if (SatMode_error_status != 0){
+               SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
+           }
+           WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatMode_error_status_addresshigh, SatMode_error_status_addresslow, SatMode_error_status);
+           set_bat_meas_counter(0,0);
+        }
        
         sendPulseWDT();
         delay_ms(5000);
@@ -286,202 +289,6 @@ void main(void) {
             __delay_ms(1000);
             LED_WHITE = 0;
         }
-        
-        /*---Old command switch case---*/ //kept for reference can be deleted once new switch code is finished and tested
-//        if(commandData[0]=='R'){                //command target = PIC_RX
-//            //Task target
-//            if(commandData[2] == 'r'){          //task target =  PIC_RX
-//                // Command type
-//                switch(commandData[3]){
-//                case 'E': /*EPS kill*/
-//                    Reset_EPS();
-//                    __delay_ms(5000);
-//                    // values for Nprg are changed in setNprg function so they have to be reset
-//                    //TODO: make seperate function for set-up
-//                    int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
-//                    int CWTX_Nprg[5]     =   {0,1,4,0,0};   // Nprg = 1747(* see 301ACWPLL-20080520.pdf *) [436.750MHz]
-//                    int FMRX_Nprg[5]     =   {2,4,9,1,6};   // Nprg = 24887 = (Frx - 21.4) / 0.05 [145.835MHz]
-//                    //reset PLL setting (because it gets lost during shutdown)
-//                    FMTX(FMTX_Nref, FMTX_Nprg);
-//                    CWTX(CWTX_Nref, CWTX_Nprg);
-//                    FMRX(FMRX_Nref, FMRX_Nprg);
-//                    __delay_ms(500);
-//                    break;
-//                case 'I':
-//                    // I2C mode
-//                    break;
-//                case '3':
-//                    // 
-//                    break;
-//                case 'N':
-//                    // NanoMind
-//                    break;
-//                case 'T':
-//                    // send TXPIC by I2C
-//                    break;
-//                default:
-//                    // error
-//                    break;
-//                }
-//
-//            }else if(commandData[2] == 't'){      //task target =  PIC_TX       
-//
-//            }else if(commandData[2] == 'o'){      //task target =  OBC       
-//
-//            }else if(commandData[2] == '5'){      //task target =  5R8G       
-//
-//            }
-//        }else{
-//            //debugging if coomand target is not RXCOBC
-//            LED_WHITE = 1;  
-//            __delay_ms(1000);
-//            LED_WHITE = 0;
-//        }
-        // __delay_ms(500);
-
-        /*-------------------------------------------------------------------*/
-        //FIME:debug for test to change UART baud rate start 
-//        UBYTE c;
-//        c = getChar();
-//        c++;
-//        putChar(c);
-        // for(UBYTE i=1; i<20; i++){
-        // putChar(i);
-        // }
-        //FIME:debug for test to change UART baud rate finish 
-        /*-------------------------------------------------------------------*/
-
-        /*-------------------------------------------------------------------*/
-        //FIXME:[start]for debug to test to change h/l and i/o
-//        UBYTE m;
-//        UBYTE s; 
-//        putChar(0xaa);
-//         changeInOut(0x0a, 0b00011001);
-//         putChar(TRISA);
-//         m = ReadEEPROM(MAIN_EEPROM_ADDRESS, TRISA_addressHigh, TRISA_addressLow);
-//         m++;
-//         putChar(m);
-//         s = ReadEEPROM(SUB_EEPROM_ADDRESS, TRISA_addressHigh, TRISA_addressLow);
-//         s++;
-//         putChar(s);
-//         __delay_ms(1000);
-//         
-//         putChar(0xbb);
-//         changeInOut(0x0b, 0b00100001);
-//         putChar(TRISB);
-//         __delay_ms(1000); 
-//         
-//         putChar(0xcc);
-//         changeInOut(0x0c, 0b10011001);
-//         putChar(TRISC);
-//         __delay_ms(1000);   
-//         
-//         putChar(0xdd);
-//         changeInOut(0x0d, 0b00001101);
-//         putChar(TRISD);
-//         __delay_ms(1000);   
-//         
-//         putChar(0xee);
-//         changeInOut(0x0e, 0b00000111);
-//         putChar(TRISE);
-//         __delay_ms(1000); 
-        //FIXME:[finish]for debug to test to change h/l and i/o
-        /*-------------------------------------------------------------------*/
-         
-         /*-------------------------------------------------------------------*/
-        //FIXME:[start]for debug to test to change h/l and i/o
-//         putChar(0xaa);
-//         changeHighLow(0x0a, 0b00000001);
-//         //changeHighLow(0x0a, 0b00000010);
-//         putChar(RA0);      
-//         __delay_ms(1000);
-//         
-//         putChar(0xbb);
-//        // changeHighLow(0x0b, 0b00010000);
-//         changeHighLow(0x0b, 0b00000001);
-//         putChar(RB0);      
-//         __delay_ms(1000);
-//         
-//         putChar(0xcc);
-//         changeHighLow(0x0c, 0x01);
-//         //putChar(PORTC);
-//         putChar(RC0);
-//         __delay_ms(1000);
-//         
-//         putChar(0xdd);
-//         changeHighLow(0x0d, 0x01);
-//         //putChar(PORTD); 
-//         putChar(RD0);
-//         __delay_ms(1000);   
-//         
-//         putChar(0xee);
-//         changeHighLow(0x0e, 0x01);
-//         //putChar(PORTE);
-//         putChar(RE0);
-//         __delay_ms(1000); 
-        //FIXME:[finish]for debug to test to change h/l and i/o
-        /*-------------------------------------------------------------------*/
-        
-        /*-------------------------------------------------------------------*/
-        //FIXME:for debug to test switch power supply start
-        // UBYTE onOff = 0x01;
-        // UBYTE timeHigh = 0x00;
-        // UBYTE timeLow = 0x00;
- 
-        // putChar(0xaa);
-        // putChar(0xaa);
-        // putChar(0xaa);
-//        for(UBYTE i=1; i<10; i++){
-//            SEP_SW = HIGH;
-//            RBF_SW = HIGH;
-//            putChar(0x11);
-//            __delay_ms(2000); 
-//            SEP_SW = LOW;
-//            RBF_SW = LOW;
-//            putChar(0x22);
-//            __delay_ms(2000); 
-//        }
-//        for(UBYTE i=1; i<5; i++){
-//            putChar(i);
-//            onOff = 0x01;
-//            switchPowerEPS(onOff, timeHigh, timeLow);
-//            __delay_ms(1000);
-//            onOff = 0x00;
-//            switchPowerEPS(onOff, timeHigh, timeLow);
-//            __delay_ms(1000);            
-//        }   
-        // delay_ms(100);
-        // for(UBYTE i=0; i<4; i++){
-        //     putChar(0xbb);
-        //     putChar(0xbb);
-        //     putChar(i);
-        //     putChar(0xbb);
-        //     putChar(0xbb);
-       
-        //     onOff = 0x01;
-        //     timeHigh = 0x00;
-        //     timeLow = 0x03;
-        //     delay_ms(100);
-            
-        //     putChar(0xc1);
-        //     putChar(0xc1);
-        //     delay_ms(100);
-        //     switchPowerEPS(onOff, timeHigh, timeLow);
-        //     delay_ms(100);
-        //     putChar(0xc2);
-        //     putChar(0xc2);
-        //     delay_s(1);
-        // }   
-        // putChar(0xf2);
-        // putChar(0xf2);
-        // putChar(0xf2);
-        // delay_ms(100);
-        //FIXME:for debug to test switch power supply finish
-        /*-------------------------------------------------------------------*/
-    
-       __delay_ms(500);
-       
-      
     }
     //return;
 }
