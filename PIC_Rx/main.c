@@ -71,18 +71,12 @@ void main(void) {
 //    putChar('S');
     
     UBYTE *bat;
-    int flag = -1;
+    int dat = -1;
     
     while(1){
         while(1){
-//            while(flag == -1){
-                flag = ReadEEPROM(0x50,0x00,0x00);
-//            if(flag != -1){
-//            }else putChar(0xEE);
-                __delay_ms(5);
-//            }
-            putChar((UBYTE)flag);
-            flag = -1;
+            dat = ReadEEPROM(0x50,0x00,0x00);
+            putChar((UBYTE)dat);
         }
             
 //        SendBatVoltage();

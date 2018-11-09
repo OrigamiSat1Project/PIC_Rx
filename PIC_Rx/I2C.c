@@ -127,20 +127,23 @@ int I2CMasterRead(UBYTE address){
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
-char WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
-    char ans;
+int WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
+    int ans;
     
     ans = I2CMasterStart(addressEEPROM,0);
     if (ans == 0){
-        I2CMasterWrite(addressHigh);
-        I2CMasterWrite(addressLow);
+        ans = I2CMasterWrite(addressHigh);
+        if(ans == -1) return -1;
+        ans = I2CMasterWrite(addressLow);
+        if(ans == -1) return -1;
         while(*data){
-            I2CMasterWrite(*data);
+            ans = I2CMasterWrite(*data);
+            if(ans == -1) return -1;
             ++data;
         }
     } else return -1;
     ans = I2CMasterStop();
-    if(ans != 0) return -1;
+    if(ans == -1) return -1;
     return 0;
 }
 
@@ -149,21 +152,28 @@ void WriteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
     WriteToEEPROM(SUB_EEPROM_ADDRESS,addressHigh,addressLow,data);
 }
 
-
-int WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
-    int ans = 0;
+int WriteOneByteToEEPROMonce(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    int ans = -1;
     ans = I2CMasterStart(addressEEPROM,0);               //Start condition
-    if(ans != 0) return -1;
-    ans = I2CMasterWrite(addressHigh);    //Adress High Byte
-    if(ans != 0) return -1;
-    ans = I2CMasterWrite(addressLow);     //Adress Low Byte
-    if(ans != 0) return -1;
-    ans = I2CMasterWrite(data);           //Data
-    if(ans != 0) return -1;
-    ans = I2CMasterStop();                //Stop condition
-    if(ans != 0) return -1;
+    if(ans == 0){
+        ans = I2CMasterWrite(addressHigh);              //Adress High Byte
+        if(ans == -1) return -1;
+        ans = I2CMasterWrite(addressLow);           //Adress Low Byte
+        if(ans == -1) return -1;
+        ans = I2CMasterWrite(data);             //Data
+        if(ans == -1) return -1;
+    }else return -1;
+    ans = I2CMasterStop();
     __delay_ms(5);
-    return 0;
+    return ans;
+}
+
+void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    int ans = -1;
+    while(ans == -1){
+        ans = WriteOneByteToEEPROMonce(addressEEPROM,addressHigh,addressLow,data);
+        __delay_ms(5);
+    }
 }
 
 void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
@@ -195,23 +205,34 @@ void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
  *	FIXME    :   not yet
  *	XXX      :   not yet
  */
-int ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
-    UBYTE dat;
-    int ans;
-   
+int ReadEEPROMonce(UBYTE address,UBYTE high_address,UBYTE low_address){
+    int dat;
+    int ans = -1;
     ans = I2CMasterStart(address,0);         //Start condition
-    if(ans != 0) return -1;
-    ans = I2CMasterWrite(high_address);    //Adress High Byte
-    if(ans != 0) return -1;
-    ans = I2CMasterWrite(low_address);    //Adress Low Byte
-    if(ans != 0) return -1;
-    ans = I2CMasterRepeatedStart(address,1);         //Restart condition
-    if(ans != 0) return -1;
-    dat = I2CMasterRead(1); //Read + Acknowledge
-    if(dat == -1) return -1;
-    ans = I2CMasterStop();          //Stop condition
-    if(ans != 0) return -1;
+    if(ans == 0){
+        ans = I2CMasterWrite(high_address);    //Adress High Byte
+        if(ans == -1) return -1;
+        ans = I2CMasterWrite(low_address);    //Adress Low Byte
+        if(ans == -1) return -1;
+        ans = I2CMasterRepeatedStart(address,1);         //Restart condition
+        if(ans == -1) return -1;
+        dat = I2CMasterRead(1); //Read + Acknowledge
+        if(dat == -1) return -1;
+    }else return -1;
+    ans = I2CMasterStop();
+    if(ans == -1) return -1;
     __delay_ms(5);
+    return dat;
+}
+
+UBYTE ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
+    UBYTE dat;
+    int ans = -1;
+    while(ans == -1){
+        ans = ReadEEPROMonce(address,high_address,low_address);
+        __delay_ms(5);
+    }
+    dat = (UBYTE)ans;
     return dat;
 }
 
