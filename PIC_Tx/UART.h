@@ -29,6 +29,7 @@ void sendCommand(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 void changeInterruptPermission(UBYTE, UBYTE);
 void put_error(void);
 void put_ok(void);
+void put_lf(void);
 void changeBaudRate(UBYTE,UBYTE,UBYTE);
 void UARTbufferClear(void);
 void readEEPROMandUARTwrite(UBYTE, UBYTE, UBYTE, UBYTE*, UBYTE);

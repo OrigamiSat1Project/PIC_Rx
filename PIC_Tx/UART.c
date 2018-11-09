@@ -43,9 +43,14 @@ UBYTE getChar(void){                //TODO: add time out feature
     
     UINT break_counter = 0;
     
+//    while(RCIF != 1);
+    
 	while(!RCIF){
         break_counter ++;
-        if(break_counter >= 60000) break;
+        if(break_counter >= 100){
+            putChar(0xbb);
+            break;
+        }
     }
     return RCREG;
 }
@@ -111,8 +116,8 @@ void put_error(void){
    putChar('R');
    putChar('O');
    putChar('R');
-   putChar('!');
-   
+   putChar('\r');
+   putChar('\n');
 }
 
 void put_ok(void){
@@ -121,6 +126,11 @@ void put_ok(void){
    putChar('\r');
    putChar('\n');
    
+}
+
+void put_lf(void){
+   putChar('\r');
+   putChar('\n');
 }
 
 void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){

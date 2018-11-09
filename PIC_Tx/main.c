@@ -44,64 +44,39 @@ UBYTE ReceiveFlag = NOT_RECEIVE;
 
 
 void interrupt InterReceiver(void){
+    putChar(0xee);
     
     if (RCIF == 1) {
         putChar('U');
-//        UBYTE get_char_state = 0;
         UINT break_counter = 0;
         RXDATA[0] = 0x21;
         
         while(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
             for(UINT i=0;i<commandSize;i++){
-                RXDATA[i] = 0x21;
-            }
-            //  sync commands
-            while(RXDATA[0] != 't' && RXDATA[0] != 'g'){
-                RXDATA[0] = getChar();
-                putChar(RXDATA[0]);
-                break_counter ++;
-                if(break_counter >= 10){
-                    putChar(0xa1);
-                    break;
-                }
-            }
-            for(UINT i=1;i<commandSize;i++){
                 RXDATA[i] = getChar();
+            }
+            for(UINT i=0;i<commandSize;i++){
                 putChar(RXDATA[i]);
             }
+            /*for debug
+            putChar(0xcc);
+            putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
+            putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
+             end*/
             break_counter ++;
             if(break_counter >= 10){
                 putChar(0xa2);
+                put_lf();
                 break;
             }
         }
-        if(break_counter >= 10){
-            ReceiveFlag = UNCORRECT_RECEIVE;
-            putChar(0xa3);
-        }else{
+        ReceiveFlag = UNCORRECT_RECEIVE;
+        if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
-            putChar(0xa4);
         }
-        
-        
-//        while(get_char_state < commandSize){
-//            RXDATA[0] = getChar();
-//            putChar(RXDATA[0]);
-//            get_char_state++;
-//            if(RXDATA[0] != 't' && RXDATA[0] != 'g'){
-//                get_char_state = 0;
-//            }else{
-//                for(UBYTE i = 1; i < commandSize; i++){
-//                    RXDATA[i] = getChar();
-//                    putChar(RXDATA[i]);
-//                    get_char_state++;
-//                }
-//            }
-//            break_counter ++;
-//            if(break_counter >=60000) break;
-//        }
         RCIF = 0;
         putChar(0xff);
+        put_lf();
     }
 }
 
@@ -135,8 +110,7 @@ void main(void) {
     
     while(1){
         __delay_ms(1000);
-        putChar('m');
-        putChar('X');
+        putChar(0xaa);
         
 
         //TODO send pulse to WDT
@@ -195,11 +169,20 @@ void main(void) {
         //UART receive process
 
         if(ReceiveFlag == CORRECT_RECEIVE){
+            
+            /*for debug
             putChar(0x33);
+            put_lf();
+            for(UINT i=0;i<commandSize;i++){
+                putChar(RXDATA[i]);
+            }
+             end*/
+            
 
             /*---read command ID---*/
             UBYTE commandID;
-            commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
+//            commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
+            
 
             /*---Define if command target is 't' or 'g' and read in task target ---*/
             /*------------------------------------------------------------------*/
@@ -231,15 +214,24 @@ void main(void) {
                 case 0x72: /*'r':send command to RXCOBC*/
                     sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
                     break;
+                    
+                    //for debug putChar only
+                case 0x80:
+                    putChar(0x80);
+                    put_ok();
+                    break;
                 default:
-                    switchError(error_main_commandfromOBCorRXCOBC);   
-                    break;                             
+//                    switchError(error_main_commandfromOBCorRXCOBC);
+                    put_error();
+                    break;
             }
             WriteLastCommandIdToEEPROM(commandID);
+            ReceiveFlag = NOT_RECEIVE;
+            putChar(0x39);
         }
         /*---write CRC result 6bit 1 ---*/
-        switchOk(error_main_crcCheck);
-        ReceiveFlag = NOT_RECEIVE;
+//        switchOk(error_main_crcCheck);
+        
     //======================================================================
     }
 }
