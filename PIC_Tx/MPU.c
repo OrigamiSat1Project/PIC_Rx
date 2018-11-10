@@ -38,7 +38,8 @@ void Init_MPU(void)
     TRISE  = 0b00000000;	
 
 	//Port Initial Value Setting	
-	PORTA  = 0x00;
+//	PORTA  = 0x00;          //WDT on
+    PORTA  = 0b00000010;    //WDT off
 	PORTB  = 0x00;
 	PORTC  = 0x00;
     //PORTD  = 0x00;
@@ -113,6 +114,9 @@ void onOffNTRX(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
             NTRX = low;  
     } else {                     
             NTRX = high;
+            for (UBYTE i=0; i<20; i++){
+            putChar(0x11);
+            }
     }
 
     if(timeHigh == 0x00 && timeLow == 0x00){ 
@@ -275,6 +279,11 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             onOffHEATER(onOff, timeHigh, timeLow);
             break;
         case 'n':   //NTRX
+            put_lf();
+            for(UBYTE i=0; i<30; i++){
+                putChar(0xb3);
+            }
+            put_lf();
             onOffNTRX(onOff, timeHigh, timeLow);
             break;
         case '5': //5R8G 5V Sub Power

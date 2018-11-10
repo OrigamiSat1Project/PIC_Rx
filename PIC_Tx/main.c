@@ -270,6 +270,7 @@ void main(void) {
             delay_ms(1000);
             FMPTT = low;
             delay_ms(1000);
+//            sendPulseWDT();
         }    
             
         
@@ -356,7 +357,11 @@ void main(void) {
                     downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 'p':/*'p':power*/
-                    putChar(0xa7); 
+                    putChar(0xa7);
+                    putChar(0xa7);
+                    putChar(0xa7);
+                    put_lf();
+//                    NTRX = high;
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
