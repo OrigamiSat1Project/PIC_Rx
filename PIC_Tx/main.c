@@ -58,11 +58,11 @@ void interrupt InterReceiver(void){
             for(UINT i=0;i<commandSize;i++){
                 putChar(RXDATA[i]);
             }
-            /*for debug
+//            /*for debug
             putChar(0xcc);
             putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
             putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
-             end*/
+//             end*/
             break_counter ++;
             if(break_counter >= 10){
                 putChar(0xa2);
@@ -73,6 +73,17 @@ void interrupt InterReceiver(void){
         ReceiveFlag = UNCORRECT_RECEIVE;
         if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
+        }
+        if(RXDATA[0] == 't'){
+            NOP();
+        }else if(RXDATA[0] == 'g'){
+             //Write to EEPROM for CW Downlink
+            UBYTE commandID = 0x00;
+            WriteOneByteToEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID, commandID);
+            //Write to EEPROM for CW Downlink
+            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
+        }else{
+            ReceiveFlag = UNCORRECT_RECEIVE;
         }
         RCIF = 0;
         putChar(0xff);
