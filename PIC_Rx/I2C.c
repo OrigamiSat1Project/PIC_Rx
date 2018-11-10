@@ -211,14 +211,16 @@ int ReadEEPROMonce(UBYTE address,UBYTE high_address,UBYTE low_address){
     ans = I2CMasterStart(address,0);         //Start condition
     if(ans == 0){
         ans = I2CMasterWrite(high_address);    //Adress High Byte
-        if(ans == -1) return -1;
+        if(ans != 0) return -1;
         ans = I2CMasterWrite(low_address);    //Adress Low Byte
-        if(ans == -1) return -1;
-        ans = I2CMasterRepeatedStart(address,1);         //Restart condition
-        if(ans == -1) return -1;
+        if(ans != 0) return -1;
+    }else return -1;
+    ans = I2CMasterRepeatedStart(address,1);         //Restart condition
+    if(ans == 0){
         dat = I2CMasterRead(1); //Read + Acknowledge
         if(dat == -1) return -1;
     }else return -1;
+    
     ans = I2CMasterStop();
     if(ans == -1) return -1;
     __delay_ms(5);
@@ -228,7 +230,7 @@ int ReadEEPROMonce(UBYTE address,UBYTE high_address,UBYTE low_address){
 UBYTE ReadEEPROM(UBYTE address,UBYTE high_address,UBYTE low_address){
     UBYTE dat;
     int ans = -1;
-    while(ans == -1){
+    while(ans != 0){
         ans = ReadEEPROMonce(address,high_address,low_address);
         __delay_ms(5);
     }
