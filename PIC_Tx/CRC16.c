@@ -1,6 +1,8 @@
 #include "string.h"
 #include "Type_define.h"
 
+
+
 UWORD crc16(UWORD crc, UBYTE *ptr, UINT len){
     const UWORD CRC16POLY = 0xa001;
 	UINT i, j;

@@ -10,6 +10,8 @@
 
 #include "Type_define.h"
 
+#define CRC_RX_TX   1<<6    //0b01000000
+
 UWORD crc16(UWORD, UBYTE *, UINT);
 UWORD Identify_CRC16(UBYTE *);
 UWORD CRC_check(UBYTE *, UINT);

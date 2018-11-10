@@ -10,17 +10,21 @@ void Init_SERIAL(void){
 
     SPBRG  = 10;                   // boudrate is  14400 bps at BRGH = 0
 //    SPBRG  = 4;                    // boudrate is 115200 bps at BRGH = 1
-    GIE    = 1;
-    PEIE   = 1;
+//    INTCONbits.GIE    = 1;
+//    INTCONbits.PEIE   = 1;
     BRGH   = 0;                   	// Fast baudrate
 //    BRGH   = 1;                   	// slow baudrate
 	SYNC   = 0;						// Asynchronous
 	SPEN   = 1;						// Enable serial port pins
 	CREN   = 1;						// Enable reception
 	SREN   = 0;						// No effect
-    RCIF   = 0;                     // RX frag Reset
-	TXIE   = 0;						// Disble tx interrupts
-	RCIE   = 1;						// Enable rx interrupts
+    INTCON  = 0b11000000;
+    PIR1    = 0b00100000;                     // RX frag Reset
+    PIE1    = 0b00100000;
+    PIE2    = 0b00000000;
+    
+//	PIE1bits.TXIE   = 0;						// Disble tx interrupts
+//	PIE1bits.RCIE   = 1;						// Enable rx interrupts
 	TX9    = 0;						// 8-bit transmission
 	RX9    = 0;						// 8-bit reception
 	TXEN   = 0;						// Reset transmitter
@@ -36,11 +40,17 @@ UBYTE getChar(void){                //TODO: add time out feature
         NOP();
         CREN = 1;
     }
-
-    //TODO;need check
-    set_timer_counter_only_getChar(0);
-	while(!RCIF){                   //USART Receive Interrupt Flag bit
-        if(get_timer_counter_only_getChar() > 1000) break;
+    
+    UINT break_counter = 0;
+    
+//    while(RCIF != 1);
+    
+	while(!RCIF){
+        break_counter ++;
+        if(break_counter >= 100){
+            putChar(0xbb);
+            break;
+        }
     }
     return RCREG;
 }
@@ -101,18 +111,26 @@ void changeInterruptPermission(UBYTE GIE_status, UBYTE PEIE_status){
 
 /*---for debug---*/
 void put_error(void){
-   putch('E');
-   putch('R');
-   putch('R');
-   putch('O');
-   putch('R');
-   putch('!');
+   putChar('E');
+   putChar('R');
+   putChar('R');
+   putChar('O');
+   putChar('R');
+   putChar('\r');
+   putChar('\n');
 }
 
 void put_ok(void){
-   putch('O');
-   putch('K');
-   putch('!');
+   putChar('O');
+   putChar('K');
+   putChar('\r');
+   putChar('\n');
+   
+}
+
+void put_lf(void){
+   putChar('\r');
+   putChar('\n');
 }
 
 void changeBaudRate(UBYTE type_select,UBYTE SPBRG_number,UBYTE BRGH_number){
