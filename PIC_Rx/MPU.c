@@ -488,6 +488,7 @@ void commandSwitchIntProcess(UBYTE command, UBYTE data1, UBYTE data2){
     }
 }
 
+//turn ON NTRX(CIB power supply)
 void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     UBYTE send_command[8];
     send_command[0] = 't';
@@ -499,12 +500,12 @@ void onNtrxPowerSupplyCIB(UBYTE timeHigh,UBYTE timeLow){
     send_command[6] = 0x00;
     send_command[7] = 0x00;
     sendCommandByPointer(send_command);
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
+    __delay_ms(1000);//wait EPS ON
+    setPLL();
 //    reviveEPS(timeHigh, timeLow);           
 }
 
+//turn off NTRX(CIB power supply)
 void offNtrxPowerSupplyCIB(void){
     UBYTE send_command[8];
     send_command[0] = 't';

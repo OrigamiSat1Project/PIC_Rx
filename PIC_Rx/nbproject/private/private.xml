@@ -3,14 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/ADC.c</file>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/main.c</file>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/timer.h</file>
             <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/EEPROM.h</file>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/UART.c</file>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/MPU.c</file>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/FMCW.c</file>
-            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/timer.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/main.c</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/SatMode.h</file>
+            <file>file:/C:/Users/祐貴/Desktop/プロジェクト/OrigamiSat/PIC_RX/PIC_Rx/SatMode.c</file>
         </group>
     </open-files>
 </project-private>

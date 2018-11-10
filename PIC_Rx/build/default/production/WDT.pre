@@ -1542,7 +1542,7 @@ PORTBbits.RB3= 1;
 
 
 void sendPulseWDT(void){
-putChar('W');
+
 if(PORTBbits.RB3== 0){
 PORTBbits.RB1 = 0;
 delay_ms(300);

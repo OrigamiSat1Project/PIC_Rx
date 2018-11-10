@@ -109,10 +109,23 @@
 #define SatelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
 #define SatelliteMode_addressLow        0x80//include SEP(3,2bit) and RBF(1,0bit)
 
-#define BatVol_nominal_saving_datahigh_addresshigh  0x81
+#define BatVol_nominal_saving_datahigh_addressHigh  0x81
 #define BatVol_nominal_saving_datahigh_addressLow 0x01
-#define BatVol_nominal_saving_datalow_addresshigh  0x81
+#define BatVol_nominal_saving_datalow_addressHigh  0x81
 #define BatVol_nominal_saving_datalow_addressLow 0x02
+#define BatVol_saving_survival_datahigh_addressHigh  0x81
+#define BatVol_saving_survival_datahigh_addressLow 0x0D
+#define BatVol_saving_survival_datalow_addressHigh  0x81
+#define BatVol_saving_survival_datalow_addressLow 0x0E
+
+#define BatVol_nominal_revival_datahigh_addressHigh 0x81
+#define BatVol_nominal_revival_datahigh_addressLow 0x0F
+#define BatVol_nominal_revival_datalow_addressHigh 0x81
+#define BatVol_nominal_revival_datalow_addressLow 0x10
+#define BatVol_saving_revival_datahigh_addressHigh 0x81
+#define BatVol_saving_revival_datahigh_addressLow 0x11
+#define BatVol_saving_revival_datalow_addressHigh 0x81
+#define BatVol_saving_revival_datalow_addressLow 0x12
 
 #endif	/* EEPROM_H */
 
