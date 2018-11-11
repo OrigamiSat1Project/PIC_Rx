@@ -318,7 +318,7 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
         case 'r': //read data from EEPROM
             data_length = data1;
             ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data1);
-            //TODO: send data to TXCOBC or/and OBC by I2C or UART
+            //TODO: send data to TXCOBC or/and OBC by I2C or UART  and FM or CW downlink
             break;
         case 'e': //read any size of data from EEPROM 
             /* this function for read any size of data from EEPROM
@@ -329,7 +329,7 @@ void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE
              */
             data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
             ReadDataFromEEPROMWithDataSize(slaveAdress, dataHigh, dataLow, read_data, data_length);
-            //TODO: send data to TXCOBC or/and OBC by I2C or UART
+            //TODO: send data to TXCOBC or/and OBC by I2C or UART and FM or CW downlink
             // sendCommand('t', 'f', 0xaa, UBYTE Parameter2, UBYTE Parameter3, UBYTE Parameter4, UBYTE Parameter5, UBYTE Parameter6);
         case 't': //EEPROM test
             TestEEPROM(slaveAdress);
