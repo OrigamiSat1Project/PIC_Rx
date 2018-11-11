@@ -307,10 +307,13 @@ void main(void) {
         __delay_ms(5000);
          
         measureDcDcTemperature();
-        if(OBC_STATUS == low){          
-            measureChannel2();//read 5V Bus
-        }else{     
-        }         
+        if(read5VBusAndSwitchNtrxPower() != 0){
+            if(read5VBusAndSwitchNtrxPower() != 0){
+                onOffNTRX(0x01,0,0);//subPower ON
+            }
+        }
+        
+            
         //TODO debug send HK 
         HKDownlink();
         

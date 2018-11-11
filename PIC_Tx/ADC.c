@@ -29,6 +29,7 @@
 #include "EEPROM.h"
 #include "I2C.h"
 #include "OkError.h"
+#include "MPU.h"
 #include <xc.h>
 #include <stdio.h>
 
@@ -213,8 +214,8 @@ void measureDcDcTemperature() {
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh, adcValue_CH1_addressLow, (UBYTE)(adcValue[0] >> 8));     
     //data low
-    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh + 0x08, adcValue_CH1_addressLow + 0x08, (UBYTE)(adcValue[0] & 0xff));   
-    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh + 0x08, adcValue_CH1_addressLow + 0x08, (UBYTE)(adcValue[0] & 0xff));  
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH1_addressHigh + 0x01, adcValue_CH1_addressLow + 0x01, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH1_addressHigh + 0x01, adcValue_CH1_addressLow + 0x01, (UBYTE)(adcValue[0] & 0xff));  
     
     /*--------------------------------------------------*/
     //FIXME:[start]debug for write adc value--->successs
@@ -254,8 +255,8 @@ void measureChannel2(){
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] >> 8));
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] >> 8));
     //data low
-    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] & 0xff));   
-    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh, adcValue_CH2_addressLow, (UBYTE)(adcValue[0] & 0xff));
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH2_addressHigh+0x01, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH2_addressHigh+0x01, adcValue_CH2_addressLow+0x01, (UBYTE)(adcValue[0] & 0xff));
 }
 void measureChannel3(){
     initADC();
@@ -265,8 +266,8 @@ void measureChannel3(){
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] >> 8));
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] >> 8));
     //data low
-    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] & 0xff));   
-    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH3_addressHigh, adcValue_CH3_addressLow, (UBYTE)(adcValue[0] & 0xff));
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH3_addressHigh+0x01, adcValue_CH3_addressLow+0x01, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH3_addressHigh+0x01, adcValue_CH3_addressLow+0x01, (UBYTE)(adcValue[0] & 0xff));
 }
 void measureChannel4(){
     initADC();
@@ -276,8 +277,8 @@ void measureChannel4(){
     WriteOneByteToEEPROM(EEPROM_address, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] >> 8));
     WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] >> 8));
     //data low
-    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] & 0xff));   
-    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH4_addressHigh, adcValue_CH4_addressLow, (UBYTE)(adcValue[0] & 0xff));
+    WriteOneByteToEEPROM(EEPROM_address, adcValue_CH4_addressHigh+0x01, adcValue_CH4_addressLow+0x01, (UBYTE)(adcValue[0] & 0xff));   
+    WriteOneByteToEEPROM(EEPROM_subaddress, adcValue_CH4_addressHigh+0x01, adcValue_CH4_addressLow+0x01, (UBYTE)(adcValue[0] & 0xff));
 }
 
 //process command data if the command type is 'HKdata'
@@ -304,4 +305,44 @@ void commandSwitchHKdata(UBYTE type_sellect, UBYTE data1, UBYTE data2, UBYTE dat
             switchError(error_ADC_commandSwitchHKdata);
             break;
    }
+}
+
+UBYTE read5VBusAndSwitchNtrxPower(void){
+    UBYTE SatMode;
+    UBYTE error_status = 0;   
+    measureChannel2();//read 5V Bus
+    UBYTE adcValue_high = ReadEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow);
+    UBYTE adcValue_low = ReadEEPROM(EEPROM_address, adcValue_CH2_addressHigh, adcValue_CH2_addressLow);
+    UWORD adcValue = (UWORD)adcValue_high << 8 | (UWORD)adcValue_low;
+
+        if(adcValue <= ADC_Value_4V){
+            SatMode = ReadEEPROM(EEPROM_address,satelliteMode_addressHigh,satelliteMode_addressLow);
+            SatMode = SatMode & 0xF0;
+            switch(SatMode){
+                case SatMode_Nominal:
+                    error_status = 1;
+                    break;
+                case SatMode_Saving:
+                case SatMode_Survival:
+                    break;
+                default:
+                    SatMode = ReadEEPROM(EEPROM_subaddress,satelliteMode_addressHigh,satelliteMode_addressLow);
+                    SatMode = SatMode & 0xF0;
+                    switch(SatMode){
+                        case SatMode_Nominal:
+                            error_status = 1;
+                            break;
+                        case SatMode_Saving:
+                        case SatMode_Survival:
+                            break;
+                        default:
+                            onOffNTRX(1,0,0);//subPower ON
+                            break;
+                    }
+                    break;
+            }          
+        }else{
+            onOffNTRX(0,0,0);//subPower off
+        }
+    return error_status;
 }
