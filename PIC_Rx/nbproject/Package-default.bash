@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/0418_system_integration_4.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=0418_system_integration_4.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=0418systemintegration4/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/PIC_Rx.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=PIC_Rx.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=picrx/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/0418systemintegration4/bin
+makeDirectory ${TMPDIR}/picrx/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/0418systemintegration4.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/picrx.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/0418systemintegration4.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/picrx.tar *
 checkReturnCode
 
 # Cleanup

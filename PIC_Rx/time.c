@@ -1,10 +1,24 @@
-/*** 時間制御 ***/
+    /*** Timer controll ***/
 
 #include <htc.h>
-#include "Type_define.h"
+#include "typeDefine.h"
 #include "time.h"
 /**/
-//msウェイト関数
+
+////Global
+//static UINT timer_counter_only_getChar = 0;
+
+void delay_s(UWORD sec)
+{
+	while(sec)
+	{
+		__delay_s(1);
+		sec--;
+	}	
+}
+
+
+//wait [ms] function
 void delay_ms(UWORD msec)
 {
 	while(msec)
@@ -14,13 +28,21 @@ void delay_ms(UWORD msec)
 	}	
 }
 
-//usウェイト関数
-void delay_us(UWORD usec)
-{
-	while(usec)
-	{
-		__delay_us(1);
-		usec--;
-	}	
-}
+//wait [us] function
+//void delay_us(UWORD usec)
+//{
+//	while(usec)
+//	{
+//		__delay_us(1);
+//		usec--;
+//	}	
+//}
 
+////timer counter only getChar
+//void set_timer_counter_only_getChar(UINT time){
+//    timer_counter_only_getChar = time;
+//}
+//
+//UINT get_timer_counter_only_getChar(void){
+//    return timer_counter_only_getChar;
+//}

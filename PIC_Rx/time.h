@@ -1,25 +1,32 @@
 /* 
  * File:   time.h
- * Author: Curie
+ * Author: Reo
  *
  * Created on 2017/01/21, 18:49
  */
 
-#include "Type_define.h"
+
 #ifndef TIME_H
 #define	TIME_H
 
-#define _XTAL_FREQ       10000000       // Clock frequency
-//#define __delay_ms(1)    _delay((unsigned long)((1)*(_XTAL_FREQ/4000UL)))
+#include "typeDefine.h"
+
+// Clock frequency
+//TODO:change 20M[Hz] and 4M[Hz] ?ｿｽK?ｿｽﾘな値
+//TODO:MPU?ｿｽ?ｿｽchange Xtal //?ｿｽﾆゑｿｽ?ｿｽ?ｿｽ?ｿｽﾆゑｿｽ?ｿｽﾌエ?ｿｽ?ｿｽ?ｿｽ[?ｿｽ?ｿｽ?ｿｽP
+#define _XTAL_FREQ_HIGH      20000000   //20M[Hz]
+#define _XTAL_FREQ_MIDDLE    10000000   //10M[Hz]
+#define _XTAL_FREQ_LOW        4000000   // 4M[Hz]         
+#define _XTAL_FREQ           _XTAL_FREQ_MIDDLE 
+
 #define __delay_us(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000000.0)))
 #define __delay_ms(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4000.0)))
+#define __delay_s(x) _delay((unsigned long)((x)*(_XTAL_FREQ/4.0)))
 
-#define span 833
-#define espan 795//10MHz:795-803 20MHz:817   811-823
-#define hspan 400   //20MHz:360(300?),415
-#define lspan 1250
+#define HALF_INTERVAL   400   // half the time interval of one bit //decided by measurement
 
-//不正確なdelay関数
+//functions to wait [ms] or [us]
+void delay_s(UWORD);
 void delay_ms(UWORD);
 void delay_us(UWORD);
 

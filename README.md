@@ -1,8 +1,8 @@
 # Name
-PIC_TX (Communication & Inhibit Board)
+PIC_RX (Communication & Inhibit Board)
 
 # Overview
-430MHz communication PIC
+145MHz communication PIC
 
 ## Description
 OrigamiSat1 is first nano satellite of [ORIGAMI PROJECT](http://www.origami.titech.ac.jp/)

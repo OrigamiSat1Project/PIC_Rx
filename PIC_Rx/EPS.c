@@ -1,21 +1,11 @@
 //#include <string.h>
 #include <xc.h>
 #include "EPS.h"
+#include "pinDefine.h"
 #include "time.h"
+#include "FMCW.h"
 
-/*
- * 【EPSリセット機能の初期化】
- *  1. EPSリセットスイッチの端子を'出力'に設定
- *  2. EPSリセットスイッチのポートを'LOW'にする
- */
-
-/*
- * 【EPSリセットスイッチ処理】
- *  1. EPSリセットスイッチの端子を0→1→0と変化させる
- */
-//UBYTE EPS_kill[];
-
-
+// turns of the electrical power system for 5 seconds by switching from 0 → 1 → 0
 void Reset_EPS(void){
     SEP_SW = 1;
     RBF_SW = 1;
@@ -23,5 +13,14 @@ void Reset_EPS(void){
     SEP_SW = 0;
     RBF_SW = 0;
     __delay_ms(500);
+}
+
+void ResetEPSandSetPLL(void){
+   Reset_EPS();
+   delay_ms(5000);
+//   FMTX(FMTX_Nref, FMTX_Nprg);
+//   CWTX(CWTX_Nref, CWTX_Nprg);
+//   FMRX(FMRX_Nref, FMRX_Nprg);
+   delay_ms(5000);
 }
 
