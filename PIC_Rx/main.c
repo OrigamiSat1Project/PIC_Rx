@@ -54,6 +54,7 @@ void main(void) {
     
     //WDT = 1; // kick watchdog
 
+    RB3 = 1;
     RC5 = 1;    //5R8G on
     putChar('A');
     
@@ -148,8 +149,8 @@ void main(void) {
                 case 'E': /*EPS kill*/
                     Reset_EPS();
                     __delay_ms(5000);
-                    //ï¿½È‰ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½Íï¿½ï¿½ï¿½ï¿½Ý’èŽžï¿½Æ•Ï‰ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚½ï¿½ß‚ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½`
-                    //ï¿½{ï¿½ï¿½ï¿½È‚ï¿½Ï‰ï¿½ï¿½ï¿½ï¿½é•¶ï¿½ï¿½ï¿½ï¿½ð‘¼‚É—pï¿½Ó‚ï¿½ï¿½ï¿½ï¿½Ù‚ï¿½ï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
+                    //?¿½È‰ï¿½?¿½Ìï¿½?¿½?¿½?¿½Íï¿½?¿½?¿½?¿½Ý’èŽž?¿½Æ•Ï‰ï¿½?¿½?¿½?¿½Ä‚ï¿½?¿½é‚½?¿½ß‚ï¿½?¿½?¿½?¿½x?¿½?¿½`
+                    //?¿½{?¿½?¿½?¿½È‚ï¿½Ï‰ï¿½?¿½?¿½?¿½é•¶?¿½?¿½?¿½?¿½?‘¼‚É—p?¿½Ó‚ï¿½?¿½?¿½?¿½Ù‚ï¿½?¿½?¿½?¿½Ç‚ï¿½?¿½?¿½?¿½?¿½?¿½?¿½?¿½È‚ï¿½
                     // values for Nprg are changed in setNprg function so they have to be reset
                     //TODO: make seperate function for set-up
                     int FMTX_Nprg[5]     =   {8,7,5,0,1};   // Nprg = 87300 = Ftx / 0.05 [436.500MHz]
