@@ -44,7 +44,7 @@ UBYTE ReceiveFlag = NOT_RECEIVE;
 
 
 void interrupt InterReceiver(void){
-    putChar(0xee);
+//    putChar(0xee);
 
     if (RCIF == 1) {
 
@@ -252,7 +252,8 @@ void main(void) {
     while(1){
         
         putChar('m');
-
+        delay_ms(3000);
+                
 //        //TODO send pulse to WDT
 //        sendPulseWDT();
 //        __delay_ms(5000);
@@ -265,13 +266,13 @@ void main(void) {
 //        //TODO debug send HK 
 //        HKDownlink();
         
-        for(UBYTE i=0; i<3; i++){
-            FMPTT = high;
-            delay_ms(1000);
-            FMPTT = low;
-            delay_ms(1000);
-//            sendPulseWDT();
-        }    
+//        for(UBYTE i=0; i<3; i++){
+//            NTRX = high;
+//            delay_ms(1000);
+//            NTRX = low;
+//            delay_ms(1000);
+////            sendPulseWDT();
+//        }    
             
         
         
@@ -361,7 +362,8 @@ void main(void) {
                     putChar(0xa7);
                     putChar(0xa7);
                     put_lf();
-//                    NTRX = high;
+                    CWKEY = high;  /////FIXME
+                    delay_ms(1000);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
