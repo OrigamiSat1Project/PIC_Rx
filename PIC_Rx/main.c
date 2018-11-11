@@ -13,6 +13,7 @@
 #include "EEPROM.h"
 #include "FMCW.h"
 #include "EPS.h"
+#include "timer.h"
 
 
 // PIC16F887 Configuration Bit Settings
@@ -36,6 +37,7 @@ void main(void) {
     InitSerial();
     InitMPU();
     InitI2CMaster(I2Cbps);
+    initTimer();
     //InitWDT();
     
     LED_WHITE = 1;              //for debugging of init
@@ -60,7 +62,6 @@ void main(void) {
     
     while(1){
         putChar('B');
-        
         /*measure the runtime of the getBitLoop*/    //for normal run not needed
         /*------------------------------------------------------------------*/
         //while(1){

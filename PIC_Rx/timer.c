@@ -9,7 +9,6 @@
 #include "I2C.h"
 #include "initMPU.h"
 #include "EEPROM.h"
-#include "WDT.h"
 
 void initTimer(void){
     INTCON = 0b11100000;    //GIE = 1, PEIE = 1, TMR0IE = 1
@@ -41,13 +40,13 @@ static UINT eps_reset_counter_sec = 0;
 static UINT eps_reset_counter_min = 0;
 
 //for debug function
-//void interrupt TimerCheck(void){
-//    if(INTCONbits.TMR0IF){
-//        INTCONbits.TMR0IF = 0;
-//        TMR0 = 0x00;
-//        timer_counter ++;
-//    }
-//           
+void interrupt TimerCheck(void){
+    if(INTCONbits.TMR0IF){
+        INTCONbits.TMR0IF = 0;
+        TMR0 = 0x00;
+        timer_counter ++;
+    }
+           
 //    if(timer_counter >= one_second){
 //        timer_counter = 0;
 //        second_counter += 1;
@@ -96,16 +95,16 @@ static UINT eps_reset_counter_min = 0;
 //    if(week_counter >= 2){
 //        week_counter = 0;
 //    }
-//    
-//    /*---WDT send pulse (4s)---*/
-////    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
-////        if(WDT_flag == 0x01){
-////            putChar('W');
-////            sendPulseWDT();
-////            WDT_flag = 0x00;
-////        }
-////    }
-//}
+    
+    /*---WDT send pulse (4s)---*/
+//    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
+//        if(WDT_flag == 0x01){
+//            putChar('W');
+//            sendPulseWDT();
+//            WDT_flag = 0x00;
+//        }
+//    }
+}
 
 //for debug
 void set_eps_reset_counter(UINT time_sec, UINT time_min){

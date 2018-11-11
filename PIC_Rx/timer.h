@@ -24,8 +24,8 @@
 
 
 
-//void initTimer(void);
-//void interrupt TimerCheck(void);
+void initTimer(void);
+void interrupt TimerCheck(void);
 
 void set_eps_reset_counter(UINT, UINT);  //FIXME:for debug
 UINT get_eps_reset_counter_sec(void);   //FIXME:for debug
