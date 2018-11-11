@@ -47,11 +47,14 @@ UBYTE getChar(void){                //TODO: add time out feature
     
 	while(!RCIF){
         break_counter ++;
-        if(break_counter >= 100){
-            putChar(0xbb);
+        if(break_counter >= 100){       //printf 2000 is just for break
+//            putChar(0xbb);
+            NOP();
+            break_counter = 0;
             break;
         }
     }
+    RCIF = 0;
     return RCREG;
 }
 

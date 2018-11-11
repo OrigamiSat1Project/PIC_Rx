@@ -104,7 +104,7 @@ void sendCommandByPointer(UBYTE* Parameter){
     
     for(UBYTE i=0; i<10; i++){
         putChar(Command[i]);
-        NOP();
+//        NOP();
     }        
 }
 

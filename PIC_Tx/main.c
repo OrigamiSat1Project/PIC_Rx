@@ -48,28 +48,18 @@ void interrupt InterReceiver(void){
     
     if (RCIF == 1) {
         putChar('U');
-        UINT break_counter = 0;
         RXDATA[0] = 0x21;
-        
-        while(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
-            for(UINT i=0;i<commandSize;i++){
-                RXDATA[i] = getChar();
-            }
-            for(UINT i=0;i<commandSize;i++){
-                putChar(RXDATA[i]);
-            }
-//            /*for debug
-            putChar(0xcc);
-            putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
-            putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
-//             end*/
-            break_counter ++;
-            if(break_counter >= 10){
-                putChar(0xa2);
-                put_lf();
-                break;
-            }
+        for(UINT i=0;i<commandSize;i++){
+            RXDATA[i] = getChar();
         }
+        for(UINT i=0;i<commandSize;i++){
+            putChar(RXDATA[i]);
+        }
+//            /*for debug
+        putChar(0xcc);
+        putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
+        putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
+//             end*/
         ReceiveFlag = UNCORRECT_RECEIVE;
         if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
@@ -77,11 +67,12 @@ void interrupt InterReceiver(void){
         if(RXDATA[0] == 't'){
             NOP();
         }else if(RXDATA[0] == 'g'){
+            NOP();
              //Write to EEPROM for CW Downlink
-            UBYTE commandID = 0x00;
-            WriteOneByteToEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID, commandID);
+//            UBYTE commandID = 0x00;
+//            WriteOneByteToEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID, commandID);
             //Write to EEPROM for CW Downlink
-            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
+//            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
         }else{
             ReceiveFlag = UNCORRECT_RECEIVE;
         }
