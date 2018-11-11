@@ -10,38 +10,17 @@
 #include <xc.h>
 #include <PIC16F887.h>
 #include "UART.h"
-#include "Init_MPU.h"
 #include "Type_define.h"
 #include "time.h"
 
 #ifndef ENCODE_AX25_H
 #define	ENCODE_AX25_H
 
-#define mycall "JQ1YCZ"
-#define ucall  "JQ1ZHX"
-#define txd RC5
-#define UHFstart RB5
-
+void SendPacketWithDataSize(UBYTE *,UINT);
 void SendPacket(UBYTE *);
-void test_Packetmaker(UBYTE *);
-/*
-//void SendByte(UBYTE);
-//void flipout(void);
-//void fcsbit(UBYTE);
-//UINT Packetmaker(void);
-//void test_Packetmaker(void);
-*/
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-
-
-
-#ifdef	__cplusplus
-}
-#endif
+/*--for debug--*/
+//void test_Packetmaker(UBYTE *);
 
 #endif	/* ENCODE_AX25_H */
 

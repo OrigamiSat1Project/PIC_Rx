@@ -1,10 +1,13 @@
-/*** 時間制御 ***/
+/*** ?ｿｽ?ｿｽ?ｿｽﾔ撰ｿｽ?ｿｽ?ｿｽ ***/
 
 #include <htc.h>
 #include "Type_define.h"
 #include "time.h"
 /**/
-//msウェイト関数
+
+static UINT timer_counter_only_getChar = 0;
+
+//wait [ms] function
 void delay_ms(UWORD msec)
 {
 	while(msec)
@@ -14,7 +17,7 @@ void delay_ms(UWORD msec)
 	}	
 }
 
-//usウェイト関数
+//wait [us] function
 void delay_us(UWORD usec)
 {
 	while(usec)
@@ -24,3 +27,27 @@ void delay_us(UWORD usec)
 	}	
 }
 
+//wait [s] function
+void delay_s(UWORD sec)
+{
+	while(sec)
+	{
+		__delay_s(1);
+		sec--;
+	}	
+}
+
+UWORD calTime2Byte(UBYTE timeHigh, UBYTE timeLow){
+    UWORD timeBin = 0;     
+    timeBin = (UWORD)((timeHigh<<8) | timeLow);
+    return timeBin;
+}
+
+//timer counter only getChar
+void set_timer_counter_only_getChar(UINT time){
+    timer_counter_only_getChar = time;
+}
+
+UINT get_timer_counter_only_getChar(void){
+    return timer_counter_only_getChar;
+}

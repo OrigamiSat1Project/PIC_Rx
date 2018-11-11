@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/0530_system_integrationTX_RX_16F886_9.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=0530_system_integrationTX_RX_16F886_9.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=0530systemintegrationtxrx16f8869/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/PIC_Tx.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=PIC_Tx.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=pictx/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/0530systemintegrationtxrx16f8869/bin
+makeDirectory ${TMPDIR}/pictx/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/0530systemintegrationtxrx16f8869.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/pictx.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/0530systemintegrationtxrx16f8869.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/pictx.tar *
 checkReturnCode
 
 # Cleanup

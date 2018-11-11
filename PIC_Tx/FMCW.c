@@ -1,353 +1,675 @@
 
 #include <xc.h>
-#include "fmcw.h"
-
-/* Do not change!! */
-#define FMTX_   1
-#define CWTX_   2
-#define FMRX_   3
-
+#include <stdio.h>
+#include "FMCW.h"
+#include "EEPROM.h"
+#include "pinDefine.h"
+#include "I2C.h"
+#include "CRC16.h"
+#include "encode_AX25.h"
+#include "MPU.h"
+#include "Type_define.h"
 #include "time.h"
+#include "OkError.h"
 
-/*
- * 【FMCW設定の初期化】
- *  FM受信，FM送信，CW送信それぞれを設定
- *  1. CLK端子（クロック），DAT端子（データ），STB端子（ストローブ）を出力として使用
- *  2. 全てのポートをLowにする
- */
-void Init_FMCW(void){
-    /* ポートをLowにする（初期化） */
-    FMRX_CLK = 0;
-    FMRX_DAT = 0;
-    FMRX_STB = 0;
-    FMTX_CLK = 0;
-    FMTX_DAT = 0;
-    FMTX_STB = 0;
-    FMTX_PTT = 0;
-    CWRX_CLK = 0;
-    CWTX_DAT = 0;
-    CWTX_STB = 0;
-    CWTX_KEY = 0;
-}
+/*******************************************************************************
+*Marco, Enum / Global data / Method 
+******************************************************************************/
+#define EEPROM_COMMAND_DATA_SIZE 32
+#define MAX_DOWNLINK_DATA_SIZE 32
+
+#define CWHIGH 1
+#define CWLOW 0
 
 
-/*
- * 【無線機に'Low'を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. DAT端子をLowにする
- *  3. CLK端子を0→1→0と変化させる 
- */
-void L_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
-    {
-        FMTX_DAT = 0;
-        _NOP();
-        FMTX_CLK = 1;
-        _NOP();
-        FMTX_CLK = 0;
-    }
-    if(fmcwtxrx == CWTX_)
-    {
-        CWTX_DAT = 0;
-        _NOP();
-        CWRX_CLK = 1;
-        _NOP();
-        CWRX_CLK = 0;
-    }
-    if(fmcwtxrx == FMRX_)
-    {
-        FMRX_DAT = 0;
-        _NOP();
-        FMRX_CLK = 1;
-        _NOP();
-        FMRX_CLK = 0;
-    }
-}
-
-
-/*
- * 【無線機に'High'を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. DAT端子をHighにする
- *  3. CLK端子を0→1→0と変化させる 
- */
-void H_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
-    {
-        FMTX_DAT = 1;
-        _NOP();
-        FMTX_CLK = 1;
-        _NOP();
-        FMTX_CLK = 0;
-    }
-    if(fmcwtxrx == CWTX_)
-    {
-        CWTX_DAT = 1;
-        _NOP();
-        CWRX_CLK = 1;
-        _NOP();
-        CWRX_CLK = 0;
-    }
-    if(fmcwtxrx == FMRX_)
-    {
-        FMRX_DAT = 1;
-        _NOP();
-        FMRX_CLK = 1;
-        _NOP();
-        FMRX_CLK = 0;
-    }
-}
-
-
-/*
- * 【無線機にSTB信号を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. STB端子を0→1→0と変化させる
- */
-void STBOUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
-    {
-        FMTX_STB = 1;
-        _NOP();
-        FMTX_STB = 0;
-    }
-    if(fmcwtxrx == CWTX_)
-    {
-        CWTX_STB = 1;
-        _NOP();
-        CWTX_STB = 0;
-    }
-    if(fmcwtxrx == FMRX_)
-    {
-        FMRX_STB = 1;
-        _NOP();
-        FMRX_STB = 0;
-    }
-}
-
-
-/*
- * 【無線機のプログラマブルカウンタを設定する】
- *  1. 引数から読み込んだプログラマブルカウンタを2進数に変換（配列として格納）
- *  2. 格納した2進数に合わせてHighかLowを無線機に送る（設定の肝）
- *  3. グループコードを送る'10'
- *  4. STB信号を送る
- */
-void OUTFQ(int fmcwtxrx, int *Nprg){
-    int count = 0;
-    int Nprg_b[17];
+/*******************************************************************************
+*Downlink Command
+******************************************************************************/
+void downlinkReceivedCommand(UBYTE B0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlkTimes){
+    UBYTE commandData[EEPROM_COMMAND_DATA_SIZE];
     
-    for(int i=0; i<17; i++){
-        Nprg_b[i] = 0;
-    }
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = (UBYTE)(EEPROM_address | B0Select);
+    subAddress = (UBYTE)(EEPROM_subaddress | B0Select);
+    ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
+
+    /*---read CRC check from EEPROM---*/
+    UBYTE CRC_check_result;
+    CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
     
-    //Nprg transforms decimal to binary
-    for(int i = 0; i < 17; i++){
-        for(int j = 0; j<5; j++){
-            if(Nprg[j] % 2 == 0) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 0;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                }
-            }
-            else if(Nprg[j] % 2 == 1) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 1;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg[j+1] = Nprg[j+1] + 10;
-                }
+    /*---CRC check for command from Grand Station---*/ 
+    /*------------------------------------------------------------------*/
+    if(crc16(0,commandData,29) == CRC_check(commandData,29)){
+        //5bit 0--->1
+        commandData[31] |= 0b00100000;
+    }else{
+        ReadDataFromEEPROM(subAddress,addressHigh,addressLow, commandData,EEPROM_COMMAND_DATA_SIZE);
+        if(crc16(0,commandData,29) == CRC_check(commandData,29)){
+            //5bit 0--->0 / 4bit 0--->1
+            commandData[31] &= 0b11011111;  
+            commandData[31] |= 0b00010000;
+        }else{
+            //5,4bit 0--->0
+            commandData[31] &= 0b11001111;
+        }
+    }   
+    
+    WriteCheckByteToEEPROMs(B0Select,addressHigh,addressLow, commandData[31]);
+    __delay_us(200);
+    FMPTT = 1;
+    for(UBYTE sendCounter = 0; sendCounter < downlinlkTimes; sendCounter++){
+        SendPacket(commandData);
+        // SendPacketWithDataSize(commandData,EEPROM_COMMAND_DATA_SIZE);
+        __delay_ms(300);
+    }
+    FMPTT = 0;
+        
+    /*-------------------------------------------------*/
+    if(commandData[0]=='T'){                //command target = PIC_TX
+        //Task target
+        if(commandData[2] == 't'){          //task target =  PIC_TX
+        // Command type
+            switch(commandData[3]){         //Process command type
+                case 'm':/*get satellite mode*/
+                    downlinkFMSignal(satelliteMode_EEPROMAndB0Select, satelliteMode_addressHigh, satelliteMode_addressLow, commandData[4], satelliteMode_DataSize);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                case 'C':/*downlink CW Signal*/
+                    commandSwitchCWDownlink(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8], commandData[9], commandData[10]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'f':/*downlink FM Signal*/
+                    downlinkFMSignal(commandData[4],commandData[5],commandData[6],commandData[7],commandData[8]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;           
+                case 'p': /*power supply*/
+                    commandSwitchPowerSupply(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'n': /*radio unit*/
+    //                commandSwitchFMCW(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'i':/*I2C*/
+                    //commandSwitchI2C(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'u':/*UART*/
+                    commandSwitchUART(commandData[4], commandData[5], commandData[6], commandData[7], commandData[8], commandData[9]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'w':/*WDT (watch dog timer)*/
+    //                commandWDT(commandData[4], commandData[5], commandData[6]);             
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 'h':/*update HK data (BAT_POS V) (HK = house keeping)*/
+                    //TODO: write function directly here or in MPU.c
+//                   commandSwitchHKdata(commandData[4], commandData[5], commandData[6], commandData[7]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                case 't':/*internal processing*/
+    //                commandSwitchIntProcess(commandData[4], commandData[5], commandData[6]);
+                    WriteLastCommandIdToEEPROM(commandData[1]);
+                    break;
+                default:
+                    switchError(error_FMCW_downlinkReceivedCommand);
+                    break;
             }
         }
+        
     }
-    
-    //Send Nprg data(binay) to communication module
-    for (int i=0; i<17; i++)
-    {
-        if(Nprg_b[i] == 0)
-        {
-            L_OUT(fmcwtxrx);
-        }
-        if(Nprg_b[i] == 1)
-        {
-            H_OUT(fmcwtxrx);
-        }
-    }
-    
-    //GroupCode'10' is TX.DEV(?)
-    H_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
-    
-    //STB Signal
-    STBOUT(fmcwtxrx);
 }
 
-
+/*******************************************************************************
+*Function : FM and CW downkink 
+******************************************************************************/
 /*
- * 【無線機のリファレンスカウンタを設定する】
- *  1. 引数から読み込んだリファレンスカウンタを2進数に変換（配列として格納）
- *  2. 格納した2進数に合わせてHighかLowを無線機に送る（設定の肝）
- *  3. グループコードを送る'11'
- *  4. STB信号を送る
- */
-void RFDOUT(int fmcwtxrx, int Nref){
-    int Nref_b[12];
-    
-    for(int i=0; i<12; i++){
-        Nref_b[i] = 0;
-    }
-    
-    //Nref transforms decimal to binary
-    for(int i=0; Nref>0; i++){
-        Nref_b[i] = Nref % 2;
-        Nref = Nref / 2;
-    }
-    
-    //Send Nref data(binay) to communication module
-    for (int i=0; i<12; i++)
-    {
-        if(Nref_b[i] == 0)
-        {
-            L_OUT(fmcwtxrx);
-        }
-        if(Nref_b[i] == 1)
-        {
-            H_OUT(fmcwtxrx);
-        }
-    }
-    
-    //GroupCode'11' is REF.DEV
-    H_OUT(fmcwtxrx);
-    H_OUT(fmcwtxrx);
-    
-    //STB Signal
-    STBOUT(fmcwtxrx);
-}
-
-
-/*
- * 【無線機のオプションレジスタを設定する（共通PLL設定）】
- *  1. (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1)を送る
- *  2. グループコードを送る'00'
- *  3. STB信号を送る
- */
-void OPINIT(int fmcwtxrx){
-    //Send PLL Common DataSet to communiction module
-    L_OUT(fmcwtxrx);//T1
-    L_OUT(fmcwtxrx);//T2
-    L_OUT(fmcwtxrx);//T3
-    H_OUT(fmcwtxrx);//CpT1
-    H_OUT(fmcwtxrx);//CpT2
-    L_OUT(fmcwtxrx);//Cpr1
-    L_OUT(fmcwtxrx);//Cpr2
-    L_OUT(fmcwtxrx);//LD1
-    L_OUT(fmcwtxrx);//LD2
-    L_OUT(fmcwtxrx);//Tx
-    H_OUT(fmcwtxrx);//Rx
-    
-    //GroupCode'00' is option reg.
-    L_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
-    
-    //STB Signal
-    STBOUT(fmcwtxrx);
-}
-
-
-/*
- * 【FMTXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
- */
-void FMTX(int Nref, int *Nprg){
-    int fmtx = FMTX_;
-    OPINIT(fmtx);
-    RFDOUT(fmtx, Nref);
-    OUTFQ(fmtx, Nprg);
-}
-
-
-/*
- * 【CWTXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
- */
-void CWTX(int Nref, int *Nprg){
-    int cwtx = CWTX_;
-    OPINIT(cwtx);
-    RFDOUT(cwtx, Nref);
-    OUTFQ(cwtx, Nprg);
-}
-
-
-/*
- * 【FMRXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
- */
-void FMRX(int Nref, int *Nprg){
-    int fmrx = FMRX_;
-    OPINIT(fmrx);
-    RFDOUT(fmrx, Nref);
-    OUTFQ(fmrx, Nprg);
-}
-
-
-/*
- * 【PLL設定を行う】
- */
-void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
-}
-
-
-
-/*
- * 【モールス信号の'V'を送る】
- *  1. CWKEY端子を0→1→0と変化させる
- *  2. ※1.を計３回行う
- */
-void Morse_V(void){
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(150);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-}
-
-
-/*
- * 【何も処理を行わない（待機）】
- *  5処理分待機する
+ *  Do not process anything (standby)
+ *  Wait 5 processing
  */
 void _NOP(void) {
-    for(int i=0; i<5; i++){
+    for(UBYTE i=0; i<5; i++){
         NOP();
     }
 }
+
+/*******************************************************************************
+*FM
+******************************************************************************/
+void downlinkFMSignal(UBYTE EEPROMAndB0Select, UBYTE addressHigh, UBYTE addressLow, UBYTE downlinlTimes,UBYTE DataSize){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = (UBYTE)(EEPROM_address | EEPROMAndB0Select);
+    subAddress = (UBYTE)(EEPROM_subaddress | EEPROMAndB0Select);
+
+    UBYTE readData[];
+    ReadDataFromEEPROM(mainAddress,addressHigh,addressLow, readData,DataSize);
+    
+    //TODO:eror->read sub EEPROM
+//    ReadDataFromEEPROM(subAddress,addressHigh,addressLow, readData,DataSize);
+
+    FMPTT = 1;
+    __delay_ms(100);//TODO check time
+    for(UBYTE sendCounter = 0; sendCounter < downlinlTimes; sendCounter++){
+        SendPacket(readData);
+//         SendPacketWithDataSize(readData,DataSize);
+        __delay_ms(300);
+    }
+    FMPTT = 0;
+}
+
+/*******************************************************************************
+*CW swtich
+******************************************************************************/
+void commandSwitchCWDownlink(UBYTE type_select, UBYTE Address7bit, UBYTE high_address_forData, UBYTE low_address_forData, UBYTE downlink_times, UBYTE EEPROMDataLength_or_high_address_forDataSize, UBYTE low_address_forDataSize){
+    UBYTE read_data_forCW[];
+    switch(type_select){
+        case 's':   //start CW downlink
+            CWdownlinkStart();
+            switchOk(ok_FMCW_commandSwitchCWDownlink_Start);
+            break;
+        case 0xaa:  //the size of data is specified by the command
+            ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, downlink_times);
+            switchOk(ok_FMCW_commandSwitchCWDownlink_aa);
+            break;
+        case 0xbb:  //the size of data is written in EEPROM
+            GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(Address7bit, high_address_forData, low_address_forData, read_data_forCW, EEPROMDataLength_or_high_address_forDataSize, low_address_forDataSize, downlink_times);
+            switchOk(ok_FMCW_commandSwitchCWDownlink_bb);
+            break;
+        default:
+            switchError(error_FMCW_commandSwitchCWDownlink);
+            break;
+
+    }
+}
+
+
+/*******************************************************************************
+/**Function : CW downlink
+ * tu = 3ton
+ * [ton] CWKEY = 1; -> SHORT_DELAYTIMES_FOR_MORSE -> CWKEY = 0; -> SHORT_DELAYTIMES_FOR_MORSE
+ * [tu ] CWKEY = 1; -> MIDDLE_DELAYTIMES_FOR_MORSE -> CWKEY = 0; -> SHORT_DELAYTIMES_FOR_MORSE
+ * [Interval between ton-tu / ton-ton / tu-tu] SHORT_DELAYTIMES_FOR_MORSE (=1ton)
+ * [Interval between moji]                     MIDDLE_DELAYTIMES_FOR_MORSE (=3ton)
+ * [Interval between tango]                    LONG_DELAYTIMES_FOR_MORSE (=7ton)
+******************************************************************************/
+/*
+ *  send morse 'V' for test
+ *  arg     : void
+ *  return  : send morse singnal 'V' (ton-ton-ton-tu)
+ */
+// void Morse_V(void){
+//     CWKEY = CWHIGH;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+// }
+
+/*
+ *  send morse 'Y' for test
+ *  arg     : void
+ *  return  : send morse singnal 'Y' (tu-ton-tu-tu)
+ */
+// void Morse_Y(void){
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+// }
+
+/*
+ *  send morse 'J' for test
+ *  arg     : void
+ *  return  : send morse singnal 'J' (ton-tu-tu-tu)
+ */
+// void Morse_J(void){
+//     CWKEY = CWHIGH;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+
+//     CWKEY = CWHIGH;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+//     CWKEY = CWLOW;
+//     __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE); 
+// }
+
+
+/*
+ *  translate char to morse signal
+ *  arg     : char
+ *  return  : bin (morse)
+ *            ton -> 1 / tu ->111 / delay -> 0
+ *  TODO    : need debug
+ */
+long changeCharMorse (char _c){
+    switch(_c){
+        case '0': return 0b1110111011101110111;
+        case '1': return 0b11101110111011101;
+        case '2': return 0b111011101110101;
+        case '3': return 0b1110111010101;
+        case '4': return 0b11101010101;
+        case '5': return 0b101010101;
+        case '6': return 0b10101010111;
+        case '7': return 0b1010101110111;
+        case '8': return 0b101011101110111;
+        case '9': return 0b10111011101110111;
+        case 'a':
+        case 'A': return 0b11101;
+        case 'b':
+        case 'B': return 0b101010111;
+        case 'c':
+        case 'C': return 0b10111010111;
+        case 'd':
+        case 'D': return 0b1010111;
+        case 'e':
+        case 'E': return 0b1;
+        case 'f':
+        case 'F': return 0b101110101;
+        case 'g':
+        case 'G': return 0b101110111;
+        case 'h':
+        case 'H': return 0b1010101;
+        case 'i':
+        case 'I': return 0b101;
+        case 'j':
+        case 'J': return 0b1110111011101;
+        case 'k':
+        case 'K': return 0b111010111;
+        case 'l':
+        case 'L': return 0b101011101;
+        case 'm':
+        case 'M': return 0b1110111;
+        case 'n':
+        case 'N': return 0b10111;
+        case 'o':
+        case 'O': return 0b11101110111;
+        case 'p':
+        case 'P': return 0b10111011101;
+        case 'q':
+        case 'Q': return 0b1110101110111;
+        case 'r':
+        case 'R': return 0b1011101;
+        case 's':
+        case 'S': return 0b10101;
+        case 't':
+        case 'T': return 0b111;
+        case 'u':
+        case 'U': return 0b1110101;
+        case 'v':
+        case 'V': return 0b111010101;
+        case 'w':
+        case 'W': return 0b111011101;
+        case 'x':
+        case 'X': return 0b11101010111;
+        case 'y':
+        case 'Y': return 0b1110111010111;
+        case 'z':
+        case 'Z': return 0b10101110111;
+        default : return 0;
+    }
+}
+
+/*
+ *  translate binary to char
+ *  arg     : UBYTE
+ *  return  : char
+ *  TODO    : need debug
+ */
+char changeBinaryToChar(UBYTE _binary){
+    switch(_binary){
+        case 0x00 : return '0';
+        case 0x01 : return '1';
+        case 0x02 : return '2';
+        case 0x03 : return '3';
+        case 0x04 : return '4';
+        case 0x05 : return '5';
+        case 0x06 : return '6';
+        case 0x07 : return '7';
+        case 0x08 : return '8';
+        case 0x09 : return '9';
+        case 0x0A : return 'A';
+        case 0x0B : return 'B';
+        case 0x0C : return 'C';
+        case 0x0D : return 'D';
+        case 0x0E : return 'E';
+        case 0x0F : return 'F';
+        default   : return 'X'; //TODO:change 'X' to error messege    
+    }
+}
+
+/*
+ *  DevideDataAndChangeBinaryToChar 
+ *  1. devide data (high/low) 
+ *  2. translate binary to char
+ *  arg     : binary
+ *  return  : char 
+ *  TODO    : need debug
+ */
+void DevideDataAndChangeBinaryToChar (UBYTE binary_data, UBYTE *char_data_highLow){
+    UBYTE binary_data_high;
+    UBYTE binary_data_low;
+
+    putChar(0xFA);
+    binary_data_high = (UBYTE)(binary_data >> 4);    //7654bit
+    binary_data_low  = (UBYTE)(binary_data & 0x0F);  //3210bit
+    putChar(binary_data_high);
+    putChar(binary_data_low);
+    
+    char_data_highLow[0] = (changeBinaryToChar (binary_data_high));
+    char_data_highLow[1] = (changeBinaryToChar (binary_data_low));
+    putChar(0x00);
+    putChar(char_data_highLow[0]);
+    putChar(char_data_highLow[1]);
+}
+
+void sendMorse(char *HK_Data,size_t data_size){
+    for (UINT i = 0;i<data_size;i++){
+        long mo = changeCharMorse(HK_Data[i]);
+        for (int n=0;n<19;n++){
+            if(mo==0){
+                break;
+            } else if((mo&1)==1){
+                CWKEY = CWHIGH;
+                __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+            } else {
+                CWKEY = CWLOW;
+                __delay_us(SHORT_DELAYTIMES_FOR_MORSE);
+            }
+            mo=mo>>1;
+        }
+        CWKEY = CWLOW;
+        __delay_us(MIDDLE_DELAYTIMES_FOR_MORSE);
+    }
+}
+
+
+
+/*
+ *  ReadOneByteDataFromEEPROMandSendMorse 
+ *  1. read only 1byte data from EEPROM
+ *  2. send a data by morse signal
+ *  arg     : UBYTE
+ *  return  : N/A
+ *  TODO    : need debug
+ */
+void ReadOneByteDataFromEEPROMandSendMorse(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
+    UBYTE read_data;
+    UBYTE char_data_highLow[2];
+    read_data = ReadEEPROM(Address7Bytes, high_address, low_address); 
+    DevideDataAndChangeBinaryToChar (read_data, char_data_highLow);
+    sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+}
+
+/*
+ *  ReadDatasFromEEPROMWithDataSizeAndSendMorse
+ *  1. read one or more data from EEPROM
+ *  2. send data by morse signal
+ *  arg     : UBYTE
+ *  return  : N/A
+ *  TODO    : need debug
+ */
+void ReadDatasFromEEPROMWithDataSizeAndSendMorse(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address, UBYTE *ReadData, UINT EEPROMDataLength){
+    UBYTE char_data_highLow[2];
+    UBYTE send_data[];
+    ReadDataFromEEPROM(Address7Bytes, high_address, low_address, ReadData, EEPROMDataLength); 
+//    putChar('1');
+//    putChar('1');
+//    putChar('1');
+//    for(int i=0;i<3;i++){
+//        putChar(ReadData[i]);
+//    }
+//    putChar('1');
+//    putChar('1');
+//    putChar('1');
+  
+    for(UBYTE i=0; i<EEPROMDataLength; i++){
+//        putChar(i);
+//        putChar(i);
+//        putChar(i);
+//        putChar(i);
+        DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
+        sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+        delay_us(ADD_BLANK_FOR_MORSE);
+    }
+}
+
+/*
+ *  ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+ *  1. read one or more data from EEPROM
+ *  2. send data by morse signal
+ *  3. repeat step2 DownlinkTimes
+ *  arg     : UBYTE
+ *  return  : N/A
+ *  TODO    : need debug
+ */
+void ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address, UBYTE *ReadData, UINT EEPROMDataLength, UBYTE downlink_times){
+    UBYTE char_data_highLow[2];
+    UBYTE send_data[];
+    ReadDataFromEEPROM(Address7Bytes, high_address, low_address, ReadData, EEPROMDataLength); 
+    
+    for(UBYTE downlink_counter =0; downlink_counter<downlink_times; downlink_counter++){
+        for(UBYTE i=0; i<EEPROMDataLength; i++){
+            DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
+            sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+            delay_us(ADD_BLANK_FOR_MORSE);
+        }
+    }
+}
+
+void GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address, UBYTE *ReadData, UINT high_address_forDataSize, UBYTE low_address_forDataSize, UBYTE downlink_times){
+    UBYTE char_data_highLow[2];
+    UBYTE send_data[];
+    UBYTE EEPROMDataLength;
+    EEPROMDataLength = ReadEEPROM(Address7Bytes,high_address_forDataSize,low_address_forDataSize);
+    ReadDataFromEEPROM(Address7Bytes, high_address, low_address, ReadData, EEPROMDataLength); 
+    
+    for(UBYTE downlink_counter =0; downlink_counter<downlink_times; downlink_counter++){
+        for(UBYTE i=0; i<EEPROMDataLength; i++){
+            DevideDataAndChangeBinaryToChar (ReadData[i], char_data_highLow);
+            sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0]));
+            delay_us(ADD_BLANK_FOR_MORSE);
+        }
+    }
+}
+
+/*******************************************************************************
+/**Main : HK downlink
+ * ---
+ * FR0  :  satellite MYCALL('JS1YAX') + satellite name('origami') 
+ * FR1  :  HK Data
+ * FR2  :  Free Data which can be selected by Command from GSC 
+ * ---
+ * interval between frames is 10 seconds (normalmode)
+******************************************************************************/
+void HKDownlink(void){      
+    HKDownlinkFR0();
+    // delay_s(10);
+    HKDownlinkFR1();
+    // delay_s(10);
+    HKDownlinkFR2();
+    // delay_s(10);          
+}
+
+/*******************************************************************************
+Frame
+******************************************************************************/
+void HKDownlinkFR0(void){
+    UBYTE MYCALL[6] = {'J', 'S', '1', 'Y','A','X'};
+    sendMorse(MYCALL,sizeof(MYCALL)/sizeof(MYCALL[0]));
+    UBYTE SatName[7] = {'o', 'r', 'i', 'g', 'a','m','i'};
+    sendMorse(SatName,sizeof(SatName)/sizeof(SatName[0]));
+}
+
+void HKDownlinkFR1(void){
+    UBYTE DATA[];//for ReadDatasFromEEPROMWithDataSizeAndSendMorse()
+    //Sattellite Mode
+    
+    //battery Temperature
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,adcValue_CH1_addressHigh,adcValue_CH1_addressLow);
+    //latest execution command ID(RX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_RXCOBCLastCommandID,LowAddress_for_RXCOBCLastCommandID);
+    //command error status(RX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RXCOBC_CommandErrorStatus_addressHigh,RXCOBC_CommandErrorStatus_addressLow);
+    //latest execution command ID(TX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,HighAddress_for_TXCOBCLastCommandID,LowAddress_for_TXCOBCLastCommandID);
+    //command error status(TX)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TXCOBC_CommandErrorStatus_addressHigh,TXCOBC_CommandErrorStatus_addressLow);
+    //battery Voltage (CIB)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageCIB_addressHigh,BatteryVoltageCIB_addressLow);
+    //5VBus Voltage 
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH2_addressHigh,adcValue_CH2_addressLow,DATA,2);
+    
+    //3V3Bus Voltage 
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,adcValue_CH3_addressHigh,adcValue_CH3_addressLow,DATA,2);
+    //battery Voltage (OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,BatteryVoltageOBC_addressHigh,BatteryVoltageOBC_addressLow);
+    //latest execution command ID (OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,LatestExcutionCommandID_addressHigh,LatestExcutionCommandID_addressLow);
+    //command error status(OBC)
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,OBC_CommandErrorStatus_addressHigh,OBC_CommandErrorStatus_addressLow);
+    //Battery Current
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,BatteryCurrent_addressHigh,BatteryCurrent_addressLow,DATA,2);
+    //EPS switch status
+    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address,EpsSwitchStatus_addressHigh,EpsSwitchStatus_addressLow,DATA,2);
+    //TX temperature
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,TxTemperature_addressHigh,TxTemperature_addressLow);
+    //RX temperature
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,RxTemperature_addressHigh,RxTemperature_addressLow);
+}
+
+void HKDownlinkFR2(void){
+    UBYTE DATA[];
+    UBYTE EEPROMDataLength = 1;
+    ReadDataFromEEPROM(EEPROM_address, FreeData1Highaddress_addressHigh, FreeData1Highaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData1_addressHigh = DATA;
+    ReadDataFromEEPROM(EEPROM_address, FreeData1Lowaddress_addressHigh, FreeData1Lowaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData1_addressLow = DATA;
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,ReadData1_addressHigh,ReadData1_addressLow);
+    
+    ReadDataFromEEPROM(EEPROM_address, FreeData2Highaddress_addressHigh, FreeData2Highaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData2_addressHigh = DATA;
+    ReadDataFromEEPROM(EEPROM_address, FreeData2Lowaddress_addressHigh, FreeData2Lowaddress_addressLow, DATA, EEPROMDataLength); 
+    UBYTE ReadData2_addressLow = DATA;
+    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address,ReadData2_addressHigh,ReadData2_addressLow);
+}
+
+void CWdownlinkStart(void){
+    //TODO:
+}
+
+/*******************************************************************************
+for debug
+******************************************************************************/
+// void testForCwFunctions(void){
+     
+//     FMPTT = 0; 
+//     CWKEY = 1;
+
+//    //debug:send morse 'V'->'Y'->'J' 3 times
+//     for(UBYTE i=0; i<3; i++){
+//         Morse_V();
+//         __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//         Morse_Y();
+//         __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//         Morse_J();
+//         __delay_us(LONG_DELAYTIMES_FOR_MORSE);
+//         delay_us(ADD_BLANK_FOR_MORSE);
+//     }
+       
+//    //debug send morse char
+//    UBYTE test_morse[4];
+//    test_morse[0] = 'O';
+//    test_morse[1] = 'r';
+//    test_morse[2] = 'i';
+//    test_morse[3] = '1';
+//    sendMorse(test_morse,sizeof(test_morse)/sizeof(test_morse[0]));
+        
+//     //debug:translate binary to char
+//     UBYTE _binary;
+//     _binary = 0x05;
+//     putChar(changeBinaryToChar(_binary));
+//     _binary = 0xFF;
+//     putChar(changeBinaryToChar(_binary));  //for check to defalt / X -> success
+//     __delay_ms(1000);
+
+//     //debug:DevideDataAndChangeBinaryToChar
+//     UBYTE binary_data = 0xF3;
+//     UBYTE char_data_highLow[2]; 
+//     DevideDataAndChangeBinaryToChar (binary_data, char_data_highLow);
+//     putChar(char_data_highLow[0]);  //'5'->success
+//     putChar(char_data_highLow[1]);  //'A'->success
+//     //    __delay_ms(1000);
+
+//    //debug:send morse
+//    for(UBYTE i=0; i<5; i++){
+//        sendMorse(char_data_highLow,sizeof(char_data_highLow)/sizeof(char_data_highLow[0])); //morse signal '5'->delay(150ms)->'A'->success
+//        delay_us(ADD_BLANK_FOR_MORSE);
+//    } 
+
+//    //debug:send ReadOneByteDataFromEEPROMandSendMorse
+//    UBYTE TEST_DATA[3] = {'T', 0x5F, 0b10100111};  //'T'=0x54 / 0b10100111 = 0xA7
+//    WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+//    ReadOneByteDataFromEEPROMandSendMorse(EEPROM_address, whigh_address, wlow_address); //morse signal 'T'->success
+//    delay_us(ADD_BLANK_FOR_MORSE);
+        
+//    //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorse
+//    UBYTE ReadData[];
+//    ReadDatasFromEEPROMWithDataSizeAndSendMorse(EEPROM_address, whigh_address, wlow_address, ReadData, 3); //morse signal 'T'-> 0x5F -> 0b10100111 -> success
+    
+//    //debug:ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+//    ReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, 3, 5); //morse signal 'T'-> 0x5F -> 0b10100111 -> 5times->success
+     
+//     //debug:GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes
+//     UBYTE size_high_address = 0x00;
+//     UBYTE size_low_address = 0x1F;
+//     UBYTE TEST_DATA[3] = {0xa2, 0xb1, 0xab};
+//     UBYTE ReadData[];
+//     UBYTE Size_DATA = 3;
+//     WriteToEEPROM(EEPROM_address, whigh_address, wlow_address, TEST_DATA);
+//     WriteOneByteToEEPROM(EEPROM_address, size_high_address, size_low_address, Size_DATA);
+//     GetDatasizeAndReadDatasFromEEPROMWithDataSizeAndSendMorseWithDownlinkTimes(EEPROM_address, whigh_address, wlow_address, ReadData, size_high_address, size_low_address, 5);
+        
+//     //FIXME:[finish]debug for downlink CW signal
+//     /*---------------------------------------------------------------*/
+//  }
