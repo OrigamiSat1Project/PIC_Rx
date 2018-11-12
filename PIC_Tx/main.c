@@ -89,7 +89,7 @@ void main(void) {
     InitI2CMaster(I2Cbps);
     Init_SERIAL();     
 //    Init_WDT();    
-    sendPulseWDT();
+//    sendPulseWDT();
     delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC and start CW downlink
     putChar('S');
 
@@ -106,10 +106,11 @@ void main(void) {
         __delay_ms(5000);
          
         measureDcDcTemperature();
-        if(OBC_STATUS == low){          
-            measureChannel2();//read 5V Bus
-        }else{     
-        }         
+        if(read5VBusAndSwitchNtrxPower() != 0){
+            if(read5VBusAndSwitchNtrxPower() != 0){
+                onOffNTRX(0x01,0,0);//subPower ON
+            }
+        }  
         //TODO debug send HK 
         HKDownlink();
        
