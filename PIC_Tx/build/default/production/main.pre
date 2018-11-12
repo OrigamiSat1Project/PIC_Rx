@@ -4441,19 +4441,32 @@ sendPulseWDT();
 delay_s(2);
 putChar('S');
 
-# 116
+# 100
 while(1){
 
 putChar('m');
 delay_ms(3000);
 
-# 188
+sendPulseWDT();
+_delay((unsigned long)((5000)*(10000000/4000.0)));
+
+measureDcDcTemperature();
+if(RC2 == 0){
+measureChannel2();
+}else{
+}
+
+HKDownlink();
+
+
+
+
 if(ReceiveFlag == 0x02){
 
-# 200
+# 131
 UBYTE commandID;
 
-# 206
+# 137
 switch(RXDATA[1]){
 
 

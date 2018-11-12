@@ -31,7 +31,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _delay_s `(v ~T0 @X0 0 ef1`us ]
 "30
 [v _delay_ms `(v ~T0 @X0 0 ef1`us ]
-"29 FMCW.h
+"14 ADC.h
+[v _measureDcDcTemperature `(v ~T0 @X0 0 ef ]
+"3760 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic16f886.h
+[v _RC2 `Vb ~T0 @X0 0 e@58 ]
+"15 ADC.h
+[v _measureChannel2 `(v ~T0 @X0 0 ef ]
+"38 FMCW.h
+[v _HKDownlink `(v ~T0 @X0 0 ef ]
+"29
 [v _downlinkReceivedCommand `(v ~T0 @X0 0 ef4`uc`uc`uc`uc ]
 "45
 [v _commandSwitchCWDownlink `(v ~T0 @X0 0 ef7`uc`uc`uc`uc`uc`uc`uc ]
@@ -39,8 +47,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _downlinkFMSignal `(v ~T0 @X0 0 ef5`uc`uc`uc`uc`uc ]
 "35 MPU.h
 [v _commandSwitchPowerSupply `(v ~T0 @X0 0 ef5`uc`uc`uc`uc`uc ]
-"14 ADC.h
-[v _measureDcDcTemperature `(v ~T0 @X0 0 ef ]
 "26 UART.h
 [v _sendCommand `(v ~T0 @X0 0 ef8`uc`uc`uc`uc`uc`uc`uc`uc ]
 "31
@@ -3303,154 +3309,183 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 94: putChar('S');
 "94
 [e ( _putChar (1 -> -> 83 `ui `uc ]
-[; ;main.c: 116: while(1){
-"116
+[; ;main.c: 100: while(1){
+"100
 [e :U 291 ]
 {
-[; ;main.c: 118: putChar('m');
-"118
+[; ;main.c: 102: putChar('m');
+"102
 [e ( _putChar (1 -> -> 109 `ui `uc ]
-[; ;main.c: 119: delay_ms(3000);
-"119
+[; ;main.c: 103: delay_ms(3000);
+"103
 [e ( _delay_ms (1 -> -> 3000 `i `us ]
-[; ;main.c: 188: if(ReceiveFlag == 0x02){
-"188
-[e $ ! == -> _ReceiveFlag `i -> 2 `i 293  ]
-{
-"200
-[v _commandID `uc ~T0 @X0 1 a ]
-[; ;main.c: 200: UBYTE commandID;
-[; ;main.c: 206: switch(RXDATA[1]){
-"206
-[e $U 295  ]
-{
-[; ;main.c: 209: case 0x75:
-"209
-[e :U 296 ]
-[; ;main.c: 210: putChar('R');
-"210
-[e ( _putChar (1 -> -> 82 `ui `uc ]
-[; ;main.c: 211: putChar(0xa4);
-"211
-[e ( _putChar (1 -> -> 164 `i `uc ]
-[; ;main.c: 212: downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-"212
-[e ( _downlinkReceivedCommand (4 , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 213: break;
-"213
-[e $U 294  ]
-[; ;main.c: 216: case 0x63:
-"216
-[e :U 297 ]
-[; ;main.c: 217: putChar(0xa5);
-"217
-[e ( _putChar (1 -> -> 165 `i `uc ]
-[; ;main.c: 218: commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
-"218
-[e ( _commandSwitchCWDownlink (4 , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 8 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 219: break;
-"219
-[e $U 294  ]
-[; ;main.c: 220: case 0x66:
-"220
-[e :U 298 ]
-[; ;main.c: 221: putChar(0xa6);
-"221
-[e ( _putChar (1 -> -> 166 `i `uc ]
-[; ;main.c: 222: downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-"222
-[e ( _downlinkFMSignal (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 223: break;
-"223
-[e $U 294  ]
-[; ;main.c: 224: case 'p':
-"224
-[e :U 299 ]
-[; ;main.c: 225: putChar(0xa7);
-"225
-[e ( _putChar (1 -> -> 167 `i `uc ]
-[; ;main.c: 226: commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-"226
-[e ( _commandSwitchPowerSupply (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
-[; ;main.c: 227: break;
-"227
-[e $U 294  ]
-[; ;main.c: 228: case 0x68:
-"228
-[e :U 300 ]
-[; ;main.c: 229: measureDcDcTemperature();
-"229
+[; ;main.c: 105: sendPulseWDT();
+"105
+[e ( _sendPulseWDT ..  ]
+[; ;main.c: 106: _delay((unsigned long)((5000)*(10000000/4000.0)));
+"106
+[e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;main.c: 108: measureDcDcTemperature();
+"108
 [e ( _measureDcDcTemperature ..  ]
-[; ;main.c: 230: break;
-"230
-[e $U 294  ]
-[; ;main.c: 231: case 0x72:
-"231
-[e :U 301 ]
-[; ;main.c: 232: sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
-"232
-[e ( _sendCommand (4 , , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux -> -> 0 `i `uc -> -> 0 `i `uc ]
-[; ;main.c: 233: break;
-"233
-[e $U 294  ]
-[; ;main.c: 236: case 0x80:
-"236
-[e :U 302 ]
-[; ;main.c: 237: putChar(0x80);
-"237
-[e ( _putChar (1 -> -> 128 `i `uc ]
-[; ;main.c: 238: put_ok();
-"238
-[e ( _put_ok ..  ]
-[; ;main.c: 239: break;
-"239
-[e $U 294  ]
-[; ;main.c: 240: default:
-"240
-[e :U 303 ]
-[; ;main.c: 242: put_error();
-"242
-[e ( _put_error ..  ]
-[; ;main.c: 243: break;
-"243
-[e $U 294  ]
-"244
+[; ;main.c: 109: if(RC2 == 0){
+"109
+[e $ ! == -> _RC2 `i -> 0 `i 293  ]
+{
+[; ;main.c: 110: measureChannel2();
+"110
+[e ( _measureChannel2 ..  ]
+"111
 }
-[; ;main.c: 244: }
+[; ;main.c: 111: }else{
 [e $U 294  ]
-"206
-[e :U 295 ]
-[e [\ *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux , $ -> -> 117 `i `uc 296
- , $ -> -> 99 `i `uc 297
- , $ -> -> 102 `i `uc 298
- , $ -> -> 112 `ui `uc 299
- , $ -> -> 104 `i `uc 300
- , $ -> -> 114 `i `uc 301
- , $ -> -> 128 `i `uc 302
- 303 ]
-"244
-[e :U 294 ]
-[; ;main.c: 245: WriteLastCommandIdToEEPROM(commandID);
-"245
-[e ( _WriteLastCommandIdToEEPROM (1 _commandID ]
-[; ;main.c: 246: ReceiveFlag = 0x00;
-"246
-[e = _ReceiveFlag -> -> 0 `i `uc ]
-[; ;main.c: 247: putChar(0x39);
-"247
-[e ( _putChar (1 -> -> 57 `i `uc ]
-"248
-}
 [e :U 293 ]
-"253
+{
+"112
+}
+[e :U 294 ]
+[; ;main.c: 112: }
+[; ;main.c: 114: HKDownlink();
+"114
+[e ( _HKDownlink ..  ]
+[; ;main.c: 119: if(ReceiveFlag == 0x02){
+"119
+[e $ ! == -> _ReceiveFlag `i -> 2 `i 295  ]
+{
+"131
+[v _commandID `uc ~T0 @X0 1 a ]
+[; ;main.c: 131: UBYTE commandID;
+[; ;main.c: 137: switch(RXDATA[1]){
+"137
+[e $U 297  ]
+{
+[; ;main.c: 140: case 0x75:
+"140
+[e :U 298 ]
+[; ;main.c: 141: putChar('R');
+"141
+[e ( _putChar (1 -> -> 82 `ui `uc ]
+[; ;main.c: 142: putChar(0xa4);
+"142
+[e ( _putChar (1 -> -> 164 `i `uc ]
+[; ;main.c: 143: downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
+"143
+[e ( _downlinkReceivedCommand (4 , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 144: break;
+"144
+[e $U 296  ]
+[; ;main.c: 147: case 0x63:
+"147
+[e :U 299 ]
+[; ;main.c: 148: putChar(0xa5);
+"148
+[e ( _putChar (1 -> -> 165 `i `uc ]
+[; ;main.c: 149: commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
+"149
+[e ( _commandSwitchCWDownlink (4 , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 8 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 150: break;
+"150
+[e $U 296  ]
+[; ;main.c: 151: case 0x66:
+"151
+[e :U 300 ]
+[; ;main.c: 152: putChar(0xa6);
+"152
+[e ( _putChar (1 -> -> 166 `i `uc ]
+[; ;main.c: 153: downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+"153
+[e ( _downlinkFMSignal (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 154: break;
+"154
+[e $U 296  ]
+[; ;main.c: 155: case 'p':
+"155
+[e :U 301 ]
+[; ;main.c: 156: putChar(0xa7);
+"156
+[e ( _putChar (1 -> -> 167 `i `uc ]
+[; ;main.c: 157: commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
+"157
+[e ( _commandSwitchPowerSupply (4 , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux ]
+[; ;main.c: 158: break;
+"158
+[e $U 296  ]
+[; ;main.c: 159: case 0x68:
+"159
+[e :U 302 ]
+[; ;main.c: 160: measureDcDcTemperature();
+"160
+[e ( _measureDcDcTemperature ..  ]
+[; ;main.c: 161: break;
+"161
+[e $U 296  ]
+[; ;main.c: 162: case 0x72:
+"162
+[e :U 303 ]
+[; ;main.c: 163: sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
+"163
+[e ( _sendCommand (4 , , , , , , , *U + &U _RXDATA * -> -> -> 2 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 3 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 4 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 5 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 6 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux *U + &U _RXDATA * -> -> -> 7 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux -> -> 0 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 164: break;
+"164
+[e $U 296  ]
+[; ;main.c: 167: case 0x80:
+"167
+[e :U 304 ]
+[; ;main.c: 168: putChar(0x80);
+"168
+[e ( _putChar (1 -> -> 128 `i `uc ]
+[; ;main.c: 169: put_ok();
+"169
+[e ( _put_ok ..  ]
+[; ;main.c: 170: break;
+"170
+[e $U 296  ]
+[; ;main.c: 171: default:
+"171
+[e :U 305 ]
+[; ;main.c: 173: put_error();
+"173
+[e ( _put_error ..  ]
+[; ;main.c: 174: break;
+"174
+[e $U 296  ]
+"175
+}
+[; ;main.c: 175: }
+[e $U 296  ]
+"137
+[e :U 297 ]
+[e [\ *U + &U _RXDATA * -> -> -> 1 `i `ui `ux -> -> # *U &U _RXDATA `ui `ux , $ -> -> 117 `i `uc 298
+ , $ -> -> 99 `i `uc 299
+ , $ -> -> 102 `i `uc 300
+ , $ -> -> 112 `ui `uc 301
+ , $ -> -> 104 `i `uc 302
+ , $ -> -> 114 `i `uc 303
+ , $ -> -> 128 `i `uc 304
+ 305 ]
+"175
+[e :U 296 ]
+[; ;main.c: 176: WriteLastCommandIdToEEPROM(commandID);
+"176
+[e ( _WriteLastCommandIdToEEPROM (1 _commandID ]
+[; ;main.c: 177: ReceiveFlag = 0x00;
+"177
+[e = _ReceiveFlag -> -> 0 `i `uc ]
+[; ;main.c: 178: putChar(0x39);
+"178
+[e ( _putChar (1 -> -> 57 `i `uc ]
+"179
+}
+[e :U 295 ]
+"184
 }
 [e :U 290 ]
-"116
+"100
 [e $U 291  ]
 [e :U 292 ]
-[; ;main.c: 248: }
-[; ;main.c: 253: }
-[; ;main.c: 254: }
-"254
+[; ;main.c: 179: }
+[; ;main.c: 184: }
+[; ;main.c: 185: }
+"185
 [e :UE 289 ]
 }

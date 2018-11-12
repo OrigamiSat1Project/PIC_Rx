@@ -96,92 +96,23 @@ void main(void) {
 
 //    delay_s(TURN_ON_WAIT_TIME);   //wait for PLL satting by RXCOBC
 //    delay_s(CW_START_WAIT_TIME);  //wait for 200sec --> start CW downlink
-    
-
-    //FIXME:write melting status for debug
-//    UBYTE main_test_melting_status = 0b00000011;
-//    UBYTE sub_test_melting_status = 0b01111111;
-//    WriteOneByteToEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow, main_test_melting_status);
-//    WriteOneByteToEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow, sub_test_melting_status);
-//    putChar(0xa1);
-////    
-//    UBYTE main_melting_status;
-//    UBYTE sub_melting_status;
-//    main_melting_status = ReadEEPROM(EEPROM_address, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//    sub_melting_status = ReadEEPROM(EEPROM_subaddress, MeltingStatus_addressHigh, MeltingStatus_addressLow);
-//    putChar(0xa2);
-//    putChar(main_melting_status);
-//    putChar(sub_melting_status);
-    
+   
     while(1){
         
         putChar('m');
         delay_ms(3000);
-                
-//        //TODO send pulse to WDT
-//        sendPulseWDT();
-//        __delay_ms(5000);
-//         
-//        measureDcDcTemperature();
-//        if(OBC_STATUS == low){          
-//            measureChannel2();//read 5V Bus
-//        }else{     
-//        }         
-//        //TODO debug send HK 
-//        HKDownlink();
-        
-//        for(UBYTE i=0; i<3; i++){
-//            NTRX = high;
-//            delay_ms(1000);
-//            NTRX = low;
-//            delay_ms(1000);
-////            sendPulseWDT();
-//        }    
-            
-        
-        
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]debug for downlink FM signal        
-        // FMPTT = 1;
-        // UBYTE eDataField[36];
-        // for(UBYTE i=0; i<36; i++){
-        //     eDataField[i] = i;
-        // }
-        // SendPacket(eDataField);
-        // __delay_ms(2000);
-        //  FMPTT = 0;
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
 
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]check for CW signal       
-//       __delay_ms(1000);
-//        CWKEY = 1;
-//        __delay_ms(2000);
-//        CWKEY =0;
-        //FIXME:[finish]check for  CW signal
-        /*---------------------------------------------------------------*/
-        
-        /*---------------------------------------------------------------*/
-        //FIXME:[start]debug for downlink CW signal
-        // testForCwFunctions();
-        //FIXME:[finish]debug for downlink CW signal
-        /*---------------------------------------------------------------*/
-        
-       /*----------------------------------------------------------*/
-       //FIXME : method for test to measure ADC start
-//       putChar(0xaa);
-//       putChar(0xaa);
-//       putChar(0xaa);
-//       measureAllChanelADC();
-//       putChar(0xbb);
-//       putChar(0xbb);
-//       putChar(0xbb);
-       //method for test to measure ADC finish
-       /*----------------------------------------------------------*/
-        
-        
-        
+        sendPulseWDT();
+        __delay_ms(5000);
+         
+        measureDcDcTemperature();
+        if(OBC_STATUS == low){          
+            measureChannel2();//read 5V Bus
+        }else{     
+        }         
+        //TODO debug send HK 
+        HKDownlink();
+       
         //======================================================================
         //UART receive process
 
