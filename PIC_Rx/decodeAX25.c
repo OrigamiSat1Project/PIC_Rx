@@ -37,10 +37,10 @@ UINT fcsCheck(void);
 // reads bit using NRZ (Non-return-to-zero space)
 // bit synchronization program using the change in status so that the sampling timing does not shift by adding half the bit time interval
 // Number of GET_BIT_WAIT_LOOP and HALF_INTERVA are VERY sensitive (change with care and if changed check runtime again!!!)
-UBYTE getBit(void){
-    static UBYTE oldBit;
+UINT getBit(void){
+    static UINT oldBit;
     oldBit = FX614_RXD;
-    for(UBYTE i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
+    for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
 //            LED_YELLOW= 1- LED_YELLOW;       //for debugging  

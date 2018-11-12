@@ -15,7 +15,7 @@ UBYTE ReserveBeforeSatMode = SATMODE_SAVING;//spare BeforeSatMode (when can't re
 UBYTE MeasureBatVoltageAndChangeSatMode(){
           //------battery voltage measure-------------
 //        debug : error handling is not determined
-                    
+                 
             UBYTE bat_voltage[2];
             UWORD Voltage;//Voltage is 10 bit           
             UBYTE error_status = 0;            
@@ -28,7 +28,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 ReadBatVoltageWithPointer(bat_voltage);
                 WriteToMainAndSubB0EEPROM(BatteryVoltage_addressHigh,BatteryVoltage_addressLow,bat_voltage);
                 Voltage = (UWORD)bat_voltage[0] << 8 | (UWORD)bat_voltage[1];
-                if(Voltage == 0x0000 | (Voltage & 0xFC) != 0){ //ADC read error                    
+                if(Voltage == 0x0000 | (Voltage & 0xFC) != 0){ //ADC read error  
                     UBYTE SWchangeSavingMode = ReadEEPROM(MAIN_EEPROM_ADDRESS,SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow);  
                     UBYTE bitcount = BitCount(SWchangeSavingMode);  
                     error_status = error_status | 0b11000000;
@@ -39,7 +39,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                         return error_status;
                     }else{
                         SWchangeSavingMode = ReadEEPROM(SUB_EEPROM_ADDRESS,SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow);
-                        bitcount = BitCount(SWchangeSavingMode);
+                        bitcount = BitCount(SWchangeSavingMode);                    
                         if(bitcount >= 2 && bitcount <= 4){
                             SwitchToSavingMode();
                             return error_status;
@@ -53,7 +53,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                 }
             }
             
-            
+      
             //if BatVol_nominal_saving_high is very large,read one more time. Then it is still very large,thereshold BatVol is Initial Value.
             UWORD BatVol_nominal_saving_high = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow);
             UWORD BatVol_nominal_saving_low = (UWORD)ReadEEPROM(MAIN_EEPROM_ADDRESS, BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow);    
@@ -229,7 +229,7 @@ UBYTE BitCount(UBYTE Checker){
         if(Checker & 0x01 == 1){
             bitcounter += 1;
         }
-        Checker >> 1;
+        Checker = Checker >> 1;
     }
     return bitcounter;
 }
@@ -238,7 +238,7 @@ void SwitchToSavingMode(void){
     killEPS();
     __delay_ms(500);
     onNtrxPowerSupplyCIB(0,0);
-    __delay_ms(1000);//wait EPS ON
+    __delay_ms(2000);//wait EPS ON
     setPLL();
     WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
     ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;

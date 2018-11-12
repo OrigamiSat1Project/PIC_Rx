@@ -20,7 +20,7 @@
 #define EPS_RSET_INTERVAL_SHORT  5
 #define INITIAL_OPE_INTERVAL     10
 #define COMMAND_COUNTER_INTERVAL 3      //for debug 1min
-#define EPS_MEASURE_INTERVAL 10          //for debug 1min
+#define EPS_MEASURE_INTERVAL 20          //for debug 1min
 #define WDT_PULSE_INTERVAL       8
 
 

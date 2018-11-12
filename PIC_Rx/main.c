@@ -71,10 +71,10 @@ void main(void) {
    
     POWER_WDT = 1;
         //for debug BatVoltage measure
-    WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh,SatelliteMode_addressLow,SATMODE_SAVING_SEPOFF_RBFON);
+    WriteOneByteToMainAndSubB0EEPROM(SatelliteMode_addressHigh,SatelliteMode_addressLow,SATMODE_NOMINAL_SEPON_RBFON);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datahigh_addressHigh, BatVol_nominal_saving_datahigh_addressLow,0x02);
     WriteOneByteToMainAndSubB0EEPROM(BatVol_nominal_saving_datalow_addressHigh, BatVol_nominal_saving_datalow_addressLow,0x1D);
-    
+    WriteOneByteToMainAndSubB0EEPROM(SW_Change_SavingMode_ADC_addresshigh,SW_Change_SavingMode_ADC_addresslow,0b11100000); 
     /*---PLL setting (common Phase-Locked Loop)---*/
     /*----------------------------------------------------------------------*/
 //    putChar('f');
@@ -102,8 +102,7 @@ void main(void) {
     
     //FIXME:for TXPIC  
 //    putChar('Y');
-//    putChar('S');
-
+    putChar('S');
 
    
     while(1){
@@ -149,51 +148,12 @@ void main(void) {
         //       if(get_bat_meas_counter_min() >= EPS_MEASURE_INTERVAL){  //for FM
         if(get_bat_meas_counter_sec() >= EPS_MEASURE_INTERVAL){   //for debug[sec]
 ////           //TODO:debug function to measure EPS Battery
-//           putChar(0xF1);
-//           putChar(0xF1);
-//           putChar(0xF1);
-//           putChar(0xF1);
-           UBYTE SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//           putChar('\r');
-//           putChar('\n'); 
-//           putChar(0xF1);
-//           putChar(0xF1);
-//           putChar(0xF1);
-//           putChar(0xF1);
-//           putChar('\r');
-//           putChar('\n');       
+           UBYTE SatMode_error_status = MeasureBatVoltageAndChangeSatMode();      
            if (SatMode_error_status != 0){
-//               putChar(0xF2);
-//               putChar(0xF2);
-//               putChar(0xF2);
-//               putChar(0xF2);
-//               putChar('\r');
-//               putChar('\n'); 
                SatMode_error_status = MeasureBatVoltageAndChangeSatMode();
-//               putChar(0xF2);
-//               putChar(0xF2);
-//               putChar(0xF2);
-//               putChar(0xF2);
-//               putChar('\r');
-//               putChar('\n'); 
            }
            WriteOneByteToMainAndSubB0EEPROM(SatMode_error_status_addresshigh, SatMode_error_status_addresslow, SatMode_error_status);
-//           putChar('\r');
-//           putChar('\n');
-//           putChar(0xF3);
-//           putChar(0xF3);
-//           putChar(0xF3);
-//           putChar(0xF3);
-//           putChar('\r');
-//           putChar('\n');
-//           putChar(SatMode_error_status);
            set_bat_meas_counter(0,0);
-//           putChar(0xF3);
-//           putChar(0xF3);
-//           putChar(0xF3);
-//           putChar(0xF3);
-//           putChar('\r');
-//           putChar('\n');
         }
 //        
 //        /*---WDT---*/
