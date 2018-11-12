@@ -7,6 +7,7 @@
 #include "time.h"
 #include "decodeAX25.h"
 #include "pinDefine.h"
+#include "timer.h"
 
 //Macro
 #define BIT_HIGH 0x01               
@@ -17,10 +18,11 @@
 #define MYCALL  "JS1YAX"           //call sign of OrigamiSat-1
 
 //Global Data   
-static UINT rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
+static UBYTE rcvState = 0;           //TODO: improve readability, recieve state 0= wait for flag; 1= my call correct; 2= ucall correct and get data; 3 = end flag has been found
 UBYTE dPacket[PACKET_SIZE];         //whole uplink command
 UBYTE dData[DATA_SIZE];             //only information byte of uplink command
-UINT  dPacketCounter = 0;
+UBYTE  dPacketCounter = 0;
+//UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
 
 
@@ -35,10 +37,10 @@ UINT fcsCheck(void);
 // reads bit using NRZ (Non-return-to-zero space)
 // bit synchronization program using the change in status so that the sampling timing does not shift by adding half the bit time interval
 // Number of GET_BIT_WAIT_LOOP and HALF_INTERVA are VERY sensitive (change with care and if changed check runtime again!!!)
-UINT getBit(void){
-    static UINT oldBit;
+UBYTE getBit(void){
+    static UBYTE oldBit;
     oldBit = FX614_RXD;
-    for(UINT i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
+    for(UBYTE i=0;i<GET_BIT_WAIT_LOOP;i++){     //Loop iteration number defines waiting interval for signal to change
         if(FX614_RXD != oldBit){
             __delay_us(HALF_INTERVAL);
 //            LED_YELLOW= 1- LED_YELLOW;       //for debugging  
@@ -69,12 +71,24 @@ UBYTE readByte(void){
 // 2. wait for last flag
 // 3. read mycall and ucall
 void waitFlag(void){
-    UINT readBit;
+    UBYTE readBit;
     UBYTE buf = 0xff;
-    UINT callCounter = 0;
+    UBYTE callCounter = 0;
     rcvState = 0;
+    
+    //XXX : set timer 0
+    set_receive_command_counter(0,0);
+    
     while(rcvState < 2){
         while(buf != FLAG_AX25){    //Wait for the flag to come
+            //XXX break by timer
+//            if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+            if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+                putChar('F');
+                putChar('1');
+                break;
+            }
+            
             readBit = getBit();
             buf = buf << 1;         // TODO: Changed bit shift direction, bit_H, bit_L according to LSB, MSB.
             if(readBit == 0){
@@ -82,6 +96,13 @@ void waitFlag(void){
             }else{
                 buf = buf | BIT_HIGH;
             }
+        }
+        //XXX break by timer
+//        if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+        if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+            putChar('F');
+            putChar('2');            
+            break;
         }
         
         /*Search for extra flags and skip them until different byte is read in*/
@@ -179,15 +200,18 @@ UINT fcsCheck(void){
     UBYTE bt, byte;//, dfcsHighByte, dfcsLowByte;
     dfcsLowByte = dfcsHighByte = 0xff;
     while(rcvState == 3){
-        for(UINT i=0;i<dPacketCounter-2;i++){      //calculate the FCS for all except the last two bytes
+        for(UBYTE i=0;i<dPacketCounter-2;i++){      //calculate the FCS for all except the last two bytes
             byte = dPacket[i];
-            for(UINT j=0;j<8;j++){
+            for(UBYTE j=0;j<8;j++){
                 bt = byte & BIT_HIGH;
-                #asm                                //embedded assembly language route to do a 16 bit rotate
-                    BCF 03,0
-                    RRF _dfcsHighByte,F
-                    RRF _dfcsLowByte,F
-                #endasm
+//                #asm                                //embedded assembly language route to do a 16 bit rotate
+//                    BCF 03,0
+//                    RRF _dfcsHighByte,F
+//                    RRF _dfcsLowByte,F
+//                #endasm
+                STATUS &= ~0x01;
+                dfcsHighByte = dfcsHighByte >> 1;
+                dfcsLowByte = dfcsLowByte >> 1;
                 if(((STATUS & BIT_HIGH)^bt) == BIT_HIGH){
                     dfcsHighByte = dfcsHighByte ^ 0x84;
                     dfcsLowByte = dfcsLowByte ^ 0x08;
@@ -212,15 +236,24 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
-    putChar('w');
+    //XXX break by timer
+//    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
+    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
+        putChar('F');
+        putChar('3');
+        set_receive_command_counter(0,0);
+        return;
+    }
+    
+    //putChar('w');
     getData();
-    putChar('d');
+    //putChar('d');
     fcschecker = fcsCheck();
-    putChar('f');
-
+    //putChar('f');
+    
     if(fcschecker == 1){    //valid data is stored in dData
-        for(UINT i=0; i<DATA_SIZE; i++){
-            cdData[i] = dPacket[i+22];   //20: size of address+SSID+PID+"ori1"
+        for(UBYTE i=0; i<DATA_SIZE; i++){
+            cdData[i] = dPacket[i+20];     //[dPacket]0-5:UCALL / 6:SSID / 7-12:MYCALL / 13:SSID / 14:control / 15:PID / 16-19:'ori1' / 20-52:command data(=cdData) / 53,54:FCS 
         }
         dPacketCounter = 0;
         rcvState = 0;
@@ -233,22 +266,23 @@ void receiveDataPacket(UBYTE *cdData){
     }
 }
 
+/*---for debug---*/
 // function for debugging, it prints out the receive signal
-void putAX25(void){
-    for(UINT i=0;i<6;i++){
-        dPacket[i] = dPacket[i] >> 1;
-        dPacket[i+7] = dPacket[i+7] >> 1;
-    }
-    for(UINT i=0;i<6;i++){
-        putChar(dPacket[i]);
-    }
-    putChar('>');
-    for(UINT i=0;i<6;i++){
-        putChar(dPacket[i+7]);
-    }
-    putChar(':');
-    for(UINT i=0;i<dPacketCounter-18;i++){
-        putChar(dPacket[i+16]);
-    }
-    return;
-}
+// void putAX25(void){
+//     for(UINT i=0;i<6;i++){
+//         dPacket[i] = dPacket[i] >> 1;
+//         dPacket[i+7] = dPacket[i+7] >> 1;
+//     }
+//     for(UINT i=0;i<6;i++){
+//         putChar(dPacket[i]);
+//     }
+//     putChar('>');
+//     for(UINT i=0;i<6;i++){
+//         putChar(dPacket[i+7]);
+//     }
+//     putChar(':');
+//     for(UINT i=0;i<dPacketCounter-18;i++){
+//         putChar(dPacket[i+16]);
+//     }
+//     return;
+// }
