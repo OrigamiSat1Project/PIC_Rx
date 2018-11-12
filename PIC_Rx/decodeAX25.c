@@ -7,7 +7,7 @@
 #include "time.h"
 #include "decodeAX25.h"
 #include "pinDefine.h"
-//#include "timer.h"
+#include "timer.h"
 
 //Macro
 #define BIT_HIGH 0x01               
@@ -24,6 +24,7 @@ UBYTE dData[DATA_SIZE];             //only information byte of uplink command
 UINT  dPacketCounter = 0;
 //UINT  dPacketCounter = 0;
 UBYTE dfcsHighByte, dfcsLowByte;
+UBYTE breakflag = 0;
 
 
 //Methods
@@ -89,6 +90,13 @@ void waitFlag(void){
                 buf = buf | BIT_HIGH;
             }
         }
+        
+        if( get_timer_counter('s') >= 10){
+            reset_timer();
+            breakflag = 1;
+            break;
+        }
+        
         /*Search for extra flags and skip them until different byte is read in*/
         while(buf == FLAG_AX25){
             buf = readByte();
@@ -193,9 +201,6 @@ UINT fcsCheck(void){
                     RRF _dfcsHighByte,F
                     RRF _dfcsLowByte,F
                 #endasm
-//                STATUS &= ~0x01;
-//                dfcsHighByte = dfcsHighByte >> 1;
-//                dfcsLowByte = dfcsLowByte >> 1;
                 if(((STATUS & BIT_HIGH)^bt) == BIT_HIGH){
                     dfcsHighByte = dfcsHighByte ^ 0x84;
                     dfcsLowByte = dfcsLowByte ^ 0x08;
@@ -220,15 +225,6 @@ void receiveDataPacket(UBYTE *cdData){
     UINT fcschecker;
     
     waitFlag();
-    //XXX break by timer
-//    if(get_receive_command_counter_min() >= COMMAND_COUNTER_INTERVAL){
-//    if(get_receive_command_counter_sec() >= COMMAND_COUNTER_INTERVAL){
-//        putChar('F');
-//        putChar('3');
-//        set_receive_command_counter(0,0);
-//        return;
-//    }
-    
     putChar('w');
     getData();
     putChar('d');

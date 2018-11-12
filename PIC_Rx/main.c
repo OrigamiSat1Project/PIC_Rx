@@ -37,7 +37,7 @@ void main(void) {
     InitSerial();
     InitMPU();
     InitI2CMaster(I2Cbps);
-//    initTimer();
+    initTimer();
     //InitWDT();
     
     LED_WHITE = 1;              //for debugging of init

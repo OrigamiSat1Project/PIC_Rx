@@ -40,71 +40,59 @@ static UINT eps_reset_counter_sec = 0;
 static UINT eps_reset_counter_min = 0;
 
 //for debug function
-//void interrupt TimerCheck(void){
-//    if(INTCONbits.TMR0IF){
-//        INTCONbits.TMR0IF = 0;
-//        TMR0 = 0x00;
-//        timer_counter ++;
-//    }
-           
-//    if(timer_counter >= one_second){
-//        timer_counter = 0;
-//        second_counter += 1;
-//        
-//        eps_reset_counter_sec ++; //for debug        
-//        init_ope_counter_sec ++;
-//        bat_meas_counter_sec ++;
-//        receive_command_counter_sec ++;
-//        LED_WHITE = 1 - LED_WHITE;  //for debug
-//        WDT_flag = 0x01;
-//    }
-//    if(second_counter >= one_minute){
-//        second_counter = 0;
-//        minute_counter ++;        
-//        putChar('G');
-//    }
-//    //for debug
-//    if(eps_reset_counter_sec >= one_minute){
-//        eps_reset_counter_sec = 0;
-//        eps_reset_counter_min ++;
-//    }
-//    if(receive_command_counter_sec >= one_minute){
-//        receive_command_counter_sec = 0;
-//        receive_command_counter_min ++;
-//    }
-//    if(init_ope_counter_sec >= one_minute){
-//        init_ope_counter_sec = 0;
-//        init_ope_counter_min ++;
-//    }
-//    if(bat_meas_counter_sec >= one_minute){
-//        bat_meas_counter_sec = 0;
-//        bat_meas_counter_min ++;
-//    }
-//    if(minute_counter >= one_hour){
-//        minute_counter = 0;
-//        hour_counter ++;
-//    }
-//    if(hour_counter >= one_day){
-//        hour_counter = 0;
-//        day_counter ++;
-//    }
-//    if(day_counter >= one_week){
-//        day_counter = 0;
-//        week_counter ++;
-//    }
-//    if(week_counter >= 2){
-//        week_counter = 0;
-//    }
+void interrupt TimerCheck(void){
+    if(INTCONbits.TMR0IF){
+        INTCONbits.TMR0IF = 0;
+        TMR0 = 0x00;
+        timer_counter ++;
+    }
+    if(timer_counter >= 38){
+        timer_counter = 0;
+        second_counter += 1;
+        eps_reset_counter_sec ++; //for debug        
+        init_ope_counter_sec ++;
+        bat_meas_counter_sec ++;
+        receive_command_counter_sec ++;
+        WDT_flag = 0x01;
+    }
+    if(second_counter >= one_minute){
+        second_counter = 0;
+        minute_counter ++;
+    }
+    //for debug
+    if(eps_reset_counter_sec >= one_minute){
+        eps_reset_counter_sec = 0;
+        eps_reset_counter_min ++;
+    }
+    if(receive_command_counter_sec >= one_minute){
+        receive_command_counter_sec = 0;
+        receive_command_counter_min ++;
+    }
+    if(init_ope_counter_sec >= one_minute){
+        init_ope_counter_sec = 0;
+        init_ope_counter_min ++;
+    }
+    if(bat_meas_counter_sec >= one_minute){
+        bat_meas_counter_sec = 0;
+        bat_meas_counter_min ++;
+    }
+    if(minute_counter >= one_hour){
+        minute_counter = 0;
+        hour_counter ++;
+    }
+    if(hour_counter >= one_day){
+        hour_counter = 0;
+        day_counter ++;
+    }
+    if(day_counter >= one_week){
+        day_counter = 0;
+        week_counter ++;
+    }
+    if(week_counter >= 2){
+        week_counter = 0;
+    }
     
-    /*---WDT send pulse (4s)---*/
-//    if((get_timer_counter('s') % WDT_INTERVAL) == 1 ){
-//        if(WDT_flag == 0x01){
-//            putChar('W');
-//            sendPulseWDT();
-//            WDT_flag = 0x00;
-//        }
-//    }
-//}
+}
 
 //for debug
 void set_eps_reset_counter(UINT time_sec, UINT time_min){
@@ -167,6 +155,8 @@ UINT get_bat_meas_counter_min(void){
 
 UINT get_timer_counter(UBYTE unit){
     switch(unit){
+        case 't':
+            return timer_counter;
         case 's':
             return second_counter;
         case 'm':
