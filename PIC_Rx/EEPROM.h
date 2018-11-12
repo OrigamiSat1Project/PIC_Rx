@@ -86,6 +86,8 @@
 
 #define SatMode_error_status_addresshigh 0x81
 #define SatMode_error_status_addresslow 0x09
+#define SW_Change_SavingMode_ADC_addresshigh 0x81
+#define SW_Change_SavingMode_ADC_addresslow 0x13
 
 /*******************************************************************************
 *Last Command ID
