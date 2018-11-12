@@ -5,7 +5,7 @@
 #include <PIC16LF877A.h>
 #include "typeDefine.h"
 #include "pinDefine.h"
-#include "InitMPU.h"
+#include "MPU.h"
 #include "time.h"
 #include "UART.h"
 #include "decodeAX25.h"
@@ -37,7 +37,7 @@ void main(void) {
     InitSerial();
     InitMPU();
     InitI2CMaster(I2Cbps);
-    initTimer();
+//    initTimer();
     //InitWDT();
     
     LED_WHITE = 1;              //for debugging of init

@@ -19,8 +19,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
 [p i __delay ]
-"30 time.h
-[v _delay_ms `(v ~T0 @X0 0 ef1`us ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1038,7 +1036,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 194: extern __bank0 __bit __powerdown;
 [; ;pic.h: 195: extern __bank0 __bit __timeout;
 [; ;EPS.h: 14: void Reset_EPS(void);
-[; ;EPS.h: 15: void ResetEPSandSetPLL(void);
 [; ;typeDefine.h: 11: typedef signed char SBYTE;
 [; ;typeDefine.h: 12: typedef unsigned char UBYTE;
 [; ;typeDefine.h: 13: typedef signed short SWORD;
@@ -1048,77 +1045,33 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;typeDefine.h: 17: typedef unsigned short long USLONG;
 [; ;typeDefine.h: 18: typedef signed long SDWORD;
 [; ;typeDefine.h: 19: typedef unsigned long UDWORD;
-[; ;time.h: 29: void delay_s(UWORD);
-[; ;time.h: 30: void delay_ms(UWORD);
-[; ;time.h: 31: void delay_us(UWORD);
-"23 FMCW.h
-[v _FMTX_Nprg `um ~T0 @X0 1 e ]
-[i _FMTX_Nprg
--> -> 87501 `l `um
-]
-[; ;FMCW.h: 23: USLONG FMTX_Nprg = 87501;
-"24
-[v _CWTX_Nprg `um ~T0 @X0 1 e ]
-[i _CWTX_Nprg
--> -> -> 1400 `i `m `um
-]
-[; ;FMCW.h: 24: USLONG CWTX_Nprg = 1400;
-"25
-[v _FMRX_Nprg `um ~T0 @X0 1 e ]
-[i _FMRX_Nprg
--> -> -> 24916 `i `m `um
-]
-[; ;FMCW.h: 25: USLONG FMRX_Nprg = 24916;
-[; ;FMCW.h: 32: void FMTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 33: void CWTX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 34: void FMRX(int Nref, USLONG Nprg);
-[; ;FMCW.h: 35: void commandSwitchFMCW(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
-[; ;FMCW.h: 36: void setNref(UBYTE unitID, int Nref);
-[; ;FMCW.h: 40: void setPLL(void);
-"9 EPS.c
+[; ;time.h: 22: void delay_ms(UWORD);
+[; ;time.h: 23: void delay_us(UWORD);
+"8 EPS.c
 [v _Reset_EPS `(v ~T0 @X0 1 ef ]
 {
-[; ;EPS.c: 9: void Reset_EPS(void){
+[; ;EPS.c: 8: void Reset_EPS(void){
 [e :U _Reset_EPS ]
 [f ]
-[; ;EPS.c: 10: PORTBbits.RB4 = 1;
-"10
+[; ;EPS.c: 9: PORTBbits.RB4 = 1;
+"9
 [e = . . _PORTBbits 0 4 -> -> 1 `i `uc ]
-[; ;EPS.c: 11: PORTAbits.RA1 = 1;
-"11
+[; ;EPS.c: 10: PORTAbits.RA1 = 1;
+"10
 [e = . . _PORTAbits 0 1 -> -> 1 `i `uc ]
-[; ;EPS.c: 12: _delay((unsigned long)((5000)*(10000000/4000.0)));
-"12
+[; ;EPS.c: 11: _delay((unsigned long)((5000)*(10000000/4000.0)));
+"11
 [e ( __delay (1 -> * -> -> 5000 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 13: PORTBbits.RB4 = 0;
-"13
+[; ;EPS.c: 12: PORTBbits.RB4 = 0;
+"12
 [e = . . _PORTBbits 0 4 -> -> 0 `i `uc ]
-[; ;EPS.c: 14: PORTAbits.RA1 = 0;
-"14
+[; ;EPS.c: 13: PORTAbits.RA1 = 0;
+"13
 [e = . . _PORTAbits 0 1 -> -> 0 `i `uc ]
-[; ;EPS.c: 15: _delay((unsigned long)((500)*(10000000/4000.0)));
-"15
+[; ;EPS.c: 14: _delay((unsigned long)((500)*(10000000/4000.0)));
+"14
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;EPS.c: 16: }
-"16
+[; ;EPS.c: 15: }
+"15
 [e :UE 95 ]
-}
-"18
-[v _ResetEPSandSetPLL `(v ~T0 @X0 1 ef ]
-{
-[; ;EPS.c: 18: void ResetEPSandSetPLL(void){
-[e :U _ResetEPSandSetPLL ]
-[f ]
-[; ;EPS.c: 19: Reset_EPS();
-"19
-[e ( _Reset_EPS ..  ]
-[; ;EPS.c: 20: delay_ms(5000);
-"20
-[e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 24: delay_ms(5000);
-"24
-[e ( _delay_ms (1 -> -> 5000 `i `us ]
-[; ;EPS.c: 25: }
-"25
-[e :UE 96 ]
 }

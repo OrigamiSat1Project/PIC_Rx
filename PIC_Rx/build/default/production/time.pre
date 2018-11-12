@@ -1471,29 +1471,27 @@ typedef unsigned short long USLONG;
 typedef signed long SDWORD;
 typedef unsigned long UDWORD;
 
-# 29 "time.h"
-void delay_s(UWORD);
+# 22 "time.h"
 void delay_ms(UWORD);
 void delay_us(UWORD);
 
-# 11 "time.c"
-void delay_s(UWORD sec)
-{
-while(sec)
-{
-_delay((unsigned long)((1)*(10000000/4.0)));
-sec--;
-}
-}
-
-
-
+# 8 "time.c"
 void delay_ms(UWORD msec)
 {
 while(msec)
 {
 _delay((unsigned long)((1)*(10000000/4000.0)));
 msec--;
+}
+}
+
+
+void delay_us(UWORD usec)
+{
+while(usec)
+{
+_delay((unsigned long)((1)*(10000000/4000000.0)));
+usec--;
 }
 }
 

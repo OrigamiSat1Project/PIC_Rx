@@ -1028,76 +1028,75 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;typeDefine.h: 17: typedef unsigned short long USLONG;
 [; ;typeDefine.h: 18: typedef signed long SDWORD;
 [; ;typeDefine.h: 19: typedef unsigned long UDWORD;
-[; ;time.h: 29: void delay_s(UWORD);
-[; ;time.h: 30: void delay_ms(UWORD);
-[; ;time.h: 31: void delay_us(UWORD);
-"11 time.c
-[v _delay_s `(v ~T0 @X0 1 ef1`us ]
-"12
+[; ;time.h: 22: void delay_ms(UWORD);
+[; ;time.h: 23: void delay_us(UWORD);
+"8 time.c
+[v _delay_ms `(v ~T0 @X0 1 ef1`us ]
+"9
 {
-[; ;time.c: 11: void delay_s(UWORD sec)
-[; ;time.c: 12: {
-[e :U _delay_s ]
-"11
-[v _sec `us ~T0 @X0 1 r1 ]
-"12
+[; ;time.c: 8: void delay_ms(UWORD msec)
+[; ;time.c: 9: {
+[e :U _delay_ms ]
+"8
+[v _msec `us ~T0 @X0 1 r1 ]
+"9
 [f ]
-[; ;time.c: 13: while(sec)
-"13
+[; ;time.c: 10: while(msec)
+"10
 [e $U 96  ]
 [e :U 97 ]
-[; ;time.c: 14: {
-"14
+[; ;time.c: 11: {
+"11
 {
-[; ;time.c: 15: _delay((unsigned long)((1)*(10000000/4.0)));
-"15
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4.0 `ul ]
-[; ;time.c: 16: sec--;
-"16
-[e -- _sec -> -> 1 `i `us ]
-"17
+[; ;time.c: 12: _delay((unsigned long)((1)*(10000000/4000.0)));
+"12
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
+[; ;time.c: 13: msec--;
+"13
+[e -- _msec -> -> 1 `i `us ]
+"14
 }
 [e :U 96 ]
-"13
-[e $ != -> _sec `ui -> -> -> 0 `i `us `ui 97  ]
+"10
+[e $ != -> _msec `ui -> -> -> 0 `i `us `ui 97  ]
 [e :U 98 ]
-[; ;time.c: 17: }
-[; ;time.c: 18: }
-"18
+[; ;time.c: 14: }
+[; ;time.c: 15: }
+"15
 [e :UE 95 ]
 }
-"22
-[v _delay_ms `(v ~T0 @X0 1 ef1`us ]
-"23
+"18
+[v _delay_us `(v ~T0 @X0 1 ef1`us ]
+"19
 {
-[; ;time.c: 22: void delay_ms(UWORD msec)
-[; ;time.c: 23: {
-[e :U _delay_ms ]
-"22
-[v _msec `us ~T0 @X0 1 r1 ]
-"23
+[; ;time.c: 18: void delay_us(UWORD usec)
+[; ;time.c: 19: {
+[e :U _delay_us ]
+"18
+[v _usec `us ~T0 @X0 1 r1 ]
+"19
 [f ]
-[; ;time.c: 24: while(msec)
-"24
+[; ;time.c: 20: while(usec)
+"20
 [e $U 100  ]
 [e :U 101 ]
-[; ;time.c: 25: {
-"25
+[; ;time.c: 21: {
+"21
 {
-[; ;time.c: 26: _delay((unsigned long)((1)*(10000000/4000.0)));
-"26
-[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000.0 `ul ]
-[; ;time.c: 27: msec--;
-"27
-[e -- _msec -> -> 1 `i `us ]
-"28
+[; ;time.c: 22: _delay((unsigned long)((1)*(10000000/4000000.0)));
+"22
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 10000000 `l `d .4000000.0 `ul ]
+[; ;time.c: 23: usec--;
+"23
+[e -- _usec -> -> 1 `i `us ]
+"24
 }
 [e :U 100 ]
-"24
-[e $ != -> _msec `ui -> -> -> 0 `i `us `ui 101  ]
+"20
+[e $ != -> _usec `ui -> -> -> 0 `i `us `ui 101  ]
 [e :U 102 ]
-[; ;time.c: 28: }
-[; ;time.c: 29: }
-"29
+[; ;time.c: 24: }
+[; ;time.c: 25: }
+"25
 [e :UE 99 ]
 }

@@ -4,7 +4,6 @@
 #include "pinDefine.h"
 #include "time.h"
 #include "typeDefine.h"
-#include "OkError.h"
 
 /*Identifiers for the radio units (called unitID if given to a functions)*/
 /* Do not change!! */
@@ -189,7 +188,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
 /*
  * [Setting the reference counter of the radio]
  * 1. Convert reference counter read from argument to binary number (stored as array)
- * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?ÔøΩÔøΩi?ÔøΩÔøΩ›íÔøΩÃäÃÅj???
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ??øΩ?øΩi??øΩ?øΩ›íÔøΩÃäÃÅj???
  * 3. Send group code '11'
  * 4. Send STB signal
  */
@@ -356,7 +355,7 @@ void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBY
             //TODO: write method for FM RX
             break;
         default:
-            switchError(error_FMCW_commandSwitchFMCW);
+//            switchError(error_FMCW_commandSwitchFMCW);
             break;
     }
 }

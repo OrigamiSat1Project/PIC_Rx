@@ -7,7 +7,7 @@
 #include "time.h"
 #include "FMCW.h"
 #include "I2C.h"
-#include "initMPU.h"
+#include "MPU.h"
 #include "EEPROM.h"
 
 void initTimer(void){
@@ -40,12 +40,12 @@ static UINT eps_reset_counter_sec = 0;
 static UINT eps_reset_counter_min = 0;
 
 //for debug function
-void interrupt TimerCheck(void){
-    if(INTCONbits.TMR0IF){
-        INTCONbits.TMR0IF = 0;
-        TMR0 = 0x00;
-        timer_counter ++;
-    }
+//void interrupt TimerCheck(void){
+//    if(INTCONbits.TMR0IF){
+//        INTCONbits.TMR0IF = 0;
+//        TMR0 = 0x00;
+//        timer_counter ++;
+//    }
            
 //    if(timer_counter >= one_second){
 //        timer_counter = 0;
@@ -104,7 +104,7 @@ void interrupt TimerCheck(void){
 //            WDT_flag = 0x00;
 //        }
 //    }
-}
+//}
 
 //for debug
 void set_eps_reset_counter(UINT time_sec, UINT time_min){
