@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=0530_system_integrationTX_RX_16F886_9
+PROJECTNAME=PIC_Tx
 
 # Active Configuration
 DEFAULTCONF=default

@@ -11,18 +11,38 @@
 #ifndef I2C_H
 #define	I2C_H
 
-#define I2Cbps 400000
-#define I2Cnull 0x00
+//#define I2Cbps 400000 //400kbps
+#define I2Cbps 100000 //100kbps
+#define I2Cnull 0xFF
 
-void Init_I2C_M(const UDWORD c);
-void I2C_Master_Wait(void);
-void I2C_Master_Start(void);
-void I2C_Master_RepeatedStart(void);
-void I2C_Master_Stop(void);
-void I2C_Master_Write(unsigned d);
-UBYTE I2C_Master_Read(UBYTE a);
-void EEPROM_Write(UBYTE ,UBYTE ,UBYTE ,UBYTE *,UINT *);
-void EEPROM_Read(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+/*******************************************************************************
+*setting
+******************************************************************************/ 
+void InitI2CMaster(const UDWORD c);
+void I2CMasterWait(void);
+void I2CMasterStart(void);
+void I2CMasterRepeatedStart(void);
+void I2CMasterStop(void);
+
+
+/*******************************************************************************
+*Method for EEPROM Write 
+******************************************************************************/
+void I2CMasterWrite(UBYTE);
+UBYTE I2CMasterRead(UBYTE);
+void WriteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE *);
+void WriteOneByteToEEPROM(UBYTE,UBYTE,UBYTE,UBYTE);
+void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data);
+void WriteLastCommandIdToEEPROM(UBYTE);
+void WriteCheckByteToEEPROMs(UBYTE,UBYTE,UBYTE,UBYTE);
+
+/*******************************************************************************
+*Method for EEPROM Read
+******************************************************************************/
+void ReadDataFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT);
+UBYTE ReadEEPROM(UBYTE, UBYTE, UBYTE);
+void ReadDataAndDataSizeFromEEPROM(UBYTE ,UBYTE ,UBYTE,UBYTE *,UINT *);
+void commandSwitchI2C(UBYTE , UBYTE , UBYTE *, UBYTE *);
 
 
 #endif	/* I2C_H */

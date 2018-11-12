@@ -1,107 +1,136 @@
-#include <xc.h>
+
 #include "UART.h"
 #include "I2C.h"
 #include "Type_define.h"
-
+#include "EEPROM.h"
+#include "OkError.h"
 
 #define _XTAL_FREQ 10000000
-UBYTE EEPROMData[16];
+//UBYTE EEPROMData[16];
 //UINT EEPROMDataLength;
 
-void Init_I2C_M(const UDWORD c){
+
+/*******************************************************************************
+*setting
+******************************************************************************/
+void InitI2CMaster(const UDWORD c){
   SSPCON = 0b00101000;
   SSPCON2 = 0;
   SSPADD = (_XTAL_FREQ/(4*c))-1;
   SSPSTAT = 0;
 }
 
-void I2C_Master_Wait(){
+void I2CMasterWait(){
   while ((SSPSTAT & 0x04) || (SSPCON2 & 0x1F));
 }
 
-void I2C_Master_Start(){
-  I2C_Master_Wait();
+void I2CMasterStart(){
+  I2CMasterWait();
   SEN = 1;
 }
 
-void I2C_Master_RepeatedStart(){
-  I2C_Master_Wait();
+void I2CMasterRepeatedStart(){
+  I2CMasterWait();
   RSEN = 1;
 }
 
-void I2C_Master_Stop(){
-  I2C_Master_Wait();
+void I2CMasterStop(){
+  I2CMasterWait();
   PEN = 1;
 }
 
-void I2C_Master_Write(unsigned d){
-  I2C_Master_Wait();
+void I2CMasterWrite(UBYTE d){
+  I2CMasterWait();
   SSPBUF = d;
 }
 
-UBYTE I2C_Master_Read(UBYTE a){
-  unsigned char temp;
+UBYTE I2CMasterRead(UBYTE a){
+  UBYTE temp;
   
-  I2C_Master_Wait();
+  I2CMasterWait();
   RCEN = 1;
-  I2C_Master_Wait();
+  I2CMasterWait();
   temp = SSPBUF;
   
-  I2C_Master_Wait();
+  I2CMasterWait();
   ACKDT = (a)?0:1;
   ACKEN = 1;
   return temp;
 }
 
-void EEPROM_Write(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *data,UINT *DataSize){
-    UBYTE Address = EEPROM_address << 1;
-    //for (*DataSize = 0; data[*DataSize]!= 0x00; *DataSize++);
-   
-    
+/*******************************************************************************
+*Method for EEPROM Write 
+******************************************************************************/
+void WriteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE *data){
+    UBYTE address;
+    address= (UBYTE)(addressEEPROM << 1);
     //UINT Datasize = sizeof(data);
     /**/
-    I2C_Master_Start();         //Start condition
-    I2C_Master_Write(Address);     //7 bit address + Write
-    I2C_Master_Write(high_address);    //Adress High Byte
-    I2C_Master_Write(low_address);    //Adress Low Byte
-    for(UINT i=0;i<=*DataSize;i++){
-        I2C_Master_Write(data[i]);    //Data
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    while(*data){
+        I2CMasterWrite(*data);      //Data
+        ++data;
     }
-    for(UINT j=*DataSize+1;j<=63;j++){
-        I2C_Master_Write(0x00);    //Data
-    }
-    I2C_Master_Stop();          //Stop condition
+    I2CMasterStop();                //Stop condition
+    __delay_ms(200);
+}
+/**/
+void WriteOneByteToEEPROM(UBYTE addressEEPROM,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE address;
+    address= (UBYTE)(addressEEPROM << 1);
+    //UINT Datasize = sizeof(data);
+    I2CMasterStart();               //Start condition
+    I2CMasterWrite(address);        //7 bit address + Write
+    I2CMasterWrite(addressHigh);    //Adress High Byte
+    I2CMasterWrite(addressLow);     //Adress Low Byte
+    I2CMasterWrite(data);      //Data
+    I2CMasterStop();                //Stop condition
     __delay_ms(200);
 }
 
-void EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
-    UBYTE Address = EEPROM_address << 1;
-    UBYTE ReadAddress = Address | 0x01;
+void WriteOneByteToMainAndSubB0EEPROM(UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    WriteOneByteToEEPROM(EEPROM_address,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(EEPROM_subaddress,addressHigh,addressLow,data);
+}
+
+void WriteCheckByteToEEPROMs(UBYTE B0Select,UBYTE addressHigh,UBYTE addressLow,UBYTE data){
+    UBYTE mainAddress;
+    UBYTE subAddress;
+    mainAddress = (UBYTE)(EEPROM_address | B0Select);
+    subAddress = (UBYTE)(EEPROM_subaddress | B0Select);
+    WriteOneByteToEEPROM(mainAddress,addressHigh,addressLow,data);
+    WriteOneByteToEEPROM(subAddress,addressHigh,addressLow,data);
+}
+
+void WriteLastCommandIdToEEPROM(UBYTE last_command_ID){
+    WriteCheckByteToEEPROMs(B0select_for_TXCOBCLastCommandID, HighAddress_for_TXCOBCLastCommandID, LowAddress_for_TXCOBCLastCommandID, last_command_ID);
+}
+
+
+/*******************************************************************************
+*Method for EEPROM Read
+******************************************************************************/
+void ReadDataFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT EEPROMDataLength){
+
+    UBYTE Address = (UBYTE)(Address7Bytes << 1);
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
+    I2CMasterStart();                       //Start condition
+    I2CMasterWrite(Address);                //7 bit address + Write
+    I2CMasterWrite(high_address);           //Adress High Byte
+    I2CMasterWrite(low_address);            //Adress Low Byte
+    I2CMasterRepeatedStart();               //Restart condition
     
-    
-    //UINT Datasize = sizeof(data);
-    I2C_Master_Start();         //Start condition
-    I2C_Master_Write(Address);     //7 bit address + Write
-    I2C_Master_Write(high_address);    //Adress High Byte
-    I2C_Master_Write(low_address);    //Adress Low Byte
-    I2C_Master_RepeatedStart();         //Restart condition
-    
-    
-    I2C_Master_Write(ReadAddress);     //7 bit address + Read
-    
-    for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++);
-    
-    //for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++){
-    for(UINT i = 0; i < *EEPROMDataLength; i++){
-    /*
-    //for(UINT i = 0; i < 5; i++){*/    
-        
-        ReadData[i] = I2C_Master_Read(1); //Read + Acknowledge
-        //putch(ReadData[i]);
+    I2CMasterWrite(ReadAddress);            //7 bit address + Read
+    for(UINT i = 0; i < EEPROMDataLength - 1; i++){
+        ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
     }
-    ReadData[*EEPROMDataLength] = I2C_Master_Read(0);
-    //ReadData[0] = I2C_Master_Read(0);
-    I2C_Master_Stop();          //Stop condition
+    ReadData[EEPROMDataLength - 1] = I2CMasterRead(0);
+    I2CMasterStop();                        //Stop condition
+
+    //for debugging
     /*
     for(UINT j = 0; j < *EEPROMDataLength; j++){
     //putch(ReadData[0]);
@@ -109,6 +138,139 @@ void EEPROM_Read(UBYTE EEPROM_address,UBYTE high_address,UBYTE low_address,UBYTE
         putch(ReadData[j]);
     }
     putcrlf();*/
-    //return EEPROMData;
     __delay_ms(200);
+}
+
+/*
+ *  Read Data From EEPROM (the size od read data is only 1byte)
+ *	arg      :   EEPROM_address, high_address, low_address
+ *	return   :   EEPROM_address, high_address, low_address -> ReadData
+ *	TODO     :   debug  ---> finish
+ *	FIXME    :   not yet
+ *	XXX      :   not yet
+ */
+UBYTE ReadEEPROM(UBYTE Address7Bytes, UBYTE high_address, UBYTE low_address){
+    UBYTE Address = (UBYTE)(Address7Bytes << 1);
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
+    UBYTE ReadData;
+   
+    I2CMasterStart();         //Start condition
+    I2CMasterWrite(Address);     //7 bit address + Write
+    I2CMasterWrite(high_address);    //Adress High Byte
+    I2CMasterWrite(low_address);    //Adress Low Byte
+    I2CMasterRepeatedStart();         //Restart condition
+    
+    I2CMasterWrite(ReadAddress);     //7 bit address + Read
+    
+    ReadData = I2CMasterRead(0); //Read + Acknowledge
+    
+    I2CMasterStop();          //Stop condition
+    return ReadData; 
+}
+
+//TODO:need debug
+void ReadDataAndDataSizeFromEEPROM(UBYTE Address7Bytes,UBYTE high_address,UBYTE low_address,UBYTE *ReadData, UINT *EEPROMDataLength){
+    UBYTE Address = (UBYTE)(Address7Bytes << 1);
+    UBYTE ReadAddress = (UBYTE)(Address | 0x01);
+    I2CMasterStart();                       //Start condition
+    I2CMasterWrite(Address);                //7 bit address + Write
+    I2CMasterWrite(high_address);           //Adress High Byte
+    I2CMasterWrite(low_address);            //Adress Low Byte
+    I2CMasterRepeatedStart();               //Restart condition
+    
+    I2CMasterWrite(ReadAddress);            //7 bit address + Read
+    for (*EEPROMDataLength = 0; ReadData[*EEPROMDataLength]!= I2Cnull; *EEPROMDataLength++);
+    for(UINT i = 0; i < *EEPROMDataLength; i++){
+        ReadData[i] = I2CMasterRead(1);     //Read + Acknowledge
+    }
+    ReadData[*EEPROMDataLength] = I2CMasterRead(0);
+    I2CMasterStop();          //Stop condition
+    
+    //for denbugging
+    /*
+    for(UINT j = 0; j < *EEPROMDataLength; j++){
+    //putch(ReadData[0]);
+    //for(UINT j = 0; j < 5; j++){
+        putch(ReadData[j]);
+    }
+    putcrlf();*/
+    __delay_ms(200);
+}
+
+//process command data if the command type is 'I2C'
+void commandSwitchI2C(UBYTE command, UBYTE slaveAdress, UBYTE *dataHigh, UBYTE *dataLow){ 
+    switch(command){    
+        case 'w': //I2C write
+//            I2CMasterWrite(slaveAdress);//TODO: check if method 'I2C write' is correct
+//            I2CMasterWrite(dataHigh);
+//            I2CMasterWrite(dataLow);
+            break;
+        case 'r': //I2C read
+//            dataHigh = I2CMasterRead(slaveAdress);//TODO: check if method 'I2C read' is correct, especially do the pointers work as intended
+//            dataLow = I2CMasterRead(slaveAdress); //TODO: what should happen with read in data?
+            //TODO: write data to EEPROM
+            //TODO: send Address where it is written to TXCOBC
+            break;
+        case 't': //I2C test
+            //TODO: write method for I2C test
+            //TODO: write test data to EEPROM
+            //TODO: read EEPRON
+            //TODO: send EEPROM address to TXCOBC
+            break;
+        case 'c': //I2C buffer clear
+            //TODO: write method for I2C buffer clear 
+            //TODO: clear: SSPBUF
+            break;
+        case 'b': //change I2C baud rate
+            //TODO: write method for change I2C baud rate
+            break;
+        case 's': //set as a slave ic
+            //TODO: write method for set as a slave ic
+            break;
+        case 'i': //measure IMU
+            //TODO: write method for measure IMU
+            break;
+        default:
+            switchError(error_I2C_commandSwitchI2C);
+            break;
+    }
+}
+
+void commandSwitchEEPROM(UBYTE command, UBYTE slaveAdress, UBYTE dataHigh, UBYTE dataLow, UBYTE data1, UBYTE data2){ 
+    UBYTE data_length = 0;
+    UBYTE *read_data;
+    switch(command){    
+        case 'w': //write data to EEPROM
+            //TODO:now send data is only 1byte. change data size
+            WriteToEEPROM(slaveAdress, dataHigh, dataLow, &data1);  //data1 is the data to send
+            break;
+        case 'r': //read data from EEPROM
+            data_length = data1;
+            //FIXME : read_data is a single pointer, maybe not worked as you think
+            ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, (UINT)data1);
+            if(data2=='f'){
+                //fm downlink
+            } else if(data2=='c'){
+               // cw downlink
+            } else {
+                //TODO:add error
+            }
+            break;
+        case 'e': //read any size of data from EEPROM 
+            /* this function for read any size of data from EEPROM
+             * 1.read data from EEPROM
+             * 2.get data size
+             * 3.read data from EEPROM (RX pic gets data size at step2)
+             * 4.get any size of data 
+             */
+            data_length = ReadEEPROM(slaveAdress, dataHigh, dataLow);
+            ReadDataFromEEPROM(slaveAdress, dataHigh, dataLow, read_data, data_length);
+            
+        case 't': //EEPROM test
+//            TestEEPROM(slaveAdress);
+            break;
+        default:
+            // switchError(error_I2C_commandSwitchEEPROM);
+            break;
+    }
 }

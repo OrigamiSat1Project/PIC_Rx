@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
+<configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -7,12 +7,20 @@
       <itemPath>time.h</itemPath>
       <itemPath>UART.h</itemPath>
       <itemPath>Type_define.h</itemPath>
-      <itemPath>Init_MPU.h</itemPath>
-      <itemPath>decode_AX25.h</itemPath>
-      <itemPath>memo.h</itemPath>
       <itemPath>encode_AX25.h</itemPath>
       <itemPath>I2C.h</itemPath>
       <itemPath>EEPROM.h</itemPath>
+      <itemPath>CRC16.h</itemPath>
+      <itemPath>FMCW.h</itemPath>
+      <itemPath>MPU.h</itemPath>
+      <itemPath>WDT.h</itemPath>
+      <itemPath>pinDefine.h</itemPath>
+      <itemPath>ADC.h</itemPath>
+      <itemPath>ICM20601.h</itemPath>
+      <itemPath>IMU.h</itemPath>
+      <itemPath>ITG3701.h</itemPath>
+      <itemPath>adxl345.h</itemPath>
+      <itemPath>OkError.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -23,11 +31,18 @@
                    projectFiles="true">
       <itemPath>time.c</itemPath>
       <itemPath>UART.c</itemPath>
-      <itemPath>Init_MPU.c</itemPath>
-      <itemPath>decode_AX25.c</itemPath>
       <itemPath>encode_AX25.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>I2C.c</itemPath>
+      <itemPath>CRC16.c</itemPath>
+      <itemPath>FMCW.c</itemPath>
+      <itemPath>MPU.c</itemPath>
+      <itemPath>WDT.c</itemPath>
+      <itemPath>ADC.c</itemPath>
+      <itemPath>ICM20601.c</itemPath>
+      <itemPath>ITG3701.c</itemPath>
+      <itemPath>adxl345.c</itemPath>
+      <itemPath>OkError.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -48,9 +63,12 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>1.38</languageToolchainVersion>
+        <languageToolchainVersion>1.45</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
+      <packs>
+        <pack name="PIC16Fxxx_DFP" vendor="Microchip" version="1.0.7"/>
+      </packs>
       <compileType>
         <linkerTool>
           <linkerLibItems>
@@ -82,16 +100,15 @@
         <property key="extra-include-directories" value=""/>
         <property key="favor-optimization-for" value="-speed,+space"/>
         <property key="identifier-length" value="255"/>
+        <property key="local-generation" value="false"/>
         <property key="operation-mode" value="free"/>
         <property key="opt-xc8-compiler-strict_ansi" value="false"/>
         <property key="optimization-assembler" value="true"/>
         <property key="optimization-assembler-files" value="true"/>
         <property key="optimization-debug" value="false"/>
-        <property key="optimization-global" value="true"/>
         <property key="optimization-invariant-enable" value="false"/>
         <property key="optimization-invariant-value" value="16"/>
         <property key="optimization-level" value="9"/>
-        <property key="optimization-set" value="default"/>
         <property key="optimization-speed" value="false"/>
         <property key="optimization-stable-enable" value="false"/>
         <property key="preprocess-assembler" value="true"/>
@@ -119,11 +136,14 @@
         <property key="create-html-files" value="false"/>
         <property key="data-model-ram" value=""/>
         <property key="data-model-size-of-double" value="24"/>
+        <property key="data-model-size-of-double-gcc" value="short-double"/>
         <property key="data-model-size-of-float" value="24"/>
+        <property key="data-model-size-of-float-gcc" value="short-float"/>
         <property key="display-class-usage" value="false"/>
         <property key="display-hex-usage" value="false"/>
         <property key="display-overall-usage" value="true"/>
         <property key="display-psect-usage" value="false"/>
+        <property key="extra-lib-directories" value=""/>
         <property key="fill-flash-options-addr" value=""/>
         <property key="fill-flash-options-const" value=""/>
         <property key="fill-flash-options-how" value="0"/>
@@ -133,8 +153,10 @@
         <property key="fill-flash-options-what" value="0"/>
         <property key="format-hex-file-for-download" value="false"/>
         <property key="initialize-data" value="true"/>
+        <property key="input-libraries" value="libm"/>
         <property key="keep-generated-startup.as" value="false"/>
         <property key="link-in-c-library" value="true"/>
+        <property key="link-in-c-library-gcc" value=""/>
         <property key="link-in-peripheral-library" value="false"/>
         <property key="managed-stack" value="false"/>
         <property key="opt-xc8-linker-file" value="false"/>
@@ -169,8 +191,8 @@
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.preservedataflash" value="false"/>
         <property key="programoptions.preservedataflash.ranges" value=""/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveeeprom.ranges" value=""/>
+        <property key="programoptions.preserveeeprom" value="true"/>
+        <property key="programoptions.preserveeeprom.ranges" value="0-ff"/>
         <property key="programoptions.preserveprogram.ranges" value=""/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveuserid" value="false"/>
@@ -179,7 +201,7 @@
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="3.375"/>
+        <property key="voltagevalue" value="5.0"/>
       </ICD3PlatformTool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
@@ -420,11 +442,16 @@
       </Simulator>
       <XC8-config-global>
         <property key="advanced-elf" value="true"/>
+        <property key="gcc-opt-driver-new" value="false"/>
+        <property key="gcc-opt-std" value="--std=c89"/>
+        <property key="gcc-output-file-format" value="dwarf-3"/>
+        <property key="omit-pack-options" value="false"/>
         <property key="output-file-format" value="-mcof,+elf"/>
         <property key="stack-size-high" value="auto"/>
         <property key="stack-size-low" value="auto"/>
         <property key="stack-size-main" value="auto"/>
         <property key="stack-type" value="compiled"/>
+        <property key="user-pack-device-support" value=""/>
       </XC8-config-global>
     </conf>
   </confs>
