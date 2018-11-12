@@ -154,35 +154,35 @@ void cutWire(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow){ //high->on
 //melting program!! Be careful to write program to FM!!!!!
 /********************************************************/
     
-//    if ( onOff == 0x00 ){        
-////            WIRE_CUTTER = low;
-//            putChar(0xd1);
-//    } else {                     
-////            WIRE_CUTTER = high;
-//            putChar(0xd2);
-//    }
-//
-//    if(timeHigh == 0x00 && timeLow == 0x00){
-//        putChar(0xd3);
-//    }else {        
-//        UWORD wait_time = 0;
-//        wait_time = calTime2Byte(timeHigh, timeLow);
-//        // wait_time = (timeHigh << 8 | timeLow);
-//        putChar(0xd4);
-//
-//        if(wait_time>MELTING_TIME_MAX){
-//            wait_time = MELTING_TIME_DEFAULT;
-//            putChar(0xd5);
-//        } else {
-//            putChar(0xd6);
-//        }
-//        
-//        putChar(0xd7);
-//        delay_ms(wait_time);
-////        WIRE_CUTTER =invertState(onOff);
-//        putChar(0xd8);
-//        //TODO:wait time ga over -> error
-//    }
+    if ( onOff == 0x00 ){        
+            WIRE_CUTTER = low;
+            putChar(0xd1);
+    } else {                     
+            WIRE_CUTTER = high;
+            putChar(0xd2);
+    }
+
+    if(timeHigh == 0x00 && timeLow == 0x00){
+        putChar(0xd3);
+    }else {        
+        UWORD wait_time = 0;
+        wait_time = calTime2Byte(timeHigh, timeLow);
+        // wait_time = (timeHigh << 8 | timeLow);
+        putChar(0xd4);
+
+        if(wait_time>MELTING_TIME_MAX){
+            wait_time = MELTING_TIME_DEFAULT;
+            putChar(0xd5);
+        } else {
+            putChar(0xd6);
+        }
+        
+        putChar(0xd7);
+        delay_ms(wait_time);
+        WIRE_CUTTER =invertState(onOff);
+        putChar(0xd8);
+        //TODO:wait time ga over -> error
+    }
 }
 
 /*antenna melting with meliing times*/
@@ -192,9 +192,8 @@ void cutWireWithMeltingtimes(UBYTE onOff, UBYTE timeHigh, UBYTE timeLow, UBYTE m
     main_melting_status = ReadEEPROM(EEPROM_address,MeltingStatus_addressHigh, MeltingStatus_addressLow);
     sub_melting_status = ReadEEPROM(EEPROM_subaddress,MeltingStatus_addressHigh, MeltingStatus_addressLow);
 
-//    //FIXME:
-//    main_melting_status = 0b01000000;
-//    sub_melting_status = 0b01000000;
+    if(main_melting_status==0xff) main_melting_status = 0x00;
+    if(sub_melting_status ==0xff) sub_melting_status  = 0x00;
     
     //bit operation
     //ex: 0b01101011 -> 0+1+1+0+1+0+1+1=5
@@ -291,11 +290,11 @@ void commandSwitchPowerSupply(UBYTE command, UBYTE onOff, UBYTE timeHigh, UBYTE 
             break;
         case 'a': //WIRE_CUTTER
             putChar(0xb1);
-//            cutWire(onOff, timeHigh, timeLow);
+            cutWire(onOff, timeHigh, timeLow);
             break;
         case 't': //WIRE_CUTTER with times
             putChar(0xb2);
-//            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
+            cutWireWithMeltingtimes(onOff, timeHigh, timeLow, melting_times);
             break;
         case 'w': //WDT
             onOffTXWDT(onOff, timeHigh, timeLow);

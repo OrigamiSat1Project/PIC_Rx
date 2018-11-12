@@ -48,10 +48,13 @@ UBYTE getChar(void){                //TODO: add time out feature
 	while(!RCIF){
         break_counter ++;
         if(break_counter >= 100){
-            putChar(0xbb);
+//            putChar(0xbb);
+            NOP();
+            break_counter = 0;
             break;
         }
     }
+    RCIF = 0;
     return RCREG;
 }
 
@@ -178,7 +181,6 @@ void UARTwrite5byte(UBYTE data1,UBYTE data2,UBYTE data3,UBYTE data4,UBYTE data5)
     data[6] = CRC & 0x00FF;
     for(UBYTE i=0; i<7; i++){
         putChar(data[i]);
-        NOP();
     }
 }
 

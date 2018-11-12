@@ -45,177 +45,41 @@ UBYTE ReceiveFlag = NOT_RECEIVE;
 
 void interrupt InterReceiver(void){
 //    putChar(0xee);
-
+    
     if (RCIF == 1) {
-
         putChar('U');
-        UINT break_counter = 0;
         RXDATA[0] = 0x21;
-        
-        while(crc16(0,RXDATA,8) != CRC_check(RXDATA, 8)){
-            for(UINT i=0;i<commandSize;i++){
-                RXDATA[i] = getChar();
-            }
-            for(UINT i=0;i<commandSize;i++){
-                putChar(RXDATA[i]);
-            }
-            /*for debug
-            putChar(0xcc);
-            putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
-            putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
-             end*/
-            break_counter ++;
-            if(break_counter >= 10){
-                putChar(0xa2);
-                put_lf();
-                break;
-            }
+        for(UINT i=0;i<commandSize;i++){
+            RXDATA[i] = getChar();
         }
+        for(UINT i=0;i<commandSize;i++){
+            putChar(RXDATA[i]);
+        }
+//            /*for debug
+//        putChar(0xcc);
+//        putChar((UBYTE)(crc16(0,RXDATA,8) >> 8));
+//        putChar((UBYTE)(crc16(0,RXDATA,8) & 0xff));
+//             end*/
         ReceiveFlag = UNCORRECT_RECEIVE;
         if(crc16(0,RXDATA,8) == CRC_check(RXDATA, 8)){
             ReceiveFlag = CORRECT_RECEIVE;
+        }
+        if(RXDATA[0] == 't'){
+            NOP();
+        }else if(RXDATA[0] == 'g'){
+            NOP();
+             //Write to EEPROM for CW Downlink
+//            UBYTE commandID = 0x00;
+//            WriteOneByteToEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID, commandID);
+            //Write to EEPROM for CW Downlink
+//            WriteOneByteToEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow, ReceiveFlag);
+        }else{
+            ReceiveFlag = UNCORRECT_RECEIVE;
         }
         RCIF = 0;
         putChar(0xff);
         put_lf();
     }
-
-
-//     if (RCIF == 1) {
-//         /*---for debug---*/
-// //         for (UBYTE i = 0; i < commandSize; i++){
-// //             RXDATA[i] = getChar();
-// //         }
-//         putChar('I');
-//         putChar('I');
-        
-//         UBYTE get_char_state = 0;
-//         while(get_char_state < commandSize){
-//             RXDATA[0] = getChar();
-//             putChar('X');
-// //            putChar('e');
-// //            putChar('t');
-// //            putChar(RXDATA[0]);
-//             get_char_state++;
-//             if(RXDATA[0] != 't' && RXDATA[0] != 'g'){
-//                 get_char_state = 0;
-//             } else {    
-//                 for (UBYTE i = 1; i < commandSize; i++){
-//                     RXDATA[i] = getChar();
-//                     get_char_state++;
-//                 }
-//             }
-//         }
-                
-//         //TODO:need?
-//         /*---Send command using UARTto RXCOBC---*/
-//         for (UBYTE i = 0; i < commandSize; i++){
-//             putChar(RXDATA[i]);
-//             NOP();
-//         }
-        
-//         /*---CRC check for command from RXCOBC or OBC---*/ 
-//        //TODO add case RXDATA[0]!=t or g
-//         UWORD crcResult, crcValue;
-//         UBYTE crcResultHigh,crcResultLow,crcValueHigh,crcValueLow;
-//         crcResult = crc16(0,RXDATA,8);
-//         crcValue =  CRC_check(RXDATA,8);
-//         crcResultHigh = crcResult>>8;
-//         crcResultLow = crcResult & 0x00FF;
-//         crcValueHigh = crcValue>>8;
-//         crcValueLow = crcValue & 0x00FF;
-        
-//         /*----------------------------------------------*/
-//         //FIXME:[start]debug for test to CRCcheck
-// //        putChar(0xcc);
-// //        putChar(0xcc);
-// //        putChar(crcResultHigh);
-// //        putChar(crcResultLow);
-// //        putChar(crcValueHigh);
-// //        putChar(crcValueLow);
-//         //FIXME:[finish]debug for test to CRCcheck
-//         /*----------------------------------------------*/
-        
-//         /*---read command ID---*/
-//         UBYTE commandID;
-//         commandID = ReadEEPROM(EEPROM_address, HighAddress_for_commandID, LowAddress_for_commandID);
-//         //TODO:read datas from sub EEPROM
-        
-//         /*---read CRC check from EEPROM---*/
-//         UBYTE CRC_check_result;
-// //        CRC_check_result = 0b1000000; //for debug
-// //        WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result); //for debug
-//         CRC_check_result = ReadEEPROM(EEPROM_address, crcResult_addressHigh, crcResult_addressLow);
-        
-//         if(crcResult != crcValue){  //crc error
-            
-//             /*---write CRC error result (6bit 0) ---*/
-//             CRC_check_result &= 0b10111111;
-//             WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-            
-//             putChar(0xa1);
-//             putChar(CRC_check_result);
-//             putErrorNoDownlink(error_main_crcCheck);    
-            
-//         } else {  //crc  OK
-            
-//             /*---write CRC ok result (6bit 1) ---*/
-//             CRC_check_result |= 0b01000000;
-//             WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-            
-//             putChar(0xa2);
-//             putChar(CRC_check_result);
-            
-//             /*---Define if command target is 't' or 'g' and read in task target ---*/
-//             /*------------------------------------------------------------------*/
-//             if (RXDATA[0]!='t' && RXDATA[0]!='g' ){
-//                 //TODO:add error messege
-//                 putChar(0xa3);
-//             } else {
-//                 switch(RXDATA[1]){
-//                     /*---Command from RXCOBC---*/
-//                     /*------------------------------------------------------------------*/
-//                     case 0x75:  //'u'
-//                         putChar('R'); 
-//                         putChar(0xa4);
-//                         downlinkReceivedCommand(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5]);
-//                         break;
-
-//                     /*---Command from OBC---*/
-//                     /*------------------------------------------------------------------*/
-//                     case 0x63: /*'c':CW Downlink*/
-//                         putChar(0xa5);
-//                         commandSwitchCWDownlink(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], RXDATA[8]);
-//                         WriteLastCommandIdToEEPROM(commandID);
-//                         break;
-//                     case 0x66:  /*'f':FM Downlink*/
-//                         putChar(0xa6);
-//                         downlinkFMSignal(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-//                         WriteLastCommandIdToEEPROM(commandID);
-//                         break;
-//                     case 'p':/*'p':power*/
-//                         putChar(0xa7); 
-//                         commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
-//                         WriteLastCommandIdToEEPROM(commandID);
-//                         break;
-//                     case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
-//                         measureDcDcTemperature();
-//                         WriteLastCommandIdToEEPROM(commandID);
-//                         break;
-//                     case 0x72: /*'r':send command to RXCOBC*/
-//                         sendCommand(RXDATA[2], RXDATA[3], RXDATA[4], RXDATA[5], RXDATA[6], RXDATA[7], 0x00, 0x00);
-//                         break;
-//                     default:
-//                         switchError(error_main_commandfromOBCorRXCOBC);   
-//                         break;                             
-//                 }
-//             }
-//             /*---write CRC result 6bit 1 ---*/
-//             CRC_check_result |= 0b01000000;
-//             WriteOneByteToMainAndSubB0EEPROM(crcResult_addressHigh, crcResult_addressLow,CRC_check_result);
-//             switchOk(error_main_crcCheck); 
-//         }     
-//     }
 }
 
 void main(void) {
@@ -359,11 +223,6 @@ void main(void) {
                     break;
                 case 'p':/*'p':power*/
                     putChar(0xa7);
-                    putChar(0xa7);
-                    putChar(0xa7);
-                    put_lf();
-                    CWKEY = high;  /////FIXME
-                    delay_ms(1000);
                     commandSwitchPowerSupply(RXDATA[2],RXDATA[3],RXDATA[4],RXDATA[5],RXDATA[6]);
                     break;
                 case 0x68: /*'h':update HK data (DC-DC voltage) (HK = house keeping)*/
