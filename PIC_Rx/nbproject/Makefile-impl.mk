@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=0418_system_integration_4
+PROJECTNAME=PIC_Rx
 
 # Active Configuration
 DEFAULTCONF=default

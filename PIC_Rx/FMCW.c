@@ -1,44 +1,35 @@
 
 #include <xc.h>
-#include "fmcw.h"
-
-/* Do not change!! */
-#define FMTX_   1
-#define CWTX_   2
-#define FMRX_   3
-
+#include "FMCW.h"
+#include "pinDefine.h"
 #include "time.h"
+#include "typeDefine.h"
+#include "OkError.h"
 
-/*
- * 【FMCW設定の初期化】
- *  FM受信，FM送信，CW送信それぞれを設定
- *  1. CLK端子（クロック），DAT端子（データ），STB端子（ストローブ）を出力として使用
- *  2. 全てのポートをLowにする
+/*Identifiers for the radio units (called unitID if given to a functions)*/
+/* Do not change!! */
+#define FMTX_ID   1
+#define CWTX_ID   2
+#define FMRX_ID   3
+
+/*Methods*/
+void sendLow(UBYTE unitID);
+void sendHigh(UBYTE unitID);
+void sendSTB(UBYTE unitID);
+void setNprg(UBYTE unitID, USLONG Nprg);
+void setNref(UBYTE unitID, int Nref);
+void setOptionRegister(UBYTE unitID);
+void _NOP(void);
+
+
+/* 
+ * [Send 'Low' to radio]
+ * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
+ * 2. Set the DAT terminal to Low
+ * 3. Change the CLK pin from 0 -> 1 -> 0
  */
-void Init_FMCW(void){
-    /* ポートをLowにする（初期化） */
-    FMRX_CLK = 0;
-    FMRX_DAT = 0;
-    FMRX_STB = 0;
-    FMTX_CLK = 0;
-    FMTX_DAT = 0;
-    FMTX_STB = 0;
-    FMTX_PTT = 0;
-    CWRX_CLK = 0;
-    CWTX_DAT = 0;
-    CWTX_STB = 0;
-    CWTX_KEY = 0;
-}
-
-
-/*
- * 【無線機に'Low'を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. DAT端子をLowにする
- *  3. CLK端子を0→1→0と変化させる 
- */
-void L_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
+void sendLow(UBYTE unitID){
+    if(unitID == FMTX_ID)
     {
         FMTX_DAT = 0;
         _NOP();
@@ -46,15 +37,15 @@ void L_OUT(int fmcwtxrx){
         _NOP();
         FMTX_CLK = 0;
     }
-    if(fmcwtxrx == CWTX_)
+    else if(unitID == CWTX_ID)
     {
         CWTX_DAT = 0;
         _NOP();
-        CWRX_CLK = 1;
+        CWTX_CLK = 1;
         _NOP();
-        CWRX_CLK = 0;
+        CWTX_CLK = 0;
     }
-    if(fmcwtxrx == FMRX_)
+    else if(unitID == FMRX_ID)
     {
         FMRX_DAT = 0;
         _NOP();
@@ -64,15 +55,14 @@ void L_OUT(int fmcwtxrx){
     }
 }
 
-
 /*
- * 【無線機に'High'を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. DAT端子をHighにする
- *  3. CLK端子を0→1→0と変化させる 
+ * [Send 'High' to radio]
+ * 1. Select which radio unit to send to (FMTX or FMRX or CWTX)
+ * 2. Set the DAT terminal to High
+ * 3. Change the CLK pin from 0 -> 1 -> 0
  */
-void H_OUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
+void sendHigh(UBYTE unitID){
+    if(unitID == FMTX_ID)
     {
         FMTX_DAT = 1;
         _NOP();
@@ -80,15 +70,15 @@ void H_OUT(int fmcwtxrx){
         _NOP();
         FMTX_CLK = 0;
     }
-    if(fmcwtxrx == CWTX_)
+    else if(unitID == CWTX_ID)
     {
         CWTX_DAT = 1;
         _NOP();
-        CWRX_CLK = 1;
+        CWTX_CLK = 1;
         _NOP();
-        CWRX_CLK = 0;
+        CWTX_CLK = 0;
     }
-    if(fmcwtxrx == FMRX_)
+    else if(unitID == FMRX_ID)
     {
         FMRX_DAT = 1;
         _NOP();
@@ -100,24 +90,24 @@ void H_OUT(int fmcwtxrx){
 
 
 /*
- * 【無線機にSTB信号を送る】
- *  1. どの無線機に送るか選択（FMTX or FMRX or CWTX）
- *  2. STB端子を0→1→0と変化させる
+ * [Send STB signal to radio]
+ * 1. Select which radio unit to send  to (FMTX or FMRX or CWTX)
+ * 2. Change the STB pin from 0 -> 1 -> 0
  */
-void STBOUT(int fmcwtxrx){
-    if(fmcwtxrx == FMTX_)
+void sendSTB(UBYTE unitID){
+    if(unitID == FMTX_ID)
     {
         FMTX_STB = 1;
         _NOP();
         FMTX_STB = 0;
     }
-    if(fmcwtxrx == CWTX_)
+    else if(unitID == CWTX_ID)
     {
         CWTX_STB = 1;
         _NOP();
         CWTX_STB = 0;
     }
-    if(fmcwtxrx == FMRX_)
+    else if(unitID == FMRX_ID)
     {
         FMRX_STB = 1;
         _NOP();
@@ -127,227 +117,235 @@ void STBOUT(int fmcwtxrx){
 
 
 /*
- * 【無線機のプログラマブルカウンタを設定する】
- *  1. 引数から読み込んだプログラマブルカウンタを2進数に変換（配列として格納）
- *  2. 格納した2進数に合わせてHighかLowを無線機に送る（設定の肝）
- *  3. グループコードを送る'10'
- *  4. STB信号を送る
+ * [Setting the programmable counter of the radio]
+ * 1. Convert programmable counter read from argument to binary number (stored as array)
+ * 2. Send High or Low to the radio according to the stored binary number 
+ * 3. Send group code '10'
+ * 4. Send STB signal
  */
-void OUTFQ(int fmcwtxrx, int *Nprg){
-    int count = 0;
-    int Nprg_b[17];
+void setNprg(UBYTE unitID, USLONG Nprg){
+    UBYTE count = 0;
+    UBYTE Nprg_b[17] = {0};
     
-    for(int i=0; i<17; i++){
-        Nprg_b[i] = 0;
+//    for(UBYTE i=0; i<17; i++){
+//        Nprg_b[i] = 0;
+//    }
+    
+    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
+    for(int i=0; Nprg>0; i++){
+        Nprg_b[i] = Nprg % 2;
+        Nprg = Nprg / 2;
     }
     
-    //Nprg transforms decimal to binary
-    for(int i = 0; i < 17; i++){
-        for(int j = 0; j<5; j++){
-            if(Nprg[j] % 2 == 0) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 0;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                }
-            }
-            else if(Nprg[j] % 2 == 1) {
-                if(j == 4){
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg_b[count] = 1;
-                    count++;
-                }
-                else{
-                    Nprg[j] = Nprg[j] / 2;
-                    Nprg[j+1] = Nprg[j+1] + 10;
-                }
-            }
-        }
-    }
+//    //Nprg transforms decimal to binary
+//    for(UBYTE i = 0; i < 17; i++){
+//        for(UBYTE j = 0; j<5; j++){
+//            if(Nprg[j] % 2 == 0) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 0;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                }
+//            }
+//            else if(Nprg[j] % 2 == 1) {
+//                if(j == 4){
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg_b[count] = 1;
+//                    count++;
+//                }
+//                else{
+//                    Nprg[j] = Nprg[j] / 2;
+//                    Nprg[j+1] = Nprg[j+1] + 10;
+//                }
+//            }
+//        }
+//    }
     
-    //Send Nprg data(binay) to communication module
-    for (int i=0; i<17; i++)
+    //Send Nprg data(binary) to communication module
+    for (UBYTE i=0; i<17; i++)
     {
         if(Nprg_b[i] == 0)
         {
-            L_OUT(fmcwtxrx);
+            sendLow(unitID);
         }
         if(Nprg_b[i] == 1)
         {
-            H_OUT(fmcwtxrx);
+            sendHigh(unitID);
         }
     }
     
     //GroupCode'10' is TX.DEV(?)
-    H_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
+    sendHigh(unitID);
+    sendLow(unitID);
     
     //STB Signal
-    STBOUT(fmcwtxrx);
+    sendSTB(unitID);
 }
 
 
 /*
- * 【無線機のリファレンスカウンタを設定する】
- *  1. 引数から読み込んだリファレンスカウンタを2進数に変換（配列として格納）
- *  2. 格納した2進数に合わせてHighかLowを無線機に送る（設定の肝）
- *  3. グループコードを送る'11'
- *  4. STB信号を送る
+ * [Setting the reference counter of the radio]
+ * 1. Convert reference counter read from argument to binary number (stored as array)
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ??ｿｽ?ｿｽi??ｿｽ?ｿｽﾝ抵ｿｽﾌ肝）???
+ * 3. Send group code '11'
+ * 4. Send STB signal
  */
-void RFDOUT(int fmcwtxrx, int Nref){
-    int Nref_b[12];
+void setNref(UBYTE unitID, int Nref){
+    UBYTE Nref_b[12] = {0};
     
-    for(int i=0; i<12; i++){
-        Nref_b[i] = 0;
-    }
+//    for(UBYTE i=0; i<12; i++){
+//        Nref_b[i] = 0;
+//    }
     
-    //Nref transforms decimal to binary
+    //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
     for(int i=0; Nref>0; i++){
         Nref_b[i] = Nref % 2;
         Nref = Nref / 2;
     }
     
     //Send Nref data(binay) to communication module
-    for (int i=0; i<12; i++)
+    for (UBYTE i=0; i<12; i++)
     {
         if(Nref_b[i] == 0)
         {
-            L_OUT(fmcwtxrx);
+            sendLow(unitID);
         }
         if(Nref_b[i] == 1)
         {
-            H_OUT(fmcwtxrx);
+            sendHigh(unitID);
         }
     }
     
     //GroupCode'11' is REF.DEV
-    H_OUT(fmcwtxrx);
-    H_OUT(fmcwtxrx);
+    sendHigh(unitID);
+    sendHigh(unitID);
     
     //STB Signal
-    STBOUT(fmcwtxrx);
+    sendSTB(unitID);
 }
 
-
 /*
- * 【無線機のオプションレジスタを設定する（共通PLL設定）】
- *  1. (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1)を送る
- *  2. グループコードを送る'00'
- *  3. STB信号を送る
+ * [Setting Option Register of Radio Equipment (Common PLL Setting)(PLL = Phase-Locked Loop)
+ * 1 (T1, T2, T3, CpT1, CpT2, Cpr1, Cpr2, LD1, LD2, Tx, Rx) = (0,0,0,1,1,0,0,0,0,0,1) Send
+ * 2. Send group code '00'
+ * 3. Send STB signal
  */
-void OPINIT(int fmcwtxrx){
+void setOptionRegister(UBYTE unitID){
     //Send PLL Common DataSet to communiction module
-    L_OUT(fmcwtxrx);//T1
-    L_OUT(fmcwtxrx);//T2
-    L_OUT(fmcwtxrx);//T3
-    H_OUT(fmcwtxrx);//CpT1
-    H_OUT(fmcwtxrx);//CpT2
-    L_OUT(fmcwtxrx);//Cpr1
-    L_OUT(fmcwtxrx);//Cpr2
-    L_OUT(fmcwtxrx);//LD1
-    L_OUT(fmcwtxrx);//LD2
-    L_OUT(fmcwtxrx);//Tx
-    H_OUT(fmcwtxrx);//Rx
-    
+    for(UBYTE i=0;i<3;i++){
+        sendLow(unitID);//T1,T2,T3
+    }
+    for(UBYTE i=0;i<2;i++){
+        sendHigh(unitID);//CpT1,Cpr2
+    }
+     for(UBYTE i=0;i<3;i++){
+        sendLow(unitID);//LD1.LD2,Tx
+    }
+    sendHigh(unitID);//Rx
     //GroupCode'00' is option reg.
-    L_OUT(fmcwtxrx);
-    L_OUT(fmcwtxrx);
-    
+    for(UBYTE i=0;i<2;i++){
+        sendLow(unitID);
+    }
     //STB Signal
-    STBOUT(fmcwtxrx);
+    sendSTB(unitID);
+    
+//    sendLow(unitID);//T1
+//    sendLow(unitID);//T2
+//    sendLow(unitID);//T3
+//    sendHigh(unitID);//CpT1
+//    sendHigh(unitID);//CpT2
+//    sendLow(unitID);//Cpr1
+//    sendLow(unitID);//Cpr2
+//    sendLow(unitID);//LD1
+//    sendLow(unitID);//LD2
+//    sendLow(unitID);//Tx
+//    sendHigh(unitID);//Rx
+//    
+//    //GroupCode'00' is option reg.
+//    sendLow(unitID);
+//    sendLow(unitID);   
+//    //STB Signal
+//    sendSTB(unitID);
 }
 
-
 /*
- * 【FMTXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
+ * [Set PLL for FMTX]
+ * 1. Setting of Option register
+ * 2. Setting of Reference counter
+ * 3. Setting of programmable counter
  */
-void FMTX(int Nref, int *Nprg){
-    int fmtx = FMTX_;
-    OPINIT(fmtx);
-    RFDOUT(fmtx, Nref);
-    OUTFQ(fmtx, Nprg);
+void FMTX(int Nref, USLONG Nprg){
+    UBYTE fmtx = FMTX_ID;
+    setOptionRegister(fmtx);
+    setNref(fmtx, Nref);
+    setNprg(fmtx, Nprg);
 }
 
 
 /*
- * 【CWTXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
+ * [Set PLL for CWTX]
+ * 1. Setting of Option register
+ * 2. Setting of Reference counter
+ * 3. Setting of programmable counter
  */
-void CWTX(int Nref, int *Nprg){
-    int cwtx = CWTX_;
-    OPINIT(cwtx);
-    RFDOUT(cwtx, Nref);
-    OUTFQ(cwtx, Nprg);
+void CWTX(int Nref, USLONG Nprg){
+    UBYTE cwtx = CWTX_ID;
+    setOptionRegister(cwtx);
+    setNref(cwtx, Nref);
+    setNprg(cwtx, Nprg);
 }
 
 
 /*
- * 【FMRXのPLL設定を行う】
- *  1. オプションレジスタの設定
- *  2. リファレンスカウンタの設定
- *  3. プログラマブルカウンタの設定
+ * [Set PLL for FMRX]
+ * 1. Setting of Option register
+ * 2. Setting of Reference counter
+ * 3. Setting of programmable counter
  */
-void FMRX(int Nref, int *Nprg){
-    int fmrx = FMRX_;
-    OPINIT(fmrx);
-    RFDOUT(fmrx, Nref);
-    OUTFQ(fmrx, Nprg);
+void FMRX(int Nref, USLONG Nprg){
+    UBYTE fmrx = FMRX_ID;
+    setOptionRegister(fmrx);
+    setNref(fmrx, Nref);
+    setNprg(fmrx, Nprg);
 }
 
-
 /*
- * 【PLL設定を行う】
+  * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
-void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-    FMTX(FMTX_Nref, FMTX_Nprg);
-    CWTX(CWTX_Nref, CWTX_Nprg);
-    FMRX(FMRX_Nref, FMRX_Nprg);
+void setPLL(void){
+   FMTX(FMTX_Nref, FMTX_Nprg);
+   CWTX(CWTX_Nref, CWTX_Nprg);
+   FMRX(FMRX_Nref, FMRX_Nprg);
 }
 
 
-
-/*
- * 【モールス信号の'V'を送る】
- *  1. CWKEY端子を0→1→0と変化させる
- *  2. ※1.を計３回行う
- */
-void Morse_V(void){
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(50);
-    CWTX_KEY = 0;
-    __delay_ms(50);
-
-    CWTX_KEY = 1;
-    __delay_ms(150);
-    CWTX_KEY = 0;
-    __delay_ms(50);
+//process command data if the command type is 'radio unit'
+void commandSwitchFMCW(UBYTE command, UBYTE Nref1, UBYTE Nref2, UBYTE Nprg1, UBYTE Nprg2, UBYTE Nprg3){ //TODO: specify which Nref and Nprg are which
+    switch(command){    
+        case 't': //FM TX
+            //TODO: write method for FM TX
+            break;
+        case 'c': //CW TX
+            //TODO: write method for CW TX
+            break;
+        case 'f': //FM RX
+            //TODO: write method for FM RX
+            break;
+        default:
+            switchError(error_FMCW_commandSwitchFMCW);
+            break;
+    }
 }
 
-
 /*
- * 【何も処理を行わない（待機）】
- *  5処理分待機する
+ * [Do not process anything (standby)]
+ * (Wait for 5 loop iterations)
  */
 void _NOP(void) {
-    for(int i=0; i<5; i++){
+    for(UBYTE i=0; i<5; i++){
         NOP();
     }
 }
