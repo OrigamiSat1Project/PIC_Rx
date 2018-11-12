@@ -15,8 +15,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "153 C:\Program Files (x86)\Microchip\xc8\v1.45\include\pic.h
 [v __delay `JF1089 ~T0 @X0 0 e ]
 [p i __delay ]
-"23 UART.h
-[v _putChar `(v ~T0 @X0 0 ef1`uc ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -1054,15 +1052,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;UART.h: 26: void putCrLf(void);
 [; ;UART.h: 28: void put_error(void);
 [; ;UART.h: 29: void put_ok(void);
-[; ;UART.h: 30: void NM_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 31: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
-[; ;UART.h: 32: void sendCommandByPointer(UBYTE*);
-[; ;UART.h: 33: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE,UBYTE, UBYTE);
-[; ;UART.h: 34: void WriteUART( UBYTE* );
-[; ;UART.h: 35: void UART_buffer_clear(void);
-[; ;UART.h: 36: void changeBaudRate(UBYTE,UBYTE,UBYTE);
-[; ;UART.h: 37: void changeInterruptPermission(UBYTE, UBYTE);
-[; ;UART.h: 38: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 30: void kaigyou(void);
+[; ;UART.h: 31: void NM_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 32: void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
+[; ;UART.h: 33: void sendCommandByPointer(UBYTE*);
+[; ;UART.h: 34: void sendCommand(UBYTE, UBYTE, UBYTE,UBYTE, UBYTE, UBYTE,UBYTE, UBYTE);
+[; ;UART.h: 35: void WriteUART( UBYTE* );
+[; ;UART.h: 36: void UART_buffer_clear(void);
+[; ;UART.h: 37: void changeBaudRate(UBYTE,UBYTE,UBYTE);
+[; ;UART.h: 38: void changeInterruptPermission(UBYTE, UBYTE);
+[; ;UART.h: 39: void commandSwitchUART(UBYTE, UBYTE, UBYTE, UBYTE, UBYTE, UBYTE);
 [; ;time.h: 29: void delay_s(UWORD);
 [; ;time.h: 30: void delay_ms(UWORD);
 [; ;time.h: 31: void delay_us(UWORD);
@@ -1178,9 +1177,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "50
 [e $ ! == -> . . _PORTBbits 0 3 `i -> 0 `i 104  ]
 {
-[; ;WDT.c: 51: putChar('W');
-"51
-[e ( _putChar (1 -> -> 87 `ui `uc ]
 [; ;WDT.c: 52: PORTBbits.RB1 = 0;
 "52
 [e = . . _PORTBbits 0 1 -> -> 0 `i `uc ]

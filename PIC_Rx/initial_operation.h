@@ -10,9 +10,11 @@
 
 #include "typeDefine.h"
 
-#define SATMODE_NOMINAL    0x50 //FIX ME: need change
-#define SATMODE_SAVING    0x60 //FIX ME: need change
-#define SATMODE_SURVIVAL  0xA0 //FIX ME: need change
+/*---Initial Operation---*/
+#define MELTING_FINISH        4  
+#define WAIT_TIME_FOR_SETTING 4  //[s] 
+#define MELTING_COUNTER_LIMIT 71
+
 
 void testInitialOpe(void); //for debug
 void errorCheckInitialOpe(void); //for debug

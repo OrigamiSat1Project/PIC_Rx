@@ -189,7 +189,7 @@ void setNprg(UBYTE unitID, USLONG Nprg){
 /*
  * [Setting the reference counter of the radio]
  * 1. Convert reference counter read from argument to binary number (stored as array)
- * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ?ÔøΩÔøΩi?ÔøΩÔøΩ›íÔøΩÃäÃÅj???
+ * 2. Send High or Low to the radio according to the stored binary number (setting of the liver) ??øΩ?øΩi??øΩ?øΩ›íÔøΩÃäÃÅj???
  * 3. Send group code '11'
  * 4. Send STB signal
  */
@@ -312,30 +312,9 @@ void FMRX(int Nref, USLONG Nprg){
     setNprg(fmrx, Nprg);
 }
 
-// void setPLL(void){    
-//     /*---FMTX---*/
-//     setOptionRegister(FMTX_ID);
-//     setNref(FMTX_ID, FMTX_Nref);
-//     setNprg(FMTX_ID, FMTX_Nprg);
-//     /*---CWTX---*/
-//     setOptionRegister(CWTX_ID);
-//     setNref(CWTX_ID, CWTX_Nref);
-//     setNprg(CWTX_ID, CWTX_Nprg);
-//     /*---FMRX---*/
-//     setOptionRegister(FMRX_ID);
-//     setNref(FMRX_ID, FMRX_Nref);
-//     setNprg(FMRX_ID, FMRX_Nprg);
-// } 
- 
-
 /*
   * [Perform PLL setting]// TODO: check pointers and replace in the main.c, uncomment in FMCW.h
  */
-//void SetPLL(int FMTX_Nref, int FMTX_Nprg, int CWTX_Nref, int CWTX_Nprg, int FMRX_Nref, int FMRX_Nprg){
-//    FMTX(FMTX_Nref, FMTX_Nprg);
-//    CWTX(CWTX_Nref, CWTX_Nprg);
-//    FMRX(FMRX_Nref, FMRX_Nprg);
-//}
 void setPLL(void){
    FMTX(FMTX_Nref, FMTX_Nprg);
    CWTX(CWTX_Nref, CWTX_Nprg);

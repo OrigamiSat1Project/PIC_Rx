@@ -27,6 +27,7 @@ void putCrLf(void);
 
 void put_error(void);
 void put_ok(void);
+void kaigyou(void);
 void NM_waddress(UBYTE, UBYTE, UBYTE);
 void TXOBC_waddress(UBYTE, UBYTE, UBYTE);
 void sendCommandByPointer(UBYTE*);

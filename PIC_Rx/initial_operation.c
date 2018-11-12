@@ -10,11 +10,7 @@
 #include "initial_operation.h"
 #include "OkError.h"
 #include "WDT.h"
-
-/*---Initial Operation---*/
-#define MELTING_FINISH        4  
-#define WAIT_TIME_FOR_SETTING 4  //[s] 
-#define MELTING_COUNTER_LIMIT 71  
+#include "SatMode.h"  
 
 ////for debug
 void testInitialOpe(void){
@@ -34,12 +30,12 @@ void testInitialOpe(void){
     WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
     temp = 3;  //0-MELTING_COUNTER_LIMIT
     WriteOneByteToEEPROM(SUB_EEPROM_ADDRESS,MeltingCounter_addressHigh, MeltingCounter_addressLow, temp);
-    put_ok();
+//    put_ok();
 }
 
 ////for debug
 void errorCheckInitialOpe(void){
-    put_error();
+//    put_error();
     /*---read error status---*/
     putChar(ReadEEPROM(MAIN_EEPROM_ADDRESS, InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow));
     putChar(ReadEEPROM(SUB_EEPROM_ADDRESS, InitialOpe_error_status_addressHigh,InitialOpe_error_status_addressLow));
@@ -55,30 +51,37 @@ UBYTE InitialOperation(void){
     UBYTE melting_status[2] = {0};
 
     /*---check OBC status---*/
-    switch(OBC_STATUS){
-        case OBC_ALIVE:
-//            putChar(0xa1);
-//            putChar('1');
-            return error_initialOpe_obcAlive;
-        case OBC_DIED:
+//    switch(OBC_STATUS){
+//        case OBC_ALIVE:
+//            putChar(0x71);
+//            kaigyou();
+////            putChar('1');
+//            return error_initialOpe_obcAlive;
+//        case OBC_DIED:
             
-//            putChar(0xa2);
+//            putChar(0x72);
+//            kaigyou();
 //            putChar('2');
             
             /*---read melting status & bit cal---*/
             melting_status[0] = checkMeltingStatus(MAIN_EEPROM_ADDRESS);
             melting_status[1] = checkMeltingStatus(SUB_EEPROM_ADDRESS);
-                        
+            
+//            putChar(0x73);
+//            putChar(melting_status[0]);
+//            putChar(melting_status[1]);
+//            kaigyou();
+            
             //cal_result>TBD: melting already finish   / cal_result=<TBD: not yet
             if((melting_status[0] < MELTING_FINISH)&&(melting_status[1] < MELTING_FINISH)){
-
-//                putChar(0xa3);
-//                putChar(melting_status[0]);
-//                putChar(melting_status[1]);
                 
                 /*---check satellite mode---*/
                 sat_mode = ReadEEPROM(MAIN_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
                 sat_mode &= 0xF0;
+
+//                putChar(0x74);
+//                putChar(sat_mode);
+//                kaigyou();                
                               
                 //sat mode: NOMINAL->melting / SAVING or SURVIVAL ->break                
                 if ((sat_mode != SATMODE_NOMINAL) && (sat_mode != SATMODE_SAVING) && (sat_mode != SATMODE_SURVIVAL)){
@@ -86,29 +89,31 @@ UBYTE InitialOperation(void){
                     sat_mode = ReadEEPROM(SUB_EEPROM_ADDRESS , SatelliteMode_addressHigh, SatelliteMode_addressLow);
                     sat_mode &= 0xF0;
                     
-                    putChar(0xb1);
-                    putChar(0xb1);
+//                    putChar(0x75);
+//                    putChar(sat_mode);
+//                    kaigyou();   
                     
                     if ((sat_mode!=SATMODE_NOMINAL) && (sat_mode!=SATMODE_SAVING) && (sat_mode!=SATMODE_SURVIVAL)){
-//                        putChar(0xb2);
-//                        putChar(0xb2);
+//                        putChar(0x76);
+//                        kaigyou(); 
                         
                         return error_initialOpe_readSatMode;
                     }
                 }
                 
-                putChar(0xb3);
-                putChar(0xb3);
-                
                 switch(sat_mode){
                     case SATMODE_SAVING:
                     case SATMODE_SURVIVAL:
-    //                    putChar(0xa4);
-//                        putChar('4');
+//                        putChar(0x77);
+//                        putChar(sat_mode);
+//                        kaigyou(); 
                         return error_initialOpe_powerShortage; 
                         
                     case SATMODE_NOMINAL:                 
-    //                    putChar(0xa5);
+//                        putChar(0x78);
+//                        putChar(sat_mode);
+//                        kaigyou();
+                        
                         /*---check melting counter---*/
                         melting_counter = ReadEEPROM(MAIN_EEPROM_ADDRESS, MeltingCounter_addressHigh, MeltingCounter_addressLow);
                         
@@ -157,15 +162,15 @@ UBYTE InitialOperation(void){
 //                                putChar(0xa9);
 //                                putChar('9');
     //                            //***FIXME*** wire melting!! be careful!!
-//                                //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x03, 0x00);
+                                sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_SHORT_highTime, CutWIRE_SHORT_lowTime, 0x01, 0x00);
                             } else {
 //                                putChar(0xa0);
 //                                putChar('0');
     //                            //***FIXME***  wire melting!! be careful!!
-//                                //sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x03, 0x00);
+                                sendCommand('t','p','t', OnOff_forCutWIRE, CutWIRE_LONG_highTime, CutWIRE_LONG_lowTime, 0x01, 0x00);
                             }
                             melting_counter++;
-    //                        putChar(0xb1);
+//                            putChar(0xb1);
                         }
 
     //                    putChar(0xaa);
@@ -188,12 +193,12 @@ UBYTE InitialOperation(void){
 //                putChar(0xab);
                 return error_initialOpe_alreadyMelting;
             }              
-            break;
-        default:
-//            putChar(0xac);
-            return error_initialOpe_OBCstatus;
-            break;    
-    }
+//            break;
+//        default:
+////            putChar(0xac);
+//            return error_initialOpe_OBCstatus;
+//            break;    
+//    }
 }
 
 //TODO:need debug

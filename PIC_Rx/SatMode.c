@@ -15,22 +15,11 @@ UBYTE ReserveBeforeSatMode = SATMODE_NOMINAL;//spare BeforeSatMode (when can't r
 UBYTE MeasureBatVoltageAndChangeSatMode(){
           //------battery voltage measure-------------
 //        debug : error handling is not determined
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar(0xA1);
-            putChar('\r');
-            putChar('\n');
+//            putChar(0xA1);
+//            putChar(0xA1);
+//            putChar(0xA1);
+//            putChar('\r');
+//            putChar('\n');
                     
             UBYTE bat_voltage[2];
             UWORD Voltage;//Voltage is 10 bit           
@@ -58,11 +47,11 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
             BeforeSatMode = BeforeSatMode & 0xF0;
             ReserveBeforeSatMode = ReserveBeforeSatMode & 0xF0;
             
-            putChar(0xB1);
-            putChar(BeforeSatMode);
-            putChar(ReserveBeforeSatMode);
-            putChar('\r');
-            putChar('\n');
+//            putChar(0xB1);
+//            putChar(BeforeSatMode);
+//            putChar(ReserveBeforeSatMode);
+//            putChar('\r');
+//            putChar('\n');
             
             switch(BeforeSatMode){
                 case SATMODE_NOMINAL:
@@ -86,13 +75,13 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                     }
                     break;
             }
-                            putChar(0xA2);
-                            putChar(BeforeSatMode);
-                            putChar(ReserveBeforeSatMode);
-                            putChar(ChoicedSatMode);
-                            putChar(0xA2);
-                            putChar('\r');
-                            putChar('\n');
+//                            putChar(0xA2);
+//                            putChar(BeforeSatMode);
+//                            putChar(ReserveBeforeSatMode);
+//                            putChar(ChoicedSatMode);
+//                            putChar(0xA2);
+//                            putChar('\r');
+//                            putChar('\n');
             switch(ChoicedSatMode){
                 case SATMODE_NOMINAL:
                     putChar(0x0A);
@@ -132,7 +121,7 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                         //EPS OFF
                         killEPS();
                         //Turn on NTRX(from CIB)
-                        onNtrxPowerSupplyCIB(0,0);                   
+                        onNtrxPowerSupplyCIB(0x07,0xD0);                   
                     }
                     break;
                 case SATMODE_SAVING:
@@ -186,22 +175,22 @@ UBYTE MeasureBatVoltageAndChangeSatMode(){
                         WriteOneByteToEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow, SATMODE_SAVING_SEPOFF_RBFON);
                         ReserveBeforeSatMode = SATMODE_SAVING_SEPOFF_RBFON;
                         //Turn on NTRX(from CIB)
-                        onNtrxPowerSupplyCIB(0,0);
+                        onNtrxPowerSupplyCIB(0x08,0xFC);  /////FIXME
                     }                  
                     break;
                 default:       
-                    putChar(0x0D);
+//                    putChar(0x0D);
                     error_status += 60;//0b00110000
                     break;
         }
-            putChar('\r');
-            putChar('\n');
-            putChar(0xA3);
-            putChar('\r');
-            putChar('\n');
-            putChar(0xA4);
-            putChar(ReadEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow));
-            putChar('\r');
-            putChar('\n');
+//            putChar('\r');
+//            putChar('\n');
+//            putChar(0xA3);
+//            putChar('\r');
+//            putChar('\n');
+//            putChar(0xA4);
+//            putChar(ReadEEPROM(MAIN_EEPROM_ADDRESS, SatelliteMode_addressHigh, SatelliteMode_addressLow));
+//            putChar('\r');
+//            putChar('\n');
             return error_status;
 }

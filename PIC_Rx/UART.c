@@ -80,6 +80,11 @@ void put_ok(void){
     putChar('\n');
 }
 
+void kaigyou(void){
+    putChar('\r');
+    putChar('\n');
+}
+
 //void NM_waddress(UBYTE NM_wad_header, UBYTE whigh_address, UBYTE wlow_address){ //TODO change name from NM to OBC
 //    putChar(NM_wad_header);
 //    putChar(whigh_address);
@@ -113,7 +118,6 @@ void sendCommandByPointer(UBYTE* Parameter){
     
     for(UBYTE i=0; i<10; i++){
         putChar(Command[i]);
-        NOP();
     }        
 }
 
@@ -133,7 +137,7 @@ void sendCommand(UBYTE TaskTarget, UBYTE CommandType, UBYTE Parameter1,UBYTE Par
     Command[9] = (UBYTE)(CRC & 0x00FF);
 //    putString(Command);
     for(UBYTE i=0; i<10; i++){
-    putChar(Command[i]);
+        putChar(Command[i]);
     }
 }
 
