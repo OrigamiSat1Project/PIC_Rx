@@ -79,7 +79,7 @@
 ******************************************************************************/
 //TODO:change address
 #define satelliteMode_EEPROMAndB0Select 0x00
-#define satelliteMode_addressHigh       0x00//include SEP(3,2bit) and RBF(1,0bit)
+#define satelliteMode_addressHigh       0x81//include SEP(3,2bit) and RBF(1,0bit)
 #define satelliteMode_addressLow        0x00//include SEP(3,2bit) and RBF(1,0bit)
 #define satelliteMode_DataSize          1
 
