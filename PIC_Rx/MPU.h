@@ -44,6 +44,7 @@ void switchPowerSpply1pin(UBYTE, UBYTE, UBYTE, UBYTE);
 
 void killEPS(void);
 void onEPS(void);
+void resetEPS(void);
 void switchPowerEPS(UBYTE, UBYTE, UBYTE);
 void reviveEPS(UBYTE, UBYTE);
 
