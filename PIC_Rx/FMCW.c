@@ -4,6 +4,7 @@
 #include "pinDefine.h"
 #include "time.h"
 #include "typeDefine.h"
+#include "UART.h"
 
 /*Identifiers for the radio units (called unitID if given to a functions)*/
 /* Do not change!! */
@@ -125,48 +126,17 @@ void sendSTB(int unitID){
  * 4. Send STB signal
  */
 void setNprg(int unitID, USLONG Nprg){
-    int Nprg_b[17];
+    UBYTE Nprg_b[17]={0};
     
-    for(int i=0; i<17; i++){
-        Nprg_b[i] = 0;
-    }
     //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
-    for(int i=0; Nprg>0; i++){
+    for(UBYTE i=0; Nprg>0; i++){
         Nprg_b[i] = Nprg % 2;
         Nprg = Nprg / 2;
     }
-    
-//    //OLD METHOD!! delete if new one works ! //Nprg transforms decimal to binary
-//    int count = 0;
-//    for(int i = 0; i < 17; i++){
-//        for(int j = 0; j<5; j++){
-//            if(Nprg[j] % 2 == 0) {
-//                if(j == 4){
-//                    Nprg[j] = Nprg[j] / 2;
-//                    Nprg_b[count] = 0;
-//                    count++;
-//                }
-//                else{
-//                    Nprg[j] = Nprg[j] / 2;
-//                }
-//            }
-//            else if(Nprg[j] % 2 == 1) {
-//                if(j == 4){
-//                    Nprg[j] = Nprg[j] / 2;
-//                    Nprg_b[count] = 1;
-//                    count++;
-//                }
-//                else{
-//                    Nprg[j] = Nprg[j] / 2;
-//                    Nprg[j+1] = Nprg[j+1] + 10;
-//                }
-//            }
-//        }
-//    }
-    
+   
     //Send Nprg data(binary) to communication module
     
-    for (int i=0; i<17; i++)
+    for (UBYTE i=0; i<17; i++)
     {
         if(Nprg_b[i] == 0)
         {
@@ -177,7 +147,7 @@ void setNprg(int unitID, USLONG Nprg){
             sendHigh(unitID);
         }
     }
-    
+       
     //GroupCode'10' is TX.DEV(?)
     sendHigh(unitID);
     sendLow(unitID);
@@ -195,20 +165,16 @@ void setNprg(int unitID, USLONG Nprg){
  * 4. Send STB signal
  */
 void setNref(int unitID, int Nref){
-    int Nref_b[12];
-    
-    for(int i=0; i<12; i++){
-        Nref_b[i] = 0;
-    }
+    UBYTE Nref_b[12]={0};
     
     //Nref transforms decimal to binary //Why not use same definition and Transformation for Nprg???
-    for(int i=0; Nref>0; i++){
+    for(UBYTE i=0; Nref>0; i++){
         Nref_b[i] = Nref % 2;
         Nref = Nref / 2;
     }
     
     //Send Nref data(binay) to communication module
-    for (int i=0; i<12; i++)
+    for (UBYTE i=0; i<12; i++)
     {
         if(Nref_b[i] == 0)
         {
@@ -299,44 +265,18 @@ void FMRX(int Nref, USLONG Nprg){
     setNprg(fmrx, Nprg);
 }
 
-
-int binaryToDecimal(int n){
-    int num = n; 
-    int dec_value = 0;
-    
-    // Initializing count value to 1, i.e 2^0 
-    int count = 1; 
-      
-    int temp = num; 
-    while (temp) 
-    { 
-        int last_digit = temp % 10; 
-        temp = temp/10; 
-          
-        dec_value += last_digit*count; 
-          
-        count = count*2; 
-    } 
-      
-    return dec_value; 
-}
-
 int calculateNref(UBYTE Nref_high, UBYTE Nref_low){
     int Nref;
-    Nref = Nref_high<<8 | Nref_low;
-    
-    Nref = binaryToDecimal(Nref);
-    
+    Nref = (Nref_high<<8) | Nref_low;
+
     return Nref;
 }
 
 USLONG calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
     USLONG Nprg;
-    Nprg = Nprg_high<<8 | Nprg_middle;
-    Nprg = Nprg<<8 | Nprg_low;
-    
-    Nprg = binaryToDecimal(Nprg);
-    
+    Nprg = (Nprg_high<<8) | Nprg_middle;
+    Nprg = (Nprg<<8) | Nprg_low;
+
     return Nprg;
 }
 
@@ -350,7 +290,7 @@ USLONG calculateNprg(UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){
 //}
 
 //process command data if the command type is 'radio unit'
-void commandSwitchFMCW(UBYTE command, UBYTE Nref_high, UBYTE Nref_low, UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){ //TODO: specify which Nref and Nprg are which    
+void commandSwitchFMCW(UBYTE command, UBYTE Nref_high, UBYTE Nref_low, UBYTE Nprg_high, UBYTE Nprg_middle, UBYTE Nprg_low){ //TODO: specify which Nref and Nprg are which
     int Nref;
     USLONG Nprg;
     Nref = calculateNref(Nref_high, Nref_low);
